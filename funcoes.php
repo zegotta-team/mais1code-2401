@@ -48,7 +48,7 @@ function captarTitulo() {
         $titulo = trim(fgets(STDIN));
     } while($titulo === "");
 
-    return $titulo;
+    return $titulo; 
 }
 
 function captarEmail() {
