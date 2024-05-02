@@ -130,13 +130,23 @@ class Empresa
         $pdo = new PDO("sqlite:" . self::BANCO);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $sql = "INSERT INTO empresa(nome, cnpj, usuario, email, senha, descricao, logo, endereco)
-            VALUES (\"$this->nome\", $this->cnpj, \"$this->usuario\", \"$this->email\", $this->senha, \"$this->descricao\", \"$this->logo\", \"$this->endereco\")";
+        $verifica = "SELECT COUNT(1) AS Total FROM empresa WHERE empresa.nome LIKE '$this->nome' OR empresa.cnpj LIKE '$this->cnpj' OR empresa.usuario LIKE '$this->usuario'";
 
-        $stmt = $pdo->prepare($sql);
+
+        $stmt = $pdo->prepare($verifica);
         $stmt->execute();
+        $totalDeRegistros = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $this->id = $pdo->lastInsertId();
+        if ($totalDeRegistros['Total'] != 0) {
+            echo "Não é possivel criar uma empresa com dados repetidos!!!";
+        } else {
+            $sql = "INSERT INTO empresa(nome, cnpj, usuario, email, senha, descricao, logo, endereco)
+                    VALUES (\"$this->nome\", $this->cnpj, \"$this->usuario\", \"$this->email\", $this->senha, \"$this->descricao\", \"$this->logo\", \"$this->endereco\")";
 
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+
+            $this->id = $pdo->lastInsertId();
+        }
     }
 }
