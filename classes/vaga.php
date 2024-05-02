@@ -139,4 +139,6 @@ class Vaga
         $this->id = $pdo->lastInsertId();
     }
 
+
+
 }

@@ -1,5 +1,4 @@
 <?php
-require_once 'class.empresa.php';
 function captarNome()
 {
     //Nome empresarial ou título do estabelecimento (nome de fantasia)
@@ -13,33 +12,41 @@ function captarNome()
     return $nome;
 }
 
-function captarCNPJ()
+function captarCNPJ($precisaSerNovo = false)
 {
-    /*CNPJ é um número identificador da empresa, que contém 14 dígitos, e tem o seguinte modelo:
-    XX.XXX.XXX/0001-XX.
-    O número do CNPJ pode ser dividido em blocos: a inscrição, que são os primeiros 8 dígitos, a parte que representa se é matriz ou filial (0001 – matriz, ou 0002 – filial), e finalmente dois dígitos verificadores. */
-    //Tem como validar se o cnpj informado no cadastro é existente ou fictício, por meio do orgão da receita federal
-
     do {
         echo "Informe o cnpj da empresa: ";
         $cnpj = intval(trim(fgets(STDIN)));
 
-
-// Remover caracteres que não são dígitos
+        // Remover caracteres que não são dígitos
         $cnpj = preg_replace('/\D/', '', $cnpj);
 
-// Verificar se o CNPJ tem exatamente 14 caracteres após remover os não-dígitos
-        if (strlen($cnpj) !== 14) {
-            // CNPJ não tem 14 caracteres
-            echo "O CNPJ deve ter exatamente 14 caracteres.";
+        // Verificar se o CNPJ tem exatamente 14 caracteres após remover os não-dígitos
+        if (strlen($cnpj) !== 14) { // CNPJ não tem 14 caracteres
+            echo "O CNPJ deve ter exatamente 14 caracteres.\n";
 
-        } else {
-            // CNPJ válido
-            echo "O CNPJ é válido: $cnpj";
+        } else { // CNPJ válido
+            echo "O CNPJ é válido: $cnpj\n";
         }
     } while (strlen($cnpj) !== 14);
 
+    if ($precisaSerNovo) {
+
+    }
+
     return $cnpj;
+}
+
+function captarTitulo()
+{
+    //Além da validação se é um email ou não (Front-end - input do tipo email), precisa validar se é um email existente e ativo na qual possa entrar em contato(verificação de código)
+
+    do {
+        echo "Informe o titulo da vaga: ";
+        $titulo = trim(fgets(STDIN));
+    } while ($titulo === "");
+
+    return $titulo;
 }
 
 function captarUsuario()
@@ -156,15 +163,34 @@ function captarCargaHoraria()
 
 function criarEmpresa()
 {
-
-    echo "Seja bem vindo ao cadastro de empresa!\n";
     $nome = captarNome();
     $cnpj = captarCNPJ();
     $usuario = captarUsuario();
 
-    $empresa = new Empresa($nome, $cnpj, $usuario, captarEmail(), captarSenha(), captarDescricao(), captarLogo(), captarEndereco());
-    var_dump($empresa);
-    $empresa->salvar();
+    if (!Empresa::verificaDadosExistentes($nome, $cnpj, $usuario)) {
+        $empresa = new Empresa($nome, $cnpj, $usuario, captarEmail(), captarSenha(), captarDescricao(), captarLogo(), captarEndereco());
+        var_dump($empresa);
+        $empresa->salvar();
+    } else {
+        echo "Dados duplicados, verifique e tente novamente\n";
+    }
+    fgets(STDIN);
+}
+
+function cadastraVaga(){
+
+    $cadastroEmail = captarEmail();
+    $cadastroSalario = captarSalario();
+    $cadastroBeneficios = captarBeneficios();
+    $cadastroDescricao = captarDescricao();
+    $cadastroRequisitos = captarRequisitos();
+    $cadastroCargaHoraria = captarCargaHoraria();
+
+    $empresa = new Empresa();
+    $empresa->listaEmpresas();
+
+    $vaga = new Vaga($empresa, captarTitulo(), $cadastroEmail, $cadastroSalario, $cadastroBeneficios, $cadastroDescricao, $cadastroRequisitos, $cadastroCargaHoraria);
+    $vaga->salvar();
 }
 
 //$loop = true;

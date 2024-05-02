@@ -127,26 +127,59 @@ class Empresa
 
     public function salvar()
     {
-        $pdo = new PDO("sqlite:" . self::BANCO);
+        $diretorio_raiz = dirname(__DIR__);
+        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
+
+        $pdo = new PDO("sqlite:$caminho_banco");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $verifica = "SELECT COUNT(1) AS Total FROM empresa WHERE empresa.nome LIKE '$this->nome' OR empresa.cnpj LIKE '$this->cnpj' OR empresa.usuario LIKE '$this->usuario'";
+        $sql = "INSERT INTO empresa(nome, cnpj, usuario, email, senha, descricao, logo, endereco)
+                    VALUES (\"$this->nome\", $this->cnpj, \"$this->usuario\", \"$this->email\", $this->senha, \"$this->descricao\", \"$this->logo\", \"$this->endereco\")";
 
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
 
-        $stmt = $pdo->prepare($verifica);
+        $this->id = $pdo->lastInsertId();
+    }
+
+    public static function verificaDadosExistentes($nome, $cnpj, $usuario)
+    {
+        $diretorio_raiz = dirname(__DIR__);
+        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
+
+        $pdo = new PDO("sqlite:$caminho_banco");
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $sql = "SELECT COUNT(1) AS Total FROM empresa ";
+        $sql .= "WHERE empresa.nome LIKE '$nome' OR empresa.cnpj LIKE '$cnpj' OR empresa.usuario LIKE '$usuario'";
+
+        $stmt = $pdo->prepare($sql);
         $stmt->execute();
         $totalDeRegistros = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($totalDeRegistros['Total'] != 0) {
-            echo "Não é possivel criar uma empresa com dados repetidos!!!";
-        } else {
-            $sql = "INSERT INTO empresa(nome, cnpj, usuario, email, senha, descricao, logo, endereco)
-                    VALUES (\"$this->nome\", $this->cnpj, \"$this->usuario\", \"$this->email\", $this->senha, \"$this->descricao\", \"$this->logo\", \"$this->endereco\")";
+        return $totalDeRegistros['Total'] != 0;
+    }
 
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute();
+    public static function listaEmpresas() {
+        $diretorio_raiz = dirname(__DIR__);
+        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
 
-            $this->id = $pdo->lastInsertId();
+        $pdo = new PDO("sqlite:$caminho_banco");
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $sql = "SELECT * FROM empresa ";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+
+        $retorno = [];
+        while ($empresa = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $objEmpresa = new Empresa($empresa['nome'], $empresa['cnpj'], $empresa['usuario'], $empresa['email'], $empresa['senha'], $empresa['descricao'], $empresa['logo'], $empresa['endereco']);
+            $objEmpresa->setId($empresa['id']);
+            $retorno[] = $objEmpresa;
         }
+
+        return $retorno;
+
     }
 }
