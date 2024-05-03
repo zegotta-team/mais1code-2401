@@ -40,4 +40,4 @@ do {
         6 => removerVaga()
     };
 
-} while ($opcao != 0);
+} while ($opcao > 0);
