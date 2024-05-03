@@ -37,7 +37,8 @@ do {
     match ($opcao) {
         1 => criarEmpresa(),
         4 => cadastraVaga(),
-        6 => removerVaga()
+        6 => removerVaga(),
+        default => null
     };
 
 } while ($opcao > 0);
