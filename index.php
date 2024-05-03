@@ -5,8 +5,10 @@ spl_autoload_register(function ($nomeClasse) {
 });
 
 include './funcoes.php';
+include './remover_vaga.php';
 
 $opcao = null;
+
 do {
 //    system('clear');
     echo "*** MENU ***\n";
@@ -34,7 +36,8 @@ do {
 
     match ($opcao) {
         1 => criarEmpresa(),
-        4 => cadastraVaga()
+        4 => cadastraVaga(),
+        6 => removerVaga()
     };
 
-} while ($opcao > 0);
+} while ($opcao != 0);
