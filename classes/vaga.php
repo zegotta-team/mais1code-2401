@@ -139,6 +139,28 @@ class Vaga
         $this->id = $pdo->lastInsertId();
     }
 
+    public static function selecionaDados($filtro) {
+        $pdo = new PDO("sqlite:" . self::BANCO);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+        $sql = "SELECT empresa.nome, vaga.* FROM vaga INNER JOIN empresa WHERE empresa.id = vaga.empresa_id AND nome LIKE \"$filtro%\" OR cnpj = \"$filtro\" OR titulo LIKE \"$filtro%\"";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+
+        // configura os dados consultados como uma matriz
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+    }
+
+    public static function alteraDados($alteracao, $novoDado, $id) {
+        $pdo = new PDO("sqlite:" . self::BANCO);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $sql = "UPDATE vaga SET $alteracao = \"$novoDado\" WHERE id = $id";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+    }
 
 }

@@ -1,21 +1,16 @@
 <?php
 
-include './funcoes.php';
+spl_autoload_register(function ($nomeClasse) {
+    require_once "./classes/" . strtolower($nomeClasse) . ".php";
+});
 
-$pdo = new PDO("sqlite:db.sqlite");
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+include './funcoes.php';
 
 do{
     echo "Informe parte do nome da empresa ou cnpj da empresa ou parte do título da vaga: ";
     $filtro = trim(fgets(STDIN));
 
-    $sql = "SELECT empresa.nome, vaga.* FROM vaga INNER JOIN empresa WHERE empresa.id = vaga.empresa_id AND nome LIKE \"$filtro%\" OR cnpj = \"$filtro\" OR titulo LIKE \"$filtro%\"";
-
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute();
-
-    // configura os dados consultados como uma matriz
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $results = Vaga::selecionaDados($filtro);
 
     if (!empty($results)) {
         echo "Informação passada pela busca válida. \n";
@@ -90,10 +85,7 @@ do{
         //var_dump($novoDado);
 
         if (!empty($alteracao) && !empty($novoDado) && !empty($id)) {
-            $sql = "UPDATE vaga SET $alteracao = \"$novoDado\" WHERE id = $id";
-
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute();
+            Vaga::alteraDados($alteracao, $novoDado, $id);
         }
     }
 } while($resposta != 'nao');

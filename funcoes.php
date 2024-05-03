@@ -39,8 +39,6 @@ function captarCNPJ($precisaSerNovo = false)
 
 function captarTitulo()
 {
-    //Além da validação se é um email ou não (Front-end - input do tipo email), precisa validar se é um email existente e ativo na qual possa entrar em contato(verificação de código)
-
     do {
         echo "Informe o titulo da vaga: ";
         $titulo = trim(fgets(STDIN));
