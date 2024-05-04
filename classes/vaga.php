@@ -143,7 +143,7 @@ class Vaga
         $pdo = new PDO("sqlite:" . self::BANCO);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $sql = "SELECT v.id, v.titulo, e.nome
+        $sql = "SELECT e.nome, v. *
                 FROM vaga v 
                 INNER JOIN empresa e ON e.id = v.empresa_id 
                 WHERE v.titulo LIKE :curinga OR v.email LIKE :curinga OR e.email LIKE :curinga OR e.nome LIKE :curinga";
