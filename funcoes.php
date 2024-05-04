@@ -317,22 +317,3 @@ function cadastraVaga(){
     $vaga = new Vaga($empresa, captarTitulo(), $cadastroEmail, $cadastroSalario, $cadastroBeneficios, $cadastroDescricao, $cadastroRequisitos, $cadastroCargaHoraria);
     $vaga->salvar();
 }
-
-//$loop = true;
-//while ($loop) {
-//     echo "Gostaria de cadastrar uma vaga para sua empresa? Digite Sim ou Nao!\n";
-//     $cadastrodevaga = trim(fgets(STDIN));
-
-//     if ($cadastrodevaga === "Nao") {
-//         $loop = false;
-//     } elseif ($cadastrodevaga === "Sim") {
-//         $vaga = new Vaga($empresa, captarEmail(), captarSalario(), captarBeneficios(), captarDescricao(), captarRequisitos(), captarCargaHoraria());
-//         var_dump($vaga);
-
-//         if (!empty($vaga)) {
-//             $vaga->salvar();
-//             echo "Sua nova vaga foi cadastrada!\n";
-//         }
-//     }
-// }
-
