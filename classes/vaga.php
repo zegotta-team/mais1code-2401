@@ -143,9 +143,13 @@ class Vaga
         $pdo = new PDO("sqlite:" . self::BANCO);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $sql = "SELECT empresa.nome, vaga.* FROM vaga INNER JOIN empresa WHERE empresa.id = vaga.empresa_id AND nome LIKE \"$filtro%\" OR cnpj = \"$filtro\" OR titulo LIKE \"$filtro%\"";
+        $sql = "SELECT v.id, v.titulo, e.nome
+                FROM vaga v 
+                INNER JOIN empresa e ON e.id = v.empresa_id 
+                WHERE v.titulo LIKE :curinga OR v.email LIKE :curinga OR e.email LIKE :curinga OR e.nome LIKE :curinga";
 
         $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':curinga', "%{$filtro}%");
         $stmt->execute();
 
         // configura os dados consultados como uma matriz

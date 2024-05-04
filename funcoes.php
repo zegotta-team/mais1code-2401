@@ -160,7 +160,7 @@ function captarCargaHoraria()
 
 function editarVaga() {
     do{
-        echo "Informe parte do nome da empresa ou cnpj da empresa ou parte do título da vaga: ";
+        echo "Informe o que deseja consultar: ";
         $filtro = trim(fgets(STDIN));
     
         $results = Vaga::selecionaDados($filtro);
