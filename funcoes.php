@@ -80,7 +80,7 @@ function captarSenha()
 
     do {
         echo "Informe a senha: ";
-        $senha = intval(trim(fgets(STDIN)));
+        $senha = trim(fgets(STDIN)); 
     } while ($senha === "");
 
     return $senha;
@@ -299,7 +299,6 @@ function criarEmpresa()
     } else {
         echo "Dados duplicados, verifique e tente novamente\n";
     }
-    fgets(STDIN);
 }
 
 function cadastraVaga(){

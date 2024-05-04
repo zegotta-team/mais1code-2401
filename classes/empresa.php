@@ -134,7 +134,7 @@ class Empresa
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $sql = "INSERT INTO empresa(nome, cnpj, usuario, email, senha, descricao, logo, endereco)
-                    VALUES (\"$this->nome\", $this->cnpj, \"$this->usuario\", \"$this->email\", $this->senha, \"$this->descricao\", \"$this->logo\", \"$this->endereco\")";
+                    VALUES (\"$this->nome\", $this->cnpj, \"$this->usuario\", \"$this->email\", \"$this->senha\", \"$this->descricao\", \"$this->logo\", \"$this->endereco\")";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
