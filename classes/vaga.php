@@ -171,8 +171,8 @@ class Vaga
     {
         $pdo = new PDO('sqlite:' . self::BANCO);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        echo "Conexão com banco de dados ok! status(200)\n";
-
+        // echo "Conexão com banco de dados ok! status(200)\n";
+        
         $sqlListName = "SELECT v.id, v.titulo, e.nome 
                         FROM vaga v 
                         INNER JOIN empresa e ON e.id = v.empresa_id 
@@ -187,6 +187,7 @@ class Vaga
         return $results;
     }
 
+    // Método  estático que deverá receber o id da vaga a ser removida, fazer a conexão com o banco de dados e executar o DELETE
     public static function removerVagaDB($removerVagaID)
     {
         try {
