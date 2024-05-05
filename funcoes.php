@@ -261,8 +261,10 @@ function removerVaga()
            echo "\n";
        });
 
-       echo "Digite o ID da vaga que deseja remover: ";
-       $removerVagaID = trim(fgets(STDIN));
+       do {
+            echo "Digite o ID da vaga que deseja remover: ";
+            $removerVagaID = trim(fgets(STDIN));
+       } while (!is_numeric($removerVagaID) || $removerVagaID <= 0 || $removerVagaID == "");
 
        $existeVaga = false;
 
@@ -276,10 +278,22 @@ function removerVaga()
            die("Vaga não existe!\n");
        }
 
-       echo "Tem certeza? s/n: ";
-       $confirmarRemocao = strtolower(trim(fgets(STDIN)));
+       do {
+            echo "Tem certeza? s/n: ";
+            $confirmarRemocao = strtolower(trim(fgets(STDIN)));
+       } while ($confirmarRemocao != 's' && 
+                $confirmarRemocao != 'sim' && 
+                $confirmarRemocao != 'n' && 
+                $confirmarRemocao != 'nao' && 
+                $confirmarRemocao != 'não');
 
-       $results = Vaga::removerVagaDB($removerVagaID);
+       if ($confirmarRemocao == "s" || $confirmarRemocao == "sim") {
+           $results = Vaga::removerVagaDB($removerVagaID);
+            echo "Removido com sucesso!\n";
+       } else {
+            die("Processo interrompido pelo usuário.\n");
+       }
+
 
    } catch(PDOException $e) {
        echo "Erro: " . $e->getMessage();

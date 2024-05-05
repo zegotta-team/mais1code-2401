@@ -196,7 +196,6 @@ class Vaga
             $sql = "DELETE FROM vaga WHERE id = $removerVagaID";
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
-            echo "Removido com sucesso!\n";
         } catch (Exception $e) {
             echo "Erro: " . $e->getMessage();
         }
