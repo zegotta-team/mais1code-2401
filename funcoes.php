@@ -282,8 +282,8 @@ function removerVaga()
             echo "Tem certeza? s/n: ";
             $confirmarRemocao = strtolower(trim(fgets(STDIN)));
        } while ($confirmarRemocao != 's' && 
-                $confirmarRemocao != 'sim' && 
                 $confirmarRemocao != 'n' && 
+                $confirmarRemocao != 'sim' && 
                 $confirmarRemocao != 'nao' && 
                 $confirmarRemocao != 'não');
 
