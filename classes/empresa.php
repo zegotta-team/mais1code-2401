@@ -182,4 +182,22 @@ class Empresa
         return $retorno;
 
     }
+    public static function VerificaEmpresa($cnpj)
+    {
+        $diretorio_raiz = dirname(__DIR__);
+        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
+
+        $pdo = new PDO("sqlite:$caminho_banco");
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $sql = "SELECT * FROM empresa WHERE empresa.cnpj LIKE $cnpj";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $totalDeRegistros = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $totalDeRegistros;
+    }
+
+
 }

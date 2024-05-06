@@ -1,36 +1,65 @@
 <?php
 include_once './funcoes.php';
-function editar()
+include_once  './classes/empresa.php';
+
+
+function editaEmpresa()
 
 {
 
-    echo "Digite a empresa que deseja listar: \n";
-    $buscar = '%' . trim(fgets(STDIN)) . '%';
-
-    $pdo = new PDO("sqlite:" . 'db.sqlite');
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $sqlListName = "SELECT * FROM empresa WHERE nome LIKE :curinga OR usuario LIKE :curinga";
-    var_dump($sqlListName);
-
-    $stmt = $pdo->prepare($sqlListName);
-
-
-    $stmt->execute();
 
 
 
+    echo "Digite o cnpj da empresa em que voce deseja listar: \n";
+    $cnpj =  intval(trim(fgets(STDIN)));
+    echo "Digite o nome da empresa em que voce deseja listar: \n";
+    $nome = trim(fgets(STDIN));
+    echo "digite o usuario da empresa: \n";
+    $user = trim(fgets(STDIN));
+    $dados = Empresa::verificaDadosExistentes($nome, $cnpj, $user);
+    print_r($dados);
 
-    echo "Quais dados da empresa voce deseja alterar?
-  1- nome:
-  2- cnpj:
-  3- usuario:
-  4- senha:
-  5- descricao:
-  6- logo:
-  7- endereco:\n";
+    if(!empty($dados)){
+        echo "Quais dados da empresa voce deseja alterar?
+      1- nome:
+      2- cnpj:
+      3- usuario:
+      4- senha:
+      5- descricao:;
+      6- logo:
+      7- endereco:\n";
 
-    $dadosAcesso = trim(fgets(STDIN));
+
+        $dadosAcesso = trim(fgets(STDIN));
+        echo "Você digitou o numero: $dadosAcesso \n";
+
+        if ($dadosAcesso == 1) {
+            echo "Informe o nome atualizado da empresa \n";
+            $dadoRecebido = trim(fgets(STDIN));
+
+            $diretorio_raiz = dirname(__DIR__);
+            $caminho_banco = realpath($diretorio_raiz . EMPRESA:: BANCO);
+
+            $pdo = new PDO("sqlite:" . '/' );
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+
+            $sql = "UPDATE empresa SET nome= $dadoRecebido WHERE cnpj = $cnpj AND usuario = $user ";
+
+
+            $stmt = $pdo->prepare($sql);
+            var_dump($stmt);
+            $stmt->execute();
+        }
+    }else {
+        echo "Empresa nao localizada";
+
+    }
+
+    die();
+
+
+
 
     if ($dadosAcesso == 1) {
         echo "Informe o nome atualizado da empresa \n";
@@ -62,9 +91,12 @@ function editar()
 
 
 
-    $stmt = $pdo->prepare($sql);
 
-    $stmt->bindValue(':curinga', $buscar);
-    $stmt->execute();
+
+
+
+
+
+
 }
-editar();
+editaEmpresa();
