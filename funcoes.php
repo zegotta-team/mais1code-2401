@@ -39,8 +39,6 @@ function captarCNPJ($precisaSerNovo = false)
 
 function captarTitulo()
 {
-    //Além da validação se é um email ou não (Front-end - input do tipo email), precisa validar se é um email existente e ativo na qual possa entrar em contato(verificação de código)
-
     do {
         echo "Informe o titulo da vaga: ";
         $titulo = trim(fgets(STDIN));
@@ -82,7 +80,7 @@ function captarSenha()
 
     do {
         echo "Informe a senha: ";
-        $senha = intval(trim(fgets(STDIN)));
+        $senha = trim(fgets(STDIN)); 
     } while ($senha === "");
 
     return $senha;
@@ -160,6 +158,147 @@ function captarCargaHoraria()
     return $cargaHoraria;
 }
 
+function editarVaga() {
+    do{
+        echo "Informe o que deseja consultar: ";
+        $filtro = trim(fgets(STDIN));
+    
+        $results = Vaga::selecionaDados($filtro);
+    
+        if (!empty($results)) {
+            echo "Informação passada pela busca válida. \n";
+    
+            print_r($results);
+    
+            do{
+                echo "Informe o id da vaga que deseja alterar: ";
+                $id = intval(trim(fgets(STDIN)));
+            } while($id <= 0);
+            //var_dump($id);
+        } else{
+            echo "Informação passada na busca inválida. Tente novamente! \n";
+        }
+    
+    } while(empty($id));
+    
+    do{
+    
+        do{
+            echo "Deseja realmente fazer alguma alteração na vaga (sim/nao): ";
+            $resposta = trim(fgets(STDIN));
+        } while($resposta !== 'sim' && $resposta !== 'nao');
+        
+        //var_dump($resposta);
+    
+        if ($resposta == 'sim') {
+            do{
+                echo "Informe o número do campo que deseja alterar:
+                    1 - titulo; 
+                    2 - email;
+                    3 - salário;
+                    4 - benefícios;
+                    5 - descrição;
+                    6 - requisitos;
+                    7 - carga horária. \n";
+                $campo = trim(fgets(STDIN));
+            } while($campo !== '1' && $campo !== '2' && $campo!== '3' && $campo !== '4' && $campo !== '5' && $campo !== '6' && $campo !== '7');
+    
+            //var_dump($campo);
+    
+            if ($campo == 1) {
+                $alteracao = 'titulo';
+    
+                $novoDado = captarTitulo();
+            } elseif ($campo == 2) {
+                $alteracao = 'email';
+    
+                $novoDado = captarEmail();
+            } elseif ($campo == 3) {
+                $alteracao = 'salario';
+    
+                $novoDado = captarSalario();
+            } elseif ($campo == 4) {
+                $alteracao = 'beneficios';
+    
+                $novoDado = captarBeneficios();
+            } elseif ($campo == 5) {
+                $alteracao = 'descricao';
+    
+                $novoDado = captarDescricao();
+            } elseif ($campo == 6) {
+                $alteracao = 'requisitos';
+    
+                $novoDado = captarRequisitos();
+            } elseif ($campo == 7) {
+                $alteracao = 'cargaHoraria';
+    
+                $novoDado = captarCargaHoraria();
+            }
+    
+            //var_dump($novoDado);
+    
+            if (!empty($alteracao) && !empty($novoDado) && !empty($id)) {
+                Vaga::alteraDados($alteracao, $novoDado, $id);
+            }
+        }
+    } while($resposta != 'nao');
+    
+}
+
+function removerVaga()
+{
+   try {
+        echo "Digite o valor que deseja consultar: ";
+        $buscar = trim(fgets(STDIN));
+        $results = Vaga::consultarVagas($buscar);
+
+       if (empty($results)) {
+           die("Nenhuma vaga encontrada com os termos de busca!\n");
+       }
+
+       array_walk($results, function($element){
+           echo join("\t", $element);
+           echo "\n";
+       });
+
+       do {
+            echo "Digite o ID da vaga que deseja remover: ";
+            $removerVagaID = trim(fgets(STDIN));
+       } while (!is_numeric($removerVagaID) || $removerVagaID <= 0 || $removerVagaID == "");
+
+       $existeVaga = false;
+
+       array_walk($results, function($element) use(&$existeVaga, $removerVagaID){
+           if ($element['id'] == $removerVagaID) {
+               $existeVaga = true;
+           }
+       });
+
+       if ($existeVaga == false) {
+           die("Vaga não existe!\n");
+       }
+
+       do {
+            echo "Tem certeza? s/n: ";
+            $confirmarRemocao = strtolower(trim(fgets(STDIN)));
+       } while ($confirmarRemocao != 's' && 
+                $confirmarRemocao != 'n' && 
+                $confirmarRemocao != 'sim' && 
+                $confirmarRemocao != 'nao' && 
+                $confirmarRemocao != 'não');
+
+       if ($confirmarRemocao == "s" || $confirmarRemocao == "sim") {
+           $results = Vaga::removerVagaDB($removerVagaID);
+            echo "Removido com sucesso!\n";
+       } else {
+            die("Processo interrompido pelo usuário.\n");
+       }
+
+
+   } catch(PDOException $e) {
+       echo "Erro: " . $e->getMessage();
+   } 
+}
 
 function criarEmpresa()
 {
@@ -174,7 +313,6 @@ function criarEmpresa()
     } else {
         echo "Dados duplicados, verifique e tente novamente\n";
     }
-    fgets(STDIN);
 }
 
 function cadastraVaga(){
@@ -192,22 +330,3 @@ function cadastraVaga(){
     $vaga = new Vaga($empresa, captarTitulo(), $cadastroEmail, $cadastroSalario, $cadastroBeneficios, $cadastroDescricao, $cadastroRequisitos, $cadastroCargaHoraria);
     $vaga->salvar();
 }
-
-//$loop = true;
-//while ($loop) {
-//     echo "Gostaria de cadastrar uma vaga para sua empresa? Digite Sim ou Nao!\n";
-//     $cadastrodevaga = trim(fgets(STDIN));
-
-//     if ($cadastrodevaga === "Nao") {
-//         $loop = false;
-//     } elseif ($cadastrodevaga === "Sim") {
-//         $vaga = new Vaga($empresa, captarEmail(), captarSalario(), captarBeneficios(), captarDescricao(), captarRequisitos(), captarCargaHoraria());
-//         var_dump($vaga);
-
-//         if (!empty($vaga)) {
-//             $vaga->salvar();
-//             echo "Sua nova vaga foi cadastrada!\n";
-//         }
-//     }
-// }
-

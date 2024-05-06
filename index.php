@@ -5,7 +5,6 @@ spl_autoload_register(function ($nomeClasse) {
 });
 
 include './funcoes.php';
-include './remover_vaga.php';
 
 $opcao = null;
 
@@ -37,7 +36,9 @@ do {
     match ($opcao) {
         1 => criarEmpresa(),
         4 => cadastraVaga(),
-        6 => removerVaga()
+        5 => editarVaga(),
+        6 => removerVaga(),
+        default => null
     };
 
 } while ($opcao > 0);

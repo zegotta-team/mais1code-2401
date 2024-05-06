@@ -7,7 +7,7 @@
 #### FLUXO DE VAGAS
 - [x] Cadastro
 - [ ] Edição
-- [ ] Remoção
+- [x] Remoção
 
 #### USER EXPERIENCE
 - [ ] Cadastrar empresa sem precisar cadastrar a vaga

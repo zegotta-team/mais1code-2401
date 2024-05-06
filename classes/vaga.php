@@ -139,6 +139,66 @@ class Vaga
         $this->id = $pdo->lastInsertId();
     }
 
+    public static function selecionaDados($filtro) {
+        $pdo = new PDO("sqlite:" . self::BANCO);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+        $sql = "SELECT e.nome, v. *
+                FROM vaga v 
+                INNER JOIN empresa e ON e.id = v.empresa_id 
+                WHERE v.titulo LIKE :curinga OR v.email LIKE :curinga OR e.email LIKE :curinga OR e.nome LIKE :curinga";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':curinga', "%{$filtro}%");
+        $stmt->execute();
+
+        // configura os dados consultados como uma matriz
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+    }
+
+    public static function alteraDados($alteracao, $novoDado, $id) {
+        $pdo = new PDO("sqlite:" . self::BANCO);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $sql = "UPDATE vaga SET $alteracao = \"$novoDado\" WHERE id = $id";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+    }
+
+    public static function consultarVagas($buscar)
+    {
+        $pdo = new PDO('sqlite:' . self::BANCO);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        // echo "Conexão com banco de dados ok! status(200)\n";
+        
+        $sqlListName = "SELECT v.id, v.titulo, e.nome 
+                        FROM vaga v 
+                        INNER JOIN empresa e ON e.id = v.empresa_id 
+                        WHERE v.titulo LIKE :curinga OR v.email LIKE :curinga OR e.email LIKE :curinga OR e.nome LIKE :curinga";
+
+        $stmt = $pdo->prepare($sqlListName);
+        // bindParam parecido com replace
+        $stmt->bindValue(':curinga', "%{$buscar}%"); // usar bindValue ao invés de bindParam
+        $stmt->execute();
+        // configura os dados consultados como uma matriz
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+    }
+
+    // Método  estático que deverá receber o id da vaga a ser removida, fazer a conexão com o banco de dados e executar o DELETE
+    public static function removerVagaDB($removerVagaID)
+    {
+        try {
+            $pdo = new PDO('sqlite:' . self::BANCO);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $sql = "DELETE FROM vaga WHERE id = $removerVagaID";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+        } catch (Exception $e) {
+            echo "Erro: " . $e->getMessage();
+        }
+    }
 
 }
