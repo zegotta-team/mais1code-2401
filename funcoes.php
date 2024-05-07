@@ -16,7 +16,7 @@ function captarCNPJ($precisaSerNovo = false)
 {
     do {
         echo "Informe o cnpj da empresa: ";
-        $cnpj = intval(trim(fgets(STDIN)));
+        $cnpj = trim(fgets(STDIN));
 
         // Remover caracteres que não são dígitos
         $cnpj = preg_replace('/\D/', '', $cnpj);
@@ -80,7 +80,7 @@ function captarSenha()
 
     do {
         echo "Informe a senha: ";
-        $senha = trim(fgets(STDIN)); 
+        $senha = trim(fgets(STDIN));
     } while ($senha === "");
 
     return $senha;
@@ -158,40 +158,44 @@ function captarCargaHoraria()
     return $cargaHoraria;
 }
 
-function editarVaga() {
-    do{
+function editarVaga()
+{
+    $empresaId = listarEmpresas();
+    $Empresa = Empresa::getById($empresaId);
+
+    do {
         echo "Informe o que deseja consultar: ";
         $filtro = trim(fgets(STDIN));
-    
-        $results = Vaga::selecionaDados($filtro);
-    
+
+        $results = Vaga::selecionaDados($empresaId, $filtro);
+
         if (!empty($results)) {
             echo "Informação passada pela busca válida. \n";
-    
+
             print_r($results);
-    
-            do{
+
+            do {
                 echo "Informe o id da vaga que deseja alterar: ";
                 $id = intval(trim(fgets(STDIN)));
-            } while($id <= 0);
+            } while ($id <= 0);
             //var_dump($id);
-        } else{
+        } else {
             echo "Informação passada na busca inválida. Tente novamente! \n";
         }
-    
-    } while(empty($id));
-    
-    do{
-    
-        do{
+
+    } while (empty($id));
+
+    do {
+
+        do {
             echo "Deseja realmente fazer alguma alteração na vaga (sim/nao): ";
             $resposta = trim(fgets(STDIN));
-        } while($resposta !== 'sim' && $resposta !== 'nao');
-        
+        } while ($resposta !== 'sim' && $resposta !== 'nao');
+
         //var_dump($resposta);
-    
+
         if ($resposta == 'sim') {
-            do{
+            do {
                 echo "Informe o número do campo que deseja alterar:
                     1 - titulo; 
                     2 - email;
@@ -201,103 +205,106 @@ function editarVaga() {
                     6 - requisitos;
                     7 - carga horária. \n";
                 $campo = trim(fgets(STDIN));
-            } while($campo !== '1' && $campo !== '2' && $campo!== '3' && $campo !== '4' && $campo !== '5' && $campo !== '6' && $campo !== '7');
-    
+            } while ($campo !== '1' && $campo !== '2' && $campo !== '3' && $campo !== '4' && $campo !== '5' && $campo !== '6' && $campo !== '7');
+
             //var_dump($campo);
-    
+
             if ($campo == 1) {
                 $alteracao = 'titulo';
-    
+
                 $novoDado = captarTitulo();
             } elseif ($campo == 2) {
                 $alteracao = 'email';
-    
+
                 $novoDado = captarEmail();
             } elseif ($campo == 3) {
                 $alteracao = 'salario';
-    
+
                 $novoDado = captarSalario();
             } elseif ($campo == 4) {
                 $alteracao = 'beneficios';
-    
+
                 $novoDado = captarBeneficios();
             } elseif ($campo == 5) {
                 $alteracao = 'descricao';
-    
+
                 $novoDado = captarDescricao();
             } elseif ($campo == 6) {
                 $alteracao = 'requisitos';
-    
+
                 $novoDado = captarRequisitos();
             } elseif ($campo == 7) {
                 $alteracao = 'cargaHoraria';
-    
+
                 $novoDado = captarCargaHoraria();
             }
-    
+
             //var_dump($novoDado);
-    
+
             if (!empty($alteracao) && !empty($novoDado) && !empty($id)) {
                 Vaga::alteraDados($alteracao, $novoDado, $id);
             }
         }
-    } while($resposta != 'nao');
-    
+    } while ($resposta != 'nao');
+
 }
 
 function removerVaga()
 {
-   try {
+    $empresaId = listarEmpresas();
+    $Empresa = Empresa::getById($empresaId);
+
+    try {
         echo "Digite o valor que deseja consultar: ";
         $buscar = trim(fgets(STDIN));
-        $results = Vaga::consultarVagas($buscar);
+        $results = Vaga::consultarVagas($empresaId, $buscar);
 
-       if (empty($results)) {
-           die("Nenhuma vaga encontrada com os termos de busca!\n");
-       }
+        if (empty($results)) {
+            die("Nenhuma vaga encontrada com os termos de busca!\n");
+        }
 
-       array_walk($results, function($element){
-           echo join("\t", $element);
-           echo "\n";
-       });
+        array_walk($results, function ($element) {
+            echo join("\t", $element);
+            echo "\n";
+        });
 
-       do {
+        do {
             echo "Digite o ID da vaga que deseja remover: ";
             $removerVagaID = trim(fgets(STDIN));
-       } while (!is_numeric($removerVagaID) || $removerVagaID <= 0 || $removerVagaID == "");
+        } while (!is_numeric($removerVagaID) || $removerVagaID <= 0 || $removerVagaID == "");
 
-       $existeVaga = false;
+        $existeVaga = false;
 
-       array_walk($results, function($element) use(&$existeVaga, $removerVagaID){
-           if ($element['id'] == $removerVagaID) {
-               $existeVaga = true;
-           }
-       });
+        array_walk($results, function ($element) use (&$existeVaga, $removerVagaID) {
+            if ($element['id'] == $removerVagaID) {
+                $existeVaga = true;
+            }
+        });
 
-       if ($existeVaga == false) {
-           die("Vaga não existe!\n");
-       }
+        if ($existeVaga == false) {
+            die("Vaga não existe!\n");
+        }
 
-       do {
+        do {
             echo "Tem certeza? s/n: ";
             $confirmarRemocao = strtolower(trim(fgets(STDIN)));
-       } while ($confirmarRemocao != 's' && 
-                $confirmarRemocao != 'n' && 
-                $confirmarRemocao != 'sim' && 
-                $confirmarRemocao != 'nao' && 
-                $confirmarRemocao != 'não');
+        } while ($confirmarRemocao != 's' &&
+        $confirmarRemocao != 'n' &&
+        $confirmarRemocao != 'sim' &&
+        $confirmarRemocao != 'nao' &&
+        $confirmarRemocao != 'não');
 
-       if ($confirmarRemocao == "s" || $confirmarRemocao == "sim") {
-           $results = Vaga::removerVagaDB($removerVagaID);
+        if ($confirmarRemocao == "s" || $confirmarRemocao == "sim") {
+            $results = Vaga::removerVagaDB($removerVagaID);
             echo "Removido com sucesso!\n";
-       } else {
+        } else {
             die("Processo interrompido pelo usuário.\n");
-       }
+        }
 
 
-   } catch(PDOException $e) {
-       echo "Erro: " . $e->getMessage();
-   } 
+    } catch (PDOException $e) {
+        echo "Erro: " . $e->getMessage();
+    }
 }
 
 function criarEmpresa()
@@ -315,7 +322,10 @@ function criarEmpresa()
     }
 }
 
-function cadastraVaga(){
+function cadastrarVaga()
+{
+    $empresaId = listarEmpresas();
+    $Empresa = Empresa::getById($empresaId);
 
     $cadastroEmail = captarEmail();
     $cadastroSalario = captarSalario();
@@ -324,9 +334,63 @@ function cadastraVaga(){
     $cadastroRequisitos = captarRequisitos();
     $cadastroCargaHoraria = captarCargaHoraria();
 
-    $empresa = new Empresa();
-    $empresa->listaEmpresas();
-
-    $vaga = new Vaga($empresa, captarTitulo(), $cadastroEmail, $cadastroSalario, $cadastroBeneficios, $cadastroDescricao, $cadastroRequisitos, $cadastroCargaHoraria);
+    $vaga = new Vaga($Empresa, captarTitulo(), $cadastroEmail, $cadastroSalario, $cadastroBeneficios, $cadastroDescricao, $cadastroRequisitos, $cadastroCargaHoraria);
     $vaga->salvar();
+}
+
+function editarEmpresa()
+{
+    $empresaId = listarEmpresas();
+    $Empresa = Empresa::getById($empresaId);
+
+    echo "Quais dados da empresa $empresaId voce deseja alterar?
+      [1] nome:
+      [2] cnpj:
+      [3] usuario:
+      [4] senha:
+      [5] descricao:;
+      [6] logo:
+      [7] endereco:\n";
+
+    $dadosAcesso = trim(fgets(STDIN));
+
+    $matriz = [
+        1 => ['o nome atualizado', 'setNome'],
+        2 => ['o CNPJ atualizado', 'setCNPJ'],
+        3 => ['o usuário atualizado', 'setUsuario'],
+        4 => ['a senha atualizada', 'setSenha'],
+        5 => ['a descrição atualizada','setDescricao'],
+        6 => ['o logo atualizado','setLogo'],
+        7 => ['o endereço atualizado','setEndereco']
+    ];
+
+    list($texto, $metodo) = $matriz[$dadosAcesso];
+
+    echo "Informe {$texto} da empresa: ";
+    $dadoRecebido = trim(fgets(STDIN));
+    $Empresa->$metodo($dadoRecebido)->salvar();
+
+}
+
+function removerEmpresa() {
+    $empresaId = listarEmpresas();
+    $Empresa = Empresa::getById($empresaId);
+
+    $Empresa->delete();
+}
+
+function listarEmpresas()
+{
+    echo "Informe o termo de busca da empresa: ";
+    $termo = trim(fgets(STDIN));
+
+    $empresas = Empresa::listaEmpresas($termo);
+
+    foreach ($empresas as $empresa) {
+        echo $empresa->getId() . " " . $empresa->getNome() . " " . $empresa->getCnpj() . "\n";
+    }
+
+    echo "Informe o ID da empresa selecionada: ";
+    return trim(fgets(STDIN));
+
 }

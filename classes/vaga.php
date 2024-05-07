@@ -139,13 +139,13 @@ class Vaga
         $this->id = $pdo->lastInsertId();
     }
 
-    public static function selecionaDados($filtro) {
+    public static function selecionaDados($empresaId, $filtro) {
         $pdo = new PDO("sqlite:" . self::BANCO);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $sql = "SELECT e.nome, v. *
                 FROM vaga v 
-                INNER JOIN empresa e ON e.id = v.empresa_id 
+                INNER JOIN empresa e ON e.id = v.empresa_id AND e.id = $empresaId
                 WHERE v.titulo LIKE :curinga OR v.email LIKE :curinga OR e.email LIKE :curinga OR e.nome LIKE :curinga";
 
         $stmt = $pdo->prepare($sql);
@@ -167,7 +167,7 @@ class Vaga
         $stmt->execute();
     }
 
-    public static function consultarVagas($buscar)
+    public static function consultarVagas($empresaId, $buscar)
     {
         $pdo = new PDO('sqlite:' . self::BANCO);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -175,7 +175,7 @@ class Vaga
         
         $sqlListName = "SELECT v.id, v.titulo, e.nome 
                         FROM vaga v 
-                        INNER JOIN empresa e ON e.id = v.empresa_id 
+                        INNER JOIN empresa e ON e.id = v.empresa_id AND e.id = $empresaId
                         WHERE v.titulo LIKE :curinga OR v.email LIKE :curinga OR e.email LIKE :curinga OR e.nome LIKE :curinga";
 
         $stmt = $pdo->prepare($sqlListName);

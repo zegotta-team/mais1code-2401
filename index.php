@@ -25,17 +25,11 @@ do {
         echo "Opção inválida\n";
     }
 
-//    $empresas = Empresa::listaEmpresas();
-//
-//    foreach ($empresas as $empresa) {
-//        echo $empresa->getId(). " " . $empresa->getNome() . "\n";
-//    }
-//
-//    die();
-
     match ($opcao) {
         1 => criarEmpresa(),
-        4 => cadastraVaga(),
+        2 => editarEmpresa(),
+        3 => removerEmpresa(),
+        4 => cadastrarVaga(),
         5 => editarVaga(),
         6 => removerVaga(),
         default => null
