@@ -37,23 +37,13 @@ function captarCNPJ($precisaSerNovo = false)
     return $cnpj;
 }
 
-function captarTitulo()
-{
-    do {
-        echo "Informe o titulo da vaga: ";
-        $titulo = trim(fgets(STDIN));
-    } while ($titulo === "");
-
-    return $titulo;
-}
-
 function captarUsuario()
 {
     //Pensar em como validar se aquele usuario informado já existe ou não, para não haver mais de uma empresa com o mesmo usuario
     //Por exemplo, poderia ser feito uma leitura nos dados armazenados na coluna usuario na tabela empresa do banco de dados, para comparar se o usuario informado no cadastro da empresa é igual a um usuario já existente na tabela
 
     do {
-        echo "Informe o usuario: ";
+        echo "Informe o usuário: ";
         $usuario = trim(fgets(STDIN));
     } while ($usuario === "");
 
@@ -120,10 +110,20 @@ function captarEndereco()
     return $endereco;
 }
 
+function captarTitulo()
+{
+    do {
+        echo "Informe o título da vaga: ";
+        $titulo = trim(fgets(STDIN));
+    } while ($titulo === "");
+
+    return $titulo;
+}
+
 function captarSalario()
 {
     do {
-        echo "Informe o salario da vaga: ";
+        echo "Informe o salário da vaga: ";
         $salario = intval(trim(fgets(STDIN)));
     } while ($salario === "");
 
@@ -132,7 +132,7 @@ function captarSalario()
 
 function captarBeneficios()
 {
-    echo "Informe os beneficios da vaga: ";
+    echo "Informe os benefícios da vaga: ";
     $beneficios = trim(fgets(STDIN));
 
     return $beneficios;
