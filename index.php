@@ -9,30 +9,50 @@ include './funcoes.php';
 $opcao = null;
 
 do {
-//    system('clear');
-    echo "*** MENU ***\n";
-    echo "[1] Cadastrar empresa\n";
-    echo "[2] Editar empresa\n";
-    echo "[3] Remover empresa\n";
-    echo "[4] Cadastrar vaga\n";
-    echo "[5] Editar vaga\n";
-    echo "[6] Remover vaga\n";
-    echo "[0] Encerrar\n";
-    echo "Olá, usuário. Escolha sua opção: ";
+    echo "Olá, usuário. Escolha sua opção:\n";
+    echo "[1] Login\n";
+    echo "[2] Cadastrar empresa\n";
     $opcao = intval(trim(fgets(STDIN)));
 
-    if ($opcao > 6) {
+    if ($opcao > 2) {
+        echo "Opção inválida\n";
+    }
+
+    if ($opcao === 2) {
+        criarEmpresa();
+    }
+} while ($opcao !== 1 && $opcao !== 2);
+
+do {
+    $empresaLogada = login();
+} while (empty($empresaLogada));
+
+system('clear');
+do {
+    echo "*** MENU ***\n";
+    echo "[1] Editar empresa\n";
+    echo "[2] Remover empresa\n";
+    echo "[3] Cadastrar vaga\n";
+    echo "[4] Editar vaga\n";
+    echo "[5] Remover vaga\n";
+    echo "[0] Encerrar\n";
+    echo "Opção: ";
+    $opcao = intval(trim(fgets(STDIN)));
+
+    if ($opcao > 5) {
         echo "Opção inválida\n";
     }
 
     match ($opcao) {
-        1 => criarEmpresa(),
-        2 => editarEmpresa(),
-        3 => removerEmpresa(),
-        4 => cadastrarVaga(),
-        5 => editarVaga(),
-        6 => removerVaga(),
+        1 => editarEmpresa($empresaLogada),
+        2 => removerEmpresa($empresaLogada),
+        3 => cadastrarVaga($empresaLogada),
+        4 => editarVaga($empresaLogada),
+        5 => removerVaga($empresaLogada),
         default => null
     };
 
+    if ($opcao === 2) {
+        $opcao = -1;
+    }
 } while ($opcao > 0);

@@ -258,5 +258,26 @@ class Empresa
         return $totalDeRegistros;
     }
 
+    public static function autenticar($usuario, $senha)
+    {
+        $diretorio_raiz = dirname(__DIR__);
+        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
+
+        $pdo = new PDO("sqlite:$caminho_banco");
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $sql = "SELECT * FROM empresa WHERE usuario = '$usuario' AND senha = '$senha'";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+
+        $retorno = null;
+        while ($empresa = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $objEmpresa = new Empresa($empresa['nome'], $empresa['cnpj'], $empresa['usuario'], $empresa['email'], $empresa['senha'], $empresa['descricao'], $empresa['logo'], $empresa['endereco']);
+            $objEmpresa->setId($empresa['id']);
+            $retorno = $objEmpresa;
+        }
+        return $retorno;
+    }
 
 }

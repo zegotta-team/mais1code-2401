@@ -152,9 +152,14 @@ class Vaga
         $stmt->bindValue(':curinga', "%{$filtro}%");
         $stmt->execute();
 
-        // configura os dados consultados como uma matriz
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $results;
+        $retorno = [];
+        while ($vaga = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $objEmpresa = Empresa::getById($vaga['empresa_id']);
+            $objVaga = new Vaga($objEmpresa, $vaga['titulo'], $vaga['email'], $vaga['salario'], $vaga['beneficios'], $vaga['descricao'], $vaga['requisitos'], $vaga['cargaHoraria']);
+            $objVaga->setId($vaga['id']);
+            $retorno[] = $objVaga;
+        }
+        return $retorno;
     }
 
     public static function alteraDados($alteracao, $novoDado, $id) {

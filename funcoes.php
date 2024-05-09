@@ -158,21 +158,21 @@ function captarCargaHoraria()
     return $cargaHoraria;
 }
 
-function editarVaga()
+function editarVaga($Empresa)
 {
-    $empresaId = listarEmpresas();
-    $Empresa = Empresa::getById($empresaId);
-
     do {
         echo "Informe o que deseja consultar: ";
         $filtro = trim(fgets(STDIN));
 
-        $results = Vaga::selecionaDados($empresaId, $filtro);
+        $results = Vaga::selecionaDados($Empresa->getId(), $filtro);
 
         if (!empty($results)) {
             echo "Informação passada pela busca válida. \n";
 
-            print_r($results);
+            /** @var $vaga Vaga */
+            foreach ($results as $vaga) {
+                echo $vaga->getId() . " " . $vaga->getTitulo() . "  " . $vaga->getEmail() . "  " . $vaga->getEmpresa()->getNome() . "\n";
+            }
 
             do {
                 echo "Informe o id da vaga que deseja alterar: ";
@@ -249,15 +249,12 @@ function editarVaga()
 
 }
 
-function removerVaga()
+function removerVaga($Empresa)
 {
-    $empresaId = listarEmpresas();
-    $Empresa = Empresa::getById($empresaId);
-
     try {
         echo "Digite o valor que deseja consultar: ";
         $buscar = trim(fgets(STDIN));
-        $results = Vaga::consultarVagas($empresaId, $buscar);
+        $results = Vaga::consultarVagas($Empresa->getId(), $buscar);
 
         if (empty($results)) {
             die("Nenhuma vaga encontrada com os termos de busca!\n");
@@ -315,18 +312,15 @@ function criarEmpresa()
 
     if (!Empresa::verificaDadosExistentes($nome, $cnpj, $usuario)) {
         $empresa = new Empresa($nome, $cnpj, $usuario, captarEmail(), captarSenha(), captarDescricao(), captarLogo(), captarEndereco());
-        var_dump($empresa);
+        print_r($empresa);
         $empresa->salvar();
     } else {
         echo "Dados duplicados, verifique e tente novamente\n";
     }
 }
 
-function cadastrarVaga()
+function cadastrarVaga($Empresa)
 {
-    $empresaId = listarEmpresas();
-    $Empresa = Empresa::getById($empresaId);
-
     $cadastroEmail = captarEmail();
     $cadastroSalario = captarSalario();
     $cadastroBeneficios = captarBeneficios();
@@ -338,19 +332,16 @@ function cadastrarVaga()
     $vaga->salvar();
 }
 
-function editarEmpresa()
+function editarEmpresa($Empresa)
 {
-    $empresaId = listarEmpresas();
-    $Empresa = Empresa::getById($empresaId);
-
-    echo "Quais dados da empresa $empresaId voce deseja alterar?
-      [1] nome:
-      [2] cnpj:
-      [3] usuario:
-      [4] senha:
-      [5] descricao:;
-      [6] logo:
-      [7] endereco:\n";
+    echo "Quais dados da empresa {$Empresa->getNome()} você deseja alterar?
+      [1] Nome:
+      [2] CNPJ:
+      [3] Usuário:
+      [4] Senha:
+      [5] Descrição:;
+      [6] Logo:
+      [7] Endereço:\n";
 
     $dadosAcesso = trim(fgets(STDIN));
 
@@ -359,9 +350,9 @@ function editarEmpresa()
         2 => ['o CNPJ atualizado', 'setCNPJ'],
         3 => ['o usuário atualizado', 'setUsuario'],
         4 => ['a senha atualizada', 'setSenha'],
-        5 => ['a descrição atualizada','setDescricao'],
-        6 => ['o logo atualizado','setLogo'],
-        7 => ['o endereço atualizado','setEndereco']
+        5 => ['a descrição atualizada', 'setDescricao'],
+        6 => ['o logo atualizado', 'setLogo'],
+        7 => ['o endereço atualizado', 'setEndereco']
     ];
 
     list($texto, $metodo) = $matriz[$dadosAcesso];
@@ -372,10 +363,8 @@ function editarEmpresa()
 
 }
 
-function removerEmpresa() {
-    $empresaId = listarEmpresas();
-    $Empresa = Empresa::getById($empresaId);
-
+function removerEmpresa($Empresa)
+{
     $Empresa->delete();
 }
 
@@ -393,4 +382,16 @@ function listarEmpresas()
     echo "Informe o ID da empresa selecionada: ";
     return trim(fgets(STDIN));
 
+}
+
+function login()
+{
+    echo "Informe seu usuário: ";
+    $usuario = trim(fgets(STDIN));
+    echo "Informe sua senha: ";
+    $senha = trim(fgets(STDIN));
+
+    $empresa = Empresa::autenticar($usuario, $senha);
+
+    return $empresa;
 }
