@@ -52,11 +52,15 @@ if (!empty($_SESSION['empresaId'])) {
                                     <input type="text" class="form-control" name="usuario" id="usuario" placeholder="Informe seu usuário de acesso" required>
                                 </div>
                                 <div class="col-12">
+                                    <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                                    <input type="email" class="form-control" name="email" id="email" placeholder="Informe um email válido" required>
+                                </div>
+                                <div class="col-12">
                                     <label for="senha" class="form-label">Senha <span class="text-danger">*</span></label>
                                     <input type="password" class="form-control" name="senha" id="senha" value="" required>
                                 </div>
                                 <div class="col-12">
-                                    <label for="descricao" class="form-label">Usuário <span class="text-danger">*</span></label>
+                                    <label for="descricao" class="form-label">Descrição <span class="text-danger">*</span></label>
                                     <textarea type="text" class="form-control" name="descricao" id="descricao" placeholder="Descrição" required></textarea>
                                 </div>
                                 <div class="col-12">
