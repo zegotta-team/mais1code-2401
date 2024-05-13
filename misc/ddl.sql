@@ -2,7 +2,7 @@ CREATE TABLE empresa
 (
     id        INTEGER PRIMARY KEY AUTOINCREMENT,
     nome      TEXT    NOT NULL,
-    cnpj      INTEGER NOT NULL,
+    cnpj      TEXT    NOT NULL,
     usuario   TEXT    NOT NULL,
     email     TEXT    NOT NULL,
     senha     INTEGER NOT NULL,

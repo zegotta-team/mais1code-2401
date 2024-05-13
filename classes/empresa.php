@@ -133,13 +133,15 @@ class Empresa
         $pdo = new PDO("sqlite:$caminho_banco");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+        $cnpjSoNumeros = preg_replace('/\D/', '', $this->cnpj);
+
         if (empty($this->id)) {
             $sql = "INSERT INTO empresa(nome, cnpj, usuario, email, senha, descricao, logo, endereco)
-                    VALUES (\"$this->nome\", $this->cnpj, \"$this->usuario\", \"$this->email\", \"$this->senha\", \"$this->descricao\", \"$this->logo\", \"$this->endereco\")";
+                    VALUES (\"$this->nome\", '$cnpjSoNumeros', \"$this->usuario\", \"$this->email\", \"$this->senha\", \"$this->descricao\", \"$this->logo\", \"$this->endereco\")";
         } else {
             $sql = "UPDATE empresa SET ";
             $sql .= "nome = '$this->nome', ";
-            $sql .= "cnpj = '$this->cnpj', ";
+            $sql .= "cnpj = '$cnpjSoNumeros', ";
             $sql .= "usuario = '$this->usuario', ";
             $sql .= "email = '$this->email', ";
             $sql .= "senha = '$this->senha', ";
@@ -148,7 +150,7 @@ class Empresa
             $sql .= "endereco = '$this->endereco' ";
             $sql .= "WHERE id = '$this->id' ";
         }
-
+        echo $sql;
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
