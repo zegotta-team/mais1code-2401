@@ -25,8 +25,6 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li><a class="dropdown-item" href="cadastrar_vaga.php">Cadastrar</a></li>
-                        <li><a class="dropdown-item" href="editar_vaga.php">Editar</a></li>
-                        <li><a class="dropdown-item" href="remover_vaga.php">Excluir</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
