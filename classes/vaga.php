@@ -127,7 +127,10 @@ class Vaga
 
     public function salvar()
     {
-        $pdo = new PDO("sqlite:" . self::BANCO);
+        $diretorio_raiz = dirname(__DIR__);
+        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
+
+        $pdo = new PDO("sqlite:$caminho_banco");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $sql = "INSERT INTO vaga (empresa_id, titulo, email, salario, beneficios, descricao, requisitos, cargaHoraria) 
@@ -140,7 +143,10 @@ class Vaga
     }
 
     public static function selecionaDados($empresaId, $filtro) {
-        $pdo = new PDO("sqlite:" . self::BANCO);
+        $diretorio_raiz = dirname(__DIR__);
+        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
+
+        $pdo = new PDO("sqlite:$caminho_banco");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $sql = "SELECT e.nome, v. *
@@ -163,7 +169,10 @@ class Vaga
     }
 
     public static function alteraDados($alteracao, $novoDado, $id) {
-        $pdo = new PDO("sqlite:" . self::BANCO);
+        $diretorio_raiz = dirname(__DIR__);
+        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
+
+        $pdo = new PDO("sqlite:$caminho_banco");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $sql = "UPDATE vaga SET $alteracao = \"$novoDado\" WHERE id = $id";
@@ -174,7 +183,10 @@ class Vaga
 
     public static function consultarVagas($empresaId, $buscar)
     {
-        $pdo = new PDO('sqlite:' . self::BANCO);
+        $diretorio_raiz = dirname(__DIR__);
+        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
+
+        $pdo = new PDO("sqlite:$caminho_banco");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         // echo "Conexão com banco de dados ok! status(200)\n";
         
@@ -196,7 +208,10 @@ class Vaga
     public static function removerVagaDB($removerVagaID)
     {
         try {
-            $pdo = new PDO('sqlite:' . self::BANCO);
+            $diretorio_raiz = dirname(__DIR__);
+            $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
+
+            $pdo = new PDO("sqlite:$caminho_banco");
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $sql = "DELETE FROM vaga WHERE id = $removerVagaID";
             $stmt = $pdo->prepare($sql);
