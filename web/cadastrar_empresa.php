@@ -41,11 +41,11 @@ if (!empty($_SESSION['empresaId'])) {
                             <div class="row gy-3 gy-md-4 overflow-hidden">
                                 <div class="col-12">
                                     <label for="nome" class="form-label">Nome da empresa <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="nome" id="nome" placeholder="ACME Ltda" required>
+                                    <input type="text" class="form-control" name="nome" id="nome" placeholder="Nome da Empresa" required>
                                 </div>
                                 <div class="col-12">
                                     <label for="cnpj" class="form-label">CNPJ <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="cnpj" id="cnpj" placeholder="01.234.567-0001/89" required>
+                                    <input type="text" class="form-control" name="cnpj" id="cnpj" placeholder="CNPJ" required>
                                 </div>
                                 <div class="col-12">
                                     <label for="usuario" class="form-label">Usuário <span class="text-danger">*</span></label>
@@ -65,11 +65,11 @@ if (!empty($_SESSION['empresaId'])) {
                                 </div>
                                 <div class="col-12">
                                     <label for="logo" class="form-label">Logo <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="logo" id="logo" placeholder="http://www.imagem.com/arquivo.png" required>
+                                    <input type="text" class="form-control" name="logo" id="logo" placeholder="adicione uma imagem" required>
                                 </div>
                                 <div class="col-12">
                                     <label for="endereco" class="form-label">Endereço <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="endereco" id="endereco" placeholder="Rua Tal, 123 - Bairro Tal - Cidade, ST" required>
+                                    <input type="text" class="form-control" name="endereco" id="endereco" placeholder="Digite o Endereço Atual" required>
                                 </div>
                                 <div class="col-12">
                                     <div class="d-grid">
