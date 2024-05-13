@@ -24,64 +24,51 @@ $empresa = Empresa::getById($_SESSION['empresaId']);
 <?php include_once 'menu.php' ?>
 <div class="container mt-2">
     <form method="post" action="processa_cadastrar_vaga.php">
-        <div class="row g-3 align-items-center">
-            <div class="col-auto">
-                <label for="titulo" class="col-form-label">Título</label>
-            </div>
-            <div class="col-auto">
+        <div class="row g-3 align-items-center mb-2">
+            <label for="titulo" class="col-form-label col-md-2">Título</label>
+            <div class="col-md-10">
                 <input type="text" class="form-control" name="titulo" id="titulo">
             </div>
         </div>
-        <div class="row g-3 align-items-center">
-            <div class="col-auto">
-                <label for="email" class="col-form-label">Email</label>
-            </div>
-            <div class="col-auto">
+        <div class="row g-3 align-items-center mb-2">
+            <label for="email" class="col-form-label col-md-2">Email</label>
+            <div class="col-md-10">
                 <input type="text" class="form-control" name="email" id="email">
             </div>
         </div>
-        <div class="row g-3 align-items-center">
-            <div class="col-auto">
-                <label for="salario" class="col-form-label">Salario</label>
-            </div>
-            <div class="col-auto">
-                <input type="text" class="form-control" name="salario" id="salario">
+        <div class="row g-3 align-items-center mb-2">
+            <label for="salario" class="col-form-label col-md-2">Salário</label>
+            <div class="col-md-10">
+                <input type="number" class="form-control" name="salario" id="salario" min="0">
             </div>
         </div>
-        <div class="row g-3 align-items-center">
-            <div class="col-auto">
-                <label for="beneficios" class="col-form-label">Beneficios</label>
-            </div>
-            <div class="col-auto">
-                <textarea class="form-control" cols="50" name="beneficios" id="beneficios"></textarea>
+        <div class="row g-3 align-items-center mb-2">
+            <label for="beneficios" class="col-form-label col-md-2">Benefícios</label>
+            <div class="col-md-10">
+<!--                <textarea class="form-control" cols="50" name="beneficios" id="beneficios"></textarea>-->
+                <input type="text" class="form-control" cols="50" name="beneficios" id="beneficios">
             </div>
         </div>
-        <div class="row g-3 align-items-center">
-            <div class="col-auto">
-                <label for="descricao" class="col-form-label">Descrição</label>
-            </div>
-            <div class="col-auto">
+        <div class="row g-3 align-items-center mb-2">
+            <label for="descricao" class="col-form-label col-md-2">Descrição</label>
+            <div class="col-md-10">
                 <textarea class="form-control" cols="50" name="descricao" id="descricao"></textarea>
             </div>
         </div>
-        <div class="row g-3 align-items-center">
-            <div class="col-auto">
-                <label for="requisitos" class="col-form-label">Requisitos</label>
-            </div>
-            <div class="col-auto">
+        <div class="row g-3 align-items-center mb-2">
+            <label for="requisitos" class="col-form-label col-md-2">Requisitos</label>
+            <div class="col-md-10">
                 <textarea class="form-control" cols="50" name="requisitos" id="requisitos"></textarea>
             </div>
         </div>
-        <div class="row g-3 align-items-center">
-            <div class="col-auto">
-                <label for="cargaHoraria" class="col-form-label">Carga horária</label>
-            </div>
-            <div class="col-auto">
-                <input type="text" class="form-control" name="cargaHoraria" id="cargaHoraria">
+        <div class="row g-3 align-items-center mb-2">
+            <label for="cargaHoraria" class="col-form-label col-md-2">Carga horária</label>
+            <div class="col-md-10">
+                <input type="number" class="form-control" name="cargaHoraria" id="cargaHoraria" min="0">
             </div>
         </div>
         <div class="row g-3 align-items-center">
-            <div class="col-auto">
+            <div class="col-md-12 d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end">
                 <button class="btn btn-primary">Cadastrar</button>
             </div>
         </div>
