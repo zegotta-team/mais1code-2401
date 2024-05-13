@@ -21,8 +21,8 @@ $empresa = Empresa::getById($_SESSION['empresaId']);
 </head>
 
 <body>
+<?php include_once 'menu.php' ?>
 <div class="container mt-2">
-    <?php include_once 'menu.php' ?>
     <form method="post" action="processa_cadastrar_vaga.php">
         <div class="row g-3 align-items-center">
             <div class="col-auto">
