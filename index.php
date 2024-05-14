@@ -1,7 +1,7 @@
 <?php
 
 spl_autoload_register(function ($nomeClasse) {
-    require_once "./classes/" . strtolower($nomeClasse) . ".php";
+    require_once "web/classes/$nomeClasse.php";
 });
 
 include './funcoes.php';

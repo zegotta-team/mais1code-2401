@@ -1,0 +1,67 @@
+<html lang="pt_BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mais1Code - Projeto</title>
+    <?php require_once 'include.html' ?>
+</head>
+
+<body>
+<?php include_once 'menu.phtml' ?>
+<div class="container mt-2">
+    <form method="post" action="../processa_editar_vaga.php">
+        <input type="hidden" name="vagaId" value="<?=$vaga->getId()?>" />
+        <div class="row g-3 align-items-center mb-2">
+            <label for="titulo" class="col-form-label col-md-2">Título</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="titulo" id="titulo" value="<?=$vaga->getTitulo()?>">
+            </div>
+        </div>
+        <div class="row g-3 align-items-center mb-2">
+            <label for="email" class="col-form-label col-md-2">Email</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="email" id="email" value="<?=$vaga->getEmail()?>">
+            </div>
+        </div>
+        <div class="row g-3 align-items-center mb-2">
+            <label for="salario" class="col-form-label col-md-2">Salário</label>
+            <div class="col-md-10">
+                <input type="number" class="form-control" name="salario" id="salario" value="<?=$vaga->getSalario()?>" min="0">
+            </div>
+        </div>
+        <div class="row g-3 align-items-center mb-2">
+            <label for="beneficios" class="col-form-label col-md-2">Benefícios</label>
+            <div class="col-md-10">
+<!--                <textarea class="form-control" cols="50" name="beneficios" id="beneficios"></textarea>-->
+                <input type="text" class="form-control" name="beneficios" id="beneficios" value="<?=$vaga->getBeneficios()?>">
+            </div>
+        </div>
+        <div class="row g-3 align-items-center mb-2">
+            <label for="descricao" class="col-form-label col-md-2">Descrição</label>
+            <div class="col-md-10">
+                <textarea class="form-control" cols="50" name="descricao" id="descricao"><?=$vaga->getDescricao()?></textarea>
+            </div>
+        </div>
+        <div class="row g-3 align-items-center mb-2">
+            <label for="requisitos" class="col-form-label col-md-2">Requisitos</label>
+            <div class="col-md-10">
+                <textarea class="form-control" cols="50" name="requisitos" id="requisitos"><?=$vaga->getRequisitos()?></textarea>
+            </div>
+        </div>
+        <div class="row g-3 align-items-center mb-2">
+            <label for="cargaHoraria" class="col-form-label col-md-2">Carga horária</label>
+            <div class="col-md-10">
+                <input type="number" class="form-control" name="cargaHoraria" id="cargaHoraria" value="<?=$vaga->getCargaHoraria()?>" min="0">
+            </div>
+        </div>
+        <div class="row g-3 align-items-center">
+            <div class="col-md-12 d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end">
+                <button class="btn btn-primary">Salvar</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+</body>
+</html>

@@ -12,18 +12,29 @@ spl_autoload_register(function ($nomeClasse) {
 
 session_start();
 if (empty($_SESSION['empresaId'])) {
-    header("Location: login.php");
+    header("Location: logout.php");
     die();
 }
 
 $empresa = EmpresaDTO::getById($_SESSION['empresaId']);
-$empresa->setNome($_POST["nome"])
-    ->setCNPJ($_POST["cnpj"])
-    ->setEmail($_POST["email"])
-    ->setDescricao($_POST['descricao'])
-    ->setLogo($_POST['logo'])
-    ->setEndereco($_POST['endereco']);
+$vaga = VagaDTO::getById($_POST['vagaId']);
 
-EmpresaDTO::salvar($empresa);
+if (empty($vaga)) {
+    die('Vaga não encontrada');
+}
+
+if ($empresa->getId() !== $vaga->getEmpresa()->getId()) {
+    die('Sai pilantra, a vaga não é sua');
+}
+
+$vaga->setTitulo($_POST['titulo'])
+    ->setEmail($_POST['email'])
+    ->setSalario($_POST['salario'])
+    ->setBeneficios($_POST['beneficios'])
+    ->setDescricao($_POST['descricao'])
+    ->setRequisitos($_POST['requisitos'])
+    ->setCargaHoraria($_POST['cargaHoraria']);
+
+VagaDTO::salvar($vaga);
 
 header('Location: home.php');

@@ -1,131 +1,10 @@
 <?php
 
-class Vaga
+abstract class VagaDTO
 {
-    const BANCO = 'db.sqlite';
+    const BANCO = '../db.sqlite';
 
-    private $id;
-    private Empresa $empresa;
-    private $titulo;
-    private $email;
-    private $salario;
-    private $beneficios;
-    private $descricao;
-    private $requisitos;
-    private $cargaHoraria;
-
-    public function __construct($empresa, $titulo, $email, $salario, $beneficios, $descricao, $requisitos, $cargaHoraria)
-    {
-        $this->setEmpresa($empresa);
-        $this->setTitulo($titulo);
-        $this->setEmail($email);
-        $this->setSalario($salario);
-        $this->setBeneficios($beneficios);
-        $this->setDescricao($descricao);
-        $this->setRequisitos($requisitos);
-        $this->setCargaHoraria($cargaHoraria);
-    }
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    public function getEmpresa()
-    {
-        return $this->empresa;
-    }
-
-    public function setEmpresa($empresa)
-    {
-        $this->empresa = $empresa;
-        return $this;
-    }
-
-    public function setTitulo($titulo)
-    {
-        $this->titulo = $titulo;
-        return $this;
-    }
-    
-    public function getTitulo()
-    {
-        return ucwords($this->titulo);
-    }
-    
-    public function setEmail($Email)
-    {
-        $this->email = $Email;
-        return $this;
-    }
-
-    public function getEmail()
-    {
-        return strtolower($this->email);
-    }
-
-    public function setSalario($salario)
-    {
-        $this->salario = $salario;
-        return $this;
-    }
-
-    public function getSalario()
-    {
-        return $this->salario;
-    }
-
-    public function setBeneficios($Beneficios)
-    {
-        $this->beneficios = $Beneficios;
-        return $this;
-    }
-
-    public function getBeneficios()
-    {
-        return $this->beneficios;
-    }
-
-    public function setDescricao($Descricao)
-    {
-        $this->descricao = $Descricao;
-        return $this;
-    }
-
-    public function getDescricao()
-    {
-        return $this->descricao;
-    }
-
-    public function setRequisitos($Requisitos)
-    {
-        $this->requisitos = $Requisitos;
-        return $this;
-    }
-
-    public function getRequisitos()
-    {
-        return $this->requisitos;
-    }
-
-    public function setCargaHoraria($CargaHoraria)
-    {
-        $this->cargaHoraria = $CargaHoraria;
-        return $this;
-    }
-
-    public function getCargaHoraria()
-    {
-        return $this->cargaHoraria;
-    }
-
-    public function salvar()
+    public static function salvar($vaga)
     {
         $diretorio_raiz = dirname(__DIR__);
         $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
@@ -133,16 +12,28 @@ class Vaga
         $pdo = new PDO("sqlite:$caminho_banco");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $sql = "INSERT INTO vaga (empresa_id, titulo, email, salario, beneficios, descricao, requisitos, cargaHoraria) 
-            VALUES ({$this->empresa->getId()}, \"$this->titulo\", \"$this->email\", $this->salario, \"$this->beneficios\", \"$this->descricao\", \"$this->requisitos\", $this->cargaHoraria)";
-
+        if (empty($vaga->getId())) {
+            $sql = "INSERT INTO vaga (empresa_id, titulo, email, salario, beneficios, descricao, requisitos, cargaHoraria) 
+            VALUES ({$vaga->getEmpresa()->getId()}, \"{$vaga->getTitulo()}\", \"{$vaga->getEmail()}\", {$vaga->getSalario()}, \"{$vaga->getBeneficios()}\", \"{$vaga->getDescricao()}\", \"{$vaga->getRequisitos()}\", {$vaga->getCargaHoraria()})";
+        } else {
+            $sql = "UPDATE vaga SET ";
+            $sql .= "titulo = '{$vaga->getTitulo()}', ";
+            $sql .= "email = '{$vaga->getEmail()}', ";
+            $sql .= "salario = '{$vaga->getSalario()}', ";
+            $sql .= "beneficios = '{$vaga->getBeneficios()}', ";
+            $sql .= "descricao = '{$vaga->getDescricao()}', ";
+            $sql .= "requisitos = '{$vaga->getRequisitos()}', ";
+            $sql .= "cargaHoraria = '{$vaga->getCargaHoraria()}' ";
+            $sql .= "WHERE id = {$vaga->getId()}";
+        }
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
-        $this->id = $pdo->lastInsertId();
+        $vaga->setId($pdo->lastInsertId());
     }
 
-    public static function selecionaDados($empresaId, $filtro) {
+    public static function selecionaDados($empresaId, $filtro)
+    {
         $diretorio_raiz = dirname(__DIR__);
         $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
 
@@ -160,7 +51,7 @@ class Vaga
 
         $retorno = [];
         while ($vaga = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $objEmpresa = Empresa::getById($vaga['empresa_id']);
+            $objEmpresa = EmpresaDTO::getById($vaga['empresa_id']);
             $objVaga = new Vaga($objEmpresa, $vaga['titulo'], $vaga['email'], $vaga['salario'], $vaga['beneficios'], $vaga['descricao'], $vaga['requisitos'], $vaga['cargaHoraria']);
             $objVaga->setId($vaga['id']);
             $retorno[] = $objVaga;
@@ -168,7 +59,8 @@ class Vaga
         return $retorno;
     }
 
-    public static function alteraDados($alteracao, $novoDado, $id) {
+    public static function alteraDados($alteracao, $novoDado, $id)
+    {
         $diretorio_raiz = dirname(__DIR__);
         $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
 
@@ -189,7 +81,7 @@ class Vaga
         $pdo = new PDO("sqlite:$caminho_banco");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         // echo "Conexão com banco de dados ok! status(200)\n";
-        
+
         $sqlListName = "SELECT v.id, v.titulo, e.nome 
                         FROM vaga v 
                         INNER JOIN empresa e ON e.id = v.empresa_id AND e.id = $empresaId
@@ -205,7 +97,7 @@ class Vaga
     }
 
     // Método  estático que deverá receber o id da vaga a ser removida, fazer a conexão com o banco de dados e executar o DELETE
-    public static function removerVagaDB($removerVagaID)
+    public static function removerVagaDB($vaga)
     {
         try {
             $diretorio_raiz = dirname(__DIR__);
@@ -213,12 +105,36 @@ class Vaga
 
             $pdo = new PDO("sqlite:$caminho_banco");
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $sql = "DELETE FROM vaga WHERE id = $removerVagaID";
+            $sql = "DELETE FROM vaga WHERE id = {$vaga->getId()}";
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
         } catch (Exception $e) {
             echo "Erro: " . $e->getMessage();
         }
+    }
+
+    public static function getById($id)
+    {
+        $diretorio_raiz = dirname(__DIR__);
+        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
+
+        $pdo = new PDO("sqlite:$caminho_banco");
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $sql = "SELECT * FROM vaga WHERE id = $id ";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+
+        $retorno = null;
+        while ($vaga = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $objEmpresa = EmpresaDTO::getById($vaga['empresa_id']);
+            $objVaga = new Vaga($objEmpresa, $vaga['titulo'], $vaga['email'], $vaga['salario'], $vaga['beneficios'], $vaga['descricao'], $vaga['requisitos'], $vaga['cargaHoraria']);
+            $objVaga->setId($vaga['id']);
+            $retorno = $objVaga;
+        }
+
+        return $retorno;
     }
 
 }

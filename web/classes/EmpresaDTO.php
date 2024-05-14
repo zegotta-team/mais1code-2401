@@ -1,163 +1,47 @@
 <?php
 
-class Empresa
+abstract class EmpresaDTO
 {
-    const BANCO = 'db.sqlite';
+    const BANCO = '../db.sqlite';
 
-    private $id;
-    private $nome;
-    private $cnpj;
-    private $usuario;
-    private $email;
-    private $senha;
-    private $descricao;
-    private $logo;
-    private $endereco;
-
-    public function __construct($nome, $cnpj, $usuario, $email, $senha, $descricao, $logo, $endereco)
+    public static function salvar($empresa)
     {
-        $this->setNome($nome);
-        $this->setCNPJ($cnpj);
-        $this->setUsuario($usuario);
-        $this->setEmail($email);
-        $this->setSenha($senha);
-        $this->setDescricao($descricao);
-        $this->setLogo($logo);
-        $this->setEndereco($endereco);
-    }
 
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    public function setNome($Nome)
-    {
-        $this->nome = $Nome;
-        return $this;
-    }
-
-    public function getNome()
-    {
-        return $this->nome;
-    }
-
-    public function setCNPJ($Cnpj)
-    {
-        $this->cnpj = $Cnpj;
-        return $this;
-    }
-
-    public function getCNPJ()
-    {
-        return $this->cnpj;
-    }
-
-    public function setUsuario($Usuario)
-    {
-        $this->usuario = $Usuario;
-        return $this;
-    }
-
-    public function getUsuario()
-    {
-        return $this->usuario;
-    }
-
-    public function setEmail($Email)
-    {
-        $this->email = $Email;
-        return $this;
-    }
-
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    public function setSenha($Senha)
-    {
-        $this->senha = $Senha;
-        return $this;
-    }
-
-    public function getSenha()
-    {
-        return $this->senha;
-    }
-
-    public function setDescricao($Descricao)
-    {
-        $this->descricao = $Descricao;
-        return $this;
-    }
-
-    public function getDescricao()
-    {
-        return $this->descricao;
-    }
-
-    public function setLogo($Logo)
-    {
-        $this->logo = $Logo;
-        return $this;
-    }
-
-    public function getLogo()
-    {
-        return $this->logo;
-    }
-
-    public function setEndereco($Endereco)
-    {
-        $this->endereco = $Endereco;
-        return $this;
-    }
-
-    public function getEndereco()
-    {
-        return $this->endereco;
-    }
-
-    public function salvar()
-    {
         $diretorio_raiz = dirname(__DIR__);
         $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
 
         $pdo = new PDO("sqlite:$caminho_banco");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $cnpjSoNumeros = preg_replace('/\D/', '', $this->cnpj);
+        $cnpjSoNumeros = preg_replace('/\D/', '', $empresa->getCnpj());
 
-        if (empty($this->id)) {
-            $sql = "INSERT INTO empresa(nome, cnpj, usuario, email, senha, descricao, logo, endereco)
-                    VALUES (\"$this->nome\", '$cnpjSoNumeros', \"$this->usuario\", \"$this->email\", \"$this->senha\", \"$this->descricao\", \"$this->logo\", \"$this->endereco\")";
+        if (empty($empresa->getId())) {
+            if (!static::verificaDadosExistentes($empresa->getNome(), $empresa->getCnpj(), $empresa->getUsuario())) {
+                $sql = "INSERT INTO empresa(nome, cnpj, usuario, email, senha, descricao, logo, endereco)
+                    VALUES (\"{$empresa->getNome()}\", '$cnpjSoNumeros', \"{$empresa->getUsuario()}\", \"{$empresa->getEmail()}\", \"{$empresa->getSenha()}\", \"{$empresa->getDescricao()}\", \"{$empresa->getLogo()}\", \"{$empresa->getEndereco()}\")";
+            } else {
+                return null;
+            }
         } else {
             $sql = "UPDATE empresa SET ";
-            $sql .= "nome = '$this->nome', ";
+            $sql .= "nome = '{$empresa->getNome()}', ";
             $sql .= "cnpj = '$cnpjSoNumeros', ";
-            $sql .= "usuario = '$this->usuario', ";
-            $sql .= "email = '$this->email', ";
-            $sql .= "senha = '$this->senha', ";
-            $sql .= "descricao = '$this->descricao', ";
-            $sql .= "logo = '$this->logo', ";
-            $sql .= "endereco = '$this->endereco' ";
-            $sql .= "WHERE id = '$this->id' ";
+            $sql .= "usuario = '{$empresa->getUsuario()}', ";
+            $sql .= "email = '{$empresa->getEmail()}', ";
+            $sql .= "senha = '{$empresa->getSenha()}', ";
+            $sql .= "descricao = '{$empresa->getDescricao()}', ";
+            $sql .= "logo = '{$empresa->getLogo()}', ";
+            $sql .= "endereco = '{$empresa->getEndereco()}' ";
+            $sql .= "WHERE id = '{$empresa->getId()}' ";
         }
-        echo $sql;
+
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
-        $this->id = $pdo->lastInsertId();
+        $empresa->setId($pdo->lastInsertId());
     }
 
-    public function delete()
+    public static function delete($empresa)
     {
         $diretorio_raiz = dirname(__DIR__);
         $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
@@ -165,14 +49,16 @@ class Empresa
         $pdo = new PDO("sqlite:$caminho_banco");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $sql = "DELETE FROM vaga WHERE empresa_id = {$this->id}";
+        $sql = "DELETE FROM vaga WHERE empresa_id = {$empresa->getId()}";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
+        //todo VagaDTO
 
-        $sql = "DELETE FROM empresa WHERE id = {$this->id}";
+        $sql = "DELETE FROM empresa WHERE id = {$empresa->getId()}";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
     }
+
 
     public static function verificaDadosExistentes($nome, $cnpj, $usuario)
     {

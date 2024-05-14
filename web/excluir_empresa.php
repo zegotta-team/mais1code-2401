@@ -14,4 +14,4 @@ if (empty($_SESSION['empresaId'])) {
 
 $empresa = EmpresaDTO::getById($_SESSION['empresaId']);
 
-require 'view/cadastrar_vaga.phtml';
+require 'view/excluir_empresa.phtml';

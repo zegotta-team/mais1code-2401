@@ -1,4 +1,8 @@
 <?php
+
+use classes\Empresa;
+use classes\Vaga;
+
 function captarNome()
 {
     //Nome empresarial ou título do estabelecimento (nome de fantasia)
@@ -310,13 +314,9 @@ function criarEmpresa()
     $cnpj = captarCNPJ();
     $usuario = captarUsuario();
 
-    if (!Empresa::verificaDadosExistentes($nome, $cnpj, $usuario)) {
-        $empresa = new Empresa($nome, $cnpj, $usuario, captarEmail(), captarSenha(), captarDescricao(), captarLogo(), captarEndereco());
-        print_r($empresa);
-        $empresa->salvar();
-    } else {
-        echo "Dados duplicados, verifique e tente novamente\n";
-    }
+    $empresa = new Empresa($nome, $cnpj, $usuario, captarEmail(), captarSenha(), captarDescricao(), captarLogo(), captarEndereco());
+    print_r($empresa);
+    $empresa->salvar();
 }
 
 function cadastrarVaga($Empresa)

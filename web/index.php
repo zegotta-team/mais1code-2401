@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!empty($_SESSION['empresaId'])) {
-    header("Location: menu.php");
+    header("Location: home.php");
     die();
 }
 ?>
@@ -10,7 +10,7 @@ if (!empty($_SESSION['empresaId'])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mais1Code - Projeto</title>
-    <?php require_once 'include.php' ?>
+    <?php require_once 'view/include.html' ?>
     <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/components/logins/login-4/assets/css/login-4.css">
     <style>
         body {

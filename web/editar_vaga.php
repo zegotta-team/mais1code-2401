@@ -12,6 +12,17 @@ if (empty($_SESSION['empresaId'])) {
     die();
 }
 
+$idVaga = $_GET['id'];
+
+$vaga = VagaDTO::getById($idVaga);
 $empresa = EmpresaDTO::getById($_SESSION['empresaId']);
 
-require 'view/cadastrar_vaga.phtml';
+if (empty($vaga)) {
+    die('Vaga não encontrada');
+}
+
+if ($empresa->getId() !== $vaga->getEmpresa()->getId()) {
+    die('Sai pilantra, a vaga não é sua');
+}
+
+require 'view/editar_vaga.phtml';
