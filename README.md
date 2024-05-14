@@ -1,27 +1,47 @@
-### Projeto Food Finder
+### Projeto Team Food Finder
 
-#### FLUXO DE EMPRESAS
-- [x] Cadastro
-- [ ] Edição
-- [ ] Remoção
-#### FLUXO DE VAGAS
-- [x] Cadastro
-- [ ] Edição
-- [x] Remoção
-
-#### USER EXPERIENCE
-- [ ] Cadastrar empresa sem precisar cadastrar a vaga
-- [ ] Cadastrar uma vaga para uma empresa já cadastrada
-- [ ] Listar as vagas cadastradas
-  - [ ] Listar todas as vagas
-  - [ ] Listar as vagas de uma empresa específica
-- [ ] Manter o usuário no programa fazendo cadastros enquanto ele quiser
-
-- Douglas => 1. Edição de empresas
-- Sem Dono => 2. Remoção de empresas
-- Alana => 3. Edição de vagas
-- Edyelgue => 4. Remoção de vagas
-- Kauan => 5. Cadastro de empresa sem cadastro de vaga
-- Fabio => 6. Cadastro de vaga em empresa já existente
-- Sem Dono => 7. Listagem de vagas
-- Sem Dono => 8. Manter o usuário efetuando cadastros enquanto ele quiser
+### Conceitos de aprendizagem
+- [x] Fundamentos de redes:
+  - [x] Cliente-Servidor (arquitetura de comunicação entre sistemas distribuídos)
+  - [x] Protocolo HTTP (Hypertext Transfer Protocol) - protocolo de comunicação utilizado na World Wide Web
+  - [x] Servidor Web (software que fornece conteúdo web em resposta a solicitações HTTP)
+- [x] Fundamentos de programação: variáveis, constantes
+- [x] Linguagens Interpretadas x Linguagens Compiladas
+  - [x] Linguagens Interpretadas (código fonte é executado diretamente por um interpretador)
+  - [x] Linguagens Compiladas (código fonte é traduzido para linguagem de máquina antes da execução)
+- [x] Estruturas de controle de fluxo condicional
+  - [X] if
+  - [x] if..else
+  - [x] if..elseif
+  - [x] switch
+  - [x] match (PHP)
+- [x] Estruturas de repetição
+  - [x] for
+  - [x] do..while
+  - [x] while
+  - [x] foreach (PHP)
+- [x] Funções
+- [x] Vetores e Matrizes
+- [x] Paradigma: Orientação a Objetos
+  - [x] Abstração (1º pilar)
+  - [x] Atributos e métodos
+  - [x] Modificadores de acesso - public, private
+  - [x] Encapsulamento (2º pilar)
+  - [x] Herança (3º pilar)
+  - [x] Polimormismo (4º pilar)
+  - [x] Modificadores de acesso - protected
+  - [x] Composição
+  - [x] Setters fluentes
+- [x] Persistência de dados
+  - [x] Manipulação de arquivos
+  - [x] SGBD
+    - [x] Linguagem SQL (Structured Query Language)
+    - [x] DDL (Data Definition Language)
+    - [x] DML (Data Manipulation Language)
+- [ ] Joins - Inner, Right, Left, Outer
+- [x] PHP
+  - [x] Rodando o PHP fora da web
+  - [x] PHP através do servidor web
+- [ ] Camadas
+  - [x] DTO 
+  - [ ] Paradigma: MVC
