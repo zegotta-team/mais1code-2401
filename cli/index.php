@@ -1,10 +1,13 @@
 <?php
 
 spl_autoload_register(function ($nomeClasse) {
-    require_once "web/classes/$nomeClasse.php";
+    $diretorio_raiz = dirname(__DIR__);
+    $caminho_classes = realpath($diretorio_raiz . '/web/classes');
+
+    require_once "$caminho_classes/$nomeClasse.php";
 });
 
-include './funcoes.php';
+require_once './funcoes.php';
 
 $opcao = null;
 

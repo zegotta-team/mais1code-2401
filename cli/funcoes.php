@@ -1,7 +1,11 @@
 <?php
 
-use classes\Empresa;
-use classes\Vaga;
+spl_autoload_register(function ($nomeClasse) {
+    $diretorio_raiz = dirname(__DIR__);
+    $caminho_classes = realpath($diretorio_raiz . '/web/classes');
+
+    require_once "$caminho_classes/$nomeClasse.php";
+});
 
 function captarNome()
 {
@@ -168,7 +172,7 @@ function editarVaga($Empresa)
         echo "Informe o que deseja consultar: ";
         $filtro = trim(fgets(STDIN));
 
-        $results = Vaga::selecionaDados($Empresa->getId(), $filtro);
+        $results = VagaDTO::selecionaDados($Empresa->getId(), $filtro);
 
         if (!empty($results)) {
             echo "Informação passada pela busca válida. \n";
@@ -246,7 +250,7 @@ function editarVaga($Empresa)
             //var_dump($novoDado);
 
             if (!empty($alteracao) && !empty($novoDado) && !empty($id)) {
-                Vaga::alteraDados($alteracao, $novoDado, $id);
+                VagaDTO::alteraDados($alteracao, $novoDado, $id);
             }
         }
     } while ($resposta != 'nao');
@@ -258,7 +262,7 @@ function removerVaga($Empresa)
     try {
         echo "Digite o valor que deseja consultar: ";
         $buscar = trim(fgets(STDIN));
-        $results = Vaga::consultarVagas($Empresa->getId(), $buscar);
+        $results = VagaDTO::consultarVagas($Empresa->getId(), $buscar);
 
         if (empty($results)) {
             die("Nenhuma vaga encontrada com os termos de busca!\n");
@@ -296,7 +300,7 @@ function removerVaga($Empresa)
         $confirmarRemocao != 'não');
 
         if ($confirmarRemocao == "s" || $confirmarRemocao == "sim") {
-            $results = Vaga::removerVagaDB($removerVagaID);
+            VagaDTO::removerVagaDB(VagaDTO::getById($removerVagaID));
             echo "Removido com sucesso!\n";
         } else {
             die("Processo interrompido pelo usuário.\n");
@@ -316,7 +320,7 @@ function criarEmpresa()
 
     $empresa = new Empresa($nome, $cnpj, $usuario, captarEmail(), captarSenha(), captarDescricao(), captarLogo(), captarEndereco());
     print_r($empresa);
-    $empresa->salvar();
+    EmpresaDTO::salvar($empresa);
 }
 
 function cadastrarVaga($Empresa)
@@ -329,7 +333,7 @@ function cadastrarVaga($Empresa)
     $cadastroCargaHoraria = captarCargaHoraria();
 
     $vaga = new Vaga($Empresa, captarTitulo(), $cadastroEmail, $cadastroSalario, $cadastroBeneficios, $cadastroDescricao, $cadastroRequisitos, $cadastroCargaHoraria);
-    $vaga->salvar();
+    VagaDTO::salvar($vaga);
 }
 
 function editarEmpresa($Empresa)
@@ -359,13 +363,14 @@ function editarEmpresa($Empresa)
 
     echo "Informe {$texto} da empresa: ";
     $dadoRecebido = trim(fgets(STDIN));
-    $Empresa->$metodo($dadoRecebido)->salvar();
+    $Empresa->$metodo($dadoRecebido);
+    EmpresaDTO::salvar($Empresa);
 
 }
 
 function removerEmpresa($Empresa)
 {
-    $Empresa->delete();
+    EmpresaDTO::delete($Empresa);
 }
 
 function listarEmpresas()
@@ -373,7 +378,7 @@ function listarEmpresas()
     echo "Informe o termo de busca da empresa: ";
     $termo = trim(fgets(STDIN));
 
-    $empresas = Empresa::listaEmpresas($termo);
+    $empresas = EmpresaDTO::listaEmpresas($termo);
 
     foreach ($empresas as $empresa) {
         echo $empresa->getId() . " " . $empresa->getNome() . " " . $empresa->getCnpj() . "\n";
@@ -391,7 +396,5 @@ function login()
     echo "Informe sua senha: ";
     $senha = trim(fgets(STDIN));
 
-    $empresa = Empresa::autenticar($usuario, $senha);
-
-    return $empresa;
+    return EmpresaDTO::autenticar($usuario, $senha);
 }
