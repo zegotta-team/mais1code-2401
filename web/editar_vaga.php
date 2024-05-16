@@ -16,6 +16,7 @@ $idVaga = $_GET['id'];
 
 $vaga = VagaDTO::getById($idVaga);
 $empresa = EmpresaDTO::getById($_SESSION['empresaId']);
+$usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
 
 if (empty($vaga)) {
     die('Vaga não encontrada');

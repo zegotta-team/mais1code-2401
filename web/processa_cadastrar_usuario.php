@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 spl_autoload_register(function ($nomeClasse) {
     $diretorio_raiz = dirname(__DIR__);
     $caminho_classes = realpath($diretorio_raiz . '/web/classes');
@@ -13,6 +17,8 @@ if (empty($_SESSION['empresaId'])) {
 }
 
 $empresa = EmpresaDTO::getById($_SESSION['empresaId']);
-$usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
 
-require 'view/editar_empresa.phtml';
+$Usuario = new Usuario($empresa, $_POST['cpf'], $_POST['nome'], $_POST['email'], $_POST['senha']);
+UsuarioDTO::salvar($Usuario);
+
+header('Location: listar_usuarios.php');

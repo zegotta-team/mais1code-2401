@@ -15,4 +15,4 @@ if (empty($_SESSION['empresaId'])) {
 $empresa = EmpresaDTO::getById($_SESSION['empresaId']);
 $usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
 
-require 'view/editar_empresa.phtml';
+require 'view/cadastrar_usuario.phtml';

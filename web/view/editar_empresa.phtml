@@ -23,12 +23,6 @@
             </div>
         </div>
         <div class="row gy-3 gy-md-4 overflow-hidden mb-2">
-            <label for="usuario" class="form-label col-2">Usuário <span class="text-danger">*</span></label>
-            <div class="col-10">
-                <input readonly type="text" class="form-control form-control-plaintext text-muted" name="usuario" id="usuario" placeholder="Informe seu usuário de acesso" required value="<?=$empresa->getUsuario()?>">
-            </div>
-        </div>
-        <div class="row gy-3 gy-md-4 overflow-hidden mb-2">
             <label for="email" class="form-label col-2">Email <span class="text-danger">*</span></label>
             <div class="col-10">
                 <input type="email" class="form-control" name="email" id="email" placeholder="Informe um email válido" required value="<?=$empresa->getEmail()?>">

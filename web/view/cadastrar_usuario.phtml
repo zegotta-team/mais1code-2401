@@ -1,0 +1,47 @@
+<html lang="pt_BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mais1Code - Projeto</title>
+    <?php require_once 'include.html' ?>
+</head>
+
+<body>
+<?php include_once 'menu.phtml' ?>
+<div class="container mt-2">
+    <form method="post" action="../processa_cadastrar_usuario.php">
+        <div class="row g-3 align-items-center mb-2">
+            <label for="cpf" class="col-form-label col-md-2">CPF</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="cpf" id="cpf">
+            </div>
+        </div>
+        <div class="row g-3 align-items-center mb-2">
+            <label for="nome" class="col-form-label col-md-2">Nome</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="nome" id="nome">
+            </div>
+        </div>
+        <div class="row g-3 align-items-center mb-2">
+            <label for="email" class="col-form-label col-md-2">Email</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="email" id="email" min="0">
+            </div>
+        </div>
+        <div class="row g-3 align-items-center mb-2">
+            <label for="senha" class="col-form-label col-md-2">Senha</label>
+            <div class="col-md-10">
+                <input type="password" class="form-control" name="senha" id="senha">
+            </div>
+        </div>
+        <div class="row g-3 align-items-center">
+            <div class="col-md-12 d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end">
+                <button class="btn btn-primary">Cadastrar</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+</body>
+</html>

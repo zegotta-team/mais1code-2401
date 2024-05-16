@@ -24,3 +24,12 @@ CREATE TABLE vaga
     cargaHoraria INTEGER NOT NULL
 );
 
+CREATE TABLE usuario
+(
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    empresa_id  INTEGER NOT NULL,
+    cpf         TEXT NOT NULL,
+    nome        TEXT NOT NULL,
+    email       TEXT NOT NULL,
+    senha       TEXT NOT NULL
+);

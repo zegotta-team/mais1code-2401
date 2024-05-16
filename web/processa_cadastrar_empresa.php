@@ -12,11 +12,14 @@ spl_autoload_register(function ($nomeClasse) {
 
 session_start();
 if (!empty($_SESSION['empresaId'])) {
-    header("Location: login.php");
+    header("Location: home.php");
     die();
 }
 
-$empresa = new Empresa($_POST['nome'], $_POST['cnpj'], $_POST['usuario'], $_POST['email'], $_POST['senha'], $_POST['descricao'], $_POST['logo'], $_POST['endereco']);
+$empresa = new Empresa($_POST['nome'], $_POST['cnpj'], $_POST['email'], $_POST['descricao'], $_POST['logo'], $_POST['endereco']);
 EmpresaDTO::salvar($empresa);
 
-header('Location: login.php');
+$usuario = new Usuario($empresa, $_POST['usuarioCpf'], $_POST['usuarioNome'], $_POST['usuarioEmail'],$_POST['usuarioSenha']);
+UsuarioDTO::salvar($usuario);
+
+header('Location: index.php');

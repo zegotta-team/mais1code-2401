@@ -18,6 +18,21 @@ if (empty($_SESSION['empresaId'])) {
 
 $empresa = EmpresaDTO::getById($_SESSION['empresaId']);
 $usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
-$vagas = VagaDTO::consultarVagas($empresa->getId(), '');
 
-require 'view/lista_vagas.phtml';
+$usuarioEdicao = UsuarioDTO::getById($_POST['usuarioId']);
+
+if (empty($usuarioEdicao)) {
+    die('Usuario não encontrado');
+}
+
+if ($empresa->getId() !== $usuarioEdicao->getEmpresa()->getId()) {
+    die('Sai pilantra, o usuario não é da sua turma');
+}
+
+$usuarioEdicao->setNome($_POST['nome'])
+    ->setCpf($_POST['cpf'])
+    ->setEmail($_POST['email']);
+
+UsuarioDTO::salvar($usuarioEdicao);
+
+header('Location: listar_usuarios.php');

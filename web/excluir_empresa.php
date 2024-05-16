@@ -13,5 +13,6 @@ if (empty($_SESSION['empresaId'])) {
 }
 
 $empresa = EmpresaDTO::getById($_SESSION['empresaId']);
+$usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
 
 require 'view/excluir_empresa.phtml';

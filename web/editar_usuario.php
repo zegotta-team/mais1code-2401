@@ -12,7 +12,19 @@ if (empty($_SESSION['empresaId'])) {
     die();
 }
 
+$idUsuario = $_GET['id'];
+
 $empresa = EmpresaDTO::getById($_SESSION['empresaId']);
 $usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
 
-require 'view/editar_empresa.phtml';
+$usuarioEdicao = UsuarioDTO::getById($idUsuario);
+
+if (empty($usuarioEdicao)) {
+    die('Usuario não encontrada');
+}
+
+if ($empresa->getId() !== $usuarioEdicao->getEmpresa()->getId()) {
+    die('Sai pilantra, usuario não é da sua turma');
+}
+
+require 'view/editar_usuario.phtml';

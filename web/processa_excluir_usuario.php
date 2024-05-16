@@ -16,14 +16,19 @@ if (empty($_SESSION['empresaId'])) {
     die();
 }
 
+$idUsuario = $_GET['id'];
+
+$usuarioExclusao = UsuarioDTO::getById($idUsuario);
+
 $empresa = EmpresaDTO::getById($_SESSION['empresaId']);
-$empresa->setNome($_POST["nome"])
-    ->setCNPJ($_POST["cnpj"])
-    ->setEmail($_POST["email"])
-    ->setDescricao($_POST['descricao'])
-    ->setLogo($_POST['logo'])
-    ->setEndereco($_POST['endereco']);
 
-EmpresaDTO::salvar($empresa);
+if (empty($usuarioExclusao)){
+    die('Usuario não encontrado');
+}
 
-header('Location: home.php');
+if ($empresa->getId() !== $usuarioExclusao->getEmpresa()->getId()){
+    die('Sai pilantra, o usuario não é da sua turma');
+}
+
+UsuarioDTO::delete($usuarioExclusao);
+header('Location: listar_usuarios.php');

@@ -11,17 +11,19 @@ spl_autoload_register(function ($nomeClasse) {
 });
 session_start();
 
-$usuario = $_POST['usuario'];
+$email = $_POST['email'];
 $senha = $_POST['senha'];
 
-$empresa = EmpresaDTO::autenticar($usuario, $senha);
+$usuario = UsuarioDTO::autenticar($email, $senha);
 
-if (!empty($empresa)) {
+if (!empty($usuario)) {
     header('Location: home.php');
-    $_SESSION['empresaId'] = $empresa->getId();
+    $_SESSION['usuarioId'] = $usuario->getId();
+    $_SESSION['empresaId'] = $usuario->getEmpresa()->getId();
     $_SESSION['error'] = null;
 } else {
     header('Location: index.php');
+    $_SESSION['usuarioId'] = null;
     $_SESSION['empresaId'] = null;
     $_SESSION['error'] = 'Falha ao autenticar';
 }
