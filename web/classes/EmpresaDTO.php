@@ -16,7 +16,7 @@ abstract class EmpresaDTO
 
 
         if (empty($empresa->getId())) {
-            if (!static::verificaDadosExistentes($empresa->getNome(), $empresa->getCnpj(), $empresa->getUsuario())) {
+            if (!static::verificaDadosExistentes($empresa->getNome(), $empresa->getCnpj())) {
                 $sql = "INSERT INTO empresa(nome, cnpj, email, descricao, logo, endereco)
                     VALUES (\"{$empresa->getNome()}\", '$cnpjSoNumeros', \"{$empresa->getEmail()}\", \"{$empresa->getDescricao()}\", \"{$empresa->getLogo()}\", \"{$empresa->getEndereco()}\")";
             } else {
@@ -63,7 +63,7 @@ abstract class EmpresaDTO
     }
 
 
-    public static function verificaDadosExistentes($nome, $cnpj, $usuario)
+    public static function verificaDadosExistentes($nome, $cnpj)
     {
         $diretorio_raiz = dirname(__DIR__);
         $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);

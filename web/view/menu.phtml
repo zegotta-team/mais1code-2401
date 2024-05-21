@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"><?= $empresa->getNome() ?> | <?= $usuario->getNome(); ?></a>
+        <a class="navbar-brand" href="#"><?= $usuario->getEmpresa()->getNome() ?> | <?= $usuario->getNome(); ?></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -8,7 +8,7 @@
         <div class=" collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ms-auto ">
                 <li class="nav-item">
-                    <a class="nav-link mx-2 active" aria-current="page" href="../home.php">Home</a>
+                    <a class="nav-link mx-2 active" aria-current="page" href="../index.php?controller=Vaga&action=listar">Home</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -16,10 +16,10 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li>
-                            <a class="dropdown-item" href="../editar_empresa.php">Editar</a>
+                            <a class="dropdown-item" href="../index.php?controller=Empresa&action=editar">Editar</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="../excluir_empresa.php">Excluir conta</a>
+                            <a class="dropdown-item" href="../index.php?controller=Empresa&action=excluir">Excluir conta</a>
                         </li>
                     </ul>
                 </li>
@@ -29,8 +29,8 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li>
-                            <a class="dropdown-item" href="../cadastrar_usuario.php">Cadastrar</a>
-                            <a class="dropdown-item" href="../listar_usuarios.php">Listar</a>
+                            <a class="dropdown-item" href="../index.php?controller=Usuario&action=cadastrar">Cadastrar</a>
+                            <a class="dropdown-item" href="../index.php?controller=Usuario&action=listar">Listar</a>
                         </li>
                     </ul>
                 </li>
@@ -40,7 +40,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li>
-                            <a class="dropdown-item" href="../cadastrar_vaga.php">Cadastrar</a>
+                            <a class="dropdown-item" href="../index.php?controller=Vaga&action=cadastrar">Cadastrar</a>
                         </li>
                     </ul>
                 </li>
@@ -50,13 +50,13 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li>
-                            <a class="dropdown-item" href="../editar_usuario.php?id=<?=$_SESSION['usuarioId']?>">Editar</a>
+                            <a class="dropdown-item" href="../index.php?controller=Usuario&action=editar&id=<?=$_SESSION['usuarioId']?>">Editar</a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="../trocar_senha.php">Trocar a senha</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="../processa_logout.php">Sair</a>
+                            <a class="dropdown-item" href="../index.php?controller=Autenticacao&action=processaLogout">Sair</a>
                         </li>
                     </ul>
                 </li>

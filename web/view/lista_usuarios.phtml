@@ -18,9 +18,9 @@
                 <td><?= $usuarioAtual->getNome(); ?></td>
                 <td><?= $usuarioAtual->getEmail(); ?></td>
                 <td>
-                    <a class="btn btn-primary btn-sm" href="../editar_usuario.php?id=<?= $usuarioAtual->getId() ?>">Editar</a>
+                    <a class="btn btn-primary btn-sm" href="../index.php?controller=Usuario&action=editar&id=<?= $usuarioAtual->getId() ?>">Editar</a>
                     <?php if ($usuarioAtual->getId() !== $usuario->getId()) : ?>
-                        <a class="btn btn-primary btn-sm" href="../processa_excluir_usuario.php?id=<?= $usuarioAtual->getId() ?>">Excluir</a>
+                        <a class="btn btn-primary btn-sm" href="../index.php?controller=Usuario&action=excluir&id=<?= $usuarioAtual->getId() ?>">Excluir</a>
                     <?php endif; ?>
                 </td>
             </tr>

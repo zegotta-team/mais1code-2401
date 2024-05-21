@@ -9,41 +9,41 @@
 <body>
 <?php include_once 'menu.phtml' ?>
 <div class="container mt-2">
-    <form method="post" action="../processa_editar_empresa.php">
+    <form method="post" action="../index.php?controller=Empresa&action=processaEditar">
         <div class="row gy-3 gy-md-4 overflow-hidden mb-2">
             <label for="nome" class="form-label col-2">Nome da empresa <span class="text-danger">*</span></label>
             <div class="col-10">
-                <input type="text" readonly class="form-control form-control-plaintext text-muted" name="nome" id="nome" placeholder="Nome da Empresa" required value="<?=$empresa->getNome()?>">
+                <input type="text" readonly class="form-control form-control-plaintext text-muted" name="nome" id="nome" placeholder="Nome da Empresa" required value="<?=$usuario->getEmpresa()->getNome()?>">
             </div>
         </div>
         <div class="row gy-3 gy-md-4 overflow-hidden mb-2">
             <label for="cnpj" class="form-label col-2">CNPJ <span class="text-danger">*</span></label>
             <div class="col-10">
-                <input type="text" readonly class="form-control form-control-plaintext text-muted" name="cnpj" id="cnpj" placeholder="CNPJ" required  value="<?=$empresa->getCNPJ()?>">
+                <input type="text" readonly class="form-control form-control-plaintext text-muted" name="cnpj" id="cnpj" placeholder="CNPJ" required  value="<?=$usuario->getEmpresa()->getCNPJ()?>">
             </div>
         </div>
         <div class="row gy-3 gy-md-4 overflow-hidden mb-2">
             <label for="email" class="form-label col-2">Email <span class="text-danger">*</span></label>
             <div class="col-10">
-                <input type="email" class="form-control" name="email" id="email" placeholder="Informe um email válido" required value="<?=$empresa->getEmail()?>">
+                <input type="email" class="form-control" name="email" id="email" placeholder="Informe um email válido" required value="<?=$usuario->getEmpresa()->getEmail()?>">
             </div>
         </div>
         <div class="row gy-3 gy-md-4 overflow-hidden mb-2">
             <label for="descricao" class="form-label col-2">Descrição <span class="text-danger">*</span></label>
             <div class="col-10">
-                <textarea class="form-control" name="descricao" id="descricao" placeholder="Descrição" required><?=$empresa->getDescricao()?></textarea>
+                <textarea class="form-control" name="descricao" id="descricao" placeholder="Descrição" required><?=$usuario->getEmpresa()->getDescricao()?></textarea>
             </div>
         </div>
         <div class="row gy-3 gy-md-4 overflow-hidden mb-2">
             <label for="logo" class="form-label col-2">Logo <span class="text-danger">*</span></label>
             <div class="col-10">
-                <input type="text" class="form-control" name="logo" id="logo" placeholder="adicione uma imagem" required value="<?=$empresa->getLogo()?>">
+                <input type="text" class="form-control" name="logo" id="logo" placeholder="adicione uma imagem" required value="<?=$usuario->getEmpresa()->getLogo()?>">
             </div>
         </div>
         <div class="row gy-3 gy-md-4 overflow-hidden mb-2">
             <label for="endereco" class="form-label col-2">Endereço <span class="text-danger">*</span></label>
             <div class="col-10">
-                <input type="text" class="form-control" name="endereco" id="endereco" placeholder="Digite o Endereço Atual" required value="<?=$empresa->getEndereco()?>">
+                <input type="text" class="form-control" name="endereco" id="endereco" placeholder="Digite o Endereço Atual" required value="<?=$usuario->getEmpresa()->getEndereco()?>">
             </div>
         </div>
         <div class="row gy-3 gy-md-4 overflow-hidden mb-2">

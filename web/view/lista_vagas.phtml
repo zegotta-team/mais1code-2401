@@ -16,8 +16,8 @@
                 <td><?= $vaga['id'] ?></td>
                 <td><?= $vaga['titulo'] ?></td>
                 <td>
-                    <a class="btn btn-primary btn-sm" href="../editar_vaga.php?id=<?= $vaga['id'] ?>">Editar</a>
-                    <a class="btn btn-primary btn-sm" href="../processa_excluir_vaga.php?id=<?= $vaga['id'] ?>">Excluir</a>
+                    <a class="btn btn-primary btn-sm" href="../index.php?controller=Vaga&action=editar&id=<?= $vaga['id'] ?>">Editar</a>
+                    <a class="btn btn-primary btn-sm" href="../index.php?controller=Vaga&action=excluir&id=<?= $vaga['id'] ?>">Excluir</a>
                 </td>
             </tr>
         <?php endforeach; ?>

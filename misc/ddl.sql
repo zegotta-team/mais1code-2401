@@ -1,11 +1,10 @@
+DROP TABLE empresa;
 CREATE TABLE empresa
 (
     id        INTEGER PRIMARY KEY AUTOINCREMENT,
     nome      TEXT    NOT NULL,
     cnpj      TEXT    NOT NULL,
-    usuario   TEXT    NOT NULL,
     email     TEXT    NOT NULL,
-    senha     INTEGER NOT NULL,
     descricao TEXT    NOT NULL,
     logo      TEXT,
     endereco  TEXT    NOT NULL
@@ -33,3 +32,5 @@ CREATE TABLE usuario
     email       TEXT NOT NULL,
     senha       TEXT NOT NULL
 );
+
+SELECT * FROM usuario
