@@ -29,7 +29,9 @@ abstract class VagaDTO
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
-        $vaga->setId($pdo->lastInsertId());
+        if (empty($vaga->getId())) {
+            $vaga->setId($pdo->lastInsertId());
+        }
     }
 
     public static function selecionaDados($empresaId, $filtro)

@@ -1,0 +1,17 @@
+<table class="table table-bordered table-striped table-hover caption-top">
+    <caption>Usuários da minha empresa</caption>
+    <?php foreach ($usuarios as $usuarioAtual) : ?>
+        <tr>
+            <td><?= $usuarioAtual->getId(); ?></td>
+            <td><?= $usuarioAtual->getCpf(); ?></td>
+            <td><?= $usuarioAtual->getNome(); ?></td>
+            <td><?= $usuarioAtual->getEmail(); ?></td>
+            <td>
+                <a class="btn btn-primary btn-sm" href="/usuario/editar?id=<?= $usuarioAtual->getId() ?>">Editar</a>
+                <?php if ($usuarioAtual->getId() !== $usuario->getId()) : ?>
+                    <a class="btn btn-primary btn-sm" href="/usuario/excluir?id=<?= $usuarioAtual->getId() ?>">Excluir</a>
+                <?php endif; ?>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>

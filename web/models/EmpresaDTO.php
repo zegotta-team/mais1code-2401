@@ -38,7 +38,9 @@ abstract class EmpresaDTO
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
-        $empresa->setId($pdo->lastInsertId());
+        if (empty($empresa->getId())) {
+            $empresa->setId($pdo->lastInsertId());
+        }
     }
 
     public static function delete($empresa)

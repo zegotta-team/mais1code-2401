@@ -5,12 +5,18 @@ error_reporting(E_ALL);
 
 spl_autoload_register(function ($nomeClasse) {
     $diretorio_raiz = dirname(__DIR__);
-    $caminho_classes = realpath($diretorio_raiz . '/web/classes');
-    $caminho_controllers = realpath($diretorio_raiz . '/web/controller');
+    $diretorios = [
+        "web" . DIRECTORY_SEPARATOR . "models",
+        "web" . DIRECTORY_SEPARATOR . "controllers",
+        "web" . DIRECTORY_SEPARATOR . "core",
+    ];
 
-    if (file_exists("$caminho_classes/$nomeClasse.php")) {
-        require_once "$caminho_classes/$nomeClasse.php";
-    } else {
-        require_once "$caminho_controllers/$nomeClasse.php";
+    foreach ($diretorios as $diretorio) {
+        $file = $diretorio_raiz . DIRECTORY_SEPARATOR . $diretorio . DIRECTORY_SEPARATOR . $nomeClasse . ".php";
+        if (file_exists($file)) {
+            require_once $file;
+            return;
+        }
     }
+
 });

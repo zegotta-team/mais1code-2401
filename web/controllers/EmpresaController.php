@@ -1,36 +1,42 @@
 <?php
 
-class EmpresaController {
+class EmpresaController
+{
 
-    public function __construct() {
+    public function __construct()
+    {
     }
 
-    public function cadastrar(){
-        require 'renega_sessao.php';
+    public function cadastrar()
+    {
+        AutenticacaoController::renegaSessao();
 
-        require 'view/cadastrar_empresa.phtml';
+        View::renderizar('empresa/cadastrar', [], true);
     }
 
-    public function processaCadastrar() {
+    public function processaCadastrar()
+    {
         AutenticacaoController::renegaSessao();
 
         $empresa = new Empresa($_POST['nome'], $_POST['cnpj'], $_POST['email'], $_POST['descricao'], $_POST['logo'], $_POST['endereco']);
         EmpresaDTO::salvar($empresa);
 
-        $usuario = new Usuario($empresa, $_POST['usuarioCpf'], $_POST['usuarioNome'], $_POST['usuarioEmail'],$_POST['usuarioSenha']);
+        $usuario = new Usuario($empresa, $_POST['usuarioCpf'], $_POST['usuarioNome'], $_POST['usuarioEmail'], $_POST['usuarioSenha']);
         UsuarioDTO::salvar($usuario);
 
-        header('Location: index.php?controller=Autenticacao&action=login');
+        header('Location: /autenticacao/login');
     }
 
-    public function editar(){
+    public function editar()
+    {
         AutenticacaoController::exigeSessao();
         $usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
 
-        require 'view/editar_empresa.phtml';
+        View::renderizar('empresa/editar', compact('usuario'));
     }
 
-    public function processaEditar() {
+    public function processaEditar()
+    {
         AutenticacaoController::exigeSessao();
         $usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
 
@@ -43,22 +49,24 @@ class EmpresaController {
 
         EmpresaDTO::salvar($usuario->getEmpresa());
 
-        header('Location: index.php?controller=Vaga&action=listar');
+        header('Location: /vaga/listar');
     }
 
-    public function excluir(){
+    public function excluir()
+    {
         AutenticacaoController::exigeSessao();
         $usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
 
-        require 'view/excluir_empresa.phtml';
+        View::renderizar('empresa/excluir', compact('usuario'));
     }
 
-    public function processaExcluir() {
+    public function processaExcluir()
+    {
         AutenticacaoController::exigeSessao();
         $usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
 
         EmpresaDTO::delete($usuario->getEmpresa());
 
-        header('Location: index.php?controller=Autenticacao&action=processaLogout');
+        header('Location: /autenticacao/processaLogout');
     }
 }

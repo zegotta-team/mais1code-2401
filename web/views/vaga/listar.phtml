@@ -1,0 +1,13 @@
+<table class="table table-bordered table-striped table-hover caption-top">
+    <caption>Minhas vagas</caption>
+    <?php foreach ($vagas as $vaga) : ?>
+        <tr>
+            <td><?= $vaga['id'] ?></td>
+            <td><?= $vaga['titulo'] ?></td>
+            <td>
+                <a class="btn btn-primary btn-sm" href="/vaga/editar?id=<?= $vaga['id'] ?>">Editar</a>
+                <a class="btn btn-primary btn-sm" href="/vaga/excluir?id=<?= $vaga['id'] ?>">Excluir</a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>

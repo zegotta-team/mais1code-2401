@@ -11,18 +11,39 @@ class VagaController
         AutenticacaoController::exigeSessao();
         $usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
 
-        require 'view/cadastrar_vaga.phtml';
+        View::renderizar('vaga/formulario', compact('usuario'));
     }
 
-    public function processaCadastrar()
+    public function salvar()
     {
         AutenticacaoController::exigeSessao();
         $usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
 
-        $Vaga = new Vaga($usuario->getEmpresa(), $_POST['titulo'], $_POST['email'], $_POST['salario'], $_POST['beneficios'], $_POST['descricao'], $_POST['requisitos'], $_POST['cargaHoraria']);
-        VagaDTO::salvar($Vaga);
+        if (empty($_POST['vagaId'])) {
+            $vaga = new Vaga($usuario->getEmpresa(), $_POST['titulo'], $_POST['email'], $_POST['salario'], $_POST['beneficios'], $_POST['descricao'], $_POST['requisitos'], $_POST['cargaHoraria']);
+        } else {
+            $vaga = VagaDTO::getById($_POST['vagaId']);
 
-        header('Location: index.php?controller=Vaga&action=listar');
+            if (empty($vaga)) {
+                die('Vaga não encontrada');
+            }
+
+            if ($usuario->getEmpresa()->getId() !== $vaga->getEmpresa()->getId()) {
+                die('Sai pilantra, a vaga não é sua');
+            }
+
+            $vaga->setTitulo($_POST['titulo'])
+                ->setEmail($_POST['email'])
+                ->setSalario($_POST['salario'])
+                ->setBeneficios($_POST['beneficios'])
+                ->setDescricao($_POST['descricao'])
+                ->setRequisitos($_POST['requisitos'])
+                ->setCargaHoraria($_POST['cargaHoraria']);
+
+        }
+        VagaDTO::salvar($vaga);
+
+        header('Location: /vaga/listar');
     }
 
     public function editar()
@@ -41,35 +62,7 @@ class VagaController
             die('Sai pilantra, a vaga não é sua');
         }
 
-        require 'view/editar_vaga.phtml';
-    }
-
-    public function processaEditar()
-    {
-        AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
-
-        $vaga = VagaDTO::getById($_POST['vagaId']);
-
-        if (empty($vaga)) {
-            die('Vaga não encontrada');
-        }
-
-        if ($usuario->getEmpresa()->getId() !== $vaga->getEmpresa()->getId()) {
-            die('Sai pilantra, a vaga não é sua');
-        }
-
-        $vaga->setTitulo($_POST['titulo'])
-            ->setEmail($_POST['email'])
-            ->setSalario($_POST['salario'])
-            ->setBeneficios($_POST['beneficios'])
-            ->setDescricao($_POST['descricao'])
-            ->setRequisitos($_POST['requisitos'])
-            ->setCargaHoraria($_POST['cargaHoraria']);
-
-        VagaDTO::salvar($vaga);
-
-        header('Location: index.php?controller=Vaga&action=listar');
+        View::renderizar('vaga/formulario', compact('usuario', 'vaga'));
     }
 
     public function excluir()
@@ -92,7 +85,7 @@ class VagaController
         VagaDTO::removerVagaDB($vaga);
 
 
-        header('Location: index.php?controller=Vaga&action=listar');
+        header('Location: /vaga/listar');
     }
 
     public function listar()
@@ -102,6 +95,6 @@ class VagaController
 
         $vagas = VagaDTO::consultarVagas($usuario->getEmpresa()->getId(), '');
 
-        require 'view/lista_vagas.phtml';
+        View::renderizar('vaga/listar', compact('usuario', 'vagas'));
     }
 }

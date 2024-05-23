@@ -10,7 +10,7 @@ class AutenticacaoController
     {
         AutenticacaoController::renegaSessao();
 
-        require_once 'view/login.html';
+        View::renderizar('autenticacao/login', [], true);
     }
 
     public function processaLogin()
@@ -25,12 +25,12 @@ class AutenticacaoController
         $usuario = UsuarioDTO::autenticar($email, $senha);
 
         if (!empty($usuario)) {
-            header('Location: index.php?controller=Vaga&action=listar');
+            header('Location: /vaga/listar');
             $_SESSION['usuarioId'] = $usuario->getId();
             $_SESSION['empresaId'] = $usuario->getEmpresa()->getId();
             $_SESSION['error'] = null;
         } else {
-            header('Location: index.php?controller=Autenticacao&action=login');
+            header('Location: /autenticacao/login');
             $_SESSION['usuarioId'] = null;
             $_SESSION['empresaId'] = null;
             $_SESSION['error'] = 'Falha ao autenticar';
@@ -39,7 +39,7 @@ class AutenticacaoController
 
     public function processaLogout()
     {
-        header('Location: index.php?controller=Autenticacao&action=login');
+        header('Location: /autenticacao/login');
         session_start();
         session_destroy();
 
@@ -49,7 +49,7 @@ class AutenticacaoController
     {
         session_start();
         if (empty($_SESSION['empresaId']) || empty($_SESSION['usuarioId'])) {
-            header("Location: ../index.php?controller=Autenticacao&action=processaLogout");
+            header("Location: /autenticacao/processaLogout");
             die();
         }
 
@@ -60,8 +60,8 @@ class AutenticacaoController
 
         session_start();
         if (!empty($_SESSION['empresaId']) && !empty($_SESSION['usuarioId'])) {
-            header("Location: index.php?controller=Vaga&action=listar");
-            die();
+//            header("Location: /vaga/listar");
+            die('sessao');
         }
     }
 
