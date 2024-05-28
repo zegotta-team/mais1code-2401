@@ -1,17 +1,12 @@
 <?php
 
-abstract class VagaDTO
+abstract class VagaDTO implements DTOInterface
 {
-    const BANCO = '../db.sqlite';
+    use DbTrait;
 
     public static function salvar($vaga)
     {
-        $diretorio_raiz = dirname(__DIR__);
-        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
-
-        $pdo = new PDO("sqlite:$caminho_banco");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+        $pdo = static::conectarDB();
         if (empty($vaga->getId())) {
             $sql = "INSERT INTO vaga (empresa_id, titulo, email, salario, beneficios, descricao, requisitos, cargaHoraria) 
             VALUES ({$vaga->getEmpresa()->getId()}, \"{$vaga->getTitulo()}\", \"{$vaga->getEmail()}\", {$vaga->getSalario()}, \"{$vaga->getBeneficios()}\", \"{$vaga->getDescricao()}\", \"{$vaga->getRequisitos()}\", {$vaga->getCargaHoraria()})";
@@ -34,14 +29,9 @@ abstract class VagaDTO
         }
     }
 
-    public static function selecionaDados($empresaId, $filtro)
+    public static function listar($empresaId = '', $filtro = '')
     {
-        $diretorio_raiz = dirname(__DIR__);
-        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
-
-        $pdo = new PDO("sqlite:$caminho_banco");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+        $pdo = static::conectarDB();
         $sql = "SELECT e.nome, v. *
                 FROM vaga v 
                 INNER JOIN empresa e ON e.id = v.empresa_id AND e.id = $empresaId
@@ -53,7 +43,7 @@ abstract class VagaDTO
 
         $retorno = [];
         while ($vaga = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $objEmpresa = EmpresaDTO::getById($vaga['empresa_id']);
+            $objEmpresa = EmpresaDTO::recuperar($vaga['empresa_id']);
             $objVaga = new Vaga($objEmpresa, $vaga['titulo'], $vaga['email'], $vaga['salario'], $vaga['beneficios'], $vaga['descricao'], $vaga['requisitos'], $vaga['cargaHoraria']);
             $objVaga->setId($vaga['id']);
             $retorno[] = $objVaga;
@@ -63,12 +53,7 @@ abstract class VagaDTO
 
     public static function alteraDados($alteracao, $novoDado, $id)
     {
-        $diretorio_raiz = dirname(__DIR__);
-        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
-
-        $pdo = new PDO("sqlite:$caminho_banco");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+        $pdo = static::conectarDB();
         $sql = "UPDATE vaga SET $alteracao = \"$novoDado\" WHERE id = $id";
 
         $stmt = $pdo->prepare($sql);
@@ -77,12 +62,7 @@ abstract class VagaDTO
 
     public static function consultarVagas($empresaId, $buscar)
     {
-        $diretorio_raiz = dirname(__DIR__);
-        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
-
-        $pdo = new PDO("sqlite:$caminho_banco");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        // echo "Conexão com banco de dados ok! status(200)\n";
+        $pdo = static::conectarDB();        // echo "Conexão com banco de dados ok! status(200)\n";
 
         $sqlListName = "SELECT v.id, v.titulo, e.nome 
                         FROM vaga v 
@@ -99,7 +79,7 @@ abstract class VagaDTO
     }
 
     // Método  estático que deverá receber o id da vaga a ser removida, fazer a conexão com o banco de dados e executar o DELETE
-    public static function removerVagaDB($vaga)
+    public static function deletar($vaga)
     {
         try {
             $diretorio_raiz = dirname(__DIR__);
@@ -115,14 +95,9 @@ abstract class VagaDTO
         }
     }
 
-    public static function getById($id)
+    public static function recuperar($id)
     {
-        $diretorio_raiz = dirname(__DIR__);
-        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
-
-        $pdo = new PDO("sqlite:$caminho_banco");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+        $pdo = static::conectarDB();
         $sql = "SELECT * FROM vaga WHERE id = $id ";
 
         $stmt = $pdo->prepare($sql);
@@ -130,7 +105,7 @@ abstract class VagaDTO
 
         $retorno = null;
         while ($vaga = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $objEmpresa = EmpresaDTO::getById($vaga['empresa_id']);
+            $objEmpresa = EmpresaDTO::recuperar($vaga['empresa_id']);
             $objVaga = new Vaga($objEmpresa, $vaga['titulo'], $vaga['email'], $vaga['salario'], $vaga['beneficios'], $vaga['descricao'], $vaga['requisitos'], $vaga['cargaHoraria']);
             $objVaga->setId($vaga['id']);
             $retorno = $objVaga;

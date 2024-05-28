@@ -6,7 +6,7 @@ class AutenticacaoController
     {
     }
 
-    public function login()
+    public function index()
     {
         AutenticacaoController::renegaSessao();
 
@@ -30,7 +30,7 @@ class AutenticacaoController
             $_SESSION['empresaId'] = $usuario->getEmpresa()->getId();
             $_SESSION['error'] = null;
         } else {
-            header('Location: /autenticacao/login');
+            header('Location: /autenticacao');
             $_SESSION['usuarioId'] = null;
             $_SESSION['empresaId'] = null;
             $_SESSION['error'] = 'Falha ao autenticar';
@@ -39,7 +39,7 @@ class AutenticacaoController
 
     public function processaLogout()
     {
-        header('Location: /autenticacao/login');
+        header('Location: /autenticacao');
         session_start();
         session_destroy();
 

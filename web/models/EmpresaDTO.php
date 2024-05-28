@@ -1,19 +1,14 @@
 <?php
 
-abstract class EmpresaDTO
+abstract class EmpresaDTO implements DTOInterface
 {
-    const BANCO = '../db.sqlite';
+    use DbTrait;
 
     public static function salvar($empresa)
     {
-        $diretorio_raiz = dirname(__DIR__);
-        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
-
-        $pdo = new PDO("sqlite:$caminho_banco");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo = static::conectarDB();
 
         $cnpjSoNumeros = preg_replace('/\D/', '', $empresa->getCnpj());
-
 
         if (empty($empresa->getId())) {
             if (!static::verificaDadosExistentes($empresa->getNome(), $empresa->getCnpj())) {
@@ -43,35 +38,26 @@ abstract class EmpresaDTO
         }
     }
 
-    public static function delete($empresa)
+    public static function deletar($empresa)
     {
-        $diretorio_raiz = dirname(__DIR__);
-        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
+        $pdo = static::conectarDB();
 
-        $pdo = new PDO("sqlite:$caminho_banco");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        foreach (VagaDTO::listar($empresa->getId()) as $vaga) {
+            VagaDTO::deletar($vaga);
+        }
 
-        $sql = "DELETE FROM vaga WHERE empresa_id = {$empresa->getId()}";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-        $sql = "DELETE FROM usuario WHERE empresa_id = {$empresa->getId()}";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-        //todo VagaDTO
+        foreach (UsuarioDTO::listar($empresa->getId()) as $usuario) {
+            UsuarioDTO::deletar($usuario);
+        }
 
         $sql = "DELETE FROM empresa WHERE id = {$empresa->getId()}";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
     }
 
-
     public static function verificaDadosExistentes($nome, $cnpj)
     {
-        $diretorio_raiz = dirname(__DIR__);
-        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
-
-        $pdo = new PDO("sqlite:$caminho_banco");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo = static::conectarDB();
 
         $sql = "SELECT COUNT(1) AS Total FROM empresa ";
         $sql .= "WHERE empresa.nome LIKE '$nome' OR empresa.cnpj LIKE '$cnpj'";
@@ -83,13 +69,9 @@ abstract class EmpresaDTO
         return $totalDeRegistros['Total'] != 0;
     }
 
-    public static function listaEmpresas($termo = '')
+    public static function listar($termo = '')
     {
-        $diretorio_raiz = dirname(__DIR__);
-        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
-
-        $pdo = new PDO("sqlite:$caminho_banco");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo = static::conectarDB();
 
         $sql = "SELECT * FROM empresa ";
 
@@ -111,14 +93,15 @@ abstract class EmpresaDTO
 
     }
 
-    public static function getById($id)
+    public static function recuperar($id)
     {
-        $diretorio_raiz = dirname(__DIR__);
-        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
+//        $diretorio_raiz = dirname(__DIR__);
+//        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
+//
+//        $pdo = new PDO("sqlite:$caminho_banco");
+//        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $pdo = new PDO("sqlite:$caminho_banco");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+        $pdo = static::conectarDB();
         $sql = "SELECT * FROM empresa WHERE id = $id ";
 
         $stmt = $pdo->prepare($sql);
@@ -136,11 +119,7 @@ abstract class EmpresaDTO
 
     public static function VerificaEmpresa($cnpj)
     {
-        $diretorio_raiz = dirname(__DIR__);
-        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
-
-        $pdo = new PDO("sqlite:$caminho_banco");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo = static::conectarDB();
 
         $sql = "SELECT * FROM empresa WHERE empresa.cnpj LIKE $cnpj";
 

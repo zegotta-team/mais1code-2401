@@ -1,23 +1,19 @@
 <?php
 
-abstract class UsuarioDTO
+abstract class UsuarioDTO implements DTOInterface
 {
-    const BANCO = '../db.sqlite';
+    use DbTrait;
 
-    public static function salvar(Usuario $usuario)
+    public static function salvar($usuario)
     {
 
-        $diretorio_raiz = dirname(__DIR__);
-        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
-
-        $pdo = new PDO("sqlite:$caminho_banco");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo = static::conectarDB();
 
         $cpfSoNumero = preg_replace('/\D/', '', $usuario->getCpf());
 
         if (empty($usuario->getId())) {
 //            if (!static::verificaDadosExistentes($usuario->getNome(), $usuario->getCnpj(), $usuario->getUsuario())) {
-                $sql = "INSERT INTO usuario(empresa_id, cpf, nome, email, senha)
+            $sql = "INSERT INTO usuario(empresa_id, cpf, nome, email, senha)
                     VALUES (\"{$usuario->getEmpresa()->getId()}\", '$cpfSoNumero', \"{$usuario->getNome()}\", \"{$usuario->getEmail()}\", \"{$usuario->getSenha()}\")";
 //            } else {
 //                return null;
@@ -40,33 +36,29 @@ abstract class UsuarioDTO
         }
     }
 
-    public static function delete(Usuario $usuario)
+    public static function deletar($usuario)
     {
-        $diretorio_raiz = dirname(__DIR__);
-        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
-
-        $pdo = new PDO("sqlite:$caminho_banco");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo = static::conectarDB();
 
         $sql = "DELETE FROM usuario WHERE id = {$usuario->getId()}";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
     }
 
-    public static function listarTodos(int $empresaId){
-        $diretorio_raiz = dirname(__DIR__);
-        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
+    public static function listar($empresaId = '')
+    {
+        $pdo = static::conectarDB();
 
-        $pdo = new PDO("sqlite:$caminho_banco");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        $sql = "SELECT * FROM usuario WHERE empresa_id = $empresaId";
+        $sql = "SELECT * FROM usuario WHERE 1 ";
+        if (!empty($empresaId)) {
+            $sql .= "AND empresa_id = $empresaId";
+        }
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
         $retorno = [];
         while ($usuario = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $objEmpresa = EmpresaDTO::getById($usuario['empresa_id']);
+            $objEmpresa = EmpresaDTO::recuperar($usuario['empresa_id']);
             $objUsuario = new Usuario($objEmpresa, $usuario['cpf'], $usuario['nome'], $usuario['email'], $usuario['senha']);
             $objUsuario->setId($usuario['id']);
             $retorno[] = $objUsuario;
@@ -93,13 +85,9 @@ abstract class UsuarioDTO
 //        return $totalDeRegistros['Total'] != 0;
 //    }
 
-    public static function getById(int $id)
+    public static function recuperar($id)
     {
-        $diretorio_raiz = dirname(__DIR__);
-        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
-
-        $pdo = new PDO("sqlite:$caminho_banco");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo = static::conectarDB();
 
         $sql = "SELECT * FROM usuario WHERE id = $id ";
 
@@ -108,7 +96,7 @@ abstract class UsuarioDTO
 
         $retorno = null;
         while ($usuario = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $objEmpresa = EmpresaDTO::getById($usuario['empresa_id']);
+            $objEmpresa = EmpresaDTO::recuperar($usuario['empresa_id']);
             $objUsuario = new Usuario($objEmpresa, $usuario['cpf'], $usuario['nome'], $usuario['email'], $usuario['senha']);
             $objUsuario->setId($usuario['id']);
             $retorno = $objUsuario;
@@ -119,11 +107,7 @@ abstract class UsuarioDTO
 
     public static function autenticar(string $email, string $senha)
     {
-        $diretorio_raiz = dirname(__DIR__);
-        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
-
-        $pdo = new PDO("sqlite:$caminho_banco");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo = static::conectarDB();
 
         $sql = "SELECT * FROM usuario WHERE email = '$email' AND senha = '$senha'";
 
@@ -132,7 +116,7 @@ abstract class UsuarioDTO
 
         $retorno = null;
         while ($usuario = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $objEmpresa = EmpresaDTO::getById($usuario['empresa_id']);
+            $objEmpresa = EmpresaDTO::recuperar($usuario['empresa_id']);
             $objUsuario = new Usuario($objEmpresa, $usuario['cpf'], $usuario['nome'], $usuario['cnpj'], $usuario['usuario']);
             $objUsuario->setId($usuario['id']);
             $retorno = $objUsuario;

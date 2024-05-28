@@ -24,13 +24,13 @@ class EmpresaController
         $usuario = new Usuario($empresa, $_POST['usuarioCpf'], $_POST['usuarioNome'], $_POST['usuarioEmail'], $_POST['usuarioSenha']);
         UsuarioDTO::salvar($usuario);
 
-        header('Location: /autenticacao/login');
+        header('Location: /autenticacao');
     }
 
     public function editar()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
+        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
 
         View::renderizar('empresa/editar', compact('usuario'));
     }
@@ -38,7 +38,7 @@ class EmpresaController
     public function processaEditar()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
+        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
 
         $usuario->getEmpresa()->setNome($_POST["nome"])
             ->setCNPJ($_POST["cnpj"])
@@ -55,7 +55,7 @@ class EmpresaController
     public function excluir()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
+        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
 
         View::renderizar('empresa/excluir', compact('usuario'));
     }
@@ -63,9 +63,9 @@ class EmpresaController
     public function processaExcluir()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
+        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
 
-        EmpresaDTO::delete($usuario->getEmpresa());
+        EmpresaDTO::deletar($usuario->getEmpresa());
 
         header('Location: /autenticacao/processaLogout');
     }

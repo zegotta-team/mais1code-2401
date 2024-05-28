@@ -10,7 +10,7 @@ class UsuarioController
     public function cadastrar()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
+        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
 
         View::renderizar('usuario/formulario', compact('usuario'));
     }
@@ -18,12 +18,12 @@ class UsuarioController
     public function salvar()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
+        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
 
         if (empty($_POST['usuarioId'])) {
             $usuario = new Usuario($usuario->getEmpresa(), $_POST['cpf'], $_POST['nome'], $_POST['email'], $_POST['senha']);
         } else {
-            $usuario = UsuarioDTO::getById($_POST['usuarioId']);
+            $usuario = UsuarioDTO::recuperar($_POST['usuarioId']);
 
             if (empty($usuario)) {
                 die('Usuario não encontrado');
@@ -47,10 +47,10 @@ class UsuarioController
     public function editar()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
+        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
 
         $idUsuario = $_GET['id'];
-        $usuarioEdicao = UsuarioDTO::getById($idUsuario);
+        $usuarioEdicao = UsuarioDTO::recuperar($idUsuario);
 
         if (empty($usuarioEdicao)) {
             die('Usuario não encontrada');
@@ -66,10 +66,10 @@ class UsuarioController
     public function excluir()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
+        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
         $idUsuario = $_GET['id'];
 
-        $usuarioExclusao = UsuarioDTO::getById($idUsuario);
+        $usuarioExclusao = UsuarioDTO::recuperar($idUsuario);
 
         if (empty($usuarioExclusao)) {
             die('Usuario não encontrado');
@@ -79,16 +79,16 @@ class UsuarioController
             die('Sai pilantra, o usuario não é da sua turma');
         }
 
-        UsuarioDTO::delete($usuarioExclusao);
+        UsuarioDTO::deletar($usuarioExclusao);
         header('Location: /usuario/listar');
     }
 
     public function listar()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::getById($_SESSION['usuarioId']);
+        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
 
-        $usuarios = UsuarioDTO::listarTodos($usuario->getEmpresa()->getId());
+        $usuarios = UsuarioDTO::listar($usuario->getEmpresa()->getId());
 
         View::renderizar('usuario/listar', compact('usuario', 'usuarios'));
     }
