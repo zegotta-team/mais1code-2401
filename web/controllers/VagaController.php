@@ -97,7 +97,7 @@ class VagaController
         AutenticacaoController::exigeSessao();
         $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
 
-        $vagas = VagaDTO::consultarVagas($usuario->getEmpresa()->getId(), '');
+        $vagas = VagaDTO::listar($usuario->getEmpresa()->getId(), '');
 
         View::renderizar('vaga/listar', compact('usuario', 'vagas'));
     }

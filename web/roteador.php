@@ -12,8 +12,12 @@ if (php_sapi_name() == "cli-server") {
 $requestUri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 $requestSegments = explode('/', $requestUri);
 
+if (empty($requestSegments[0])) {
+    $requestSegments[0] = 'Autenticacao';
+}
+
 if (empty($requestSegments[1])) {
-    $requestSegments[1] = 'login';
+    $requestSegments[1] = 'index';
 }
 
 $controller = ucfirst($requestSegments[0]) . "Controller";
@@ -21,14 +25,18 @@ $action = $requestSegments[1];
 $params = array_slice($requestSegments, 2);
 
 if (!file_exists(__DIR__ . "/controllers/{$controller}.php")) {
-    $controller = 'AutenticacaoController';
+    $controller = 'ErrorController';
+    $action = 'index';
 }
 
 require_once "controllers/{$controller}.php";
 $controller = new $controller();
 
 if (!method_exists($controller, $action)) {
+    $controller = 'ErrorController';
     $action = 'index';
+    require_once "controllers/{$controller}.php";
+    $controller = new $controller();
 }
 
 

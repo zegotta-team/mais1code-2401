@@ -45,6 +45,26 @@ abstract class UsuarioDTO implements DTOInterface
         $stmt->execute();
     }
 
+    public static function recuperar($id)
+    {
+        $pdo = static::conectarDB();
+
+        $sql = "SELECT * FROM usuario WHERE id = $id ";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+
+        $retorno = null;
+        while ($usuario = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $objEmpresa = EmpresaDTO::recuperar($usuario['empresa_id']);
+            $objUsuario = new Usuario($objEmpresa, $usuario['cpf'], $usuario['nome'], $usuario['email'], $usuario['senha']);
+            $objUsuario->setId($usuario['id']);
+            $retorno = $objUsuario;
+        }
+
+        return $retorno;
+    }
+
     public static function listar($empresaId = '')
     {
         $pdo = static::conectarDB();
@@ -62,44 +82,6 @@ abstract class UsuarioDTO implements DTOInterface
             $objUsuario = new Usuario($objEmpresa, $usuario['cpf'], $usuario['nome'], $usuario['email'], $usuario['senha']);
             $objUsuario->setId($usuario['id']);
             $retorno[] = $objUsuario;
-        }
-
-        return $retorno;
-    }
-
-//    public static function verificaDadosExistentes($nome, $cnpj, $usuario)
-//    {
-//        $diretorio_raiz = dirname(__DIR__);
-//        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
-//
-//        $pdo = new PDO("sqlite:$caminho_banco");
-//        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-//
-//        $sql = "SELECT COUNT(1) AS Total FROM empresa ";
-//        $sql .= "WHERE empresa.nome LIKE '$nome' OR empresa.cnpj LIKE '$cnpj' OR empresa.usuario LIKE '$usuario'";
-//
-//        $stmt = $pdo->prepare($sql);
-//        $stmt->execute();
-//        $totalDeRegistros = $stmt->fetch(PDO::FETCH_ASSOC);
-//
-//        return $totalDeRegistros['Total'] != 0;
-//    }
-
-    public static function recuperar($id)
-    {
-        $pdo = static::conectarDB();
-
-        $sql = "SELECT * FROM usuario WHERE id = $id ";
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-
-        $retorno = null;
-        while ($usuario = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $objEmpresa = EmpresaDTO::recuperar($usuario['empresa_id']);
-            $objUsuario = new Usuario($objEmpresa, $usuario['cpf'], $usuario['nome'], $usuario['email'], $usuario['senha']);
-            $objUsuario->setId($usuario['id']);
-            $retorno = $objUsuario;
         }
 
         return $retorno;

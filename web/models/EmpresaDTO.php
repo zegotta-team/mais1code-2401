@@ -55,18 +55,22 @@ abstract class EmpresaDTO implements DTOInterface
         $stmt->execute();
     }
 
-    public static function verificaDadosExistentes($nome, $cnpj)
+    public static function recuperar($id)
     {
         $pdo = static::conectarDB();
-
-        $sql = "SELECT COUNT(1) AS Total FROM empresa ";
-        $sql .= "WHERE empresa.nome LIKE '$nome' OR empresa.cnpj LIKE '$cnpj'";
+        $sql = "SELECT * FROM empresa WHERE id = $id ";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
-        $totalDeRegistros = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        return $totalDeRegistros['Total'] != 0;
+        $retorno = null;
+        while ($empresa = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $objEmpresa = new Empresa($empresa['nome'], $empresa['cnpj'], $empresa['email'], $empresa['descricao'], $empresa['logo'], $empresa['endereco']);
+            $objEmpresa->setId($empresa['id']);
+            $retorno = $objEmpresa;
+        }
+
+        return $retorno;
     }
 
     public static function listar($termo = '')
@@ -93,41 +97,18 @@ abstract class EmpresaDTO implements DTOInterface
 
     }
 
-    public static function recuperar($id)
-    {
-//        $diretorio_raiz = dirname(__DIR__);
-//        $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
-//
-//        $pdo = new PDO("sqlite:$caminho_banco");
-//        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        $pdo = static::conectarDB();
-        $sql = "SELECT * FROM empresa WHERE id = $id ";
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-
-        $retorno = null;
-        while ($empresa = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $objEmpresa = new Empresa($empresa['nome'], $empresa['cnpj'], $empresa['email'], $empresa['descricao'], $empresa['logo'], $empresa['endereco']);
-            $objEmpresa->setId($empresa['id']);
-            $retorno = $objEmpresa;
-        }
-
-        return $retorno;
-    }
-
-    public static function VerificaEmpresa($cnpj)
+    private static function verificaDadosExistentes($nome, $cnpj)
     {
         $pdo = static::conectarDB();
 
-        $sql = "SELECT * FROM empresa WHERE empresa.cnpj LIKE $cnpj";
+        $sql = "SELECT COUNT(1) AS Total FROM empresa ";
+        $sql .= "WHERE empresa.nome LIKE '$nome' OR empresa.cnpj LIKE '$cnpj'";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
         $totalDeRegistros = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        return $totalDeRegistros;
+        return $totalDeRegistros['Total'] != 0;
     }
 
 }

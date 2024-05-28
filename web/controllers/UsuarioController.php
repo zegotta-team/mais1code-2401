@@ -7,6 +7,10 @@ class UsuarioController
     {
     }
 
+    public function index() {
+
+    }
+
     public function cadastrar()
     {
         AutenticacaoController::exigeSessao();

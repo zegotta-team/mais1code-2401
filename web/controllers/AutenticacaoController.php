@@ -60,9 +60,14 @@ class AutenticacaoController
 
         session_start();
         if (!empty($_SESSION['empresaId']) && !empty($_SESSION['usuarioId'])) {
-//            header("Location: /vaga/listar");
-            die('sessao');
+            header("Location: /vaga/listar");
         }
+    }
+
+    public static function estaLogado()
+    {
+        session_start();
+        return !empty($_SESSION['empresaId']) && !empty($_SESSION['usuarioId']);
     }
 
 }

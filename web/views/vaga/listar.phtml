@@ -2,11 +2,11 @@
     <caption>Minhas vagas</caption>
     <?php foreach ($vagas as $vaga) : ?>
         <tr>
-            <td><?= $vaga['id'] ?></td>
-            <td><?= $vaga['titulo'] ?></td>
+            <td><?= $vaga->getId() ?></td>
+            <td><?= $vaga->getTitulo() ?></td>
             <td>
-                <a class="btn btn-primary btn-sm" href="/vaga/editar?id=<?= $vaga['id'] ?>">Editar</a>
-                <a class="btn btn-primary btn-sm" href="/vaga/excluir?id=<?= $vaga['id'] ?>">Excluir</a>
+                <a class="btn btn-primary btn-sm" href="/vaga/editar?id=<?= $vaga->getId() ?>">Editar</a>
+                <a class="btn btn-primary btn-sm" href="/vaga/excluir?id=<?= $vaga->getId() ?>">Excluir</a>
             </td>
         </tr>
     <?php endforeach; ?>
