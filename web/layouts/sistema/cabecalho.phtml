@@ -10,7 +10,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"><?= $usuario->getEmpresa()->getNome() ?> | <?= $usuario->getNome(); ?></a>
+        <a class="navbar-brand" href="#"><?= $_SESSION['usuario']->getEmpresa()->getNome() ?> | <?= $_SESSION['usuario']->getNome(); ?></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -60,7 +60,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li>
-                            <a class="dropdown-item" href="/usuario/editar?id=<?=$_SESSION['usuarioId']?>">Editar</a>
+                            <a class="dropdown-item" href="/usuario/editar?id=<?=$_SESSION['usuario']->getId()?>">Editar</a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="/usuario/trocarSenha">Trocar a senha</a>

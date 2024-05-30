@@ -14,18 +14,16 @@ class UsuarioController
     public function cadastrar()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
 
-        View::renderizar('usuario/formulario', compact('usuario'));
+        View::renderizar('usuario/formulario');
     }
 
     public function salvar()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
 
         if (empty($_POST['usuarioId'])) {
-            $usuario = new Usuario($usuario->getEmpresa(), $_POST['cpf'], $_POST['nome'], $_POST['email'], $_POST['senha']);
+            $usuario = new Usuario($_SESSION['usuario']->getEmpresa(), $_POST['cpf'], $_POST['nome'], $_POST['email'], $_POST['senha']);
         } else {
             $usuario = UsuarioDTO::recuperar($_POST['usuarioId']);
 
@@ -33,7 +31,7 @@ class UsuarioController
                 die('Usuario não encontrado');
             }
 
-            if ($usuario->getEmpresa()->getId() !== $usuario->getEmpresa()->getId()) {
+            if ($_SESSION['usuario']->getEmpresa()->getId() !== $usuario->getEmpresa()->getId()) {
                 die('Sai pilantra, o usuario não é da sua turma');
             }
 
@@ -51,7 +49,6 @@ class UsuarioController
     public function editar()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
 
         $idUsuario = $_GET['id'];
         $usuarioEdicao = UsuarioDTO::recuperar($idUsuario);
@@ -60,17 +57,17 @@ class UsuarioController
             die('Usuario não encontrada');
         }
 
-        if ($usuario->getEmpresa()->getId() !== $usuarioEdicao->getEmpresa()->getId()) {
+        if ($_SESSION['usuario']->getEmpresa()->getId() !== $usuarioEdicao->getEmpresa()->getId()) {
             die('Sai pilantra, usuario não é da sua turma');
         }
 
-        View::renderizar('usuario/formulario', compact('usuario', 'usuarioEdicao'));
+        View::renderizar('usuario/formulario', compact('usuarioEdicao'));
     }
 
     public function excluir()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
+
         $idUsuario = $_GET['id'];
 
         $usuarioExclusao = UsuarioDTO::recuperar($idUsuario);
@@ -79,7 +76,7 @@ class UsuarioController
             die('Usuario não encontrado');
         }
 
-        if ($usuario->getEmpresa()->getId() !== $usuarioExclusao->getEmpresa()->getId()) {
+        if ($_SESSION['usuario']->getEmpresa()->getId() !== $usuarioExclusao->getEmpresa()->getId()) {
             die('Sai pilantra, o usuario não é da sua turma');
         }
 
@@ -90,10 +87,9 @@ class UsuarioController
     public function listar()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
 
-        $usuarios = UsuarioDTO::listar($usuario->getEmpresa()->getId());
+        $usuarios = UsuarioDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
 
-        View::renderizar('usuario/listar', compact('usuario', 'usuarios'));
+        View::renderizar('usuario/listar', compact('usuarios'));
     }
 }

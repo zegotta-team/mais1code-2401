@@ -10,13 +10,11 @@ class AutenticacaoController
     {
         AutenticacaoController::renegaSessao();
 
-        View::renderizar('autenticacao/login', [], true);
+        View::renderizar('autenticacao/login', [], 'login');
     }
 
     public function processaLogin()
     {
-
-
         session_start();
 
         $email = $_POST['email'];
@@ -26,13 +24,11 @@ class AutenticacaoController
 
         if (!empty($usuario)) {
             header('Location: /vaga/listar');
-            $_SESSION['usuarioId'] = $usuario->getId();
-            $_SESSION['empresaId'] = $usuario->getEmpresa()->getId();
+            $_SESSION['usuario'] = $usuario;
             $_SESSION['error'] = null;
         } else {
             header('Location: /autenticacao');
-            $_SESSION['usuarioId'] = null;
-            $_SESSION['empresaId'] = null;
+            $_SESSION['usuario'] = null;
             $_SESSION['error'] = 'Falha ao autenticar';
         }
     }
@@ -48,7 +44,7 @@ class AutenticacaoController
     public static function exigeSessao()
     {
         session_start();
-        if (empty($_SESSION['empresaId']) || empty($_SESSION['usuarioId'])) {
+        if (empty($_SESSION['usuario'])) {
             header("Location: /autenticacao/processaLogout");
             die();
         }
@@ -57,9 +53,8 @@ class AutenticacaoController
 
     public static function renegaSessao()
     {
-
         session_start();
-        if (!empty($_SESSION['empresaId']) && !empty($_SESSION['usuarioId'])) {
+        if (!empty($_SESSION['usuario'])) {
             header("Location: /vaga/listar");
         }
     }
@@ -67,7 +62,7 @@ class AutenticacaoController
     public static function estaLogado()
     {
         session_start();
-        return !empty($_SESSION['empresaId']) && !empty($_SESSION['usuarioId']);
+        return !empty($_SESSION['usuario']);
     }
 
 }

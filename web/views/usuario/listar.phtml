@@ -8,7 +8,7 @@
             <td><?= $usuarioAtual->getEmail(); ?></td>
             <td>
                 <a class="btn btn-primary btn-sm" href="/usuario/editar?id=<?= $usuarioAtual->getId() ?>">Editar</a>
-                <?php if ($usuarioAtual->getId() !== $usuario->getId()) : ?>
+                <?php if ($usuarioAtual->getId() !== $_SESSION['usuario']->getId()) : ?>
                     <a class="btn btn-primary btn-sm" href="/usuario/excluir?id=<?= $usuarioAtual->getId() ?>">Excluir</a>
                 <?php endif; ?>
             </td>

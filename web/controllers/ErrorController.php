@@ -6,10 +6,9 @@ class ErrorController
     public function index()
     {
         if (AutenticacaoController::estaLogado()) {
-            $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
-            View::renderizar('error/index', compact('usuario'));
+            View::renderizar('error/index');
         } else {
-            View::renderizar('autenticacao/login', [], true);
+            View::renderizar('autenticacao/login', [], 'login');
         }
     }
 }

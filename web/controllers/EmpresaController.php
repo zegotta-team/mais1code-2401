@@ -11,7 +11,7 @@ class EmpresaController
     {
         AutenticacaoController::renegaSessao();
 
-        View::renderizar('empresa/cadastrar', [], true);
+        View::renderizar('empresa/cadastrar', [], 'cadastro-empresa');
     }
 
     public function processaCadastrar()
@@ -30,24 +30,23 @@ class EmpresaController
     public function editar()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
 
-        View::renderizar('empresa/editar', compact('usuario'));
+        View::renderizar('empresa/editar');
     }
 
     public function processaEditar()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
 
-        $usuario->getEmpresa()->setNome($_POST["nome"])
+        $_SESSION['usuario']->getEmpresa()
+            ->setNome($_POST["nome"])
             ->setCNPJ($_POST["cnpj"])
             ->setEmail($_POST["email"])
             ->setDescricao($_POST['descricao'])
             ->setLogo($_POST['logo'])
             ->setEndereco($_POST['endereco']);
 
-        EmpresaDTO::salvar($usuario->getEmpresa());
+        EmpresaDTO::salvar($_SESSION['usuario']->getEmpresa());
 
         header('Location: /vaga/listar');
     }
@@ -55,17 +54,15 @@ class EmpresaController
     public function excluir()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
 
-        View::renderizar('empresa/excluir', compact('usuario'));
+        View::renderizar('empresa/excluir');
     }
 
     public function processaExcluir()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
 
-        EmpresaDTO::deletar($usuario->getEmpresa());
+        EmpresaDTO::deletar($_SESSION['usuario']->getEmpresa());
 
         header('Location: /autenticacao/processaLogout');
     }

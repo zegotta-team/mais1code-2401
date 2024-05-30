@@ -13,18 +13,16 @@ class VagaController
     public function cadastrar()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
 
-        View::renderizar('vaga/formulario', compact('usuario'));
+        View::renderizar('vaga/formulario');
     }
 
     public function salvar()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
 
         if (empty($_POST['vagaId'])) {
-            $vaga = new Vaga($usuario->getEmpresa(), $_POST['titulo'], $_POST['email'], $_POST['salario'], $_POST['beneficios'], $_POST['descricao'], $_POST['requisitos'], $_POST['cargaHoraria']);
+            $vaga = new Vaga($_SESSION['usuario']->getEmpresa(), $_POST['titulo'], $_POST['email'], $_POST['salario'], $_POST['beneficios'], $_POST['descricao'], $_POST['requisitos'], $_POST['cargaHoraria']);
         } else {
             $vaga = VagaDTO::recuperar($_POST['vagaId']);
 
@@ -32,7 +30,7 @@ class VagaController
                 die('Vaga não encontrada');
             }
 
-            if ($usuario->getEmpresa()->getId() !== $vaga->getEmpresa()->getId()) {
+            if ($_SESSION['usuario']->getEmpresa()->getId() !== $vaga->getEmpresa()->getId()) {
                 die('Sai pilantra, a vaga não é sua');
             }
 
@@ -53,7 +51,6 @@ class VagaController
     public function editar()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
 
         $idVaga = $_GET['id'];
         $vaga = VagaDTO::recuperar($idVaga);
@@ -62,32 +59,29 @@ class VagaController
             die('Vaga não encontrada');
         }
 
-        if ($usuario->getEmpresa()->getId() !== $vaga->getEmpresa()->getId()) {
+        if ($_SESSION['usuario']->getEmpresa()->getId() !== $vaga->getEmpresa()->getId()) {
             die('Sai pilantra, a vaga não é sua');
         }
 
-        View::renderizar('vaga/formulario', compact('usuario', 'vaga'));
+        View::renderizar('vaga/formulario', compact('vaga'));
     }
 
     public function excluir()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
+
         $idVaga = $_GET['id'];
-
         $vaga = VagaDTO::recuperar($idVaga);
-
 
         if (empty($vaga)) {
             die('Vaga não encontrada');
         }
 
-        if ($usuario->getEmpresa()->getId() !== $vaga->getEmpresa()->getId()) {
+        if ($_SESSION['usuario']->getEmpresa()->getId() !== $vaga->getEmpresa()->getId()) {
             die('Sai pilantra, a vaga não é sua');
         }
 
         VagaDTO::deletar($vaga);
-
 
         header('Location: /vaga/listar');
     }
@@ -95,10 +89,9 @@ class VagaController
     public function listar()
     {
         AutenticacaoController::exigeSessao();
-        $usuario = UsuarioDTO::recuperar($_SESSION['usuarioId']);
 
-        $vagas = VagaDTO::listar($usuario->getEmpresa()->getId(), '');
+        $vagas = VagaDTO::listar($_SESSION['usuario']->getEmpresa()->getId(), '');
 
-        View::renderizar('vaga/listar', compact('usuario', 'vagas'));
+        View::renderizar('vaga/listar', compact('vagas'));
     }
 }
