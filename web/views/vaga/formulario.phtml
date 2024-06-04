@@ -43,6 +43,14 @@
             <input type="number" class="form-control" name="cargaHoraria" id="cargaHoraria" value="<?= isset($vaga) ? $vaga->getCargaHoraria() : '' ?>" min="0">
         </div>
     </div>
+    <?php if (!empty($vaga)) {?>
+        <div class="row g-3 align-items-center mb-2">
+            <label for="status" class="col-form-label col-md-2">Status</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="status" id="status" value="<?= $vaga->getStatus() ?>">
+            </div>
+        </div>
+    <?php }?>
     <div class="row g-3 align-items-center">
         <div class="col-md-12 d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end">
             <button class="btn btn-primary">Salvar</button>
