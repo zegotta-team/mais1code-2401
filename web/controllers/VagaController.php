@@ -94,4 +94,11 @@ class VagaController
 
         View::renderizar('vaga/listar', compact('vagas'));
     }
+
+    public static function painelDeVagas()
+    {
+        $vagas = VagaDTO::listar('','');
+        View::renderizar('vaga/listar', compact('vagas'));
+    }
+
 }
