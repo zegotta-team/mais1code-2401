@@ -65,4 +65,9 @@ class AutenticacaoController
         return !empty($_SESSION['usuario']);
     }
 
+    public static function painelVagas()
+    {
+        View::renderizar('autenticacao/PainelDeVagas', [], 'vagas');
+    }
+
 }
