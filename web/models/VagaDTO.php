@@ -9,7 +9,7 @@ abstract class VagaDTO implements DTOInterface
         $pdo = static::conectarDB();
         if (empty($vaga->getId())) {
             $sql = "INSERT INTO vaga (empresa_id, titulo, email, salario, beneficios, descricao, requisitos, cargaHoraria, status) 
-            VALUES ({$vaga->getEmpresa()->getId()}, \"{$vaga->getTitulo()}\", \"{$vaga->getEmail()}\", {$vaga->getSalario()}, \"{$vaga->getBeneficios()}\", \"{$vaga->getDescricao()}\", \"{$vaga->getRequisitos()}\", {$vaga->getCargaHoraria()}, {$vaga->getStatus()})";
+            VALUES ({$vaga->getEmpresa()->getId()}, \"{$vaga->getTitulo()}\", \"{$vaga->getEmail()}\", {$vaga->getSalario()}, \"{$vaga->getBeneficios()}\", \"{$vaga->getDescricao()}\", \"{$vaga->getRequisitos()}\", \"{$vaga->getCargaHoraria()}\", {$vaga->getStatus()})";
         } else {
             $sql = "UPDATE vaga SET ";
             $sql .= "titulo = '{$vaga->getTitulo()}', ";
@@ -18,7 +18,7 @@ abstract class VagaDTO implements DTOInterface
             $sql .= "beneficios = '{$vaga->getBeneficios()}', ";
             $sql .= "descricao = '{$vaga->getDescricao()}', ";
             $sql .= "requisitos = '{$vaga->getRequisitos()}', ";
-            $sql .= "cargaHoraria = '{$vaga->getCargaHoraria()}' ";
+            $sql .= "cargaHoraria = '{$vaga->getCargaHoraria()}', ";
             $sql .= "status = '{$vaga->getStatus()}' ";
             $sql .= "WHERE id = {$vaga->getId()}";
         }
