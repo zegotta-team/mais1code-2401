@@ -6,8 +6,10 @@ class VagaController
     {
     }
 
-    public function index(){
-        AutenticacaoController::exigeSessao();
+    public function index()
+    {
+        $vagas = VagaDTO::listar('','');
+        View::renderizar('vaga/index', compact('vagas'));
     }
 
     public function cadastrar()
@@ -94,10 +96,5 @@ class VagaController
 
         View::renderizar('vaga/listar', compact('vagas'));
     }
-    public static function painelDeVagas()
-    {
-        $vagas = VagaDTO::listar('','');
-        View::renderizar('vaga/index', compact('vagas'));
-    }
-    
+
 }
