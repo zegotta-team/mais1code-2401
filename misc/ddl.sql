@@ -20,7 +20,8 @@ CREATE TABLE vaga
     beneficios   TEXT,
     descricao    TEXT    NOT NULL,
     requisitos   TEXT    NOT NULL,
-    cargaHoraria INTEGER NOT NULL
+    cargaHoraria INTEGER NOT NULL,
+    `status`       INTEGER NOT NULL DEFAULT 1
 );
 
 CREATE TABLE usuario
@@ -34,3 +35,4 @@ CREATE TABLE usuario
 );
 
 SELECT * FROM usuario
+
