@@ -4,7 +4,6 @@ abstract class VagaDTO implements DTOInterface
 {
     use DbTrait;
 
-
     public static function salvar($vaga)
     {
         $pdo = static::conectarDB();
@@ -63,6 +62,7 @@ abstract class VagaDTO implements DTOInterface
         return $retorno;
     }
 
+  
     public static function listar($empresaId = '', $filtro = '', $status = '')
     {
 
@@ -88,3 +88,5 @@ abstract class VagaDTO implements DTOInterface
     }
 
 }
+
+
