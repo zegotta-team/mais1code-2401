@@ -35,3 +35,4 @@ CREATE TABLE usuario
 );
 
 SELECT * FROM usuario
+

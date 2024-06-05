@@ -11,8 +11,9 @@ class Vaga
     private $descricao;
     private $requisitos;
     private $cargaHoraria;
+    private $status;
 
-    public function __construct($empresa, $titulo, $email, $salario, $beneficios, $descricao, $requisitos, $cargaHoraria)
+    public function __construct($empresa, $titulo, $email, $salario, $beneficios, $descricao, $requisitos, $cargaHoraria, $status)
     {
         $this->setEmpresa($empresa);
         $this->setTitulo($titulo);
@@ -22,6 +23,7 @@ class Vaga
         $this->setDescricao($descricao);
         $this->setRequisitos($requisitos);
         $this->setCargaHoraria($cargaHoraria);
+        $this->setStatus($status);
     }
 
     public function getId()
@@ -123,4 +125,13 @@ class Vaga
         return $this->cargaHoraria;
     }
 
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    public function setStatus ($status){
+        $this->status = $status;
+        return $this;
+    }
 }

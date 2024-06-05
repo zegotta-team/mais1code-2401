@@ -6,8 +6,10 @@ class VagaController
     {
     }
 
-    public function index(){
-        AutenticacaoController::exigeSessao();
+    public function index()
+    {
+        $vagas = VagaDTO::listar('','');
+        View::renderizar('vaga/index', compact('vagas'));
     }
 
     public function cadastrar()
@@ -22,7 +24,7 @@ class VagaController
         AutenticacaoController::exigeSessao();
 
         if (empty($_POST['vagaId'])) {
-            $vaga = new Vaga($_SESSION['usuario']->getEmpresa(), $_POST['titulo'], $_POST['email'], $_POST['salario'], $_POST['beneficios'], $_POST['descricao'], $_POST['requisitos'], $_POST['cargaHoraria']);
+            $vaga = new Vaga($_SESSION['usuario']->getEmpresa(), $_POST['titulo'], $_POST['email'], $_POST['salario'], $_POST['beneficios'], $_POST['descricao'], $_POST['requisitos'], $_POST['cargaHoraria'], $_POST['status']);
         } else {
             $vaga = VagaDTO::recuperar($_POST['vagaId']);
 
@@ -40,7 +42,8 @@ class VagaController
                 ->setBeneficios($_POST['beneficios'])
                 ->setDescricao($_POST['descricao'])
                 ->setRequisitos($_POST['requisitos'])
-                ->setCargaHoraria($_POST['cargaHoraria']);
+                ->setCargaHoraria($_POST['cargaHoraria']
+                ->setStatus($_POST['status']));
 
         }
         VagaDTO::salvar($vaga);
@@ -94,4 +97,5 @@ class VagaController
 
         View::renderizar('vaga/listar', compact('vagas'));
     }
+
 }
