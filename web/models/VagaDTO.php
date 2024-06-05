@@ -68,10 +68,10 @@ abstract class VagaDTO implements DTOInterface
     public static function listar($empresaId = '', $filtro = '')
     {
         $pdo = static::conectarDB();
-        $sql = "SELECT e.nome, v. *
-                FROM vaga v 
-                INNER JOIN empresa e ON e.id = v.empresa_id AND e.id = $empresaId
-                WHERE v.titulo LIKE :curinga OR v.email LIKE :curinga OR e.email LIKE :curinga OR e.nome LIKE :curinga";
+        $sql = "SELECT e.nome, v. * FROM vaga v ";
+        $sql .= "INNER JOIN empresa e ON e.id = v.empresa_id ";
+        $sql .= "WHERE v.titulo LIKE :curinga OR v.email LIKE :curinga OR e.email LIKE :curinga OR e.nome LIKE :curinga";
+        $sql .= !empty($empresaId) ? "AND e.id = '$empresaId' " : "";
 
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':curinga', "%{$filtro}%");
