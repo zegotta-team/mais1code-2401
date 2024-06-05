@@ -34,12 +34,9 @@ abstract class VagaDTO implements DTOInterface
     public static function deletar($vaga)
     {
         try {
-            $diretorio_raiz = dirname(__DIR__);
-            $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
-
-            $pdo = new PDO("sqlite:$caminho_banco");
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $pdo = static::conectarDB();
             $sql = "DELETE FROM vaga WHERE id = {$vaga->getId()}";
+
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
         } catch (Exception $e) {
@@ -66,7 +63,7 @@ abstract class VagaDTO implements DTOInterface
         return $retorno;
     }
 
-    public static function listar($empresaId = '', $filtro = '')
+    public static function listar($empresaId = '', $filtro = '', $status = '')
     {
         $pdo = static::conectarDB();
         $sql = "SELECT e.nome, v. *
