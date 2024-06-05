@@ -42,8 +42,8 @@ class VagaController
                 ->setBeneficios($_POST['beneficios'])
                 ->setDescricao($_POST['descricao'])
                 ->setRequisitos($_POST['requisitos'])
-                ->setCargaHoraria($_POST['cargaHoraria'])
-                ->setStatus($_POST['status']);
+                ->setCargaHoraria($_POST['cargaHoraria']
+                ->setStatus($_POST['status']));
 
         }
         VagaDTO::salvar($vaga);

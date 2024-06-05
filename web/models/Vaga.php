@@ -125,9 +125,13 @@ class Vaga
         return $this->cargaHoraria;
     }
 
-    public function getStatus()
+    public function getStatus($formatado = false)
     {
-        return $this->status;
+        if ($formatado) { 
+            return $this->status === 0 ? 'Inativa' : 'Ativa';
+        } else {
+            return $this->status;
+        } 
     }
 
     public function setStatus ($status){
