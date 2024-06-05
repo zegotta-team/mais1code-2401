@@ -47,8 +47,8 @@
         <label for="status" class="col-form-label col-md-2">Status</label>
         <div class="col-md-10">
             <select class="form-control" name="status" id="status">
-                <option value="1" <?= $vaga->getStatus() == '1' ? 'selected' : '' ?>>Ativa</option>
-                <option value="0" <?= $vaga->getStatus() == '0' ? 'selected' : '' ?>>Inativa</option>
+                <option value="1" <?= !empty($vaga) && $vaga->getStatus() == '1' ? 'selected' : '' ?>>Ativa</option>
+                <option value="0" <?= !empty($vaga) && $vaga->getStatus() == '0' ? 'selected' : '' ?>>Inativa</option>
             </select>
         </div>    
     </div>
