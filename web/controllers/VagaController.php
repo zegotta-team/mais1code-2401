@@ -97,4 +97,9 @@ class VagaController
         View::renderizar('vaga/listar', compact('vagas'));
     }
 
+    public function detalhar()
+    {
+        
+    }
+
 }
