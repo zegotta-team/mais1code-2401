@@ -98,4 +98,12 @@ class VagaController
         View::renderizar('vaga/listar', compact('vagas'));
     }
 
+    public function exibir()
+    {
+        $vaga = VagaDTO::recuperar($_GET['id']);
+
+        View::renderizar('vaga/detalhes', compact('vaga'), 'vaga');
+
+    }
+
 }
