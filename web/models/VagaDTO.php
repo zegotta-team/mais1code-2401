@@ -8,8 +8,8 @@ abstract class VagaDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
         if (empty($vaga->getId())) {
-            $sql = "INSERT INTO vaga (empresa_id, titulo, email, salario, beneficios, descricao, requisitos, cargaHoraria) 
-            VALUES ({$vaga->getEmpresa()->getId()}, \"{$vaga->getTitulo()}\", \"{$vaga->getEmail()}\", {$vaga->getSalario()}, \"{$vaga->getBeneficios()}\", \"{$vaga->getDescricao()}\", \"{$vaga->getRequisitos()}\", {$vaga->getCargaHoraria()})";
+            $sql = "INSERT INTO vaga (empresa_id, titulo, email, salario, beneficios, descricao, requisitos, cargaHoraria, status) 
+            VALUES ({$vaga->getEmpresa()->getId()}, \"{$vaga->getTitulo()}\", \"{$vaga->getEmail()}\", {$vaga->getSalario()}, \"{$vaga->getBeneficios()}\", \"{$vaga->getDescricao()}\", \"{$vaga->getRequisitos()}\", \"{$vaga->getCargaHoraria()}\", {$vaga->getStatus()})";
         } else {
             $sql = "UPDATE vaga SET ";
             $sql .= "titulo = '{$vaga->getTitulo()}', ";
@@ -18,7 +18,8 @@ abstract class VagaDTO implements DTOInterface
             $sql .= "beneficios = '{$vaga->getBeneficios()}', ";
             $sql .= "descricao = '{$vaga->getDescricao()}', ";
             $sql .= "requisitos = '{$vaga->getRequisitos()}', ";
-            $sql .= "cargaHoraria = '{$vaga->getCargaHoraria()}' ";
+            $sql .= "cargaHoraria = '{$vaga->getCargaHoraria()}', ";
+            $sql .= "status = '{$vaga->getStatus()}' ";
             $sql .= "WHERE id = {$vaga->getId()}";
         }
         $stmt = $pdo->prepare($sql);
@@ -32,12 +33,9 @@ abstract class VagaDTO implements DTOInterface
     public static function deletar($vaga)
     {
         try {
-            $diretorio_raiz = dirname(__DIR__);
-            $caminho_banco = realpath($diretorio_raiz . '/' . self::BANCO);
-
-            $pdo = new PDO("sqlite:$caminho_banco");
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $pdo = static::conectarDB();
             $sql = "DELETE FROM vaga WHERE id = {$vaga->getId()}";
+
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
         } catch (Exception $e) {
@@ -56,7 +54,7 @@ abstract class VagaDTO implements DTOInterface
         $retorno = null;
         while ($vaga = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $objEmpresa = EmpresaDTO::recuperar($vaga['empresa_id']);
-            $objVaga = new Vaga($objEmpresa, $vaga['titulo'], $vaga['email'], $vaga['salario'], $vaga['beneficios'], $vaga['descricao'], $vaga['requisitos'], $vaga['cargaHoraria']);
+            $objVaga = new Vaga($objEmpresa, $vaga['titulo'], $vaga['email'], $vaga['salario'], $vaga['beneficios'], $vaga['descricao'], $vaga['requisitos'], $vaga['cargaHoraria'], $vaga['status']);
             $objVaga->setId($vaga['id']);
             $retorno = $objVaga;
         }
@@ -64,13 +62,16 @@ abstract class VagaDTO implements DTOInterface
         return $retorno;
     }
 
-    public static function listar($empresaId = '', $filtro = '')
+
+    public static function listar($empresaId = '', $filtro = '', $status = '')
     {
+
         $pdo = static::conectarDB();
-        $sql = "SELECT e.nome, v. *
-                FROM vaga v 
-                INNER JOIN empresa e ON e.id = v.empresa_id AND e.id = $empresaId
-                WHERE v.titulo LIKE :curinga OR v.email LIKE :curinga OR e.email LIKE :curinga OR e.nome LIKE :curinga";
+        $sql = "SELECT e.nome, v. * FROM vaga v ";
+        $sql .= "INNER JOIN empresa e ON e.id = v.empresa_id ";
+        $sql .= "WHERE (v.titulo LIKE :curinga OR v.email LIKE :curinga OR e.email LIKE :curinga OR e.nome LIKE :curinga) ";
+        $sql .= !empty($empresaId) ? "AND e.id = '$empresaId' " : "";
+        $sql .= !empty($status) || $status == '0' ? "AND v.status = '$status' " : "";
 
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':curinga', "%{$filtro}%");
@@ -79,7 +80,7 @@ abstract class VagaDTO implements DTOInterface
         $retorno = [];
         while ($vaga = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $objEmpresa = EmpresaDTO::recuperar($vaga['empresa_id']);
-            $objVaga = new Vaga($objEmpresa, $vaga['titulo'], $vaga['email'], $vaga['salario'], $vaga['beneficios'], $vaga['descricao'], $vaga['requisitos'], $vaga['cargaHoraria']);
+            $objVaga = new Vaga($objEmpresa, $vaga['titulo'], $vaga['email'], $vaga['salario'], $vaga['beneficios'], $vaga['descricao'], $vaga['requisitos'], $vaga['cargaHoraria'], $vaga['status']);
             $objVaga->setId($vaga['id']);
             $retorno[] = $objVaga;
         }
@@ -87,3 +88,5 @@ abstract class VagaDTO implements DTOInterface
     }
 
 }
+
+

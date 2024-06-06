@@ -1,0 +1,24 @@
+<?php
+$maxColunas = 4;
+$coluna = 0;
+?>
+<table class="table table-bordered table-striped table-hover caption-top">
+    <caption>Painel de vagas</caption>
+    <?php foreach ($vagas as $vaga): ?>
+
+        <?php if (++$coluna === 1) : ?>
+            <tr>
+        <?php endif; ?>
+
+        <td><?php echo $vaga->cardFormatado() ?></td>
+
+        <?php if ($coluna % $maxColunas === 0) : ?>
+            </tr>
+        <?php endif; ?>
+
+    <?php endforeach; ?>
+
+    <?php for (; $coluna % $maxColunas !== 0; $coluna++): ?>
+        <td></td>
+    <?php endfor; ?>
+</table>
