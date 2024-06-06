@@ -134,11 +134,13 @@ class Vaga
         }
     }
 
-    public function setStatus ($status){
+    public function setStatus($status)
+    {
         $this->status = $status;
         return $this;
     }
-    public  function cardFormatado()
+
+    public function cardFormatado()
     {
         return "<div>   {$this->getTitulo()}<br> 
                         {$this->getEmpresa()->getNome()}<br>
