@@ -44,6 +44,7 @@ CREATE TABLE candidato
     cpf TEXT NOT NULL,
     nascimento TEXT NOT NULL,
     endereco TEXT NOT NULL,
+    disponibilidade TEXT NOT NULL,
     sexo TEXT NOT NULL,
     genero TEXT NOT NULL,
     `status` INTEGER NOT NULL DEFAULT 1
