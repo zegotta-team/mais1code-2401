@@ -144,6 +144,8 @@ class Vaga
                         {$this->getEmpresa()->getNome()}<br>
                         {$this->getRequisitos()}<br>
                         {$this->getSalario()}
+                        <br><br>
+                        <a href='/vaga/exibir/?id={$this->getId()}'>Ver mais</a>
                 </div>";
 
 
