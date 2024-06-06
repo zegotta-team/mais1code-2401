@@ -45,8 +45,6 @@ CREATE TABLE candidato
     endereco TEXT NOT NULL,
     sexo TEXT NOT NULL,
     genero TEXT NOT NULL,
-    `status` INTEGER NOT NULL DEFAULT 1,
-    banhammer INTEGER NOT NULL DEFAULT 1
-
+    `status` INTEGER NOT NULL DEFAULT 1
 )
 
