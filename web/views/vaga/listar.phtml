@@ -4,6 +4,7 @@
         <tr>
             <td><?= $vaga->getId() ?></td>
             <td><?= $vaga->getTitulo() ?></td>
+            <td><?= $vaga->getStatus(true) ?></td>
             <td>
                 <a class="btn btn-primary btn-sm" href="/vaga/editar?id=<?= $vaga->getId() ?>">Editar</a>
                 <a class="btn btn-primary btn-sm" href="/vaga/excluir?id=<?= $vaga->getId() ?>">Excluir</a>

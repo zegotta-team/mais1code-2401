@@ -13,7 +13,7 @@ $requestUri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 $requestSegments = explode('/', $requestUri);
 
 if (empty($requestSegments[0])) {
-    $requestSegments[0] = 'Autenticacao';
+    $requestSegments[0] = 'Vaga';
 }
 
 if (empty($requestSegments[1])) {
