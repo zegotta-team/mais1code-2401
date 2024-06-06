@@ -1,0 +1,18 @@
+<h4>Vaga #<?= $vaga->getId() ?></h4>
+<br>
+<h1><?= $vaga->getTitulo() ?></h1>
+<h5><?= $vaga->getEmpresa()->getNome() ?></h5><br>
+<div>Salário: R$ <?= $vaga->getSalario() ?></div>
+<div>Benefícios: <?= $vaga->getBeneficios() ?></div>
+<div>Descrição: <?= $vaga->getDescricao() ?></div>
+<div>Requisitos: <?= $vaga->getRequisitos() ?></div>
+<div>Carga Horária: <?= $vaga->getCargaHoraria() ?></div>
+<br>
+<div>
+    <?php if ($vaga->getStatus() == 1): ?>
+        Quer se candidatar? Envie e-mail para
+        <a href="mailto:<?= $vaga->getEmail() ?>"><?= $vaga->getEmail() ?></a>
+    <?php else: ?>
+        Essa vaga já foi encerrada. =(
+    <?php endif; ?>
+</div>

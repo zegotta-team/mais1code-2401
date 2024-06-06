@@ -6,7 +6,8 @@ class VagaController
     {
     }
 
-    public function index(){
+    public function index()
+    {
         AutenticacaoController::exigeSessao();
     }
 
@@ -97,9 +98,9 @@ class VagaController
 
     public function exibir()
     {
-        $vaga = VagaDTO::recuperar($_POST['vagaId']);
+        $vaga = VagaDTO::recuperar($_GET['id']);
 
-        View::renderizar('vaga/detalhes', compact('vaga'));
+        View::renderizar('vaga/detalhes', compact('vaga'), 'vaga');
         
     }
 
