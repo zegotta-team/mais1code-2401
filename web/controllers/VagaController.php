@@ -99,8 +99,8 @@ class VagaController
     {
         $vaga = VagaDTO::recuperar($_POST['vagaId']);
 
-        View::renderizar('vaga/detalhes', compact('vagas'));
+        View::renderizar('vaga/detalhes', compact('vaga'));
         
     }
-    
+
 }
