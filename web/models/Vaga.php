@@ -127,15 +127,25 @@ class Vaga
 
     public function getStatus($formatado = false)
     {
-        if ($formatado) { 
+        if ($formatado) {
             return $this->status === 0 ? 'Inativa' : 'Ativa';
         } else {
             return $this->status;
-        } 
+        }
     }
 
     public function setStatus ($status){
         $this->status = $status;
         return $this;
+    }
+    public  function cardFormatado()
+    {
+        return "<div>   {$this->getTitulo()}<br> 
+                        {$this->getEmpresa()->getNome()}<br>
+                        {$this->getRequisitos()}<br>
+                        {$this->getSalario()}
+                </div>";
+
+
     }
 }

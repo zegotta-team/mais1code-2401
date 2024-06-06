@@ -62,7 +62,7 @@ abstract class VagaDTO implements DTOInterface
         return $retorno;
     }
 
-  
+
     public static function listar($empresaId = '', $filtro = '', $status = '')
     {
 

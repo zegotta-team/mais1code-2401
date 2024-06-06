@@ -10,7 +10,7 @@ $coluna = 0;
             <tr>
         <?php endif; ?>
 
-        <td>inserir o card da vaga</td>
+        <td><?php echo $vaga->cardFormatado() ?></td>
 
         <?php if ($coluna % $maxColunas === 0) : ?>
             </tr>
