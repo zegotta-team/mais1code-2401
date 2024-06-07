@@ -54,7 +54,7 @@ abstract class CandidatoDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
 
-        $sql = "SELECT * FROM candidato WHERE id = $id";
+        $sql = "SELECT * FROM candidato WHERE id = $id ";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
@@ -117,7 +117,6 @@ abstract class CandidatoDTO implements DTOInterface
         $stmt->execute();
         $totalDeRegistros = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        //var_dump($totalDeRegistros);
         return $totalDeRegistros['Total'] != 0;
     }
 }

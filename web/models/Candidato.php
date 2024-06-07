@@ -40,6 +40,7 @@ class Candidato
         $this->setGenero($genero);
         $this->setStatus($status);
     }
+    
     public function getId()
     {
         return $this->id;
