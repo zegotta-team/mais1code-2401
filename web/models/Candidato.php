@@ -2,6 +2,8 @@
 
 class Candidato
 {
+    private $id;
+
     private $nome;
 
     private $email;
@@ -17,8 +19,11 @@ class Candidato
     private $endereco;
 
     private $disponibilidade;
+
     private $sexo;
+
     private $genero;
+
     private $status;
 
     public function __construct($nome, $email, $senha, $habilidades, $cpf, $nascimento, $endereco, $disponibilidade, $sexo, $genero, $status)
@@ -34,6 +39,15 @@ class Candidato
         $this->setSexo($sexo);
         $this->setGenero($genero);
         $this->setStatus($status);
+    }
+    public function getId()
+    {
+        return $this->id;
+    }
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
     }
     public function getNome()
     {
