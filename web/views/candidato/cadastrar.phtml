@@ -1,0 +1,87 @@
+<form action="/candidato/processaCadastrar" method="post">
+    <div class="row gy-3 gy-md-4 overflow-hidden">
+        <div class="col-12">
+            <label for="nome" class="form-label">Nome Completo
+                <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" name="nome" id="nome" placeholder="Digite seu nome completo" required>
+        </div>
+        <div class="col-12">
+            <label for="email" class="form-label">Email
+                <span class="text-danger">*</span></label>
+            <input type="email" class="form-control" name="email" id="email" placeholder="Informe um email válido" required>
+        </div>
+        <div class="col-12">
+            <label for="senha" class="form-label">Senha
+                <span class="text-danger">*</span></label>
+            <input type="password" class="form-control" name="senha" id="senha" value="" required>
+        </div>
+        <div class="col-12">
+            <label for="habilidades" class="form-label">Habilidades
+                <span class="text-danger">*</span></label>
+            <textarea type="text" class="form-control" name="habilidades" id="habilidades" placeholder="Informe suas habilidades" required></textarea>
+        </div>
+        <div class="col-12">
+            <label for="usuarioCpf" class="form-label">CPF
+                <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" name="cpf" id="cpf" placeholder="Informe o CPF do usuário" required>
+        </div>
+        <div class="col-12">
+            <label for="endereco" class="form-label">Nascimento
+                <span class="text-danger">*</span></label>
+            <input type="date" class="form-control" name="nascimento" id="nascimento" placeholder="Informe sua data de nascimento" required>
+        </div>
+        <div class="col-12">
+                <label for="endereco" class="form-label">Endereço
+                    <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" name="endereco" id="endereco" placeholder="Digite o Endereço Atual" required>
+        </div>
+        <div class="col-12">
+            <label for="status" class="col-form-label col-md-2">Disponibilidade <span class="text-danger">*</span></label>
+            <div class="col-12">
+                <select class="form-control" name="disponibilidade" id="disponibilidade">
+                    <option value="" disabled selected>Selecione sua disponibilidade</option>
+                    <option value="3">Disponibilidade Imediata</option>
+                    <option value="2">Disponível após 30 dias</option>
+                    <option value="1">Tempo Parcial</option>
+                    <option value="0">Tempo Integral</option>
+                </select>
+            </div>  
+        </div>
+        <div class="col-12">
+            <label for="status" class="col-form-label col-md-2">Sexo <span class="text-danger">*</span></label>
+            <div class="col-12">
+                <select class="form-control" name="sexo" id="sexo">
+                    <option value="" disabled selected>Selecione</option>
+                    <option value="F">Feminino</option>
+                    <option value="M">Masculino</option>
+                </select>
+            </div>  
+        </div>
+        <div class="col-12">
+            <label for="status" class="col-form-label col-md-2">Gênero <span class="text-danger">*</span></label>
+            <div class="col-12">
+                <select class="form-control" name="genero" id="genero">
+                    <option value="" disabled selected>Selecione</option>
+                    <option value="C">Cisgênero</option>
+                    <option value="T">Transgênero</option>
+                    <option value="O">Outro</option>
+                </select>
+            </div>  
+        </div>
+        <div class="col-12">
+            <label for="status" class="col-form-label col-md-2">Status <span class="text-danger">*</span></label>
+            <div class="col-12">
+                <select class="form-control" name="status" id="status">
+                    <option value="1">Ativa</option>
+                    <option value="0">Inativa</option>
+                </select>
+            </div>  
+        </div>
+        <hr>
+        <div class="col-12">
+            <div class="d-grid">
+                <button class="btn bsb-btn-xl btn-primary" type="submit">Cadastrar</button>
+            </div>
+        </div>
+    </div>
+</form>

@@ -34,5 +34,19 @@ CREATE TABLE usuario
     senha       TEXT NOT NULL
 );
 
-SELECT * FROM usuario
+CREATE TABLE candidato
+(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    email TEXT NOT NULL,
+    senha TEXT NOT NULL,
+    habilidades TEXT NOT NULL,
+    cpf TEXT NOT NULL,
+    nascimento TEXT NOT NULL,
+    endereco TEXT NOT NULL,
+    disponibilidade TEXT NOT NULL,
+    sexo TEXT NOT NULL,
+    genero TEXT NOT NULL,
+    `status` INTEGER NOT NULL DEFAULT 1
+)
 
