@@ -1,28 +1,48 @@
+<form action="/autenticacao/processaLogin" method="post">
+    <div class="row gy-3 gy-md-4 overflow-hidden mt-5">
+        <div class="col-12">
+            <label for="email" class="form-label">Email
+                <span>*</span></label>
+            <input type="text" class="form-control" name="email" id="email" placeholder="Informe seu e-mail de acesso" required>
+        </div>
+        <div class="col-12">
+            <label for="senha" class="form-label">Senha
+                <span>*</span></label>
+            <input type="password" class="form-control" name="senha" id="senha" value="" placeholder="*****" required>
+        </div>
+        <div class="col-12">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" name="remember_me" id="remember_me">
+                <label class="form-check-label" for="remember_me">
+                    Mantenha-me logado
+                </label>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="d-grid">
+                <button id="icon-button" class="btn btn-primary" type="submit">
+                    <i class="fas fa-lock icon-transition"></i>
+                    <i class="fas fa-lock-open icon-transition" style="display: none;"></i>
+                    Acessar</button>
+            </div>
+        </div>
+    </div>
+</form>
 
-                        <form action="/autenticacao/processaLogin" method="post">
-                            <div class="row gy-3 gy-md-4 overflow-hidden">
-                                <div class="col-12">
-                                    <label for="email" class="form-label">Email
-                                        <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="email" id="email" placeholder="Informe seu e-mail de acesso" required>
-                                </div>
-                                <div class="col-12">
-                                    <label for="senha" class="form-label">Senha
-                                        <span class="text-danger">*</span></label>
-                                    <input type="password" class="form-control" name="senha" id="senha" value="" required>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" name="remember_me" id="remember_me">
-                                        <label class="form-check-label text-secondary" for="remember_me">
-                                            Mantenha-me logado
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="d-grid">
-                                        <button class="btn bsb-btn-xl btn-primary" type="submit">Acessar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const button = document.getElementById('icon-button');
+        const lockIcon = button.querySelector('.fa-lock');
+        const lockOpenIcon = button.querySelector('.fa-lock-open');
+
+        button.addEventListener('mouseenter', () => {
+            lockIcon.style.display = 'none';
+            lockOpenIcon.style.display = '';
+        });
+
+        button.addEventListener('mouseleave', () => {
+            lockIcon.style.display = '';
+            lockOpenIcon.style.display = 'none';
+        });
+    });
+</script>
