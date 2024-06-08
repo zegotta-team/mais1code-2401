@@ -102,7 +102,7 @@ class VagaController
     {
         $vaga = VagaDTO::recuperar($_GET['id']);
 
-        View::renderizar('vaga/detalhes', compact('vaga'), 'vaga');
+        View::renderizar('vaga/detalhes', compact('vaga'), 'painel-vagas');
 
     }
 
