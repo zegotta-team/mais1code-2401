@@ -74,3 +74,23 @@ th.minimal {
 .error404 {
     text-align: center;
 }
+
+.form-control {
+    border-color: rgba(9, 59, 110, 0.3);
+}
+
+input.form-control {
+    border-width: 0 0 1px 0;
+    border-radius: 0;
+    border-color: rgba(9, 59, 110, 0.3);
+}
+
+.form-label, .col-form-label {
+    color: #093B6E !important;
+
+}
+
+.form-control-plaintext, .text-muted {
+    color: #999999 !important;
+    border-color: transparent;
+}

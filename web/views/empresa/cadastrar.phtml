@@ -1,62 +1,90 @@
 <form action="/empresa/processaCadastrar" method="post">
-    <div class="row gy-3 gy-md-4 overflow-hidden">
-        <div class="col-12">
-            <label for="nome" class="form-label">Nome da empresa
-                <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" name="nome" id="nome" placeholder="Nome da Empresa" required>
-        </div>
-        <div class="col-12">
-            <label for="cnpj" class="form-label">CNPJ
-                <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" name="cnpj" id="cnpj" placeholder="CNPJ" required>
-        </div>
+    <div class="row mt-3">
+        <div class="col-6 col-md-6">
+            <div class="p-3 p-md-4 p-xl-5">
+                <div class="row gy-3 gy-md-4 overflow-hidden">
+                    <h6>Dados da empresa</h6>
 
-        <div class="col-12">
-            <label for="email" class="form-label">Email
-                <span class="text-danger">*</span></label>
-            <input type="email" class="form-control" name="email" id="email" placeholder="Informe um email válido" required>
-        </div>
+                    <div class="col-12">
+                        <label for="nome" class="form-label">Nome da empresa
+                            <span>*</span></label>
+                        <input type="text" class="form-control" name="nome" id="nome" placeholder="Nome da empresa" required>
+                    </div>
 
-        <div class="col-12">
-            <label for="descricao" class="form-label">Descrição
-                <span class="text-danger">*</span></label>
-            <textarea type="text" class="form-control" name="descricao" id="descricao" placeholder="Descrição" required></textarea>
+                    <div class="col-6">
+                        <label for="cnpj" class="form-label">CNPJ
+                            <span>*</span></label>
+                        <input type="text" class="form-control" name="cnpj" id="cnpj" placeholder="CNPJ" maxlength="14" minlength="14" required>
+                    </div>
+                    <div class="col-6">
+                        <label for="email" class="form-label">Email
+                            <span>*</span></label>
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Informe um email válido" required>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="descricao" class="form-label">Descrição
+                            <span>*</span></label>
+                        <textarea type="text" class="form-control" name="descricao" id="descricao" placeholder="Descrição" required></textarea>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="logo" class="form-label">Logo
+                            <span>*</span></label>
+                        <input type="text" class="form-control" name="logo" id="logo" placeholder="Adicione uma imagem" required>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="endereco" class="form-label">Endereço
+                            <span>*</span></label>
+                        <input type="text" class="form-control" name="endereco" id="endereco" placeholder="Digite o endereço atual" required>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-12">
-            <label for="logo" class="form-label">Logo
-                <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" name="logo" id="logo" placeholder="adicione uma imagem" required>
+        <div class="col-6 col-md-6 border-start border-secondary">
+            <div class="p-3 p-md-4 p-xl-5">
+                <div class="row gy-3 gy-md-4 overflow-hidden">
+                    <h6>Dados do usuário</h6>
+                    <div class="col-6">
+                        <label for="usuarioCpf" class="form-label">CPF
+                            <span>*</span></label>
+                        <input type="text" class="form-control" name="usuarioCpf" id="usuarioCpf" placeholder="Informe o CPF do usuário" required>
+                    </div>
+                    <div class="col-6">
+                        <label for="usuarioSenha" class="form-label">Senha
+                            <span>*</span></label>
+                        <input type="password" class="form-control" name="usuarioSenha" id="usuarioSenha" value="" required placeholder="*****">
+                    </div>
+                    <div class="col-12">
+                        <label for="usuarioNome" class="form-label">Nome
+                            <span>*</span></label>
+                        <input type="text" class="form-control" name="usuarioNome" id="usuarioNome" placeholder="Informe o nome do usuário" required>
+                    </div>
+                    <div class="col-12">
+                        <label for="usuarioEmail" class="form-label">Email
+                            <span>*</span></label>
+                        <input type="text" class="form-control" name="usuarioEmail" id="usuarioEmail" placeholder="Informe o e-mail do usuário" required>
+                    </div>
+
+
+                </div>
+            </div>
         </div>
-        <div class="col-12">
-            <label for="endereco" class="form-label">Endereço
-                <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" name="endereco" id="endereco" placeholder="Digite o Endereço Atual" required>
-        </div>
-        <hr>
-        <h6>Dados do usuário</h6>
-        <div class="col-12">
-            <label for="usuarioCpf" class="form-label">CPF
-                <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" name="usuarioCpf" id="usuarioCpf" placeholder="Informe o CPF do usuário" required>
-        </div>
-        <div class="col-12">
-            <label for="usuarioNome" class="form-label">Nome
-                <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" name="usuarioNome" id="usuarioNome" placeholder="Informe o nome do usuario" required>
-        </div>
-        <div class="col-12">
-            <label for="usuarioEmail" class="form-label">Email
-                <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" name="usuarioEmail" id="usuarioEmail" placeholder="Informe o e-mail do usuario" required>
-        </div>
-        <div class="col-12">
-            <label for="usuarioSenha" class="form-label">Senha
-                <span class="text-danger">*</span></label>
-            <input type="password" class="form-control" name="usuarioSenha" id="usuarioSenha" value="" required>
-        </div>
+    </div>
+    <div class="row mt-4">
         <div class="col-12">
             <div class="d-grid">
-                <button class="btn bsb-btn-xl btn-primary" type="submit">Cadastrar</button>
+                <button class="btn btn-primary" type="submit">Cadastrar</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <hr class="mt-5 mb-4 border-secondary-subtle">
+            <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-between">
+                <a href="/" class="link-secondary text-decoration-none">Painel de vagas</a>
+                <a href="/autenticacao/index" class="link-secondary text-decoration-none">Já possui cadastro? Faça o login</a>
             </div>
         </div>
     </div>
