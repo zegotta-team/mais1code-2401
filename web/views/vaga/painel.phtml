@@ -2,15 +2,17 @@
 $maxColunas = 4;
 $coluna = 0;
 ?>
-<table class="table table-bordered table-striped table-hover caption-top">
+<table class="table table-bordered caption-top">
     <caption>Painel de vagas</caption>
     <?php foreach ($vagas as $vaga): ?>
 
         <?php if (++$coluna === 1) : ?>
-            <tr>
+            <tr class="pb-3">
         <?php endif; ?>
 
-        <td><?php echo $vaga->cardFormatado() ?></td>
+        <td class="align-top p-0 pb-3" style="height: 1px">
+            <?php echo $vaga->cardFormatado() ?>
+        </td>
 
         <?php if ($coluna % $maxColunas === 0) : ?>
             </tr>

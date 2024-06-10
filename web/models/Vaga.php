@@ -142,12 +142,22 @@ class Vaga
 
     public function cardFormatado()
     {
-        return "<div>   {$this->getTitulo()}<br> 
-                        {$this->getEmpresa()->getNome()}<br>
-                        {$this->getRequisitos()}<br>
-                        {$this->getSalario()}
-                        <br><br>
-                        <a href='/vaga/exibir/?id={$this->getId()}'>Ver mais</a>
+        return "
+                <div class='d-flex justify-content-between h-100 flex-column'>   
+                    <div>
+                        <div class='titulo ps-2 pe-2 align-items-center d-flex justify-content-between'>
+                            <strong><a href='/vaga/exibir/?id={$this->getId()}'>{$this->getTitulo()}</a></strong>
+                            <i class='fas fa-thumbtack'></i>
+                        </div>
+                        <div class='p-2'>  
+                            <p><i class='fas fa-building text-muted'></i> <small>{$this->getEmpresa()->getNome()}</small></p>
+                            <p><i class='fas fa-medal text-muted'></i> {$this->getRequisitos()}</p>
+                            <p><i class='fas fa-coins text-muted'></i> R$ {$this->getSalario()}</p>
+                        </div>
+                    </div>
+                    <div class='ver-mais ps-2 pe-2 text-end d-flex justify-content-end align-items-baseline'>
+                        <a href='/vaga/exibir/?id={$this->getId()}' class='mt-auto'>Ver mais <i class='far fa-arrow-alt-circle-right'></i></a>
+                    </div>
                 </div>";
 
 
