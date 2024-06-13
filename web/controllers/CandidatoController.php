@@ -6,7 +6,7 @@ class CandidatoController
     {
         AutenticacaoController::renegaSessao();
 
-        View::renderizar('candidato/cadastrar', [], 'painel-vagas');
+        View::renderizar('candidato/cadastrar', [], 'cadastro-candidato');
     }
 
     public function processaCadastrar()
