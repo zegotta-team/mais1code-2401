@@ -43,8 +43,9 @@
             <div class="col-3 form-floating">
                 <select class="form-control form-select" name="sexo" id="sexo">
                     <option value="" disabled selected>Selecione</option>
-                    <option value="F">Feminino</option>
-                    <option value="M">Masculino</option>
+                    <?php foreach (SexoEnum::forSelect() as $value => $label): ?>
+                        <option value="<?= $value ?>"><?= $label ?></option>
+                    <?php endforeach; ?>
                 </select>
                 <label for="sexo" class="form-label">Sexo *</label>
             </div>
