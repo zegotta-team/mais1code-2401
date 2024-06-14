@@ -1,0 +1,54 @@
+<form action="/candidato/processaLogin" method="post" onsubmit="verificaDados()">
+    <div class="row gy-3 gy-md-4 overflow-hidden mt-5">
+        <div class="col-12">
+            <label for="email" class="form-label">Email
+                <span>*</span></label>
+            <input type="email" class="form-control" name="email" id="email" maxlength="30" placeholder="Informe seu e-mail de acesso" required>
+        </div>
+        <div class="col-12">
+            <label for="senha" class="form-label">Senha
+                <span>*</span></label>
+            <input type="password" class="form-control" name="senha" id="senha" minlength="8" value="" placeholder="*****" required>
+        </div>
+        <div class="col-12 d-flex justify-content-between">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" name="remember_me" id="remember_me">
+                <label class="form-check-label" for="remember_me">
+                    Mantenha-me logado
+                </label>
+            </div>
+            <a href="/candidato/esqueci-senha" class="link-secondary text-decoration-none">Esqueci minha senha</a>
+
+        </div>
+        <div class="col-12">
+            <div class="d-grid">
+                <button  id="icon-button" class="btn btn-warning" type="submit">
+                    <i class="fas fa-lock icon-transition"></i>
+                    <i class="fas fa-lock-open icon-transition" style="display: none;"></i>
+                    Acessar
+                </button>
+                    <button class="btn btn-secondary mt-3">Você é novo aqui? Cadastrar</button>
+            </div>
+        </div>
+
+        <script>
+
+            function verificaDados(){
+
+                let email = document.getElementById('email');
+                let senha = document.getElementById('senha');
+
+                if(email.length == 0 || senha.length == 0)
+                {
+                    alert("login falhou");
+                    return false;
+                }else{
+                    alert("login concluido");
+                }
+
+            }
+
+        </script>
+    </div>
+</form>
+
