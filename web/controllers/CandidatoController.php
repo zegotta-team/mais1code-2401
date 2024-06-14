@@ -18,4 +18,24 @@ class CandidatoController
 
         header('Location: /');
     }
+
+    public function processaLogin() 
+    {
+        session_start();
+
+        $email = $_POST['email'];
+        $senha = $_POST['senha'];
+
+        $candidato = CandidatoDTO::autenticar($email, $senha);
+
+        if (isset($candidato)) {
+            header('Location: vaga/painel');
+            $_SESSION['candidato'] = $candidato;
+            $_SESSION['error'] = null;
+        } else{
+            header('Location: candidato/login');
+            $_SESSION['candidato'] = null;
+            $_SESSION['error'] = "Falha ao autenticar candidato!";
+        }
+    }
 }
