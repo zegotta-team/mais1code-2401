@@ -109,12 +109,15 @@ abstract class CandidatoDTO implements DTOInterface
 
     public static function verificar($cpf, $email) 
     {
-        $min = "0";
-        $maxemail = "30";
-        $maxcpf = "11";
-        if (!strlen($cpf) < $maxcpf && !strlen($cpf) > $min && !strlen($email) > $min && !strlen($email) < $maxemail) {
-        echo "CPF ou Email com numero de caracteres invalido";
-        } else{
+        $min = 0;
+        $maxemail = 30;
+        $maxcpf = 11;
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return "O e-mail é inválido.";
+        } elseif (strlen($cpf) != $maxcpf || strlen($email) < $min || strlen($email) > $maxemail) {
+            return "CPF ou E-mail com número de caracteres inválido";
+        } else {
             $pdo = static::conectarDB();
 
             $sql = "SELECT COUNT(1) AS Total FROM candidato WHERE candidato.cpf LIKE '$cpf' OR candidato.email LIKE '$email'";
