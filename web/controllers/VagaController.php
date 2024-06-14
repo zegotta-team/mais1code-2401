@@ -8,7 +8,7 @@ class VagaController
 
     public function index()
     {
-        $vagas = VagaDTO::listar('', '',1);
+        $vagas = VagaDTO::listar('', '',VagaStatusEnum::Inativa->value);
         View::renderizar('vaga/painel', compact('vagas'), 'painel-vagas');
     }
 

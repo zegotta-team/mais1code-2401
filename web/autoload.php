@@ -9,6 +9,7 @@ spl_autoload_register(function ($nomeClasse) {
         "web" . DIRECTORY_SEPARATOR . "models",
         "web" . DIRECTORY_SEPARATOR . "controllers",
         "web" . DIRECTORY_SEPARATOR . "core",
+        "web" . DIRECTORY_SEPARATOR . "enums",
         "web" . DIRECTORY_SEPARATOR . "traits",
     ];
 

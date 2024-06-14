@@ -3,27 +3,16 @@
 class Candidato
 {
     private $id;
-
     private $nome;
-
     private $email;
-
     private $senha;
-
     private $habilidades;
-
     private $cpf;
-
     private $nascimento;
-
     private $endereco;
-
     private $disponibilidade;
-
     private $sexo;
-
     private $genero;
-
     private $status;
 
     public function __construct($nome, $email, $senha, $habilidades, $cpf, $nascimento, $endereco, $disponibilidade, $sexo, $genero, $status)
