@@ -42,8 +42,8 @@ class CandidatoController
 
         $candidato = new Candidato($_POST['nome'], $_POST['email'], $_POST['senha'], $_POST['habilidades'], $_POST['cpf'], $_POST['nascimento'], $_POST['endereco'], $_POST['disponibilidade'], $_POST['sexo'], $_POST['genero'], $_POST['status']);
         
-        $retorno = CandidatoDTO::salvar($candidato);
-        echo "$retorno";
-        header('Location: /');
+        CandidatoDTO::salvar($candidato);
+        $_SESSION['CadastroRealizado'] = 'Usuário/candidato cadastrado com sucesso';
+        header('Location: /candidato/login');
     }
 }

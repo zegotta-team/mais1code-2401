@@ -5,6 +5,7 @@
 <?php endif; ?>
 
 <form action="/candidato/processaLogin" method="post" onsubmit="verificaDados()">
+<?php if (!empty($_SESSION['CadastroRealizado'])) { ?> <div><?php echo $_SESSION['qlqrcoisa'];?></div> <?php } ?>
     <div class="row gy-3 gy-md-4 overflow-hidden mt-5">
         <div class="col-12">
             <label for="email" class="form-label">Email
