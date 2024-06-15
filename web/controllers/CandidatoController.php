@@ -9,6 +9,7 @@ class CandidatoController
         View::renderizar('candidato/login', [] , 'login');
     }
 
+
     public function processaLogin() 
     {
         session_start();
@@ -19,7 +20,7 @@ class CandidatoController
         $candidato = CandidatoDTO::autenticar($email, $senha);
 
         if (isset($candidato)) {
-            header('Location: /vaga/index');
+                header('Location: /vaga/index');
             $_SESSION['candidato'] = $candidato;
             $_SESSION['error'] = null;
         } else{
@@ -45,4 +46,6 @@ class CandidatoController
 
         header('Location: /');
     }
+
+
 }
