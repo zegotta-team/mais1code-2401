@@ -12,15 +12,14 @@ abstract class CandidatoDTO implements DTOInterface
 
         if (empty($candidato->getId())) {
             if (!static::verificar($candidato->getCpf(), $candidato->getEmail(), $candidato->getSenha())) {
-                
+
                 $sql = "INSERT INTO candidato (nome, email, senha, habilidades, cpf, nascimento, endereco, disponibilidade, sexo, genero, status)
 
                         VALUES (\"{$candidato->getNome()}\", \"{$candidato->getEmail()}\", \"{$candidato->getSenha()}\", \"{$candidato->getHabilidades()}\", '$cpfSoNumero', \"{$candidato->getNascimento()}\", \"{$candidato->getEndereco()}\", \"{$candidato->getDisponibilidade()}\", \"{$candidato->getSexo()}\", \"{$candidato->getGenero()}\", \"{$candidato->getStatus()}\")";
-
-            } else{
+            } else {
                 die('Dados repetidos!');
             }
-        } else{
+        } else {
             $sql = "UPDATE candidato SET ";
             $sql .= "nome = '{$candidato->getNome()}', ";
             $sql .= "email = '{$candidato->getEmail()}', ";
@@ -41,11 +40,10 @@ abstract class CandidatoDTO implements DTOInterface
 
         if (empty($candidato->getId())) {
             $candidato->setId($pdo->lastInsertId());
-           return $retorno = "Usuário/candidato cadastrado com sucesso";
         }
     }
 
-    public static function deletar($candidato) 
+    public static function deletar($candidato)
     {
         $pdo = static::conectarDB();
 
@@ -54,7 +52,7 @@ abstract class CandidatoDTO implements DTOInterface
         $stmt->execute();
     }
 
-    public static function recuperar($id) 
+    public static function recuperar($id)
     {
         $pdo = static::conectarDB();
 
@@ -64,7 +62,7 @@ abstract class CandidatoDTO implements DTOInterface
 
         $retorno = null;
 
-        while($candidato = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($candidato = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $objCandidato = new Candidato($candidato['nome'], $candidato['email'], $candidato['senha'], $candidato['habilidades'], $candidato['cpf'], $candidato['nascimento'], $candidato['endereco'], $candidato['disponibilidade'], $candidato['sexo'], $candidato['genero'], $candidato['status']);
             $objCandidato->setId($candidato['id']);
             $retorno = $objCandidato;
@@ -73,26 +71,26 @@ abstract class CandidatoDTO implements DTOInterface
         return $retorno;
     }
 
-    public static function listar() 
+    public static function listar()
     {
         $pdo = static::conectarDB();
 
         $sql = "SELECT * FROM candidato";
-        
+
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
         $retorno = [];
-        while($candidato = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($candidato = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $objCandidato = new Candidato($candidato['nome'], $candidato['email'], $candidato['senha'], $candidato['habilidades'], $candidato['cpf'], $candidato['nascimento'], $candidato['endereco'], $candidato['disponibilidade'], $candidato['sexo'], $candidato['genero'], $candidato['status']);
             $objCandidato->setId($candidato['id']);
             $retorno[] = $objCandidato;
         }
-        
+
         return $retorno;
     }
 
-    public static function autenticar(string $email, string $senha) 
+    public static function autenticar(string $email, string $senha)
     {
         $pdo = static::conectarDB();
 
@@ -102,7 +100,7 @@ abstract class CandidatoDTO implements DTOInterface
 
         $retorno = null;
 
-        while($candidato = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($candidato = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $objCandidato = new Candidato($candidato['nome'], $candidato['email'], $candidato['senha'], $candidato['habilidades'], $candidato['cpf'], $candidato['nascimento'], $candidato['endereco'], $candidato['disponibilidade'], $candidato['sexo'], $candidato['genero'], $candidato['status']);
             $objCandidato->setId($candidato['id']);
             $retorno = $objCandidato;
@@ -119,15 +117,13 @@ abstract class CandidatoDTO implements DTOInterface
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
-            return "Usuário inválido (usuário precisa ser um email).";
-
+            die ('Usuário inválido (usuário precisa ser um email)');
         } elseif (strlen($cpf) != $maxcpf || strlen($email) < $min || strlen($email) > $maxemail) {
-           
-            return "CPF ou E-mail com quantidade de caracteres não permitida";
-            
-        } elseif (strlen($senha) < 8) {
-            return "Senha não atende ao padrão, deve ter no mínimo 8 caracteres";
 
+            die('CPF ou E-mail com quantidade de caracteres não permitida');
+        } elseif (strlen($senha) < 8) {
+            die('Senha não atende ao padrão, deve ter no mínimo 8 caracteres');
+            
         } else {
 
             $pdo = static::conectarDB();
@@ -140,8 +136,6 @@ abstract class CandidatoDTO implements DTOInterface
             $totalDeRegistros = $stmt->fetch(PDO::FETCH_ASSOC);
 
             return $totalDeRegistros['Total'] != 0;
-
-
         }
     }
 }
