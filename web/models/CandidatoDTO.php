@@ -12,10 +12,11 @@ abstract class CandidatoDTO implements DTOInterface
 
         if (empty($candidato->getId())) {
             if (!static::verificar($candidato->getCpf(), $candidato->getEmail(), $candidato->getSenha())) {
-            
-                $sql = "INSERT INTO candidato (nome, email, senha, habilidades, cpf, nascimento, endereco, disponibilidade, sexo, genero, status) 
+                
+                $sql = "INSERT INTO candidato (nome, email, senha, habilidades, cpf, nascimento, endereco, disponibilidade, sexo, genero, status)
+
                         VALUES (\"{$candidato->getNome()}\", \"{$candidato->getEmail()}\", \"{$candidato->getSenha()}\", \"{$candidato->getHabilidades()}\", '$cpfSoNumero', \"{$candidato->getNascimento()}\", \"{$candidato->getEndereco()}\", \"{$candidato->getDisponibilidade()}\", \"{$candidato->getSexo()}\", \"{$candidato->getGenero()}\", \"{$candidato->getStatus()}\")";
-                        return "Usuário/candidato cadastrado com sucesso";
+
             } else{
                 die('Dados repetidos!');
             }
@@ -40,6 +41,7 @@ abstract class CandidatoDTO implements DTOInterface
 
         if (empty($candidato->getId())) {
             $candidato->setId($pdo->lastInsertId());
+           return $retorno = "Usuário/candidato cadastrado com sucesso";
         }
     }
 
@@ -113,21 +115,28 @@ abstract class CandidatoDTO implements DTOInterface
     {
         $min = 0;
         $maxemail = 30;
-        $maxcpf = 11;
+        $maxcpf = 14;
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+
             return "Usuário inválido (usuário precisa ser um email).";
+
         } elseif (strlen($cpf) != $maxcpf || strlen($email) < $min || strlen($email) > $maxemail) {
+           
             return "CPF ou E-mail com quantidade de caracteres não permitida";
+            
         } elseif (strlen($senha) < 8) {
             return "Senha não atende ao padrão, deve ter no mínimo 8 caracteres";
+
         } else {
+
             $pdo = static::conectarDB();
 
             $sql = "SELECT COUNT(1) AS Total FROM candidato WHERE candidato.cpf LIKE '$cpf' OR candidato.email LIKE '$email'";
-
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
+
+
             $totalDeRegistros = $stmt->fetch(PDO::FETCH_ASSOC);
 
             return $totalDeRegistros['Total'] != 0;

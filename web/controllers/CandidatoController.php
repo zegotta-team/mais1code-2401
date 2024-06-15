@@ -18,8 +18,9 @@ class CandidatoController
         AutenticacaoController::renegaSessao();
 
         $candidato = new Candidato($_POST['nome'], $_POST['email'], $_POST['senha'], $_POST['habilidades'], $_POST['cpf'], $_POST['nascimento'], $_POST['endereco'], $_POST['disponibilidade'], $_POST['sexo'], $_POST['genero'], $_POST['status']);
-        CandidatoDTO::salvar($candidato);
-
+        
+        $retorno = CandidatoDTO::salvar($candidato);
+        echo "$retorno";
         header('Location: /');
     }
 }
