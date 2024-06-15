@@ -1,3 +1,9 @@
+<?php if (isset($_SESSION['error'])) : ?>
+    <div class="col-12">
+        <?=$_SESSION['error']?>
+    </div>
+<?php endif; ?>
+
 <form action="/candidato/processaLogin" method="post" onsubmit="verificaDados()">
     <div class="row gy-3 gy-md-4 overflow-hidden mt-5">
         <div class="col-12">
@@ -27,7 +33,7 @@
                     <i class="fas fa-lock-open icon-transition" style="display: none;"></i>
                     Acessar
                 </button>
-                    <button class="btn btn-secondary mt-3">Você é novo aqui? Cadastrar</button>
+                <a href="/candidato/cadastrar" class="link-secondary text-decoration-none"><button class="btn btn-secondary mt-3" type="button">Você é novo aqui? Cadastrar</button></a>
             </div>
         </div>
 
@@ -43,7 +49,7 @@
                     alert("login falhou");
                     return false;
                 }else{
-                    alert("login concluido");
+                    //alert("login concluido");
                 }
 
             }

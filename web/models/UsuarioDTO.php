@@ -99,7 +99,7 @@ abstract class UsuarioDTO implements DTOInterface
         $retorno = null;
         while ($usuario = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $objEmpresa = EmpresaDTO::recuperar($usuario['empresa_id']);
-            $objUsuario = new Usuario($objEmpresa, $usuario['cpf'], $usuario['nome'], $usuario['cnpj'], $usuario['usuario']);
+            $objUsuario = new Usuario($objEmpresa, $usuario['cpf'], $usuario['nome'], $usuario['email'], $usuario['senha']);
             $objUsuario->setId($usuario['id']);
             $retorno = $objUsuario;
         }
