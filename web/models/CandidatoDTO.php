@@ -112,7 +112,6 @@ abstract class CandidatoDTO implements DTOInterface
     public static function verificar($cpf, $email, $senha)
     {
         $min = 0;
-        $maxemail = 30;
         $maxcpf = 14;
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -121,9 +120,9 @@ abstract class CandidatoDTO implements DTOInterface
             header('Location: /candidato/cadastrar');
             die();
 
-        } elseif (strlen($cpf) != $maxcpf || strlen($email) < $min || strlen($email) > $maxemail) {
+        } elseif (strlen($cpf) != $maxcpf || strlen($email) < $min) {
 
-            $_SESSION['CadastroRealizado'] = 'CPF ou E-mail com quantidade de caracteres não permitida';
+            $_SESSION['CadastroRealizado'] = 'CPF com quantidade de caracteres não permitida';
             header('Location: /candidato/cadastrar');
             die();
 
@@ -132,7 +131,6 @@ abstract class CandidatoDTO implements DTOInterface
             $_SESSION['CadastroRealizado'] = 'Senha não atende ao padrão, deve ter no mínimo 8 caracteres';
             header('Location: /candidato/cadastrar');
             die();
-
 
         } else {
 
