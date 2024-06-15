@@ -116,19 +116,19 @@ abstract class CandidatoDTO implements DTOInterface
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
-            $_SESSION['CadastroRealizado'] = 'Usuário inválido (usuário precisa ser um email)';
+            $_SESSION['FalhaAoCadastrar'] = 'Usuário inválido (usuário precisa ser um email)';
             header('Location: /candidato/cadastrar');
             die();
 
         } elseif (strlen($cpf) != $maxcpf || strlen($email) < $min) {
 
-            $_SESSION['CadastroRealizado'] = 'CPF com quantidade de caracteres não permitida';
+            $_SESSION['FalhaAoCadastrar'] = 'CPF com quantidade de caracteres não permitida';
             header('Location: /candidato/cadastrar');
             die();
 
         } elseif (strlen($senha) < 8) {
 
-            $_SESSION['CadastroRealizado'] = 'Senha não atende ao padrão, deve ter no mínimo 8 caracteres';
+            $_SESSION['FalhaAoCadastrar'] = 'Senha não atende ao padrão, deve ter no mínimo 8 caracteres';
             header('Location: /candidato/cadastrar');
             die();
 

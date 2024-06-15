@@ -1,8 +1,8 @@
 <div class="container container-sm w-75 form-bg-white pt-4 pb-4">
     <form action="/candidato/processaCadastrar" method="post">
-    <?php if (!empty($_SESSION['CadastroRealizado'])) : ?>
+    <?php if (!empty($_SESSION['FalhaAoCadastrar'])) : ?>
     <div>
-        <?=$_SESSION['CadastroRealizado'];?>
+        <?=$_SESSION['FalhaAoCadastrar'];?>
     </div>
 <?php endif; ?>
         <input type="hidden" name="status" id="status" value="1">
