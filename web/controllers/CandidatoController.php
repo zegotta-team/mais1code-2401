@@ -9,7 +9,6 @@ class CandidatoController
         View::renderizar('candidato/login', [] , 'login');
     }
 
-
     public function processaLogin() 
     {
         session_start();
@@ -46,6 +45,10 @@ class CandidatoController
 
         header('Location: /');
     }
+    public static function estaLogado()
+    {
 
+        return !isset($_SESSION['candidato']);
+    }
 
 }

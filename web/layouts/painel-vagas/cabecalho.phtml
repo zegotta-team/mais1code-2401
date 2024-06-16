@@ -14,7 +14,10 @@
     <div class="container-fluid">
         <a class="navbar-brand logo" href="/autenticacao"></a>
         <div class="navbar-text">
-            <span style="font-size: 12px"><b><?= $_SESSION['candidato']->getNome(); ?></b></span><br>
+            <?php if(!CandidatoController::estaLogado()):?>
+                <span style="font-size: 12px"><b><?= $_SESSION['candidato']->getNome() ?></b></span><br>
+            <?php endif; ?>
+
 
         </div>
 
@@ -38,7 +41,19 @@
                     <a class="nav-link mx-2 active" aria-current="page" href="/candidato/login">
                         <i class="fas fa-users"></i> Área do candidato
                     </a>
+                    <li>
                 </li>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li>
+                            <a class="dropdown-item" href="/candidato/editar?id=<?= $_SESSION['candidato']->getId() ?>">Editar</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/candidato/alterarSenha">Trocar a senha</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/candidato/processaLogout">Sair</a>
+                        </li>
+                    </ul>
             </ul>
         </div>
     </div>
