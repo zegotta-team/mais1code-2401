@@ -4,12 +4,12 @@ class CandidatoController
 {
     public function login()
     {
-        session_start();
+        self::renegaSessao();
 
-        View::renderizar('candidato/login', [] , 'login');
+        View::renderizar('candidato/login', [], 'login');
     }
 
-    public function processaLogin() 
+    public function processaLogin()
     {
         session_start();
 
@@ -22,7 +22,7 @@ class CandidatoController
             header('Location: /vaga/index');
             $_SESSION['candidato'] = $candidato;
             $_SESSION['error'] = null;
-        } else{
+        } else {
             header('Location: /candidato/login');
             $_SESSION['candidato'] = null;
             $_SESSION['error'] = "Falha ao autenticar candidato! Email ou senha incorretos.";
@@ -45,4 +45,19 @@ class CandidatoController
 
         header('Location: /');
     }
+
+    public static function estaLogado()
+    {
+
+        return !isset($_SESSION['candidato']);
+    }
+
+    public static function renegaSessao()
+    {
+        session_start();
+        if (!empty($_SESSION['candidato'])) {
+            header("Location: /");
+        }
+    }
+
 }
