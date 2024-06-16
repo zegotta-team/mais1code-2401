@@ -47,3 +47,5 @@ class CandidatoController
         header('Location: /candidato/login');
     }
 }
+
+//em processo de construção
