@@ -1,9 +1,10 @@
 <?php if (isset($_SESSION['error'])) : ?>
     <div class="col-12">
-        <?=$_SESSION['error']?>
+        <?= $_SESSION['error'] ?>
     </div>
 <?php endif; ?>
 
+<h4>Área do candidato</h4>
 <form action="/candidato/processaLogin" method="post" onsubmit="verificaDados()">
     <div class="row gy-3 gy-md-4 overflow-hidden mt-5">
         <div class="col-12">
@@ -24,37 +25,60 @@
                 </label>
             </div>
             <a href="/candidato/esqueci-senha" class="link-secondary text-decoration-none">Esqueci minha senha</a>
-
         </div>
         <div class="col-12">
             <div class="d-grid">
-                <button  id="icon-button" class="btn btn-warning" type="submit">
+                <button id="icon-button" class="btn btn-primary" type="submit">
                     <i class="fas fa-lock icon-transition"></i>
-                    <i class="fas fa-lock-open icon-transition" style="display: none;" ></i>
-                        Acessar</a>
-                    </button>
-                <button class="btn btn-secondary mt-3"><a class="nav-link mx-2 active" aria-current="page" href="/candidato/cadastrar">Você é novo aqui? Cadastrar</a></button>
+                    <i class="fas fa-lock-open icon-transition" style="display: none;"></i>
+                    Acessar
+                </button>
             </div>
         </div>
-
-        <script>
-
-            function verificaDados(){
-
-                let email = document.getElementById('email');
-                let senha = document.getElementById('senha');
-
-                if(email.length == 0 || senha.length == 0)
-                {
-                    alert("login falhou");
-                    return false;
-                }else{
-                    alert("login concluido");
-                }
-
-            }
-
-        </script>
     </div>
 </form>
+
+
+<div class="row">
+    <div class="col-12">
+        <hr class="mt-5 mb-4 border-secondary-subtle">
+        <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-between">
+            <a href="/" class="link-secondary text-decoration-none">Painel de vagas</a>
+            <a href="/candidato/cadastrar" class="link-secondary text-decoration-none">Criar minha conta</a>
+        </div>
+    </div>
+</div>
+<script>
+
+    function verificaDados() {
+
+        let email = document.getElementById('email').value;
+        let senha = document.getElementById('senha').value;
+
+        if (email === '' || senha === '') {
+            alert("login falhou");
+            return false;
+        } else {
+            alert("login concluido");
+        }
+
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const button = document.getElementById('icon-button');
+        const lockIcon = button.querySelector('.fa-lock');
+        const lockOpenIcon = button.querySelector('.fa-lock-open');
+
+        button.addEventListener('mouseenter', () => {
+            lockIcon.style.display = 'none';
+            lockOpenIcon.style.display = '';
+        });
+
+        button.addEventListener('mouseleave', () => {
+            lockIcon.style.display = '';
+            lockOpenIcon.style.display = 'none';
+
+        });
+    });
+</script>
 
