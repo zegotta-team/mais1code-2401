@@ -8,7 +8,9 @@ class VagaController
 
     public function index()
     {
-        $vagas = VagaDTO::listar('', '',VagaStatusEnum::Inativa->value);
+        session_start();
+
+        $vagas = VagaDTO::listar('', '',VagaStatusEnum::Ativa->value);
         View::renderizar('vaga/painel', compact('vagas'), 'painel-vagas');
     }
 
@@ -100,6 +102,8 @@ class VagaController
 
     public function exibir()
     {
+        session_start();
+
         $vaga = VagaDTO::recuperar($_GET['id']);
 
         View::renderizar('vaga/detalhes', compact('vaga'), 'painel-vagas');
