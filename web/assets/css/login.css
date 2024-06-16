@@ -28,3 +28,9 @@ body {
 .icon-transition {
     transition: opacity 1.3s, transform 1.3s;
 }
+
+
+h4 {
+    color: white !important;
+    text-align: center;
+}
