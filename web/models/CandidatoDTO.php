@@ -97,15 +97,17 @@ abstract class CandidatoDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
 
-        $sql = "SELECT * FROM candidato WHERE email = '$email' AND senha = '$senha'";
+        $sql = "SELECT * FROM candidato WHERE email = '$email'";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
         $retorno = null;
 
         while ($candidato = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            if (password_verify($senha, $candidato['senha'])){
             $retorno = static::preecher($candidato);
         }
+    }
 
         return $retorno;
     }
@@ -133,6 +135,9 @@ abstract class CandidatoDTO implements DTOInterface
             header('Location: /candidato/cadastrar');
             die();
 
+        } elseif (strlen($senha) > 8) {
+
+            $senha = password_hash($senha, PASSWORD_ARGON2ID);
         } else {
 
             $pdo = static::conectarDB();
