@@ -93,14 +93,16 @@ abstract class UsuarioDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
 
-        $sql = "SELECT * FROM usuario WHERE email = '$email' AND senha = '$senha'";
+        $sql = "SELECT * FROM usuario WHERE email = '$email' ";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
         $retorno = null;
         while ($usuario = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $retorno = static::preecher($usuario);;
+            if (password_verify($senha, $usuario['senha'])) {
+                $retorno = static::preecher($usuario);
+            }
         }
 
         return $retorno;
