@@ -19,10 +19,10 @@ abstract class CandidatoDTO implements DTOInterface
 
         if (empty($candidato->getId())) {
             if (!static::verificar($candidato->getCpf(), $candidato->getEmail(), $candidato->getSenha())) {
-
+                $senhaHash = password_hash($candidato->getSenha(), PASSWORD_ARGON2ID);
                 $sql = "INSERT INTO candidato (nome, email, senha, habilidades, cpf, nascimento, endereco, disponibilidade, sexo, genero, status)
 
-                        VALUES (\"{$candidato->getNome()}\", \"{$candidato->getEmail()}\", \"{$candidato->getSenha()}\", \"{$candidato->getHabilidades()}\", '$cpfSoNumero', \"{$candidato->getNascimento()}\", \"{$candidato->getEndereco()}\", \"{$candidato->getDisponibilidade()}\", \"{$candidato->getSexo()}\", \"{$candidato->getGenero()}\", \"{$candidato->getStatus()}\")";
+                        VALUES (\"{$candidato->getNome()}\", \"{$candidato->getEmail()}\", \"{$senhaHash}\", \"{$candidato->getHabilidades()}\", '$cpfSoNumero', \"{$candidato->getNascimento()}\", \"{$candidato->getEndereco()}\", \"{$candidato->getDisponibilidade()}\", \"{$candidato->getSexo()}\", \"{$candidato->getGenero()}\", \"{$candidato->getStatus()}\")";
             } else {
                 die('Dados repetidos!');
             }
@@ -97,19 +97,21 @@ abstract class CandidatoDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
 
-        $sql = "SELECT * FROM candidato WHERE email = '$email' AND senha = '$senha'";
+        $sql = "SELECT * FROM candidato WHERE email = '$email'";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
         $retorno = null;
 
         while ($candidato = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $retorno = static::preecher($candidato);
+            if (password_verify($senha, $candidato['senha'])) {
+                $retorno = static::preecher($candidato);
+            }
         }
 
         return $retorno;
     }
-
+ 
     public static function verificar($cpf, $email, $senha)
     {
         $min = 0;
@@ -120,19 +122,16 @@ abstract class CandidatoDTO implements DTOInterface
             $_SESSION['FalhaAoCadastrar'] = 'Usuário inválido (usuário precisa ser um email)';
             header('Location: /candidato/cadastrar');
             die();
-
         } elseif (strlen($cpf) != $maxcpf || strlen($email) < $min) {
 
             $_SESSION['FalhaAoCadastrar'] = 'CPF com quantidade de caracteres não permitida';
             header('Location: /candidato/cadastrar');
             die();
-
         } elseif (strlen($senha) < 8) {
 
             $_SESSION['FalhaAoCadastrar'] = 'Senha não atende ao padrão, deve ter no mínimo 8 caracteres';
             header('Location: /candidato/cadastrar');
             die();
-
         } else {
 
             $pdo = static::conectarDB();
