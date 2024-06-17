@@ -15,11 +15,12 @@
         <a class="navbar-brand logo" href="/autenticacao"></a>
         <div class="navbar-text">
             <?php if (!CandidatoController::estaLogado()): ?>
-                <span style="font-size: 12px"><b><?= $_SESSION['candidato']->getNome() ?></b></span>
+                <span style="font-size: 12px"><b><?= $_SESSION['candidato']->getNome() ?></b>
+                    <a style="margin-left: 5px;" class="link-secondary text-decoration-none" href="/candidato/processaLogout">Sair</a>
+                </span>
                 <br>
             <?php endif; ?>
         </div>
-
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
