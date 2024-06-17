@@ -4,6 +4,13 @@ abstract class EmpresaDTO implements DTOInterface
 {
     use DbTrait;
 
+    public static function preecher($dados)
+    {
+        $empresa = new Empresa($dados['nome'], $dados['cnpj'], $dados['email'], $dados['descricao'], $dados['logo'], $dados['endereco']);
+        $empresa->setId($dados['id']);
+        return $empresa;
+    }
+
     public static function salvar($empresa)
     {
         $pdo = static::conectarDB();
@@ -65,9 +72,7 @@ abstract class EmpresaDTO implements DTOInterface
 
         $retorno = null;
         while ($empresa = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $objEmpresa = new Empresa($empresa['nome'], $empresa['cnpj'], $empresa['email'], $empresa['descricao'], $empresa['logo'], $empresa['endereco']);
-            $objEmpresa->setId($empresa['id']);
-            $retorno = $objEmpresa;
+            $retorno = static::preecher($empresa);
         }
 
         return $retorno;
@@ -88,9 +93,7 @@ abstract class EmpresaDTO implements DTOInterface
 
         $retorno = [];
         while ($empresa = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $objEmpresa = new Empresa($empresa['nome'], $empresa['cnpj'], $empresa['email'], $empresa['descricao'], $empresa['logo'], $empresa['endereco']);
-            $objEmpresa->setId($empresa['id']);
-            $retorno[] = $objEmpresa;
+            $retorno[] = static::preecher($empresa);
         }
 
         return $retorno;

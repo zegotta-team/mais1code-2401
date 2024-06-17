@@ -4,6 +4,13 @@ abstract class CandidatoDTO implements DTOInterface
 {
     use DbTrait;
 
+    public static function preecher($dados)
+    {
+        $candidato = new Candidato($dados['nome'], $dados['email'], $dados['senha'], $dados['habilidades'], $dados['cpf'], $dados['nascimento'], $dados['endereco'], $dados['disponibilidade'], $dados['sexo'], $dados['genero'], $dados['status']);
+        $candidato->setId($dados['id']);
+        return $candidato;
+    }
+
     public static function salvar($candidato)
     {
         $pdo = static::conectarDB();
@@ -63,9 +70,7 @@ abstract class CandidatoDTO implements DTOInterface
         $retorno = null;
 
         while ($candidato = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $objCandidato = new Candidato($candidato['nome'], $candidato['email'], $candidato['senha'], $candidato['habilidades'], $candidato['cpf'], $candidato['nascimento'], $candidato['endereco'], $candidato['disponibilidade'], $candidato['sexo'], $candidato['genero'], $candidato['status']);
-            $objCandidato->setId($candidato['id']);
-            $retorno = $objCandidato;
+            $retorno = static::preecher($candidato);
         }
 
         return $retorno;
@@ -82,9 +87,7 @@ abstract class CandidatoDTO implements DTOInterface
 
         $retorno = [];
         while ($candidato = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $objCandidato = new Candidato($candidato['nome'], $candidato['email'], $candidato['senha'], $candidato['habilidades'], $candidato['cpf'], $candidato['nascimento'], $candidato['endereco'], $candidato['disponibilidade'], $candidato['sexo'], $candidato['genero'], $candidato['status']);
-            $objCandidato->setId($candidato['id']);
-            $retorno[] = $objCandidato;
+            $retorno[] = static::preecher($candidato);
         }
 
         return $retorno;
@@ -101,9 +104,7 @@ abstract class CandidatoDTO implements DTOInterface
         $retorno = null;
 
         while ($candidato = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $objCandidato = new Candidato($candidato['nome'], $candidato['email'], $candidato['senha'], $candidato['habilidades'], $candidato['cpf'], $candidato['nascimento'], $candidato['endereco'], $candidato['disponibilidade'], $candidato['sexo'], $candidato['genero'], $candidato['status']);
-            $objCandidato->setId($candidato['id']);
-            $retorno = $objCandidato;
+            $retorno = static::preecher($candidato);
         }
 
         return $retorno;
