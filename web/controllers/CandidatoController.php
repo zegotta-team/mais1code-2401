@@ -53,6 +53,14 @@ class CandidatoController
         return !isset($_SESSION['candidato']);
     }
 
+    public function processaLogout()
+    {
+        header('Location: /');
+        session_start();
+        session_destroy();
+
+    }
+
     public static function renegaSessao()
     {
         session_start();
