@@ -104,14 +104,14 @@ abstract class CandidatoDTO implements DTOInterface
         $retorno = null;
 
         while ($candidato = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            if (password_verify($senha, $candidato['senha'])){
-            $retorno = static::preecher($candidato);
+            if (password_verify($senha, $candidato['senha'])) {
+                $retorno = static::preecher($candidato);
+            }
         }
-    }
 
         return $retorno;
     }
-
+ 
     public static function verificar($cpf, $email, $senha)
     {
         $min = 0;
@@ -122,21 +122,18 @@ abstract class CandidatoDTO implements DTOInterface
             $_SESSION['FalhaAoCadastrar'] = 'Usuário inválido (usuário precisa ser um email)';
             header('Location: /candidato/cadastrar');
             die();
-
         } elseif (strlen($cpf) != $maxcpf || strlen($email) < $min) {
 
             $_SESSION['FalhaAoCadastrar'] = 'CPF com quantidade de caracteres não permitida';
             header('Location: /candidato/cadastrar');
             die();
-
         } elseif (strlen($senha) < 8) {
 
             $_SESSION['FalhaAoCadastrar'] = 'Senha não atende ao padrão, deve ter no mínimo 8 caracteres';
             header('Location: /candidato/cadastrar');
             die();
-  
         } else {
-           
+
             $pdo = static::conectarDB();
 
             $sql = "SELECT COUNT(1) AS Total FROM candidato WHERE candidato.cpf LIKE '$cpf' OR candidato.email LIKE '$email'";
