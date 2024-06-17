@@ -4,6 +4,14 @@ abstract class UsuarioDTO implements DTOInterface
 {
     use DbTrait;
 
+    public static function preecher($dados)
+    {
+        $empresa = EmpresaDTO::recuperar($dados['empresa_id']);
+        $usuario = new Usuario($empresa, $dados['cpf'], $dados['nome'], $dados['email'], $dados['senha']);
+        $usuario->setId($dados['id']);
+        return $usuario;
+    }
+
     public static function salvar($usuario)
     {
 
@@ -56,10 +64,7 @@ abstract class UsuarioDTO implements DTOInterface
 
         $retorno = null;
         while ($usuario = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $objEmpresa = EmpresaDTO::recuperar($usuario['empresa_id']);
-            $objUsuario = new Usuario($objEmpresa, $usuario['cpf'], $usuario['nome'], $usuario['email'], $usuario['senha']);
-            $objUsuario->setId($usuario['id']);
-            $retorno = $objUsuario;
+            $retorno = static::preecher($usuario);
         }
 
         return $retorno;
@@ -78,10 +83,7 @@ abstract class UsuarioDTO implements DTOInterface
 
         $retorno = [];
         while ($usuario = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $objEmpresa = EmpresaDTO::recuperar($usuario['empresa_id']);
-            $objUsuario = new Usuario($objEmpresa, $usuario['cpf'], $usuario['nome'], $usuario['email'], $usuario['senha']);
-            $objUsuario->setId($usuario['id']);
-            $retorno[] = $objUsuario;
+            $retorno[] = static::preecher($usuario);;
         }
 
         return $retorno;
@@ -91,17 +93,16 @@ abstract class UsuarioDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
 
-        $sql = "SELECT * FROM usuario WHERE email = '$email' AND senha = '$senha'";
+        $sql = "SELECT * FROM usuario WHERE email = '$email' ";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
         $retorno = null;
         while ($usuario = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $objEmpresa = EmpresaDTO::recuperar($usuario['empresa_id']);
-            $objUsuario = new Usuario($objEmpresa, $usuario['cpf'], $usuario['nome'], $usuario['email'], $usuario['senha']);
-            $objUsuario->setId($usuario['id']);
-            $retorno = $objUsuario;
+            if (password_verify($senha, $usuario['senha'])) {
+                $retorno = static::preecher($usuario);
+            }
         }
 
         return $retorno;
