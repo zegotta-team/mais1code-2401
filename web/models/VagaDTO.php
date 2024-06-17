@@ -4,6 +4,14 @@ abstract class VagaDTO implements DTOInterface
 {
     use DbTrait;
 
+    public static function preecher($dados)
+    {
+        $empresa = EmpresaDTO::recuperar($dados['empresa_id']);
+        $vaga = new Vaga($empresa, $dados['titulo'], $dados['email'], $dados['salario'], $dados['beneficios'], $dados['descricao'], $dados['requisitos'], $dados['cargaHoraria'], $dados['status']);
+        $vaga->setId($dados['id']);
+        return $vaga;
+    }
+
     public static function salvar($vaga)
     {
         $pdo = static::conectarDB();
@@ -53,15 +61,11 @@ abstract class VagaDTO implements DTOInterface
 
         $retorno = null;
         while ($vaga = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $objEmpresa = EmpresaDTO::recuperar($vaga['empresa_id']);
-            $objVaga = new Vaga($objEmpresa, $vaga['titulo'], $vaga['email'], $vaga['salario'], $vaga['beneficios'], $vaga['descricao'], $vaga['requisitos'], $vaga['cargaHoraria'], $vaga['status']);
-            $objVaga->setId($vaga['id']);
-            $retorno = $objVaga;
+            $retorno = static::preecher($vaga);
         }
 
         return $retorno;
     }
-
 
     public static function listar($empresaId = '', $filtro = '', $status = '')
     {
@@ -79,10 +83,7 @@ abstract class VagaDTO implements DTOInterface
 
         $retorno = [];
         while ($vaga = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $objEmpresa = EmpresaDTO::recuperar($vaga['empresa_id']);
-            $objVaga = new Vaga($objEmpresa, $vaga['titulo'], $vaga['email'], $vaga['salario'], $vaga['beneficios'], $vaga['descricao'], $vaga['requisitos'], $vaga['cargaHoraria'], $vaga['status']);
-            $objVaga->setId($vaga['id']);
-            $retorno[] = $objVaga;
+            $retorno[] = static::preecher($vaga);
         }
         return $retorno;
     }
