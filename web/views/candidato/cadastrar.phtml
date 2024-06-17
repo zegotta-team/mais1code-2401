@@ -1,5 +1,10 @@
 <div class="container container-sm w-75 form-bg-white pt-4 pb-4">
     <form action="/candidato/processaCadastrar" method="post">
+    <?php if (!empty($_SESSION['FalhaAoCadastrar'])) : ?>
+    <div>
+        <?=$_SESSION['FalhaAoCadastrar'];?>
+    </div>
+<?php endif; ?>
         <input type="hidden" name="status" id="status" value="1">
         <div class="row gy-3 gy-md-4 overflow-hidden">
             <div class="col-md-6 form-floating">
@@ -11,12 +16,18 @@
                 <label for="cpf" class="form-label">CPF *</label>
             </div>
             <div class="col-6 form-floating">
-                <input type="email" class="form-control" name="email" id="email" required>
-                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" id="email" maxlength="30" required>
+                <label for="email" class="form-label">Email *</label>
+                <div class="notification" id="notification">
+                    mail@exemplo.com
+                </div>
             </div>
             <div class="col-6 form-floating">
-                <input type="password" class="form-control" name="senha" id="senha" required>
+            <input type="password" class="form-control" name="senha" id="senha" minlength="8" required>
                 <label for="senha" class="form-label">Senha *</label>
+                <div class="notification" id="notification">
+                    mínimo 8 caracteres
+                </div>
             </div>
             <div class="col-12 form-floating">
                 <textarea class="form-control" name="habilidades" id="habilidades" required style="min-height: 100px"></textarea>

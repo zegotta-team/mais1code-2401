@@ -18,13 +18,14 @@ abstract class CandidatoDTO implements DTOInterface
         $cpfSoNumero = preg_replace('/\D/', '', $candidato->getCpf());
 
         if (empty($candidato->getId())) {
-            if (!static::verificar($candidato->getCpf(), $candidato->getEmail())) {
-                $sql = "INSERT INTO candidato (nome, email, senha, habilidades, cpf, nascimento, endereco, disponibilidade, sexo, genero, status) 
+            if (!static::verificar($candidato->getCpf(), $candidato->getEmail(), $candidato->getSenha())) {
+
+                $sql = "INSERT INTO candidato (nome, email, senha, habilidades, cpf, nascimento, endereco, disponibilidade, sexo, genero, status)
                         VALUES (\"{$candidato->getNome()}\", \"{$candidato->getEmail()}\", \"{$candidato->getSenha()}\", \"{$candidato->getHabilidades()}\", '$cpfSoNumero', \"{$candidato->getNascimento()}\", \"{$candidato->getEndereco()}\", \"{$candidato->getDisponibilidade()}\", \"{$candidato->getSexo()}\", \"{$candidato->getGenero()}\", \"{$candidato->getStatus()}\")";
-            } else{
+            } else {
                 die('Dados repetidos!');
             }
-        } else{
+        } else {
             $sql = "UPDATE candidato SET ";
             $sql .= "nome = '{$candidato->getNome()}', ";
             $sql .= "email = '{$candidato->getEmail()}', ";
@@ -48,7 +49,7 @@ abstract class CandidatoDTO implements DTOInterface
         }
     }
 
-    public static function deletar($candidato) 
+    public static function deletar($candidato)
     {
         $pdo = static::conectarDB();
 
@@ -57,7 +58,7 @@ abstract class CandidatoDTO implements DTOInterface
         $stmt->execute();
     }
 
-    public static function recuperar($id) 
+    public static function recuperar($id)
     {
         $pdo = static::conectarDB();
 
@@ -67,31 +68,31 @@ abstract class CandidatoDTO implements DTOInterface
 
         $retorno = null;
 
-        while($candidato = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($candidato = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $retorno = static::preecher($candidato);
         }
 
         return $retorno;
     }
 
-    public static function listar() 
+    public static function listar()
     {
         $pdo = static::conectarDB();
 
         $sql = "SELECT * FROM candidato";
-        
+
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
         $retorno = [];
-        while($candidato = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($candidato = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $retorno[] = static::preecher($candidato);
         }
-        
+
         return $retorno;
     }
 
-    public static function autenticar(string $email, string $senha) 
+    public static function autenticar(string $email, string $senha)
     {
         $pdo = static::conectarDB();
 
@@ -101,23 +102,48 @@ abstract class CandidatoDTO implements DTOInterface
 
         $retorno = null;
 
-        while($candidato = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($candidato = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $retorno = static::preecher($candidato);
         }
 
         return $retorno;
-    } 
+    }
 
-    public static function verificar($cpf, $email) 
+    public static function verificar($cpf, $email, $senha)
     {
-        $pdo = static::conectarDB();
+        $min = 0;
+        $maxcpf = 14;
 
-        $sql = "SELECT COUNT(1) AS Total FROM candidato WHERE candidato.cpf LIKE '$cpf' OR candidato.email LIKE '$email'";
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-        $totalDeRegistros = $stmt->fetch(PDO::FETCH_ASSOC);
+            $_SESSION['FalhaAoCadastrar'] = 'Usuário inválido (usuário precisa ser um email)';
+            header('Location: /candidato/cadastrar');
+            die();
 
-        return $totalDeRegistros['Total'] != 0;
+        } elseif (strlen($cpf) != $maxcpf || strlen($email) < $min) {
+
+            $_SESSION['FalhaAoCadastrar'] = 'CPF com quantidade de caracteres não permitida';
+            header('Location: /candidato/cadastrar');
+            die();
+
+        } elseif (strlen($senha) < 8) {
+
+            $_SESSION['FalhaAoCadastrar'] = 'Senha não atende ao padrão, deve ter no mínimo 8 caracteres';
+            header('Location: /candidato/cadastrar');
+            die();
+
+        } else {
+
+            $pdo = static::conectarDB();
+
+            $sql = "SELECT COUNT(1) AS Total FROM candidato WHERE candidato.cpf LIKE '$cpf' OR candidato.email LIKE '$email'";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+
+
+            $totalDeRegistros = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $totalDeRegistros['Total'] != 0;
+        }
     }
 }
