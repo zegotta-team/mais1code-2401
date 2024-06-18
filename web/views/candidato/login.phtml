@@ -1,16 +1,11 @@
-<?php if (isset($_SESSION['error'])) : ?>
-    <div class="col-12">
-        <?= $_SESSION['error'] ?>
-    </div>
-<?php endif; ?>
+<div class="col-12">
+    <?php FlashMessage::getMessage() ?>
+</div>
+
 
 <h4>Área do candidato</h4>
 <form action="/candidato/processaLogin" method="post" onsubmit="verificaDados()">
-<?php if (!empty($_SESSION['CadastroRealizado'])) : ?>
-    <div>
-        <?=$_SESSION['CadastroRealizado'];?>
-    </div>
-<?php endif; ?>
+    <?php FlashMessage::getMessage() ?>
     <div class="row gy-3 gy-md-4 overflow-hidden mt-5">
         <div class="col-12">
             <label for="email" class="form-label">Email
@@ -64,7 +59,7 @@
             alert("login falhou");
             return false;
         } else {
-                    //alert("login concluido");
+            //alert("login concluido");
         }
 
     }

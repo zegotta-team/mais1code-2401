@@ -25,20 +25,18 @@ class AutenticacaoController
         if (!empty($usuario)) {
             header('Location: /vaga/listar');
             $_SESSION['usuario'] = $usuario;
-            $_SESSION['error'] = null;
         } else {
             header('Location: /autenticacao');
             $_SESSION['usuario'] = null;
-            $_SESSION['error'] = 'Falha ao autenticar';
+            FlashMessage::addMessage('Falha ao autenticar', FlashMessage::FLASH_ERROR);
         }
     }
 
     public function processaLogout()
     {
-        header('Location: /autenticacao');
         session_start();
         session_destroy();
-
+        header('Location: /autenticacao');
     }
 
     public static function exigeSessao()

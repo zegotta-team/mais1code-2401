@@ -118,22 +118,18 @@ abstract class CandidatoDTO implements DTOInterface
         $maxcpf = 14;
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-
-            $_SESSION['FalhaAoCadastrar'] = 'Usuário inválido (usuário precisa ser um email)';
+            FlashMessage::addMessage('Usuário inválido (usuário precisa ser um email)', FlashMessage::FLASH_ERROR);
             header('Location: /candidato/cadastrar');
             die();
         } elseif (strlen($cpf) != $maxcpf || strlen($email) < $min) {
-
-            $_SESSION['FalhaAoCadastrar'] = 'CPF com quantidade de caracteres não permitida';
+            FlashMessage::addMessage('CPF com quantidade de caracteres não permitida', FlashMessage::FLASH_ERROR);
             header('Location: /candidato/cadastrar');
             die();
         } elseif (strlen($senha) < 8) {
-
-            $_SESSION['FalhaAoCadastrar'] = 'Senha não atende ao padrão, deve ter no mínimo 8 caracteres';
+            FlashMessage::addMessage('Senha não atende ao padrão, deve ter no mínimo 8 caracteres', FlashMessage::FLASH_ERROR);
             header('Location: /candidato/cadastrar');
             die();
         } else {
-
             $pdo = static::conectarDB();
 
             $sql = "SELECT COUNT(1) AS Total FROM candidato WHERE candidato.cpf LIKE '$cpf' OR candidato.email LIKE '$email'";
