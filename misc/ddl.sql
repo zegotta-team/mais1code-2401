@@ -50,3 +50,10 @@ CREATE TABLE candidato
     `status` INTEGER NOT NULL DEFAULT 1
 )
 
+CREATE TABLE candidato_vaga (
+    candidato_id INTEGER NOT NULL,
+    vaga_id INTEGER NOT NULL,
+    ultima_desistencia TEXT NULL,
+    status INTEGER NOT NULL,
+    PRIMARY KEY (candidato_id, vaga_id)
+);
