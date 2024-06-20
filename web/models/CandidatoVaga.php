@@ -1,40 +1,40 @@
 <?php
 
-class Candidato_Vaga
+class CandidatoVaga
 {
-    private $candidato_id;
-    private $vaga_id;
+    private Candidato $candidato;
+    private Vaga $vaga;
     private $ultima_desistencia;
     private $status;
 
-    public function __construct($candidato_id, $vaga_id, $ultima_desistencia, $status) 
+    public function __construct($candidato, $vaga, $ultima_desistencia, $status) 
     {
-        $this->setCandidatoId($candidato_id);
-        $this->setVagaId($vaga_id);
+        $this->setCandidato($candidato);
+        $this->setVaga($vaga);
         $this->setUltimaDesistencia($ultima_desistencia);
         $this->setStatus($status);
     }
 
-    public function setCandidatoId($candidato_id) 
+    public function setCandidato($candidato) 
     {
-        $this->candidato_id = $candidato_id;
+        $this->candidato = $candidato;
         return $this;
     }
 
-    public function getCandidatoId() 
+    public function getCandidato() 
     {
-        return $this->candidato_id;
+        return $this->candidato;
     }
 
-    public function setVagaId($vaga_id) 
+    public function setVaga($vaga) 
     {
-        $this->vaga_id = $vaga_id;
+        $this->vaga = $vaga;
         return $this;
     }
 
-    public function getVagaId() 
+    public function getVaga() 
     {
-        return $this->vaga_id;
+        return $this->vaga;
     }
 
     public function setUltimaDesistencia($ultima_desistencia) 
