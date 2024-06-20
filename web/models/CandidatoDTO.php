@@ -21,7 +21,6 @@ abstract class CandidatoDTO implements DTOInterface
             if (!static::verificar($candidato->getCpf(), $candidato->getEmail(), $candidato->getSenha())) {
                 $senhaHash = password_hash($candidato->getSenha(), PASSWORD_ARGON2ID);
                 $sql = "INSERT INTO candidato (nome, email, senha, habilidades, cpf, nascimento, endereco, disponibilidade, sexo, genero, status)
-
                         VALUES (\"{$candidato->getNome()}\", \"{$candidato->getEmail()}\", \"{$senhaHash}\", \"{$candidato->getHabilidades()}\", '$cpfSoNumero', \"{$candidato->getNascimento()}\", \"{$candidato->getEndereco()}\", \"{$candidato->getDisponibilidade()}\", \"{$candidato->getSexo()}\", \"{$candidato->getGenero()}\", \"{$candidato->getStatus()}\")";
             } else {
                 die('Dados repetidos!');
