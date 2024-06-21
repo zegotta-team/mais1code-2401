@@ -1,20 +1,16 @@
 <div class="container container-sm w-50">
     <form method="post" action="/usuario/salvar">
-        <input type="hidden" name="usuarioId" value="<?= isset($usuarioEdicao) ? $usuarioEdicao->getId() : '' ?>"/>
+        <input type="hidden" name="usuarioId" value="<?= isset($usuarioAlteracao) ? $usuarioAlteracao->getId() : '' ?>"/>
         <div class="row g-3 align-items-center mb-2">
-            <label for="nome" class="col-form-label text-end align-content-end col-md-2">Nome</label>
+            <label for="senhaAtual" class="col-form-label text-end align-content-end col-md-2">Digite a senha atual <span class="text-danger">*</span></label>
             <div class="col-md-10">
-                <input type="text" class="form-control" name="nome" id="nome" value="<?= isset($usuarioEdicao) ? $usuarioEdicao->getNome() : '' ?>" placeholder="Nome do usuário">
+            <input type="password" class="form-control" name="senhaAtual" id="senhaAtual" minlength="8" required placeholder="SenhaAtual">
             </div>
         </div>
         <div class="row g-3 align-items-center mb-2">
-            <label for="cpf" class="col-form-label text-end align-content-end col-md-2">CPF <span class="text-danger">*</span></label></label>
+            <label for="novaSenha" class="col-form-label text-end align-content-end col-md-2">Digite a nova senha <span class="text-danger">*</span></label></label>
             <div class="col-md-3">
-                <input type="text" class="form-control" name="cpf" id="cpf" value="<?= isset($usuarioEdicao) ? $usuarioEdicao->getCpf() : '' ?>" placeholder="CPF">
-            </div>
-            <label for="email" class="col-form-label text-end align-content-end col-md-2">E-mail</label>
-            <div class="col-md-5">
-                <input type="text" class="form-control" name="email" id="email" value="<?= isset($usuarioEdicao) ? $usuarioEdicao->getEmail() : '' ?>" placeholder="E-mail do usuário">
+            <input type="password" class="form-control" name="novaSenha" id="novaSenha" minlength="8" required placeholder="NovaSenha">
             </div>
         </div>
 

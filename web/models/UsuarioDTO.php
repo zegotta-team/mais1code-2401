@@ -108,4 +108,27 @@ abstract class UsuarioDTO implements DTOInterface
         return $retorno;
     }
 
+    public static function verificarSenha($senha)
+    {
+
+        if (strlen($senha) < 8) {
+            FlashMessage::addMessage('Senha não atende ao padrão, deve ter no mínimo 8 caracteres', FlashMessage::FLASH_ERROR);
+            header('Location: /usuario/trocarsenha');
+            die();
+        } else {
+            $pdo = static::conectarDB();
+
+            $sql = "SELECT COUNT(1) AS Total FROM usuario WHERE usuario.senha LIKE '$senha'";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+
+
+            $totalDeRegistros = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $totalDeRegistros['Total'] != 0;
+        }
+
+            
+        }
+
 }

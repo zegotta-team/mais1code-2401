@@ -79,7 +79,7 @@ class UsuarioController
             die('Sai pilantra, usuario não é da sua turma');
         }
 
-        View::renderizar('usuario/trocarsenha', compact('usuarioEdicao'));
+        View::renderizar('usuario/trocarsenha', compact('usuarioAlteracao'));
     }
 
     public function excluir()
