@@ -64,6 +64,24 @@ class UsuarioController
         View::renderizar('usuario/formulario', compact('usuarioEdicao'));
     }
 
+    public function alterarSenha()
+    {
+        AutenticacaoController::exigeSessao();
+
+        $idUsuario = $_GET['id'];
+        $usuarioAlteracao = UsuarioDTO::recuperar($idUsuario);
+
+        if (empty($usuarioAlteracao)) {
+            die('Usuario não encontrado');
+        }
+
+        if ($_SESSION['usuario']->getEmpresa()->getId() !== $usuarioAlteracao->getEmpresa()->getId()) {
+            die('Sai pilantra, usuario não é da sua turma');
+        }
+
+        View::renderizar('usuario/trocarsenha', compact('usuarioEdicao'));
+    }
+
     public function excluir()
     {
         AutenticacaoController::exigeSessao();
