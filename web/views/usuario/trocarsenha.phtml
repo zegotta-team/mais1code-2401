@@ -1,16 +1,9 @@
 <div class="container container-sm w-50">
     <form method="post" action="/usuario/salvar">
-        <input type="hidden" name="usuarioId" value="<?= isset($usuarioAlteracao) ? $usuarioAlteracao->getId() : '' ?>"/>
         <div class="row g-3 align-items-center mb-2">
-            <label for="senhaAtual" class="col-form-label text-end align-content-end col-md-2">Digite a senha atual <span class="text-danger">*</span></label>
-            <div class="col-md-10">
-            <input type="password" class="form-control" name="senhaAtual" id="senhaAtual" minlength="8" required placeholder="SenhaAtual">
-            </div>
-        </div>
-        <div class="row g-3 align-items-center mb-2">
-            <label for="novaSenha" class="col-form-label text-end align-content-end col-md-2">Digite a nova senha <span class="text-danger">*</span></label></label>
+            <label for="senha" class="col-form-label text-end align-content-end col-md-2">Digite a nova senha <span class="text-danger">*</span></label></label>
             <div class="col-md-3">
-            <input type="password" class="form-control" name="novaSenha" id="novaSenha" minlength="8" required placeholder="NovaSenha">
+            <input type="password" class="form-control" name="senha" id="senha" minlength="8" required placeholder="senha">
             </div>
         </div>
 
