@@ -26,10 +26,14 @@ abstract class CandidatoVagaDTO implements DTOInterface
         $stmt->execute();
     }
 
-    public static function recuperar($candidato_id)
+    public static function recuperar($candidato_id, $vaga_id = '')
     {
+        if (empty($vaga_id)) {
+            return null;
+        } 
+
         $pdo = static::conectarDB();
-        $sql = "SELECT * FROM candidato_vaga WHERE candidato_id = $candidato_id";
+        $sql = "SELECT * FROM candidato_vaga WHERE candidato_id = $candidato_id AND vaga_id = $vaga_id";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
@@ -42,13 +46,15 @@ abstract class CandidatoVagaDTO implements DTOInterface
         return $retorno;
     }
 
-    public static function listar($candidato_id = '')
+    public static function listar($candidato_id = '', $vaga_id  = '')
     {
         $pdo = static::conectarDB();
         $sql = "SELECT candidato_vaga.candidato_id, vaga.* 
                 FROM candidato_vaga 
                 INNER JOIN vaga ON id  = candidato_vaga.vaga_id 
-                WHERE candidato_vaga.candidato_id = $candidato_id";
+                WHERE 1 ";
+        $sql .= !empty($candidato_id) ? "AND candidato_vaga.candidato_id = $candidato_id " : '';
+        $sql .= !empty($vaga_id) ? "AND candidato_vaga.vaga_id = $vaga_id " : '';
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
