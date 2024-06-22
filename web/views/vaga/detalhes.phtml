@@ -12,8 +12,8 @@
     <br>
     <div>
         <?php if ($vaga->getStatus() == 1): ?>
-            Quer se candidatar? Envie e-mail para
-            <a href="mailto:<?= $vaga->getEmail() ?>"><?= $vaga->getEmail() ?></a>
+            <button class="btn btn-primary">Quer se candidatar? Clique aqui </button>
+
         <?php else: ?>
             Essa vaga já foi encerrada. =(
         <?php endif; ?>
