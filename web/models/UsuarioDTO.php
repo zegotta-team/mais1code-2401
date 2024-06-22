@@ -108,15 +108,4 @@ abstract class UsuarioDTO implements DTOInterface
         return $retorno;
     }
 
-    public static function salvarSenha($usuario)
-    {
-        $pdo = static::conectarDB();
-        if (!empty($usuario->getId())) {
-            $sql = "UPDATE usuario SET ";
-            $sql .= "senha = '{$usuario->getSenha()}' ";
-            $sql .= "WHERE id = '{$usuario->getId()}' ";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute();
-        }
-    }
 }

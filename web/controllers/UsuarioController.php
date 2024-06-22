@@ -67,38 +67,16 @@ class UsuarioController
     {
         AutenticacaoController::exigeSessao();
 
-        $idUsuario = $_GET['id'];
-        $usuarioAlteracao = UsuarioDTO::recuperar($idUsuario);
-
-        if (empty($usuarioAlteracao)) {
-            die('Usuario não encontrado');
-        }
-
-        if ($_SESSION['usuario']->getEmpresa()->getId() !== $usuarioAlteracao->getEmpresa()->getId()) {
-            die('Sai pilantra, usuario não é da sua turma');
-        }
-
-        View::renderizar('usuario/trocarsenha', compact('usuarioAlteracao'));
+        View::renderizar('usuario/trocarsenha');
     }
 
     public function salvarSenha()
     {
         AutenticacaoController::exigeSessao();
 
-        if (!empty($_POST['usuarioId'])) {
-            $usuario = UsuarioDTO::recuperar($_POST['usuarioId']);
-
-            if (empty($usuario)) {
-                die('Usuario não encontrado');
-            }
-
-            if ($_SESSION['usuario']->getEmpresa()->getId() !== $usuario->getEmpresa()->getId()) {
-                die('Sai pilantra, o usuario não é da sua turma');
-            }
-
-            $usuario->setSenha(password_hash($_POST['senha'], PASSWORD_ARGON2ID));
-            UsuarioDTO::salvarSenha($usuario);
-        }
+        $usuario = UsuarioDTO::recuperar($_SESSION['usuario']->getId());
+        $usuario->setSenha(password_hash($_POST['senha'], PASSWORD_ARGON2ID));
+        UsuarioDTO::salvar($usuario);
         header('Location: /usuario/listar');
     }
 

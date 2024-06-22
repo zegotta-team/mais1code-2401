@@ -1,9 +1,8 @@
 <div class="container container-sm w-50">
     <form method="post" action="/usuario/salvarSenha">
-    <input type="hidden" name="usuarioId" value="<?= isset($usuarioAlteracao) ? $usuarioAlteracao->getId() : '' ?>"/>
         <div class="row g-3 align-items-center mb-2">
-            <label for="senha" class="col-form-label text-end align-content-end col-md-2">Digite a nova senha <span class="text-danger">*</span></label></label>
-            <div class="col-md-3">
+            <label for="senha" class="col-form-label text-end align-content-end col-md-4">Digite a nova senha <span class="text-danger">*</span></label></label>
+            <div class="col-md-5">
             <input type="password" class="form-control" name="senha" id="senha" minlength="8" required placeholder="senha">
             </div>
         </div>
