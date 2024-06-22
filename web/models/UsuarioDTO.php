@@ -115,6 +115,8 @@ abstract class UsuarioDTO implements DTOInterface
             $sql = "UPDATE usuario SET ";
             $sql .= "senha = '{$usuario->getSenha()}' ";
             $sql .= "WHERE id = '{$usuario->getId()}' ";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
         }
     }
 }
