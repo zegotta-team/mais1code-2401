@@ -7,8 +7,8 @@ class UsuarioController
     {
     }
 
-    public function index() {
-
+    public function index()
+    {
     }
 
     public function cadastrar()
@@ -38,7 +38,6 @@ class UsuarioController
             $usuario->setNome($_POST['nome'])
                 ->setCpf($_POST['cpf'])
                 ->setEmail($_POST['email']);
-
         }
 
         UsuarioDTO::salvar($usuario);
@@ -80,15 +79,13 @@ class UsuarioController
         }
 
         View::renderizar('usuario/trocarsenha', compact('usuarioAlteracao'));
-
     }
 
     public function salvarSenha()
     {
         AutenticacaoController::exigeSessao();
 
-        if (!empty($_POST['usuarioId']))
-        {
+        if (!empty($_POST['usuarioId'])) {
             $usuario = UsuarioDTO::recuperar($_POST['usuarioId']);
 
             if (empty($usuario)) {
@@ -99,9 +96,8 @@ class UsuarioController
                 die('Sai pilantra, o usuario não é da sua turma');
             }
 
-            $usuario->setSenha($_POST['senha']);
+            $usuario->setSenha(password_hash($_POST['senha'], PASSWORD_ARGON2ID));
             UsuarioDTO::salvarSenha($usuario);
-
         }
         header('Location: /usuario/listar');
     }
