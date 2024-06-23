@@ -117,7 +117,7 @@ class VagaController
         $candidato = $_SESSION['candidato'];
         $vaga = VagaDTO::recuperar($_GET['id']);
 
-        $candidatoVaga = new CandidatoVaga($candidato, $vaga, '', 1);
+        $candidatoVaga = new CandidatoVaga($candidato, $vaga, '', CandidatoVagaStatusEnum::Ativa);
         CandidatoVagaDTO::salvar($candidatoVaga);
 
         header('Location: /vaga/detalhes');
