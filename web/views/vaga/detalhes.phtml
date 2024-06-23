@@ -11,11 +11,14 @@
     <p>Carga Horária: <?= $vaga->getCargaHoraria() ?></p>
     <br>
     <div>
-        <?php if ($vaga->getStatus() == 1): ?>
-            <button class="btn btn-primary">Quer se candidatar? Clique aqui </button>
+        <?php if (!CandidatoController::estaLogado()): ?>
+
+            <button class="btn btn-primary" href="#">Quer se candidatar? Clique aqui </button>
 
         <?php else: ?>
-            Essa vaga já foi encerrada. =(
+
+            <button class="btn btn-primary" href="/candidato/login">Quer se candidatar? Efetue Login</button>
+
         <?php endif; ?>
     </div>
 </div>
