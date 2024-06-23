@@ -111,11 +111,14 @@ class VagaController
     public function desistirCandidatura()
     {
         AutenticacaoController::exigeSessao();
+        
+        $dataHora = date("Y-m-d H:i:s");
 
         $candidatoVaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(), $_GET['id']);
-        $candidatoVaga->setStatus(VagaStatusEnum::Inativa->value);
-        $dataHora = date("Y-m-d H:i:s");
+
+        $candidatoVaga->setStatus(VagaStatusEnum::Inativa->value);       
         $candidatoVaga->setUltimaDesistencia($dataHora);
+
         CandidatoVagaDTO::salvar($candidatoVaga);
 
         header('Location: /vaga/detalhes');
