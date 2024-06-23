@@ -116,11 +116,25 @@ class VagaController
 
         $candidatoVaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(), $_GET['id']);
 
-        $candidatoVaga->setStatus(VagaStatusEnum::Inativa->value);       
+        $candidatoVaga->setStatus(CandidatoVagaStatusEnum::Inativa->value);       
         $candidatoVaga->setUltimaDesistencia($dataHora);
 
         CandidatoVagaDTO::salvar($candidatoVaga);
 
         header('Location: /vaga/detalhes');
     }
+
+    public function processaCandidatura() 
+    {
+        session_start();
+
+        $candidato = $_SESSION['candidato'];
+        $vaga = VagaDTO::recuperar($_GET['id']);
+
+        $candidatoVaga = new CandidatoVaga($candidato, $vaga, '', CandidatoVagaStatusEnum::Ativa->value);
+        CandidatoVagaDTO::salvar($candidatoVaga);
+
+        header('Location: /vaga/detalhes');
+    }
+
 }
