@@ -10,7 +10,7 @@ class VagaController
     {
         session_start();
 
-        $vagas = VagaDTO::listar('', '',VagaStatusEnum::Ativa->value);
+        $vagas = VagaDTO::listar('', '', VagaStatusEnum::Ativa->value);
         View::renderizar('vaga/painel', compact('vagas'), 'painel-vagas');
     }
 
@@ -46,7 +46,6 @@ class VagaController
                 ->setRequisitos($_POST['requisitos'])
                 ->setCargaHoraria($_POST['cargaHoraria'])
                 ->setStatus($_POST['status']);
-
         }
         VagaDTO::salvar($vaga);
 
@@ -107,7 +106,22 @@ class VagaController
         $vaga = VagaDTO::recuperar($_GET['id']);
 
         View::renderizar('vaga/detalhes', compact('vaga'), 'painel-vagas');
+    }
 
+    public function desistirCandidatura()
+    {
+        AutenticacaoController::exigeSessao();
+        
+        $dataHora = date("Y-m-d H:i:s");
+
+        $candidatoVaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(), $_GET['id']);
+
+        $candidatoVaga->setStatus(CandidatoVagaStatusEnum::Inativa->value);       
+        $candidatoVaga->setUltimaDesistencia($dataHora);
+
+        CandidatoVagaDTO::salvar($candidatoVaga);
+
+        header('Location: /vaga/detalhes');
     }
 
     public function processaCandidatura() 
