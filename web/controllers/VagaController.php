@@ -110,17 +110,15 @@ class VagaController
 
     }
 
-    //Nome da action: processaCandidatura ou candidatar
     public function processaCandidatura() 
     {
-        //session_start();
+        session_start();
 
         $candidato = $_SESSION['candidato'];
         $vaga = VagaDTO::recuperar($_GET['id']);
 
-        //Pensar na criação do Enum de status de CandidatoVaga
         $candidatoVaga = new CandidatoVaga($candidato, $vaga, '', 1);
-        //CandidatoVagaDTO::salvar($candidatoVaga);
+        CandidatoVagaDTO::salvar($candidatoVaga);
 
         header('Location: /vaga/detalhes');
     }
