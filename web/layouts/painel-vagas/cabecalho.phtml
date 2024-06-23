@@ -14,7 +14,7 @@
     <div class="container-fluid">
         <a class="navbar-brand logo" href="/autenticacao"></a>
         <div class="navbar-text">
-            <?php if (!CandidatoController::estaLogado()): ?>
+            <?php if (CandidatoController::estaLogado()): ?>
                 <span style="font-size: 12px"><b><?= $_SESSION['candidato']->getNome() ?></b>
                     <a style="margin-left: 5px;" class="link-secondary text-decoration-none" href="/candidato/processaLogout">Sair</a>
                 </span>

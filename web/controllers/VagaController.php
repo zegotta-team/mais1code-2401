@@ -10,7 +10,7 @@ class VagaController
     {
         session_start();
 
-        $vagas = VagaDTO::listar('', '',VagaStatusEnum::Ativa->value);
+        $vagas = VagaDTO::listar('', '', VagaStatusEnum::Ativa->value);
         View::renderizar('vaga/painel', compact('vagas'), 'painel-vagas');
     }
 
@@ -46,7 +46,6 @@ class VagaController
                 ->setRequisitos($_POST['requisitos'])
                 ->setCargaHoraria($_POST['cargaHoraria'])
                 ->setStatus($_POST['status']);
-
         }
         VagaDTO::salvar($vaga);
 
@@ -105,9 +104,44 @@ class VagaController
         session_start();
 
         $vaga = VagaDTO::recuperar($_GET['id']);
+        if (!empty($_SESSION['candidato'])) {
+            $candidato_vaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(), $vaga->getId());
+        } else {
+            $candidato_vaga = null;
+        }
 
-        View::renderizar('vaga/detalhes', compact('vaga'), 'painel-vagas');
+        View::renderizar('vaga/detalhes', compact('vaga', 'candidato_vaga'), 'painel-vagas');
+    }
 
+    public function desistirCandidatura()
+    {
+        session_start();
+        $dataHora = date("Y-m-d H:i:s");
+
+        $candidatoVaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']?->getId(), $_GET['id']);
+
+        $candidatoVaga->setStatus(CandidatoVagaStatusEnum::Inativa->value);
+        $candidatoVaga->setUltimaDesistencia($dataHora);
+
+        CandidatoVagaDTO::salvar($candidatoVaga);
+
+        header('Location: /vaga/exibir?id='.$_GET['id']);
+    }
+
+    public function processaCandidatura()
+    {
+        session_start();
+
+        $candidato = $_SESSION['candidato'];
+        $vaga = VagaDTO::recuperar($_GET['id']);
+
+        $historico = CandidatoVagaDTO::recuperar($candidato->getId(), $vaga->getId());
+        $ultimaDesistencia = empty($historico) ? '' : $historico->getUltimaDesistencia();
+
+        $candidatoVaga = new CandidatoVaga($candidato, $vaga, $ultimaDesistencia, CandidatoVagaStatusEnum::Ativa->value);
+        CandidatoVagaDTO::salvar($candidatoVaga);
+
+        header('Location: /vaga/exibir?id='.$_GET['id']);
     }
 
 }

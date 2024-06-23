@@ -1,4 +1,3 @@
-DROP TABLE empresa;
 CREATE TABLE empresa
 (
     id        INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -48,5 +47,12 @@ CREATE TABLE candidato
     sexo TEXT NOT NULL,
     genero TEXT NOT NULL,
     `status` INTEGER NOT NULL DEFAULT 1
-)
+);
 
+CREATE TABLE candidato_vaga (
+    candidato_id INTEGER NOT NULL,
+    vaga_id INTEGER NOT NULL,
+    ultima_desistencia TEXT NULL,
+    `status` INTEGER NOT NULL,
+    PRIMARY KEY (candidato_id, vaga_id)
+);
