@@ -4,7 +4,7 @@ abstract class UsuarioDTO implements DTOInterface
 {
     use DbTrait;
 
-    public static function preecher($dados)
+    public static function preencher($dados)
     {
         $empresa = EmpresaDTO::recuperar($dados['empresa_id']);
         $usuario = new Usuario($empresa, $dados['cpf'], $dados['nome'], $dados['email'], $dados['senha']);
@@ -64,7 +64,7 @@ abstract class UsuarioDTO implements DTOInterface
 
         $retorno = null;
         while ($usuario = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $retorno = static::preecher($usuario);
+            $retorno = static::preencher($usuario);
         }
 
         return $retorno;
@@ -83,7 +83,7 @@ abstract class UsuarioDTO implements DTOInterface
 
         $retorno = [];
         while ($usuario = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $retorno[] = static::preecher($usuario);;
+            $retorno[] = static::preencher($usuario);;
         }
 
         return $retorno;
@@ -101,7 +101,7 @@ abstract class UsuarioDTO implements DTOInterface
         $retorno = null;
         while ($usuario = $stmt->fetch(PDO::FETCH_ASSOC)) {
             if (password_verify($senha, $usuario['senha'])) {
-                $retorno = static::preecher($usuario);
+                $retorno = static::preencher($usuario);
             }
         }
 

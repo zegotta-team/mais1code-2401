@@ -4,7 +4,7 @@ abstract class VagaDTO implements DTOInterface
 {
     use DbTrait;
 
-    public static function preecher($dados)
+    public static function preencher($dados)
     {
         $empresa = EmpresaDTO::recuperar($dados['empresa_id']);
         $vaga = new Vaga($empresa, $dados['titulo'], $dados['email'], $dados['salario'], $dados['beneficios'], $dados['descricao'], $dados['requisitos'], $dados['cargaHoraria'], $dados['status']);
@@ -61,7 +61,7 @@ abstract class VagaDTO implements DTOInterface
 
         $retorno = null;
         while ($vaga = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $retorno = static::preecher($vaga);
+            $retorno = static::preencher($vaga);
         }
 
         return $retorno;
@@ -83,7 +83,7 @@ abstract class VagaDTO implements DTOInterface
 
         $retorno = [];
         while ($vaga = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $retorno[] = static::preecher($vaga);
+            $retorno[] = static::preencher($vaga);
         }
         return $retorno;
     }
