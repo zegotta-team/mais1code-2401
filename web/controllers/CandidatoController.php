@@ -48,8 +48,7 @@ class CandidatoController
 
     public static function estaLogado()
     {
-
-        return !isset($_SESSION['candidato']);
+        return !empty($_SESSION['candidato']);
     }
 
     public function processaLogout()
