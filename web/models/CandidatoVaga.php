@@ -58,4 +58,11 @@ class CandidatoVaga
     {
         return $this->status;
     }
+    public function desistenciaLiberada()
+    {
+        $tempo = strtotime($this->ultima_desistencia);
+        $agora = time();
+        $diferenca = ($agora - $tempo) / 3600;
+        return $diferenca >= 24;
+    }
 }

@@ -12,13 +12,21 @@
     <br>
     <div>
         <?php if (!CandidatoController::estaLogado()): ?>
-
-            <button class="btn btn-primary" href="#">Quer se candidatar? Clique aqui </button>
-
+            <?php if(empty($canditato_vaga)) : ?>
+                <a class="btn btn-primary" href="/vaga/processaCandidatura?id=<?=$vaga->getId()?>">Quer se candidatar? Clique aqui </a>
+            <?php else: ?>
+                <?php if($canditato_vaga->getStatus() == CandidatoVagaStatusEnum::Ativa->value) : ?>
+                    <a class="btn btn-primary" href="/vaga/desistirCandidatura?id=<?=$vaga->getId()?>">Deseja desistir da candidatura?</a>
+                <?php else : ?>
+                    <?php if($canditato_vaga->desistenciaLiberada()): ?>
+                       <a class="btn btn-primary" href="/vaga/processaCandidatura?id=<?=$vaga->getId()?>">Quer se candidatar? Clique aqui </a>
+                    <?php else : ?>
+                        <button class="btn btn-primary">Aguarde 24 horas, para candidatar-se novamente!</button>
+                    <?php endif;?>
+                <?php endif;?>
+            <?php endif?>
         <?php else: ?>
-
-            <button class="btn btn-primary" href="/candidato/login">Quer se candidatar? Efetue Login</button>
-
-        <?php endif; ?>
+            <a class="btn btn-primary" href="/candidato/login">Quer se candidatar? Efetue Login</a>
+        <?php endif;?>
     </div>
 </div>

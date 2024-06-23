@@ -16,11 +16,12 @@ abstract class CandidatoVagaDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
 
-        if (empty($candidatoVaga->getCandidato()->getId() && $candidatoVaga->getVaga()->getId())) {
-            $sql = "INSERT INTO candidato_vaga (candidato_id, vaga_id, ultima_desistencia, `status`) VALUES ({$candidatoVaga->getCandidato()->getId()}, {$candidatoVaga->getVaga()->getId()}, \"{$candidatoVaga->getUltimaDesistencia()}\", \"{$candidatoVaga->getStatus()}\")";
-        } else {
-            $sql = "UPDATE candidato_vaga SET ultima_desistencia = '{$candidatoVaga->getUltimaDesistencia()}', '{{$candidatoVaga->getStatus()}' WHERE candidato_id = '{$candidatoVaga->getCandidato()->getId()}' AND vaga_id = '{$candidatoVaga->getVaga()->getId()}'";
-        }
+
+            $sql = "INSERT INTO candidato_vaga (candidato_id, vaga_id, ultima_desistencia, `status`) 
+        VALUES ({$candidatoVaga->getCandidato()->getId()}, {$candidatoVaga->getVaga()->getId()}, \"{$candidatoVaga->getUltimaDesistencia()}\", \"{$candidatoVaga->getStatus()}\")";
+
+
+
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
