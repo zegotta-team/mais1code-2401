@@ -11,22 +11,26 @@
     <p>Carga Horária: <?= $vaga->getCargaHoraria() ?></p>
     <br>
     <div>
-        <?php if (CandidatoController::estaLogado()): ?>
-            <?php if (empty($candidato_vaga)) : ?>
-                <a class="btn btn-primary" href="/vaga/processaCandidatura?id=<?= $vaga->getId() ?>">Quer se candidatar? Clique aqui </a>
-            <?php else: ?>
-                <?php if ($candidato_vaga->getStatus() == CandidatoVagaStatusEnum::Ativa->value) : ?>
-                    <a class="btn btn-primary" href="/vaga/desistirCandidatura?id=<?= $vaga->getId() ?>">Deseja desistir da candidatura?</a>
-                <?php else : ?>
-                    <?php if ($candidato_vaga->desistenciaLiberada()): ?>
-                        <a class="btn btn-primary" href="/vaga/processaCandidatura?id=<?= $vaga->getId() ?>">Quer se candidatar? Clique aqui </a>
+        <?php if ($vaga->getStatus() == VagaStatusEnum::Ativa->value): ?>
+            <?php if (CandidatoController::estaLogado()): ?>
+                <?php if (empty($candidato_vaga)) : ?>
+                    <a class="btn btn-primary" href="/vaga/processaCandidatura?id=<?= $vaga->getId() ?>">Quer se candidatar? Clique aqui </a>
+                <?php else: ?>
+                    <?php if ($candidato_vaga->getStatus() == CandidatoVagaStatusEnum::Ativa->value) : ?>
+                        <a class="btn btn-primary" href="/vaga/desistirCandidatura?id=<?= $vaga->getId() ?>">Deseja desistir da candidatura?</a>
                     <?php else : ?>
-                        <button class="btn btn-primary">Aguarde 24 horas, para candidatar-se novamente!</button>
+                        <?php if ($candidato_vaga->desistenciaLiberada()): ?>
+                            <a class="btn btn-primary" href="/vaga/processaCandidatura?id=<?= $vaga->getId() ?>">Quer se candidatar? Clique aqui </a>
+                        <?php else : ?>
+                            <button class="btn btn-primary">Aguarde 24 horas, para candidatar-se novamente!</button>
+                        <?php endif; ?>
                     <?php endif; ?>
-                <?php endif; ?>
-            <?php endif ?>
+                <?php endif ?>
+            <?php else: ?>
+                <a class="btn btn-primary" href="/candidato/login">Quer se candidatar? Efetue Login</a>
+            <?php endif; ?>
         <?php else: ?>
-            <a class="btn btn-primary" href="/candidato/login">Quer se candidatar? Efetue Login</a>
+            <button class="btn btn-secondary">Essa vaga já foi encerrada. =(</button>
         <?php endif; ?>
     </div>
 </div>
