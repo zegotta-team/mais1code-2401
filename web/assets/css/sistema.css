@@ -64,11 +64,11 @@ th.minimal {
     left: 0;
     right: 0;
     padding: 10px 20px;
-    position: absolute;
     font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 11px;
     color: #a3a8ac;
     text-align: center;
+
 }
 
 .error404 {

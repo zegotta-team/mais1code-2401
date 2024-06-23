@@ -4,7 +4,7 @@ abstract class UsuarioDTO implements DTOInterface
 {
     use DbTrait;
 
-    public static function preecher($dados)
+    public static function preencher($dados)
     {
         $empresa = EmpresaDTO::recuperar($dados['empresa_id']);
         $usuario = new Usuario($empresa, $dados['cpf'], $dados['nome'], $dados['email'], $dados['senha']);
@@ -20,12 +20,12 @@ abstract class UsuarioDTO implements DTOInterface
         $cpfSoNumero = preg_replace('/\D/', '', $usuario->getCpf());
 
         if (empty($usuario->getId())) {
-//            if (!static::verificaDadosExistentes($usuario->getNome(), $usuario->getCnpj(), $usuario->getUsuario())) {
+            //            if (!static::verificaDadosExistentes($usuario->getNome(), $usuario->getCnpj(), $usuario->getUsuario())) {
             $sql = "INSERT INTO usuario(empresa_id, cpf, nome, email, senha)
                     VALUES (\"{$usuario->getEmpresa()->getId()}\", '$cpfSoNumero', \"{$usuario->getNome()}\", \"{$usuario->getEmail()}\", \"{$usuario->getSenha()}\")";
-//            } else {
-//                return null;
-//            }
+            //            } else {
+            //                return null;
+            //            }
         } else {
             $sql = "UPDATE usuario SET ";
             $sql .= "empresa_id = '{$usuario->getEmpresa()->getId()}', ";
@@ -64,7 +64,7 @@ abstract class UsuarioDTO implements DTOInterface
 
         $retorno = null;
         while ($usuario = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $retorno = static::preecher($usuario);
+            $retorno = static::preencher($usuario);
         }
 
         return $retorno;
@@ -83,7 +83,7 @@ abstract class UsuarioDTO implements DTOInterface
 
         $retorno = [];
         while ($usuario = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $retorno[] = static::preecher($usuario);;
+            $retorno[] = static::preencher($usuario);;
         }
 
         return $retorno;
@@ -101,7 +101,7 @@ abstract class UsuarioDTO implements DTOInterface
         $retorno = null;
         while ($usuario = $stmt->fetch(PDO::FETCH_ASSOC)) {
             if (password_verify($senha, $usuario['senha'])) {
-                $retorno = static::preecher($usuario);
+                $retorno = static::preencher($usuario);
             }
         }
 

@@ -10,6 +10,6 @@ interface DTOInterface {
 
     public static function listar();
 
-    public static function preecher($dados);
+    public static function preencher($dados);
 
 }
