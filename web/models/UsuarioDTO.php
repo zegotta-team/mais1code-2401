@@ -20,12 +20,12 @@ abstract class UsuarioDTO implements DTOInterface
         $cpfSoNumero = preg_replace('/\D/', '', $usuario->getCpf());
 
         if (empty($usuario->getId())) {
-//            if (!static::verificaDadosExistentes($usuario->getNome(), $usuario->getCnpj(), $usuario->getUsuario())) {
+            //            if (!static::verificaDadosExistentes($usuario->getNome(), $usuario->getCnpj(), $usuario->getUsuario())) {
             $sql = "INSERT INTO usuario(empresa_id, cpf, nome, email, senha)
                     VALUES (\"{$usuario->getEmpresa()->getId()}\", '$cpfSoNumero', \"{$usuario->getNome()}\", \"{$usuario->getEmail()}\", \"{$usuario->getSenha()}\")";
-//            } else {
-//                return null;
-//            }
+            //            } else {
+            //                return null;
+            //            }
         } else {
             $sql = "UPDATE usuario SET ";
             $sql .= "empresa_id = '{$usuario->getEmpresa()->getId()}', ";
