@@ -104,8 +104,13 @@ class VagaController
         session_start();
 
         $vaga = VagaDTO::recuperar($_GET['id']);
+        if (!empty($_SESSION['candidato'])) {
+             $candidato_vaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(), $vaga->getId());
+        } else {
+            $candidato_vaga = null;
+        }
 
-        View::renderizar('vaga/detalhes', compact('vaga'), 'painel-vagas');
+        View::renderizar('vaga/detalhes', compact('vaga', 'candidato_vaga'), 'painel-vagas');
     }
 
     public function desistirCandidatura()
