@@ -7,8 +7,8 @@ class UsuarioController
     {
     }
 
-    public function index() {
-
+    public function index()
+    {
     }
 
     public function cadastrar()
@@ -38,7 +38,6 @@ class UsuarioController
             $usuario->setNome($_POST['nome'])
                 ->setCpf($_POST['cpf'])
                 ->setEmail($_POST['email']);
-
         }
 
         UsuarioDTO::salvar($usuario);
@@ -62,6 +61,23 @@ class UsuarioController
         }
 
         View::renderizar('usuario/formulario', compact('usuarioEdicao'));
+    }
+
+    public function trocarSenha()
+    {
+        AutenticacaoController::exigeSessao();
+
+        View::renderizar('usuario/trocarsenha');
+    }
+
+    public function salvarSenha()
+    {
+        AutenticacaoController::exigeSessao();
+
+        $usuario = UsuarioDTO::recuperar($_SESSION['usuario']->getId());
+        $usuario->setSenha(password_hash($_POST['senha'], PASSWORD_ARGON2ID));
+        UsuarioDTO::salvar($usuario);
+        header('Location: /usuario/listar');
     }
 
     public function excluir()
