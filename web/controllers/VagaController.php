@@ -105,7 +105,7 @@ class VagaController
 
         $vaga = VagaDTO::recuperar($_GET['id']);
         if (!empty($_SESSION['candidato'])) {
-             $candidato_vaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(), $vaga->getId());
+            $candidato_vaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(), $vaga->getId());
         } else {
             $candidato_vaga = null;
         }
@@ -115,31 +115,33 @@ class VagaController
 
     public function desistirCandidatura()
     {
-        AutenticacaoController::exigeSessao();
-        
+        session_start();
         $dataHora = date("Y-m-d H:i:s");
 
-        $candidatoVaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(), $_GET['id']);
+        $candidatoVaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']?->getId(), $_GET['id']);
 
-        $candidatoVaga->setStatus(CandidatoVagaStatusEnum::Inativa->value);       
+        $candidatoVaga->setStatus(CandidatoVagaStatusEnum::Inativa->value);
         $candidatoVaga->setUltimaDesistencia($dataHora);
 
         CandidatoVagaDTO::salvar($candidatoVaga);
 
-        header('Location: /vaga/detalhes');
+        header('Location: /vaga/exibir?id='.$_GET['id']);
     }
 
-    public function processaCandidatura() 
+    public function processaCandidatura()
     {
         session_start();
 
         $candidato = $_SESSION['candidato'];
         $vaga = VagaDTO::recuperar($_GET['id']);
 
-        $candidatoVaga = new CandidatoVaga($candidato, $vaga, '', CandidatoVagaStatusEnum::Ativa->value);
+        $historico = CandidatoVagaDTO::recuperar($candidato->getId(), $vaga->getId());
+        $ultimaDesistencia = empty($historico) ? '' : $historico->getUltimaDesistencia();
+
+        $candidatoVaga = new CandidatoVaga($candidato, $vaga, $ultimaDesistencia, CandidatoVagaStatusEnum::Ativa->value);
         CandidatoVagaDTO::salvar($candidatoVaga);
 
-        header('Location: /vaga/detalhes');
+        header('Location: /vaga/exibir?id='.$_GET['id']);
     }
 
 }
