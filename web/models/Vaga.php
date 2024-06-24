@@ -142,12 +142,11 @@ class Vaga
 
     public function cardFormatado()
     {
-        return "
+        return <<<HTML
                 <div class='d-flex justify-content-between h-100 flex-column'>   
                     <div>
                         <div class='titulo ps-2 pe-2 align-items-center d-flex justify-content-between'>
-                            <strong><a href='/vaga/exibir/?id={$this->getId()}'>{$this->getTitulo()}</a></strong>
-                            <i class='fas fa-thumbtack'></i>
+                            <strong><a type='button' data-bs-toggle='modal' data-bs-target='#modal{$this->getId()}'>{$this->getTitulo()}</a></strong><i class='fas fa-thumbtack'></i>
                         </div>
                         <div class='p-2'>  
                             <p><i class='fas fa-building text-muted'></i> <small>{$this->getEmpresa()->getNome()}</small></p>
@@ -156,10 +155,33 @@ class Vaga
                         </div>
                     </div>
                     <div class='ver-mais ps-2 pe-2 text-end d-flex justify-content-end align-items-baseline'>
-                        <a href='/vaga/exibir/?id={$this->getId()}' class='mt-auto'>Ver mais <i class='far fa-arrow-alt-circle-right'></i></a>
+                        <a type='button' data-bs-toggle='modal' data-bs-target='#modal{$this->getId()}'>Ver mais <i class='far fa-arrow-alt-circle-right'></i></a>
                     </div>
-                </div>";
-
-
+                </div>
+                
+                <div class='modal fade' id='modal{$this->getId()}' tabindex='-1' aria-labelledby='modal{$this->getId()}Label' aria-hidden='true'>
+                    <div class='modal-dialog modal-lg'>
+                        <div class='modal-content'>
+                            <div class='modal-header'>
+                                <h1 class='modal-title fs-5' id='modal{$this->getId()}Label'>Vaga #{$this->getId()}</h1>
+                            </div>
+                            <div class='modal-body'>
+                                <h1>{$this->getTitulo()}</h1>
+                                <h5>{$this->getEmpresa()->getNome()}</h5>
+                                <br>
+                                <p>Salário: R$ {$this->getSalario()}</p>
+                                <p>Benefícios: {$this->getBeneficios()}</p>
+                                <p>Descrição: {$this->getDescricao()}</p>
+                                <p>Requisitos: {$this->getRequisitos()}</p>
+                                <p>Carga Horária: {$this->getCargaHoraria()}</p>
+                            </div>
+                            <div class='modal-footer'>
+                                <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Fechar</button>
+                                <a href='/vaga/exibir/?id={$this->getId()}' class='btn btn-secondary mt-auto'>Ver mais <i class='far fa-arrow-alt-circle-right' aria-hidden='true'></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                HTML;
     }
 }
