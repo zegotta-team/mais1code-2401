@@ -13,7 +13,7 @@ class VagaController
         if (!empty($_SESSION['candidato'])) {
 
             $vagas = VagaDTO::listar('', '', VagaStatusEnum::Ativa->value);
-            View::renderizar('vaga/painel', compact('vagas'), 'sistema-candidato');
+            View::renderizar('vaga/painelLogado', compact('vagas'), 'sistema-candidato');
 
         } else {
 
