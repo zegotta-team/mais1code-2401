@@ -66,4 +66,13 @@ class CandidatoController
         }
     }
 
+    public function listar() 
+    {
+        session_start();
+
+        $vagasCandidatadas = CandidatoVagaDTO::listar($_SESSION['candidato']->getId());
+
+        View::renderizar('candidato/listar', compact($vagasCandidatadas), 'sistema-candidato');
+    }
+
 }
