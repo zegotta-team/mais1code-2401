@@ -11,7 +11,16 @@ class VagaController
         session_start();
 
         $vagas = VagaDTO::listar('', '', VagaStatusEnum::Ativa->value);
-        View::renderizar('vaga/painel', compact('vagas'), 'painel-vagas');
+
+        if (!empty($_SESSION['candidato'])) {
+
+            View::renderizar('vaga/painel', compact('vagas'), 'sistema-candidato');
+
+        } else {
+
+            View::renderizar('vaga/painel', compact('vagas'), 'painel-vagas');
+
+        }
     }
 
     public function cadastrar()
