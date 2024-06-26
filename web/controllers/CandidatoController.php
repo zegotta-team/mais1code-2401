@@ -72,7 +72,7 @@ class CandidatoController
 
         $vagasCandidatadas = CandidatoVagaDTO::listar($_SESSION['candidato']->getId(), '', CandidatoVagaStatusEnum::Ativa->value);
 
-        View::renderizar('candidato/listar', compact($vagasCandidatadas), 'sistema-candidato');
+        View::renderizar('candidato/listar', compact('vagasCandidatadas'), 'sistema-candidato');
     }
 
 }
