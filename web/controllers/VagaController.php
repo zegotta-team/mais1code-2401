@@ -14,7 +14,7 @@ class VagaController
 
         if (!empty($_SESSION['candidato'])) {
 
-            View::renderizar('vaga/painel-logado', compact('vagas'), 'sistema-candidato');
+            View::renderizar('vaga/painel', compact('vagas'), 'sistema-candidato');
 
         } else {
 
