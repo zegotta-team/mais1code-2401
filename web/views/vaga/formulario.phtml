@@ -63,5 +63,24 @@
                 </div>
             </div>
         </div>
+
+        <table class="table">
+            <thead>
+            <tr>Lista de Candidatos
+                <th scope="col">Nome</th>
+                <th scope="col">Email</th>
+                <th scope="col">Última Desistência</th>
+                <th scope="col">Status</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th><?= isset($candidato_vaga) ? $candidato_vaga->getCandidato()->getNome() : '' ?></th>
+                    <td><?= isset($candidato_vaga) ? $candidato_vaga->getCandidato()->getEmail() : '' ?></td>
+                    <td><?= isset($candidato_vaga) ? $candidato_vaga->getUltimaDesistencia() : '' ?></td>
+                    <td><?= isset($candidato_vaga) ? $candidato_vaga->getCandidato()->getStatus() : '' ?></td>
+                </tr>
+            </tbody>
+        </table>
     </form>
 </div>
