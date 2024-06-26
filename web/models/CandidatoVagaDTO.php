@@ -58,7 +58,7 @@ abstract class CandidatoVagaDTO implements DTOInterface
                 FROM candidato_vaga 
                 INNER JOIN vaga ON id  = candidato_vaga.vaga_id 
                 WHERE 1 ";
-        $sql .= !empty($candidato_id) ? "AND candidato_vaga.candidato_id = $candidato_id " : '';
+        $sql .= !empty($candidato_id) ? "AND candidato_vaga.candidato_id = $candidato_id AND candidato_vaga.status == 1" : '';
         $sql .= !empty($vaga_id) ? "AND candidato_vaga.vaga_id = $vaga_id " : '';
 
         $stmt = $pdo->prepare($sql);
