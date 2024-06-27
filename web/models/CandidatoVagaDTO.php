@@ -40,6 +40,7 @@ abstract class CandidatoVagaDTO implements DTOInterface
         $pdo = static::conectarDB();
         $sql = "SELECT * FROM candidato_vaga WHERE candidato_id = $candidato_id AND vaga_id = $vaga_id";
 
+
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
