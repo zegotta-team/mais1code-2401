@@ -40,6 +40,7 @@ abstract class CandidatoVagaDTO implements DTOInterface
         $pdo = static::conectarDB();
         $sql = "SELECT * FROM candidato_vaga WHERE candidato_id = $candidato_id AND vaga_id = $vaga_id";
 
+
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
@@ -51,7 +52,7 @@ abstract class CandidatoVagaDTO implements DTOInterface
         return $retorno;
     }
 
-    public static function listar($candidato_id = '', $vaga_id = '')
+    public static function listar($candidato_id = '', $vaga_id = '', $status = '')
     {
         $pdo = static::conectarDB();
         $sql = "SELECT candidato_vaga.*, vaga.* 
@@ -60,6 +61,7 @@ abstract class CandidatoVagaDTO implements DTOInterface
                 WHERE 1 ";
         $sql .= !empty($candidato_id) ? "AND candidato_vaga.candidato_id = $candidato_id " : '';
         $sql .= !empty($vaga_id) ? "AND candidato_vaga.vaga_id = $vaga_id " : '';
+        $sql .= !empty($status) ? "AND candidato_vaga.status = $status " : '';
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();

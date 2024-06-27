@@ -55,7 +55,7 @@ class CandidatoController
     {
         session_start();
         session_destroy();
-        header('Location: /');
+        header('Location: /candidato/login');
     }
 
     public static function renegaSessao()
@@ -66,5 +66,21 @@ class CandidatoController
         }
     }
 
+    public static function exigeSessao() 
+    {
+        session_start();
+        if (empty($_SESSION['candidato'])) {
+            header("Location: /candidato/login");
+        }
+    }
+
+    public function listar() 
+    {
+        CandidatoController::exigeSessao();
+
+        $vagasCandidatadas = CandidatoVagaDTO::listar($_SESSION['candidato']->getId(), '', CandidatoVagaStatusEnum::Ativa->value);
+
+        View::renderizar('candidato/listar', compact('vagasCandidatadas'), 'sistema-candidato');
+    }
 
 }

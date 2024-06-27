@@ -11,7 +11,16 @@ class VagaController
         session_start();
 
         $vagas = VagaDTO::listar('', '', VagaStatusEnum::Ativa->value);
-        View::renderizar('vaga/painel', compact('vagas'), 'painel-vagas');
+
+        if (!empty($_SESSION['candidato'])) {
+
+            View::renderizar('vaga/painel', compact('vagas'), 'sistema-candidato');
+
+        } else {
+
+            View::renderizar('vaga/painel', compact('vagas'), 'painel-vagas');
+
+        }
     }
 
     public function cadastrar()
@@ -107,13 +116,15 @@ class VagaController
         session_start();
 
         $vaga = VagaDTO::recuperar($_GET['id']);
-        if (!empty($_SESSION['candidato'])) {
-            $candidato_vaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(), $vaga->getId());
+        if (CandidatoController::estaLogado()) {
+            $candidato_vaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(),$vaga->getId());
+            $layout = 'sistema-candidato';
         } else {
             $candidato_vaga = null;
+            $layout = 'painel-vagas';
         }
+        View::renderizar('vaga/detalhes', compact('vaga', 'candidato_vaga'), $layout);
 
-        View::renderizar('vaga/detalhes', compact('vaga', 'candidato_vaga'), 'painel-vagas');
     }
 
     public function desistirCandidatura()
