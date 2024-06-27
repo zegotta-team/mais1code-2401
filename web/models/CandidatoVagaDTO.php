@@ -54,7 +54,7 @@ abstract class CandidatoVagaDTO implements DTOInterface
     public static function listar($candidato_id = '', $vaga_id = '')
     {
         $pdo = static::conectarDB();
-        $sql = "SELECT candidato_vaga.candidato_id, vaga.* 
+        $sql = "SELECT candidato_vaga.*, vaga.* 
                 FROM candidato_vaga 
                 INNER JOIN vaga ON id  = candidato_vaga.vaga_id 
                 WHERE 1 ";

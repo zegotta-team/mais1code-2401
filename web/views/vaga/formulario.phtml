@@ -66,6 +66,7 @@
 
         <table class="table">
             <thead>
+
             <tr>Lista de Candidatos
                 <th scope="col">Nome</th>
                 <th scope="col">Email</th>
@@ -74,12 +75,14 @@
             </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th><?= isset($candidato_vaga) ? $candidato_vaga->getCandidato()->getNome() : '' ?></th>
-                    <td><?= isset($candidato_vaga) ? $candidato_vaga->getCandidato()->getEmail() : '' ?></td>
-                    <td><?= isset($candidato_vaga) ? $candidato_vaga->getUltimaDesistencia() : '' ?></td>
-                    <td><?= isset($candidato_vaga) ? $candidato_vaga->getCandidato()->getStatus() : '' ?></td>
-                </tr>
+                    <?php foreach ($candidato_vagas as $candidato_vaga) : ?>
+                    <tr>
+                        <th><?=$candidato_vaga->getCandidato()->getNome()?></th>
+                        <td><?=$candidato_vaga->getCandidato()->getEmail() ?></td>
+                        <td><?=$candidato_vaga->getUltimaDesistencia()  ?></td>
+                        <td><?=$candidato_vaga->getStatus()  ?></td>
+                    </tr>
+                    <?php endforeach; ?>
             </tbody>
         </table>
     </form>
