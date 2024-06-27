@@ -122,7 +122,7 @@ class VagaController
             $candidato_vaga = null;
         }
 
-        View::renderizar('vaga/detalhes', compact('vaga', 'candidato_vaga'), 'painel-vagas');
+        View::renderizar('vaga/detalhes', compact('vaga', 'candidato_vaga'), 'sistema-candidato');
     }
 
     public function desistirCandidatura()
