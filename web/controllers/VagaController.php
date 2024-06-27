@@ -59,6 +59,8 @@ class VagaController
         $idVaga = $_GET['id'];
         $vaga = VagaDTO::recuperar($idVaga);
 
+        $candidato_vagas = CandidatoVagaDTO::listar('', $vaga->getId());
+
         if (empty($vaga)) {
             die('Vaga não encontrada');
         }
@@ -67,7 +69,7 @@ class VagaController
             die('Sai pilantra, a vaga não é sua');
         }
 
-        View::renderizar('vaga/formulario', compact('vaga'));
+        View::renderizar('vaga/formulario', compact('vaga', 'candidato_vagas'));
     }
 
     public function excluir()
@@ -95,6 +97,7 @@ class VagaController
         AutenticacaoController::exigeSessao();
 
         $vagas = VagaDTO::listar($_SESSION['usuario']->getEmpresa()->getId(), '');
+
 
         View::renderizar('vaga/listar', compact('vagas'));
     }

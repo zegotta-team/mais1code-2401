@@ -63,5 +63,27 @@
                 </div>
             </div>
         </div>
+
+        <table class="table">
+            <thead>
+
+            <tr>Lista de Candidatos
+                <th scope="col">Nome</th>
+                <th scope="col">Email</th>
+                <th scope="col">Última Desistência</th>
+                <th scope="col">Status</th>
+            </tr>
+            </thead>
+            <tbody>
+                    <?php foreach ($candidato_vagas as $candidato_vaga) : ?>
+                    <tr>
+                        <th><?=$candidato_vaga->getCandidato()->getNome()?></th>
+                        <td><?=$candidato_vaga->getCandidato()->getEmail() ?></td>
+                        <td><?=$candidato_vaga->getUltimaDesistencia()  ?></td>
+                        <td><?=$candidato_vaga->getStatus()  ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+            </tbody>
+        </table>
     </form>
 </div>
