@@ -117,12 +117,13 @@ class VagaController
 
         $vaga = VagaDTO::recuperar($_GET['id']);
         if (!empty($_SESSION['candidato'])) {
-            $candidato_vaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(), $vaga->getId());
+            $candidato_vaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(),$vaga->getId());
+            View::renderizar('vaga/detalhes', compact('vaga', 'candidato_vaga'), 'sistema-candidato');
         } else {
             $candidato_vaga = null;
+            View::renderizar('vaga/detalhes', compact('vaga', 'candidato_vaga'), 'painel-vagas');
         }
 
-        View::renderizar('vaga/detalhes', compact('vaga', 'candidato_vaga'), 'sistema-candidato');
     }
 
     public function desistirCandidatura()
