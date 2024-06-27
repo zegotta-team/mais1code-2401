@@ -116,13 +116,14 @@ class VagaController
         session_start();
 
         $vaga = VagaDTO::recuperar($_GET['id']);
-        if (!empty($_SESSION['candidato'])) {
+        if (CandidatoController::estaLogado()) {
             $candidato_vaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(),$vaga->getId());
-            View::renderizar('vaga/detalhes', compact('vaga', 'candidato_vaga'), 'sistema-candidato');
+            $layout = 'sistema-candidato';
         } else {
             $candidato_vaga = null;
-            View::renderizar('vaga/detalhes', compact('vaga', 'candidato_vaga'), 'painel-vagas');
+            $layout = 'painel-vagas';
         }
+            View::renderizar('vaga/detalhes', compact('vaga', 'candidato_vaga'), $layout);
 
     }
 
