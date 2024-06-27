@@ -66,9 +66,17 @@ class CandidatoController
         }
     }
 
-    public function listar() 
+    public static function exigeSessao() 
     {
         session_start();
+        if (empty($_SESSION['candidato'])) {
+            header("Location: /candidato/login");
+        }
+    }
+
+    public function listar() 
+    {
+        CandidatoController::exigeSessao();
 
         $vagasCandidatadas = CandidatoVagaDTO::listar($_SESSION['candidato']->getId(), '', CandidatoVagaStatusEnum::Ativa->value);
 
