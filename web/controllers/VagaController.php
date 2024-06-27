@@ -123,7 +123,7 @@ class VagaController
             $candidato_vaga = null;
             $layout = 'painel-vagas';
         }
-            View::renderizar('vaga/detalhes', compact('vaga', 'candidato_vaga'), $layout);
+        View::renderizar('vaga/detalhes', compact('vaga', 'candidato_vaga'), $layout);
 
     }
 
