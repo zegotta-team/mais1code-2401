@@ -1,3 +1,7 @@
+-- DDL: Data Definition Language
+-- Comandos dentro do SQL que tem a finalidade de definir e/ou redefinir atributos de um objeto.
+-- Ex: CREATE, ALTER e DROP
+
 CREATE TABLE empresa
 (
     id        INTEGER PRIMARY KEY AUTOINCREMENT,
