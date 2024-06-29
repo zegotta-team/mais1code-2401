@@ -4,13 +4,27 @@ abstract class CandidatoVagaDTO implements DTOInterface
 {
     use DbTrait;
 
-    public static function preecher($dados)
+    public static function preencher($dados)
     {
         $candidato = CandidatoDTO::recuperar($dados['candidato_id']);
         $vaga = VagaDTO::recuperar($dados['vaga_id']);
         $candidatoVaga = new CandidatoVaga($candidato, $vaga, $dados['ultima_desistencia'], $dados['status']);
 
         return $candidatoVaga;
+    }
+
+    public static function atualizar($status, $candidato_id) 
+    {
+        $pdo = static::conectarDB();
+
+        if (!empty($status) && !empty($candidato_id)) {
+            $sql = "UPDATE candidato_vaga SET `status` = '$status' WHERE candidato_id = '$candidato_id' ";
+        } else{
+            return false;
+        }
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
     }
 
     public static function salvar($candidatoVaga)
@@ -46,7 +60,7 @@ abstract class CandidatoVagaDTO implements DTOInterface
 
         $retorno = null;
         while ($candidatoVaga = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $retorno = static::preecher($candidatoVaga);
+            $retorno = static::preencher($candidatoVaga);
         }
 
         return $retorno;
@@ -68,7 +82,7 @@ abstract class CandidatoVagaDTO implements DTOInterface
 
         $retorno = [];
         while ($candidatoVaga = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $retorno[] = static::preecher($candidatoVaga);
+            $retorno[] = static::preencher($candidatoVaga);
         }
         return $retorno;
     }
