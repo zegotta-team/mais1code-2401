@@ -63,9 +63,9 @@ CREATE TABLE candidato_vaga (
 
 CREATE TABLE habilidade
 (
-    habilidade_id INTEGER NOT NULL,
+    id INTEGER NOT NULL,
     habilidade TEXT NULL,
-    PRIMARY KEY (habilidade_id)
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE vaga_habilidade
