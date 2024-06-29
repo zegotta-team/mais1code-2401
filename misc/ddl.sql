@@ -60,3 +60,16 @@ CREATE TABLE candidato_vaga (
     `status` INTEGER NOT NULL,
     PRIMARY KEY (candidato_id, vaga_id)
 );
+
+CREATE TABLE habilidade
+(
+    id INTEGER NOT NULL,
+    habilidade TEXT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE vaga_habilidade
+(   vaga_id INTEGER NOT NULL,
+    habilidade_id INTEGER NOT NULL,
+    PRIMARY KEY (vaga_id, habilidade_id)
+);
