@@ -152,7 +152,7 @@ class VagaController
         $historico = CandidatoVagaDTO::recuperar($candidato->getId(), $vaga->getId());
         $ultimaDesistencia = empty($historico) ? '' : $historico->getUltimaDesistencia();
 
-        $candidatoVaga = new CandidatoVaga($candidato, $vaga, $ultimaDesistencia, CandidatoVagaStatusEnum::Ativa->value);
+        $candidatoVaga = new CandidatoVaga($candidato, $vaga, $ultimaDesistencia, CandidatoVagaStatusEnum::TriagemDeCurriculos->value);
         CandidatoVagaDTO::salvar($candidatoVaga);
 
         header('Location: /vaga/exibir?id='.$_GET['id']);
