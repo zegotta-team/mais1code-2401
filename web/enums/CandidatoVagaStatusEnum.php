@@ -2,7 +2,7 @@
 
 enum CandidatoVagaStatusEnum: int
 {
-    case Inativa = 0;
+    case Desistencia = 0;
     case TriagemDeCurriculos = 1;
     case EntrevistaComRh = 2;
     case EntrevistaTecnica = 3;
@@ -13,7 +13,7 @@ enum CandidatoVagaStatusEnum: int
     public function label(): string 
     {
         return match ($this) {
-            CandidatoVagaStatusEnum::Inativa => 'Inativa',
+            CandidatoVagaStatusEnum::Desistencia => 'Desistência da vaga',
             CandidatoVagaStatusEnum::TriagemDeCurriculos => 'Triagem de currículos',
             CandidatoVagaStatusEnum::EntrevistaComRh => 'Entrevista com RH',
             CandidatoVagaStatusEnum::EntrevistaTecnica => 'Entrevista técnica',

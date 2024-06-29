@@ -134,7 +134,7 @@ class VagaController
 
         $candidatoVaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']?->getId(), $_GET['id']);
 
-        $candidatoVaga->setStatus(CandidatoVagaStatusEnum::Inativa->value);
+        $candidatoVaga->setStatus(CandidatoVagaStatusEnum::Desistencia->value);
         $candidatoVaga->setUltimaDesistencia($dataHora);
 
         CandidatoVagaDTO::salvar($candidatoVaga);
