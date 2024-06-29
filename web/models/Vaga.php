@@ -11,9 +11,13 @@ class Vaga
     private $descricao;
     private $requisitos;
     private $cargaHoraria;
+    private $regimeContratacao;
+    private $regimeTrabalho;
+    private $nivelSenioridade;
+    private $nivelHierarquico;
     private $status;
 
-    public function __construct($empresa, $titulo, $email, $salario, $beneficios, $descricao, $requisitos, $cargaHoraria, $status)
+    public function __construct($empresa, $titulo, $email, $salario, $beneficios, $descricao, $requisitos, $cargaHoraria, $regimeContratacao, $regimeTrabalho, $nivelSenioridade, $nivelHierarquico, $status)
     {
         $this->setEmpresa($empresa);
         $this->setTitulo($titulo);
@@ -23,6 +27,10 @@ class Vaga
         $this->setDescricao($descricao);
         $this->setRequisitos($requisitos);
         $this->setCargaHoraria($cargaHoraria);
+        $this->setRegimeContratacao($regimeContratacao);
+        $this->setRegimeTrabalho($regimeTrabalho);
+        $this->setNivelSenioridade($nivelSenioridade);
+        $this->setNivelHierarquico($nivelHierarquico);
         $this->setStatus($status);
     }
 
@@ -123,6 +131,50 @@ class Vaga
     public function getCargaHoraria()
     {
         return $this->cargaHoraria;
+    }
+
+    public function setRegimeContratacao($RegimeContratacao)
+    {
+        $this->regimeContratacao = $RegimeContratacao;
+        return $this;
+    }    
+    
+    public function getRegimeContratacao()
+    {
+        return $this->regimeContratacao;
+    }
+
+    public function setRegimeTrabalho($RegimeTrabalho)
+    {
+        $this->regimeTrabalho = $RegimeTrabalho;
+        return $this;
+    }    
+    
+    public function getRegimeTrabalho()
+    {
+        return $this->regimeTrabalho;
+    }
+
+    public function setNivelSenioridade($NivelSenioridade)
+    {
+        $this->nivelSenioridade = $NivelSenioridade;
+        return $this;
+    }    
+    
+    public function getNivelSenioridade()
+    {
+        return $this->nivelSenioridade;
+    }
+
+    public function setNivelHierarquico($NivelHierarquico)
+    {
+        $this->nivelHierarquico = $NivelHierarquico;
+        return $this;
+    }    
+    
+    public function getNivelHierarquico()
+    {
+        return $this->nivelHierarquico;
     }
 
     public function getStatus($formatado = false)
