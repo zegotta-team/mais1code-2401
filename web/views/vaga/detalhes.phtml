@@ -16,7 +16,7 @@
                 <?php if (empty($candidato_vaga)) : ?>
                     <a class="btn btn-primary" href="/vaga/processaCandidatura?id=<?= $vaga->getId() ?>">Quer se candidatar? Clique aqui </a>
                 <?php else: ?>
-                    <?php if ($candidato_vaga->getStatus() == CandidatoVagaStatusEnum::Ativa->value) : ?>
+                    <?php if ($candidato_vaga->getStatus() !== CandidatoVagaStatusEnum::Desistencia->value) : ?>
                         <a class="btn btn-primary" href="/vaga/desistirCandidatura?id=<?= $vaga->getId() ?>">Deseja desistir da candidatura?</a>
                     <?php else : ?>
                         <?php if ($candidato_vaga->desistenciaLiberada()): ?>
