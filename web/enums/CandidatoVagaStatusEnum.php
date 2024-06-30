@@ -19,7 +19,7 @@ enum CandidatoVagaStatusEnum: int
             CandidatoVagaStatusEnum::EntrevistaTecnica => 'Entrevista técnica',
             CandidatoVagaStatusEnum::EntrevistaComGestor => 'Entrevista com gestor',
             CandidatoVagaStatusEnum::Aprovado => 'Aprovado na vaga',
-            CandidatoVagaStatusEnum::Reprovado => 'Reprovado na vaga'
+            CandidatoVagaStatusEnum::Reprovado => 'Processo finalizado'
         };
     }
 

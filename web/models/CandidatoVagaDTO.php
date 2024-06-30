@@ -4,7 +4,7 @@ abstract class CandidatoVagaDTO implements DTOInterface
 {
     use DbTrait;
 
-    public static function preecher($dados)
+    public static function preencher($dados)
     {
         $candidato = CandidatoDTO::recuperar($dados['candidato_id']);
         $vaga = VagaDTO::recuperar($dados['vaga_id']);
@@ -17,9 +17,9 @@ abstract class CandidatoVagaDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
 
-        if (empty($candidatoVaga->getUltimaDesistencia())) {
+        if ($candidatoVaga->getStatus() == CandidatoVagaStatusEnum::TriagemDeCurriculos->value && empty($candidatoVaga->getUltimaDesistencia())) {
             $sql = "INSERT INTO candidato_vaga (candidato_id, vaga_id, ultima_desistencia, `status`) 
-        VALUES ({$candidatoVaga->getCandidato()->getId()}, {$candidatoVaga->getVaga()->getId()}, \"{$candidatoVaga->getUltimaDesistencia()}\", \"{$candidatoVaga->getStatus()}\")";
+                    VALUES ({$candidatoVaga->getCandidato()->getId()}, {$candidatoVaga->getVaga()->getId()}, \"{$candidatoVaga->getUltimaDesistencia()}\", \"{$candidatoVaga->getStatus()}\")";
         } else {
             $sql = "UPDATE candidato_vaga SET ";
             $sql .= "ultima_desistencia = \"{$candidatoVaga->getUltimaDesistencia()}\", ";
@@ -46,7 +46,7 @@ abstract class CandidatoVagaDTO implements DTOInterface
 
         $retorno = null;
         while ($candidatoVaga = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $retorno = static::preecher($candidatoVaga);
+            $retorno = static::preencher($candidatoVaga);
         }
 
         return $retorno;
@@ -68,7 +68,7 @@ abstract class CandidatoVagaDTO implements DTOInterface
 
         $retorno = [];
         while ($candidatoVaga = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $retorno[] = static::preecher($candidatoVaga);
+            $retorno[] = static::preencher($candidatoVaga);
         }
         return $retorno;
     }

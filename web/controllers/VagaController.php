@@ -158,4 +158,24 @@ class VagaController
         header('Location: /vaga/exibir?id='.$_GET['id']);
     }
 
+    public function processaMudancaDeStatus() 
+    {
+        $candidatura = CandidatoVagaDTO::recuperar($_GET['candidatoId'], $_GET['id']);
+
+        //Pode ser armazenado na variável $resultado: int 1(aprovado) ou 0(reprovado)
+        //Vai vir na url
+        $resultado = $_GET['resultado'];
+
+        if ($resultado == 1) {
+            $novoStatus = $candidatura->getStatus() < CandidatoVagaStatusEnum::Aprovado->value && $candidatura->getStatus() !== CandidatoVagaStatusEnum::Desistencia->value ? ($candidatura->getStatus() + 1) : $candidatura->getStatus();
+        } else{
+            $novoStatus = CandidatoVagaStatusEnum::Reprovado->value;
+        }
+
+        $candidatura->setStatus($novoStatus);
+        CandidatoVagaDTO::salvar($candidatura);
+
+        header('Location: /vaga/editar?id='.$_GET['id']);
+    }
+
 }
