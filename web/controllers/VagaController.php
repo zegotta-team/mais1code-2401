@@ -54,6 +54,10 @@ class VagaController
                 ->setDescricao($_POST['descricao'])
                 ->setRequisitos($_POST['requisitos'])
                 ->setCargaHoraria($_POST['cargaHoraria'])
+                ->setRegimeContratacao($_POST['regimeContratacao'])
+                ->setRegimeTrabalho($_POST['regimeTrabalho'])
+                ->setNivelSenioridade($_POST['nivelSenioridade'])
+                ->setNivelHierarquico($_POST['nivelHierarquia'])
                 ->setStatus($_POST['status']);
         }
         VagaDTO::salvar($vaga);
