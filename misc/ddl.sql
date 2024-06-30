@@ -24,7 +24,7 @@ CREATE TABLE vaga
     descricao    TEXT    NOT NULL,
     requisitos   TEXT    NOT NULL,
     cargaHoraria INTEGER NOT NULL,
-    `status`       INTEGER NOT NULL DEFAULT 1
+    `status`     INTEGER NOT NULL DEFAULT 1
 );
 
 CREATE TABLE usuario
@@ -39,24 +39,38 @@ CREATE TABLE usuario
 
 CREATE TABLE candidato
 (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome TEXT NOT NULL,
-    email TEXT NOT NULL,
-    senha TEXT NOT NULL,
-    habilidades TEXT NOT NULL,
-    cpf TEXT NOT NULL,
-    nascimento TEXT NOT NULL,
-    endereco TEXT NOT NULL,
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome            TEXT NOT NULL,
+    email           TEXT NOT NULL,
+    senha           TEXT NOT NULL,
+    habilidades     TEXT NOT NULL,
+    cpf             TEXT NOT NULL,
+    nascimento      TEXT NOT NULL,
+    endereco        TEXT NOT NULL,
     disponibilidade TEXT NOT NULL,
-    sexo TEXT NOT NULL,
-    genero TEXT NOT NULL,
-    `status` INTEGER NOT NULL DEFAULT 1
+    sexo            TEXT NOT NULL,
+    genero          TEXT NOT NULL,
+    `status`        INTEGER NOT NULL DEFAULT 1
 );
 
 CREATE TABLE candidato_vaga (
-    candidato_id INTEGER NOT NULL,
-    vaga_id INTEGER NOT NULL,
+    candidato_id       INTEGER NOT NULL,
+    vaga_id            INTEGER NOT NULL,
     ultima_desistencia TEXT NULL,
-    `status` INTEGER NOT NULL,
+    `status`           INTEGER NOT NULL,
     PRIMARY KEY (candidato_id, vaga_id)
+);
+
+CREATE TABLE filial
+(
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    empresa_id  INTEGER NOT NULL,
+    nome        TEXT NOT NULL,
+    cep         TEXT NOT NULL,
+    logadouro   TEXT,
+    numero      TEXT,
+    complemento TEXT,
+    bairro      TEXT,
+    cidade      TEXT NOT NULL,
+    estado      TEXT NOT NULL   
 );
