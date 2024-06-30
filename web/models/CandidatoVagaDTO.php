@@ -13,27 +13,13 @@ abstract class CandidatoVagaDTO implements DTOInterface
         return $candidatoVaga;
     }
 
-    public static function atualizar($status, $candidato_id) 
-    {
-        $pdo = static::conectarDB();
-
-        if (!empty($status) && !empty($candidato_id)) {
-            $sql = "UPDATE candidato_vaga SET `status` = '$status' WHERE candidato_id = '$candidato_id' ";
-        } else{
-            return false;
-        }
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-    }
-
     public static function salvar($candidatoVaga)
     {
         $pdo = static::conectarDB();
 
-        if (empty($candidatoVaga->getUltimaDesistencia())) {
+        if (empty($candidatoVaga->getCandidato()->getId()) && empty($candidatoVaga->getVaga()->getId())) {
             $sql = "INSERT INTO candidato_vaga (candidato_id, vaga_id, ultima_desistencia, `status`) 
-        VALUES ({$candidatoVaga->getCandidato()->getId()}, {$candidatoVaga->getVaga()->getId()}, \"{$candidatoVaga->getUltimaDesistencia()}\", \"{$candidatoVaga->getStatus()}\")";
+                    VALUES ({$candidatoVaga->getCandidato()->getId()}, {$candidatoVaga->getVaga()->getId()}, \"{$candidatoVaga->getUltimaDesistencia()}\", \"{$candidatoVaga->getStatus()}\")";
         } else {
             $sql = "UPDATE candidato_vaga SET ";
             $sql .= "ultima_desistencia = \"{$candidatoVaga->getUltimaDesistencia()}\", ";

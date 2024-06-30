@@ -167,23 +167,15 @@ class VagaController
         $resultado = $_GET['resultado'];
 
         if ($resultado == 1) {
-            foreach ($candidatura->getStatus() as $status) {
-                $novoStatus = $status < CandidatoVagaStatusEnum::Aprovado->value || $status == CandidatoVagaStatusEnum::Desistencia->value ? ($status + 1) : $status;
-            }
+            $novoStatus = $candidatura->getStatus() < CandidatoVagaStatusEnum::Aprovado->value && $candidatura->getStatus() !== CandidatoVagaStatusEnum::Desistencia->value ? ($candidatura->getStatus() + 1) : $candidatura->getStatus();
         } else{
             $novoStatus = CandidatoVagaStatusEnum::Reprovado->value;
         }
 
         $candidatura->setStatus($novoStatus);
+        CandidatoVagaDTO::salvar($candidatura);
 
-        $valor = CandidatoVagaDTO::atualizar($candidatura->getStatus(), $candidatura->getCandidato()->getId());
-
-        if ($valor == false) {
-            header('Location: /vaga/editar?id='.$_GET['id']);
-            FlashMessage::addMessage('Algo deu errado! Tente novamente mais tarde.', FlashMessage::FLASH_ERROR);
-        } else{
-            header('Location: /vaga/editar?id='.$_GET['id']);
-        }
+        header('Location: /vaga/editar?id='.$_GET['id']);
     }
 
 }
