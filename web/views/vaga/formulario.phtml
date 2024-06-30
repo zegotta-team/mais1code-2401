@@ -55,6 +55,52 @@
                 </select>
                 <label for="status" class="col-form-label">Status</label>
             </div>
+            <!-- REGIME DE CONTRATAÇÃO -->
+            <div class="col-md-3 form-floating">
+                <select class="form-control form-select" name="regimeContratacao" id="regimeContratacao">
+                    <option value="0" required >Selecione</option>
+                        <option value="1" <?= !empty($vaga) && $vaga->getRegimeContratacao() == '1' ? 'selected' : '' ?>>CLT</option>
+                        <option value="2" <?= !empty($vaga) && $vaga->getRegimeContratacao() == '2' ? 'selected' : '' ?>>PJ</option>
+                        <option value="3" <?= !empty($vaga) && $vaga->getRegimeContratacao() == '3' ? 'selected' : '' ?>>Estágio</option>
+                        <option value="4" <?= !empty($vaga) && $vaga->getRegimeContratacao() == '4' ? 'selected' : '' ?>>Jovem Aprendiz</option>
+                </select>
+                <label for="status" class="col-form-label">Regime de Contratação</label>
+            </div>
+
+             <!-- REGIME DE TRABALHO -->
+            <div class="col-md-2 form-floating">
+                <select class="form-control form-select" name="regimeTrabalho" id="regimeTrabalho">
+                    <option value="0" required >Selecione</option>
+                    <option value="1" <?= !empty($vaga) && $vaga->getRegimeTrabalho() == '1' ? 'selected' : '' ?>>Presencial</option>
+                    <option value="2" <?= !empty($vaga) && $vaga->getRegimeTrabalho() == '2' ? 'selected' : '' ?>>Híbrido</option>
+                    <option value="3" <?= !empty($vaga) && $vaga->getRegimeTrabalho() == '3' ? 'selected' : '' ?>>Remoto</option>
+                </select>
+                <label for="status" class="col-form-label">Regime de Trabalho</label>
+            </div>
+
+             <!-- NÍVEL DE SENIORIDADE -->
+             <div class="col-md-2 form-floating">
+                <select class="form-control form-select" name="nivelSenioridade" id="nivelSenioridade">
+                    <option value="0" required >Selecione</option>
+                    <option value="1" <?= !empty($vaga) && $vaga->getNivelSenioridade() == '1' ? 'selected' : '' ?>>Júnior</option>
+                    <option value="2" <?= !empty($vaga) && $vaga->getNivelSenioridade() == '2' ? 'selected' : '' ?>>Pleno</option>
+                    <option value="3" <?= !empty($vaga) && $vaga->getNivelSenioridade() == '3' ? 'selected' : '' ?>>Sênior</option>
+                </select>
+                <label for="status" class="col-form-label">Nível de Senioridade</label>
+            </div>
+
+             <!-- NÍVEL DE HIERARQUIA -->
+             <div class="col-md-2 form-floating">
+                <select class="form-control form-select" name="nivelHierarquia" id="nivelHierarquia">
+                    <option value="0" required >Selecione</option>
+                    <option value="1" <?= !empty($vaga) && $vaga->getNivelHierarquico() == '1' ? 'selected' : '' ?>>Auxiliar/Assistente/Analista</option>
+                    <option value="2" <?= !empty($vaga) && $vaga->getNivelHierarquico() == '2' ? 'selected' : '' ?>>Coordenação/Supervisão</option>
+                    <option value="3" <?= !empty($vaga) && $vaga->getNivelHierarquico() == '3' ? 'selected' : '' ?>>Gerência</option>
+                    <option value="4" <?= !empty($vaga) && $vaga->getNivelHierarquico() == '4' ? 'selected' : '' ?>>Diretoria</option>
+                    <option value="5" <?= !empty($vaga) && $vaga->getNivelHierarquico() == '5' ? 'selected' : '' ?>>C-Level</option>
+                </select>
+                <label for="status" class="col-form-label">Nível de Senioridade</label>
+            </div>
         </div>
         <div class="row gy-3 gy-md-4 overflow-hidden mt-4 mb-2">
             <div class="col-12">
