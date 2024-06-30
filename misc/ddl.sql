@@ -67,7 +67,7 @@ CREATE TABLE filial
     empresa_id  INTEGER NOT NULL,
     nome        TEXT NOT NULL,
     cep         TEXT NOT NULL,
-    logadouro   TEXT,
+    logradouro   TEXT,
     numero      TEXT,
     complemento TEXT,
     bairro      TEXT,
