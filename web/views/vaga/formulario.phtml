@@ -58,7 +58,7 @@
             <!-- REGIME DE CONTRATAÇÃO -->
             <div class="col-md-3 form-floating">
                 <select class="form-control form-select" name="regimeContratacao" id="regimeContratacao">
-                    <option value="0" required >Selecione</option>
+                        <option value="0" required >Selecione</option>
                         <option value="1" <?= !empty($vaga) && $vaga->getRegimeContratacao() == '1' ? 'selected' : '' ?>>CLT</option>
                         <option value="2" <?= !empty($vaga) && $vaga->getRegimeContratacao() == '2' ? 'selected' : '' ?>>PJ</option>
                         <option value="3" <?= !empty($vaga) && $vaga->getRegimeContratacao() == '3' ? 'selected' : '' ?>>Estágio</option>
@@ -99,7 +99,7 @@
                     <option value="4" <?= !empty($vaga) && $vaga->getNivelHierarquico() == '4' ? 'selected' : '' ?>>Diretoria</option>
                     <option value="5" <?= !empty($vaga) && $vaga->getNivelHierarquico() == '5' ? 'selected' : '' ?>>C-Level</option>
                 </select>
-                <label for="status" class="col-form-label">Nível de Senioridade</label>
+                <label for="status" class="col-form-label">Nível de Hierarquia</label>
             </div>
         </div>
         <div class="row gy-3 gy-md-4 overflow-hidden mt-4 mb-2">
