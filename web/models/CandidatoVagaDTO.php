@@ -17,7 +17,7 @@ abstract class CandidatoVagaDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
 
-        if (empty($candidatoVaga->getCandidato()->getId()) && empty($candidatoVaga->getVaga()->getId())) {
+        if ($candidatoVaga->getStatus() == CandidatoVagaStatusEnum::TriagemDeCurriculos->value && empty($candidatoVaga->getUltimaDesistencia())) {
             $sql = "INSERT INTO candidato_vaga (candidato_id, vaga_id, ultima_desistencia, `status`) 
                     VALUES ({$candidatoVaga->getCandidato()->getId()}, {$candidatoVaga->getVaga()->getId()}, \"{$candidatoVaga->getUltimaDesistencia()}\", \"{$candidatoVaga->getStatus()}\")";
         } else {
