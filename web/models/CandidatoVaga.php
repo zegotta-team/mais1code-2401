@@ -57,9 +57,7 @@ class CandidatoVaga
     public function getStatus($formatado = false) 
     {
         if ($formatado) {
-            $status = CandidatoVagaStatusEnum::forSelect();
-
-            return $status[$this->status];
+            return CandidatoVagaStatusEnum::from($this->status)->label();
         } else {
             return $this->status;
         }
