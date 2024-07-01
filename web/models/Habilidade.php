@@ -4,10 +4,9 @@ class Habilidade
 {
     private $id;
     private $habilidade;
-public function __construct($id, $habilidade){
-    $this->setId($id);
-    $this->setHabilidade($habilidade);
-}
+    public function __construct($habilidade){
+        $this->setHabilidade($habilidade);
+    }
     public function getId(){
         return $this->id;
     }

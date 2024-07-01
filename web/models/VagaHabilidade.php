@@ -2,25 +2,25 @@
 
 class VagaHabilidade
 {
-    private Vaga $vaga_id;
-    private Habilidade $habilidade_id;
-    public function __construct($vaga_id, $habilidade_id)
+    private Vaga $vaga;
+    private Habilidade $habilidade;
+    public function __construct($vaga, $habilidade)
     {
-        $this->setVagaId($vaga_id);
-        $this->setHabilidadeId($habilidade_id);
+        $this->setVaga($vaga);
+        $this->setHabilidade($habilidade);
     }
-    public function getVagaId(){
-        return $this->vaga_id;
+    public function getVaga(){
+        return $this->vaga;
     }
-    public function setVagaId($vaga_id){
-        $this->vaga_id = $vaga_id;
+    public function setVaga($vaga){
+        $this->vaga = $vaga;
         return $this;
     }
-    public function getHabilidadeId(){
-        return $this->habilidade_id;
+    public function getHabilidade(){
+        return $this->habilidade;
     }
-    public function setHabilidadeId($habilidade_id){
-        $this->habilidade_id = $habilidade_id;
+    public function setHabilidade($habilidade){
+        $this->habilidade = $habilidade;
         return $this;
     }
 }
