@@ -7,7 +7,7 @@ abstract class VagaDTO implements DTOInterface
     public static function preencher($dados)
     {
         $empresa = EmpresaDTO::recuperar($dados['empresa_id']);
-        $vaga = new Vaga($empresa, $dados['titulo'], $dados['email'], $dados['salario'], $dados['beneficios'], $dados['descricao'], $dados['requisitos'], $dados['cargaHoraria'], $dados['status']);
+        $vaga = new Vaga($empresa, $dados['titulo'], $dados['email'], $dados['salario'], $dados['beneficios'], $dados['descricao'], $dados['requisitos'], $dados['cargaHoraria'], $dados['regimeContratacao'], $dados['regimeTrabalho'], $dados['nivelSenioridade'], $dados['nivelHierarquia'], $dados['status']);
         $vaga->setId($dados['id']);
         return $vaga;
     }
@@ -16,8 +16,8 @@ abstract class VagaDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
         if (empty($vaga->getId())) {
-            $sql = "INSERT INTO vaga (empresa_id, titulo, email, salario, beneficios, descricao, requisitos, cargaHoraria, status) 
-            VALUES ({$vaga->getEmpresa()->getId()}, \"{$vaga->getTitulo()}\", \"{$vaga->getEmail()}\", {$vaga->getSalario()}, \"{$vaga->getBeneficios()}\", \"{$vaga->getDescricao()}\", \"{$vaga->getRequisitos()}\", \"{$vaga->getCargaHoraria()}\", {$vaga->getStatus()})";
+            $sql = "INSERT INTO vaga (empresa_id, titulo, email, salario, beneficios, descricao, requisitos, cargaHoraria, regimeContratacao, regimeTrabalho, nivelSenioridade, nivelHierarquia, status) 
+            VALUES ({$vaga->getEmpresa()->getId()}, \"{$vaga->getTitulo()}\", \"{$vaga->getEmail()}\", {$vaga->getSalario()}, \"{$vaga->getBeneficios()}\", \"{$vaga->getDescricao()}\", \"{$vaga->getRequisitos()}\", \"{$vaga->getCargaHoraria()}\", \"{$vaga->getRegimeContratacao()}\", \"{$vaga->getRegimeTrabalho()}\", \"{$vaga->getNivelSenioridade()}\", \"{$vaga->getNivelHierarquico()}\", {$vaga->getStatus()})";
         } else {
             $sql = "UPDATE vaga SET ";
             $sql .= "titulo = '{$vaga->getTitulo()}', ";
@@ -27,12 +27,17 @@ abstract class VagaDTO implements DTOInterface
             $sql .= "descricao = '{$vaga->getDescricao()}', ";
             $sql .= "requisitos = '{$vaga->getRequisitos()}', ";
             $sql .= "cargaHoraria = '{$vaga->getCargaHoraria()}', ";
+            $sql .= "regimeContratacao = '{$vaga->getRegimeContratacao()}', ";
+            $sql .= "regimeTrabalho = '{$vaga->getRegimeTrabalho()}', ";
+            $sql .= "nivelSenioridade = '{$vaga->getNivelSenioridade()}', ";
+            $sql .= "nivelHierarquia = '{$vaga->getNivelHierarquico()}', ";
             $sql .= "status = '{$vaga->getStatus()}' ";
             $sql .= "WHERE id = {$vaga->getId()}";
         }
+
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
-
+        
         if (empty($vaga->getId())) {
             $vaga->setId($pdo->lastInsertId());
         }
