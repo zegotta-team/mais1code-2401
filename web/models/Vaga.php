@@ -236,6 +236,10 @@ class Vaga
                                 <p>Descrição: {$this->getDescricao()}</p>
                                 <p>Requisitos: {$this->getRequisitos()}</p>
                                 <p>Carga Horária: {$this->getCargaHoraria()}</p>
+                                <p>Regime de Contratação: {$textoRegimeContracao}</p>
+                                <p>Regime de Trabalho: {$textoRegimeTrabalho}</p>
+                                <p>Senioridade: {$textoNivelSenioridade}</p>
+                                <p>Hierarquia: {$textoNivelHierarquico}</p>
                             </div>
                             <div class='modal-footer'>
                                 <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Fechar</button>
