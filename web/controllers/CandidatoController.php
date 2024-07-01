@@ -78,7 +78,7 @@ class CandidatoController
     {
         CandidatoController::exigeSessao();
 
-        $vagasCandidatadas = CandidatoVagaDTO::listar($_SESSION['candidato']->getId(), '', CandidatoVagaStatusEnum::Ativa->value);
+        $vagasCandidatadas = CandidatoVagaDTO::listar($_SESSION['candidato']->getId());
 
         View::renderizar('candidato/listar', compact('vagasCandidatadas'), 'sistema-candidato');
     }

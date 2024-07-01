@@ -7,6 +7,7 @@
                 <th>Empresa</th>
                 <th>Status da vaga</th>
                 <th class="minimal"><i class="fas fa-cog"></i></th>
+                <th>Status da candidatura</th>
             </tr>
         </thead>
         <tbody>
@@ -19,6 +20,7 @@
                 <td class="minimal">
                     <a class="btn btn-primary btn-sm" href="/vaga/exibir?id=<?= $vaga->getVaga()->getId() ?>" title=""><i class="fas fa-search"></i></a>
                 </td>
+                <td><?= $vaga->getStatus(true) ?></td>
             </tr>
         <?php endforeach; ?>
         </tbody>
