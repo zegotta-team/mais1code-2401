@@ -166,8 +166,6 @@ class VagaController
     {
         $candidatura = CandidatoVagaDTO::recuperar($_GET['candidatoId'], $_GET['id']);
 
-        //Pode ser armazenado na variável $resultado: int 1(aprovado) ou 0(reprovado)
-        //Vai vir na url
         $resultado = $_GET['resultado'];
 
         if ($resultado == 1) {
