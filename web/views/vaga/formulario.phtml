@@ -118,16 +118,26 @@
                     <th scope="col">Nome</th>
                     <th scope="col">Email</th>
                     <th scope="col">Última Desistência</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">Status da Candidatura</th>
+                    <th scope="col">Opções</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($candidato_vagas as $candidato_vaga) : ?>
                     <tr>
                         <th><?=$candidato_vaga->getCandidato()->getNome()?></th>
-                        <td><?=$candidato_vaga->getCandidato()->getEmail() ?></td>
-                        <td><?=$candidato_vaga->getUltimaDesistencia()  ?></td>
-                        <td><?=$candidato_vaga->getStatus()  ?></td>
+                        <td><?=$candidato_vaga->getCandidato()->getEmail()?></td>
+                        <td><?=$candidato_vaga->getUltimaDesistencia()?></td>
+                        <td><?=$candidato_vaga->getStatus(true)?></td>
+                        <td>
+                            <?php if ($candidato_vaga->getStatus() !== CandidatoVagaStatusEnum::Desistencia->value && $candidato_vaga->getStatus() !== CandidatoVagaStatusEnum::Aprovado->value && $candidato_vaga->getStatus() !== CandidatoVagaStatusEnum::Reprovado->value) : ?>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <a class="btn btn-success" href="/vaga/processaMudancaDeStatus?id=<?=$vaga->getId()?>&candidatoId=<?=$candidato_vaga->getCandidato()->getId()?>&resultado=1" role="button">Aprovado</a>
+
+                                    <a class="btn btn-danger" href="/vaga/processaMudancaDeStatus?id=<?=$vaga->getId()?>&candidatoId=<?=$candidato_vaga->getCandidato()->getId()?>&resultado=0" role="button">Reprovado</a>
+                                </div>
+                            <?php endif; ?>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
