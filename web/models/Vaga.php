@@ -9,15 +9,15 @@ class Vaga
     private $salario;
     private $beneficios;
     private $descricao;
-    private $requisitos;
     private $cargaHoraria;
     private $regimeContratacao;
     private $regimeTrabalho;
     private $nivelSenioridade;
     private $nivelHierarquico;
     private $status;
+    private $habilidades;
 
-    public function __construct($empresa, $titulo, $email, $salario, $beneficios, $descricao, $requisitos, $cargaHoraria, $regimeContratacao, $regimeTrabalho, $nivelSenioridade, $nivelHierarquico, $status)
+    public function __construct($empresa, $titulo, $email, $salario, $beneficios, $descricao, $cargaHoraria, $regimeContratacao, $regimeTrabalho, $nivelSenioridade, $nivelHierarquico, $status, $habilidades)
     {
         $this->setEmpresa($empresa);
         $this->setTitulo($titulo);
@@ -25,13 +25,13 @@ class Vaga
         $this->setSalario($salario);
         $this->setBeneficios($beneficios);
         $this->setDescricao($descricao);
-        $this->setRequisitos($requisitos);
         $this->setCargaHoraria($cargaHoraria);
         $this->setRegimeContratacao($regimeContratacao);
         $this->setRegimeTrabalho($regimeTrabalho);
         $this->setNivelSenioridade($nivelSenioridade);
         $this->setNivelHierarquico($nivelHierarquico);
         $this->setStatus($status);
+        $this->setHabilidade($habilidades);
     }
 
     public function getId()
@@ -111,17 +111,6 @@ class Vaga
         return $this->descricao;
     }
 
-    public function setRequisitos($Requisitos)
-    {
-        $this->requisitos = $Requisitos;
-        return $this;
-    }
-
-    public function getRequisitos()
-    {
-        return $this->requisitos;
-    }
-
     public function setCargaHoraria($CargaHoraria)
     {
         $this->cargaHoraria = $CargaHoraria;
@@ -189,6 +178,15 @@ class Vaga
     public function setStatus($status)
     {
         $this->status = $status;
+        return $this;
+    }
+
+    public function getHabilidades(){
+        return $this->habilidades;
+    }
+
+    public function setHabilidades($habilidades){
+        $this->habilidades = $habilidades;
         return $this;
     }
 

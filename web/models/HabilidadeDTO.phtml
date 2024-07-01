@@ -6,7 +6,7 @@ abstract class HabilidadeDTO implements DTOInterface
     use DbTrait;
     public static function preencher($dados)
     {
-        $habilidade = new Habilidade($dados['habilidade'],);
+        $habilidade = new Habilidade($dados['habilidade']);
         $habilidade->setId($dados['id']);
         return $habilidade;
     }
@@ -47,8 +47,8 @@ abstract class HabilidadeDTO implements DTOInterface
         $stmt->execute();
 
         $retorno = [];
-        while ($candidatoVaga = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $retorno[] = static::preecher($candidatoVaga);
+        while ($habilidade = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $retorno[] = static::preecher($habilidade);
         }
         return $retorno;
     }
