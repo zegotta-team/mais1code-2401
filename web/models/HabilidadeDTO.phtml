@@ -1,0 +1,55 @@
+<?php
+
+
+abstract class HabilidadeDTO implements DTOInterface
+{
+    use DbTrait;
+    public static function preencher($dados)
+    {
+        $habilidade = new Habilidade($dados['habilidade'],);
+        $habilidade->setId($dados['id']);
+        return $habilidade;
+    }
+    public static function salvar($habilidade)
+    {
+        $pdo = static::conectarDB();
+
+        if (empty($habilidade->getHabilidade())) {
+            $sql = "INSERT INTO habilidade (id, habilidade) 
+        VALUES ({$habilidade->getId()}, \"{$habilidade->getHabilidade()}\")";
+        } else {
+            $sql = "UPDATE habilidade SET ";
+            $sql .= "habilidade = \"{$habilidade->getHabilidade()}\" ";
+            $sql .= " WHERE id = {$habilidade->getId()}";
+        }
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+    }
+    public static function deletar($habilidade)
+    {
+        $pdo = static::conectarDB();
+
+        $sql = "DELETE FROM habilidade WHERE id = {$habilidade->getId()}";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+    }
+    public static function listar($habilidade_id = '')
+    {
+        $pdo = static::conectarDB();
+        $sql = "SELECT habilidade.*, vaga_habilidade.* 
+                FROM habilidade 
+                INNER JOIN vaga_habilidade ON id  = habilidade_id 
+                WHERE 1 ";
+        $sql .= !empty($habilidade_id) ? "AND habilidade.id = $habilidade_id " : '';
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+
+        $retorno = [];
+        while ($candidatoVaga = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $retorno[] = static::preecher($candidatoVaga);
+        }
+        return $retorno;
+    }
+}
