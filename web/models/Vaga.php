@@ -11,9 +11,13 @@ class Vaga
     private $descricao;
     private $requisitos;
     private $cargaHoraria;
+    private $regimeContratacao;
+    private $regimeTrabalho;
+    private $nivelSenioridade;
+    private $nivelHierarquico;
     private $status;
 
-    public function __construct($empresa, $titulo, $email, $salario, $beneficios, $descricao, $requisitos, $cargaHoraria, $status)
+    public function __construct($empresa, $titulo, $email, $salario, $beneficios, $descricao, $requisitos, $cargaHoraria, $regimeContratacao, $regimeTrabalho, $nivelSenioridade, $nivelHierarquico, $status)
     {
         $this->setEmpresa($empresa);
         $this->setTitulo($titulo);
@@ -23,6 +27,10 @@ class Vaga
         $this->setDescricao($descricao);
         $this->setRequisitos($requisitos);
         $this->setCargaHoraria($cargaHoraria);
+        $this->setRegimeContratacao($regimeContratacao);
+        $this->setRegimeTrabalho($regimeTrabalho);
+        $this->setNivelSenioridade($nivelSenioridade);
+        $this->setNivelHierarquico($nivelHierarquico);
         $this->setStatus($status);
     }
 
@@ -125,6 +133,50 @@ class Vaga
         return $this->cargaHoraria;
     }
 
+    public function setRegimeContratacao($RegimeContratacao)
+    {
+        $this->regimeContratacao = $RegimeContratacao;
+        return $this;
+    }    
+    
+    public function getRegimeContratacao()
+    {
+        return $this->regimeContratacao;
+    }
+
+    public function setRegimeTrabalho($RegimeTrabalho)
+    {
+        $this->regimeTrabalho = $RegimeTrabalho;
+        return $this;
+    }    
+    
+    public function getRegimeTrabalho()
+    {
+        return $this->regimeTrabalho;
+    }
+
+    public function setNivelSenioridade($NivelSenioridade)
+    {
+        $this->nivelSenioridade = $NivelSenioridade;
+        return $this;
+    }    
+    
+    public function getNivelSenioridade()
+    {
+        return $this->nivelSenioridade;
+    }
+
+    public function setNivelHierarquico($NivelHierarquico)
+    {
+        $this->nivelHierarquico = $NivelHierarquico;
+        return $this;
+    }    
+    
+    public function getNivelHierarquico()
+    {
+        return $this->nivelHierarquico;
+    }
+
     public function getStatus($formatado = false)
     {
         if ($formatado) {
@@ -142,6 +194,12 @@ class Vaga
 
     public function cardFormatado()
     {
+
+        $textoRegimeContracao = RegimeContratacaoEnum::from($this->getRegimeContratacao())->label();
+        $textoRegimeTrabalho = RegimeTrabalhoEnum::from($this->getRegimeTrabalho())->label();
+        $textoNivelSenioridade = NivelSenioridadeEnum::from($this->getNivelSenioridade())->label();
+        $textoNivelHierarquico = NivelHierarquicoEnum::from($this->getNivelHierarquico())->label();
+
         return <<<HTML
                 <div class='d-flex justify-content-between h-100 flex-column'>   
                     <div>
@@ -152,6 +210,10 @@ class Vaga
                             <p><i class='fas fa-building text-muted'></i> <small>{$this->getEmpresa()->getNome()}</small></p>
                             <p><i class='fas fa-medal text-muted'></i> {$this->getRequisitos()}</p>
                             <p><i class='fas fa-coins text-muted'></i> R$ {$this->getSalario()}</p>
+                            <p>Regime de Contratação: {$textoRegimeContracao}</p>
+                            <p>Regime de Trabalho: {$textoRegimeTrabalho}</p>
+                            <p>Senioridade: {$textoNivelSenioridade}</p>
+                            <p>Hierarquia: {$textoNivelHierarquico}</p>
                         </div>
                     </div>
                     <div class='ver-mais ps-2 pe-2 text-end d-flex justify-content-end align-items-baseline'>
@@ -174,6 +236,10 @@ class Vaga
                                 <p>Descrição: {$this->getDescricao()}</p>
                                 <p>Requisitos: {$this->getRequisitos()}</p>
                                 <p>Carga Horária: {$this->getCargaHoraria()}</p>
+                                <p>Regime de Contratação: {$textoRegimeContracao}</p>
+                                <p>Regime de Trabalho: {$textoRegimeTrabalho}</p>
+                                <p>Senioridade: {$textoNivelSenioridade}</p>
+                                <p>Hierarquia: {$textoNivelHierarquico}</p>
                             </div>
                             <div class='modal-footer'>
                                 <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Fechar</button>
