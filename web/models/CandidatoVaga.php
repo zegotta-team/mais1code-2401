@@ -54,10 +54,15 @@ class CandidatoVaga
         return $this;
     }
 
-    public function getStatus() 
+    public function getStatus($formatado = false) 
     {
-        return $this->status;
+        if ($formatado) {
+            return CandidatoVagaStatusEnum::from($this->status)->label();
+        } else {
+            return $this->status;
+        }
     }
+
     public function desistenciaLiberada()
     {
         $tempo = strtotime($this->ultima_desistencia);
