@@ -10,6 +10,9 @@
     <p>Requisitos: <?= $vaga->getRequisitos() ?></p>
     <p>Carga Horária: <?= $vaga->getCargaHoraria() ?></p>
     <p>Regime de Contratação: <?= RegimeContratacaoEnum::from($vaga->getRegimeContratacao())->label() ?></p>
+    <p>Regime de Trabalho: <?= RegimeTrabalhoEnum::from($vaga->getRegimeTrabalho())->label() ?></p>
+    <p>Senioridade: <?= NivelSenioridadeEnum::from($vaga->getNivelSenioridade())->label() ?></p>
+    <p>Hierarquia: <?= NivelHierarquicoEnum::from($vaga->getNivelHierarquico())->label() ?></p>
     <br>
     <div>
         <?php if ($vaga->getStatus() == VagaStatusEnum::Ativa->value): ?>
