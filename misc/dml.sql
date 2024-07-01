@@ -26,15 +26,15 @@ INSERT INTO usuario (empresa_id, cpf, nome, email, senha) VALUES
 DELETE FROM candidato_vaga WHERE 1;
 
 DELETE FROM vaga WHERE 1;
-INSERT INTO vaga (empresa_id, titulo, email, salario, beneficios, descricao, requisitos, cargaHoraria, `status`) VALUES
-(1, 'Programador SAP ABAP', 'vaga-abap@ibm.fake.com', '10000', 'VR, VA, Plano de saude', 'Programador SAP academia ABAP', 'ABAP', 120, 1),
-(1, 'Programador TOTVS', 'vaga-totvs@ibm.fake.com', '10000', 'VR, VA, Plano de saude', 'Programador TOTVS', 'TOTVS', 120, 1),
-(1, 'Programador TOTVS + Node', 'vaga-totvs@ibm.fake.com', '8000', 'VR, VA, Plano de saude', 'Programador TOTVS e Node.js', 'TOTVS, Node.js', 120, 1),
-(2, 'Analista QA', 'recrutamento@technew.com', '3000', 'Plano de saude', 'Analista de QA - qualquer nível', 'QA, testes unitarios, testes ponta a ponta', 120, 1),
-(2, 'Tester', 'recrutamento@technew.com', '1000', 'Plano de saude', 'Tester - qualquer nível', 'Testes exploratorios', 120, 1),
-(3, 'Programador PHP Jr', 'contratacao@foodfinder.com', '3000', 'VR, VA, Plano de saude, Gympass', 'Programador PHP Jr', 'PHP', 120, 1),
-(3, 'Programador PHP Pl', 'contratacao@foodfinder.com', '4500', 'VR, VA, Plano de saude, Gympass, Day off aniversario', 'Programador PHP Pleno', 'PHP, JS, MySQL', 120, 1),
-(3, 'Programador PHP Sr', 'contratacao@foodfinder.com', '6000', 'VR, VA, Plano de saude, Gympass, Day off aniversario, Plano odonto', 'Programador PHP Senior', 'PHP, JS, MySQL, Git, MVC, POO', 120, 1)
+INSERT INTO vaga (empresa_id, titulo, email, salario, beneficios, descricao, requisitos, cargaHoraria, regimeContratacao, regimeTrabalho, nivelSenioridade, nivelHierarquia, `status`) VALUES
+(1, 'Programador SAP ABAP', 'vaga-abap@ibm.fake.com', '10000', 'VR, VA, Plano de saude', 'Programador SAP academia ABAP', 'ABAP', 120, '1', '1', '2', '1', 1),
+(1, 'Programador TOTVS', 'vaga-totvs@ibm.fake.com', '10000', 'VR, VA, Plano de saude', 'Programador TOTVS', 'TOTVS', 120, '1', '1', '2', '1', 1),
+(1, 'Programador TOTVS + Node', 'vaga-totvs@ibm.fake.com', '8000', 'VR, VA, Plano de saude', 'Programador TOTVS e Node.js', 'TOTVS, Node.js', 120, '1', '1', '2', '1', 1),
+(2, 'Analista QA', 'recrutamento@technew.com', '3000', 'Plano de saude', 'Analista de QA - qualquer nível', 'QA, testes unitarios, testes ponta a ponta', 120, '1', '1', '2', '1', 1),
+(2, 'Tester', 'recrutamento@technew.com', '1000', 'Plano de saude', 'Tester - qualquer nível', 'Testes exploratorios', 120, '1', '1', '1', '1', 1),
+(3, 'Programador PHP Jr', 'contratacao@foodfinder.com', '3000', 'VR, VA, Plano de saude, Gympass', 'Programador PHP Jr', 'PHP', 120, '1', '1', '1', '1', 1),
+(3, 'Programador PHP Pl', 'contratacao@foodfinder.com', '4500', 'VR, VA, Plano de saude, Gympass, Day off aniversario', 'Programador PHP 2', 'PHP, JS, MySQL', 120, '1', '1', '2', '1', 1),
+(3, 'Programador PHP Sr', 'contratacao@foodfinder.com', '6000', 'VR, VA, Plano de saude, Gympass, Day off aniversario, Plano odonto', 'Programador PHP Senior', 'PHP, JS, MySQL, Git, MVC, POO', 120, '1', '1', '3', '1', 1)
 ;
 
 DELETE FROM candidato WHERE 1;
