@@ -9,6 +9,7 @@
     <p>Descrição: <?= $vaga->getDescricao() ?></p>
     <p>Requisitos: <?= $vaga->getRequisitos() ?></p>
     <p>Carga Horária: <?= $vaga->getCargaHoraria() ?></p>
+    <p>Regime de Contratação: <?= RegimeContratacaoEnum::from($vaga->getRegimeContratacao())->label() ?></p>
     <br>
     <div>
         <?php if ($vaga->getStatus() == VagaStatusEnum::Ativa->value): ?>

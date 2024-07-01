@@ -194,6 +194,12 @@ class Vaga
 
     public function cardFormatado()
     {
+
+        $textoRegimeContracao = RegimeContratacaoEnum::from($this->getRegimeContratacao())->label();
+        $textoRegimeTrabalho = RegimeTrabalhoEnum::from($this->getRegimeTrabalho())->label();
+        $textoNivelSenioridade = NivelSenioridadeEnum::from($this->getNivelSenioridade())->label();
+        $textoNivelHierarquico = NivelHierarquicoEnum::from($this->getNivelHierarquico())->label();
+
         return <<<HTML
                 <div class='d-flex justify-content-between h-100 flex-column'>   
                     <div>
@@ -204,6 +210,10 @@ class Vaga
                             <p><i class='fas fa-building text-muted'></i> <small>{$this->getEmpresa()->getNome()}</small></p>
                             <p><i class='fas fa-medal text-muted'></i> {$this->getRequisitos()}</p>
                             <p><i class='fas fa-coins text-muted'></i> R$ {$this->getSalario()}</p>
+                            <p>Regime de Contratação: {$textoRegimeContracao}</p>
+                            <p>Regime de Trabalho: {$textoRegimeTrabalho}</p>
+                            <p>Senioridade: {$textoNivelSenioridade}</p>
+                            <p>Hierarquia: {$textoNivelHierarquico}</p>
                         </div>
                     </div>
                     <div class='ver-mais ps-2 pe-2 text-end d-flex justify-content-end align-items-baseline'>

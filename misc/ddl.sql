@@ -24,10 +24,10 @@ CREATE TABLE vaga
     descricao    TEXT    NOT NULL,
     requisitos   TEXT    NOT NULL,
     cargaHoraria INTEGER NOT NULL,
-    regimeContratacao TEXT NOT NULL,
-    regimeTrabalho TEXT NOT NULL,
-    nivelSenioridade TEXT NOT NULL,
-    nivelHierarquia TEXT NOT NULL,
+    regimeContratacao INTEGER NOT NULL,
+    regimeTrabalho INTEGER NOT NULL,
+    nivelSenioridade INTEGER NOT NULL,
+    nivelHierarquia INTEGER NOT NULL,
     `status`       INTEGER NOT NULL DEFAULT 1
 );
 

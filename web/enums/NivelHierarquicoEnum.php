@@ -1,6 +1,6 @@
 <?php
 
-enum NivelHierarquico: int
+enum NivelHierarquicoEnum: int
 {
     case AuxiliarAssistenteAnalista = 1;
     case CoordenacaoSupervisao = 2;
@@ -11,17 +11,17 @@ enum NivelHierarquico: int
     public function label()
     {
         return match($this){
-            NivelHierarquico::AuxiliarAssistenteAnalista => 'Auxiliar/Assistente/Analista',
-            NivelHierarquico::CoordenacaoSupervisao => 'Coordenação/Supervisão',
-            NivelHierarquico::Gerencia => 'Gerência',
-            NivelHierarquico::Diretoria => 'Diretoria',
-            NivelHierarquico::CLevel => 'C-Level'
+            NivelHierarquicoEnum::AuxiliarAssistenteAnalista => 'Auxiliar/Assistente/Analista',
+            NivelHierarquicoEnum::CoordenacaoSupervisao => 'Coordenação/Supervisão',
+            NivelHierarquicoEnum::Gerencia => 'Gerência',
+            NivelHierarquicoEnum::Diretoria => 'Diretoria',
+            NivelHierarquicoEnum::CLevel => 'C-Level'
         };
     }
 
     public static function forSelect(): array
     {
-        $ids = NivelHierarquico::values();
+        $ids = NivelHierarquicoEnum::values();
 
         $labels = [];
         foreach (self::cases() as $case) {
