@@ -1,0 +1,18 @@
+  feature/m1code-11-pagina-da-vaga                                [m a2e6409 Adicionada view de detalhes de vaga
+  feature/m1code-23-listar-vagas-candidatadas                     [m 438991f Adicionado modal no painel de vagas
+  feature/m1code-25-autenticacao-de-candidato                     [m ca38bd5 Merge branch 'feature/m1code-25-autenticacao-de-candidato' of https://github.com/zegotta/mais1code-2401 into feature/m1code-25-autenticacao-de-candidato
+  feature/m1code-66-implementar-a-troca-de-senha-do-usuario-logado[m 34263c3 correção
+  kauan                                                           [m 7140a74 implementação das action/controller e a introdução de separação em camadas
+  main                                                            [m 5837a63 [[34morigin/main[m: behind 30] Merge pull request #45 from zegotta/feature/m1code-22-candidatura-vaga
+  task/m1code-10-criar-leiaute-painel-vagas                       [m d431ce5 Merge pull request #4 from zegotta/task/m1code-14
+  task/m1code-18-criar-action-detalhe                             [m 208d169 correção do nome da variavél no compact
+  task/m1code-18-criar-action-mostra-detalhe                      [m e814b2b Adicionada funcionalidade de multiplos layouts
+  task/m1code-20-alterar-metodo-listar-dto-vaga                   [m 312a10d resolução de conflitos
+  task/m1code-49-melhorar-cadastro-candidato                      [m 0fc9935 correção de identação
+  task/m1code-50-implementar-novas-validacoes                     [m d9243c5 Merge branch 'feature/m1code-25-autenticacao-de-candidato' of https://github.com/zegotta/mais1code-2401 into feature/m1code-25-autenticacao-de-candidato
+  task/m1code-50-implementar-validacoes-cadastro-candidato        [m 3800e29 alterado painel de vagas quando candidato logado
+  task/m1code-65-adaptar-autenticacao-para-o-uso-de-senha-hasheada[m c507d0e correção
+  task/m1code-7-criar-action-de-exibicao                          [m 32481a0 alteração da action index do vagacontroller para nova action que irá listar vagas sem o login
+  task/m1code-72-criar-action-desistencia                         [m 4445852 resolvendo conflitos
+  task/m1code-89-implementar-troca-de-senha                       [m 437664c correção para envio
+* [32mtask/m1code-92-criacao-de-layout-candidato                      [m 31150b7 removido view painel-logado
