@@ -12,7 +12,7 @@ class Filial
     private $bairro;
     private $cidade;
     private $estado;
-    
+
     public function __construct(Empresa $empresa, $nome, $cep, $logradouro, $numero, $complemento, $bairro, $cidade, $estado)
     {
         $this->setEmpresa($empresa);
@@ -36,7 +36,7 @@ class Filial
         $this->id = $id;
         return $this;
     }
-    
+
     public function getEmpresa(): Empresa
     {
         return $this->empresa;
