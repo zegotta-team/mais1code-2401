@@ -55,10 +55,11 @@ abstract class CandidatoVagaDTO implements DTOInterface
     public static function listar($candidato_id = '', $vaga_id = '', $status = '')
     {
         $pdo = static::conectarDB();
-        $sql = "SELECT candidato_vaga.*, vaga.* 
-                FROM candidato_vaga 
-                INNER JOIN vaga ON id  = candidato_vaga.vaga_id 
-                WHERE 1 ";
+
+        /**
+         *! Será necessário alterar o select do método listar do CandidatoVagaDTO por conta que este select seleciona no banco de dados todas as colunas da tabela candidato_vaga e da tabela vaga, porém uma coluna sobrescreve o valor de outra pelo fato de terem o mesmo nome, que é a de status. Como o método preencher pega o id de vaga da tabela candidato_vaga da seleção feito do banco para gerar a instância da vaga não há a necessidade de selecionar todas as colunas da tabela vaga, somente selecionar as colunas da tabela candidato_vaga 
+         **/
+        $sql = "SELECT * FROM candidato_vaga WHERE 1 ";
         $sql .= !empty($candidato_id) ? "AND candidato_vaga.candidato_id = $candidato_id " : '';
         $sql .= !empty($vaga_id) ? "AND candidato_vaga.vaga_id = $vaga_id " : '';
         $sql .= !empty($status) ? "AND candidato_vaga.status = $status " : '';
