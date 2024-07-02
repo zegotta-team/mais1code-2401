@@ -9,13 +9,13 @@ abstract class FilialDTO implements DTOInterface
         $min = 8;
         $maxUf = 2;
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            FlashMessage::addMessage('Usuário inválido (usuário precisa ser um email)', FlashMessage::FLASH_ERROR);
-            header('Location: /candidato/cadastrar');
+        if (strlen($cep) != $min) {
+            FlashMessage::addMessage('Numero de Cep deve conter 8 digitos', FlashMessage::FLASH_ERROR);
+            header('Location: /empresa/cadastrar');
             die();
-        } elseif (strlen($cpf) != $maxcpf || strlen($email) < $min) {
+        } elseif ($estado > $maxUf) {
             FlashMessage::addMessage('CPF com quantidade de caracteres não permitida', FlashMessage::FLASH_ERROR);
-            header('Location: /candidato/cadastrar');
+            header('Location: /empresa/cadastrar');
             die();
         } elseif (strlen($senha) < 8) {
             FlashMessage::addMessage('Senha não atende ao padrão, deve ter no mínimo 8 caracteres', FlashMessage::FLASH_ERROR);
