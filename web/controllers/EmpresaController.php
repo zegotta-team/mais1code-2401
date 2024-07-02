@@ -24,6 +24,9 @@ class EmpresaController
         $usuario = new Usuario($empresa, $_POST['usuarioCpf'], $_POST['usuarioNome'], $_POST['usuarioEmail'], password_hash($_POST['usuarioSenha'], PASSWORD_ARGON2ID));
         UsuarioDTO::salvar($usuario);
 
+        $filial = new Filial($empresa, $_POST['filialNome'], $_POST['filialCep'], $_POST['filialLogradouro'], $_POST['filialNumero'], $_POST['filialComplemento'], $_POST['filialBairro'], $_POST['filialCidade'], $_POST['filialEstado']);
+        FilialDTO::salvar($filial);
+
         header('Location: /autenticacao');
     }
 

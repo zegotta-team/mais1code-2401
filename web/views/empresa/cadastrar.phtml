@@ -16,6 +16,7 @@
                             <span>*</span></label>
                         <input type="text" class="form-control" name="cnpj" id="cnpj" placeholder="CNPJ" maxlength="14" minlength="14" required>
                     </div>
+
                     <div class="col-6">
                         <label for="email" class="form-label">Email
                             <span>*</span></label>
@@ -35,10 +36,20 @@
                     </div>
 
                     <div class="col-12">
-                        <label for="endereco" class="form-label">Endereço
-                            <span>*</span></label>
-                        <input type="text" class="form-control" name="endereco" id="endereco" placeholder="Digite o endereço atual" required>
+                        <label for="filialNome" class="form-label">Nome da filial *</label>
+                        <input type="filialNome" class="form-control" name="filialNome" id="filialNome" required>
                     </div>
+                    
+                    <div class="col-12">
+                        <label for="filialCep" class="form-label">Cep *</label>
+                        <input type="text" class="form-control" name="filialCep" id="filialCep" minlength="8" maxlength="8" required oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                    </div>
+
+                    <div class="col-12">
+                        <label for="filialLogradouro" class="form-label">Logradouro *</label>
+                        <input type="text" class="form-control" name="filialLogradouro" id="filialLogradouro" required>
+                    </div>
+
                 </div>
             </div>
         </div>
