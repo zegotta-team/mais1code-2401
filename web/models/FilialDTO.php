@@ -11,24 +11,20 @@ abstract class FilialDTO implements DTOInterface
         $cepSoNumero = preg_replace('/\D/', '', $filial->getCep());
 
         if (empty($filial->getId())) {
-            if (static::verificar($filial->getCep(), $filial->getEstado())) {
-                $sql = "INSERT INTO filial (empresa_id, nome, cep, logradouro, numero, complemento, bairro, cidade, estado)
-                        VALUES (\"{$filial->getEmpresa()->getId()}\", \"{$filial->getnome()}\" ,'$cepSoNumero', \"{$filial->getLogradouro()}\", \"{$filial->getNumero()}\", \"{$filial->getComplemento()}\", \"{$filial->getBairro()}\", \"{$filial->getCidade()}\", \"{$filial->getEstado()}\")";
-            }
+            $sql = "INSERT INTO filial (empresa_id, nome, cep, logradouro, numero, complemento, bairro, cidade, estado)
+                VALUES (\"{$filial->getEmpresa()->getId()}\", \"{$filial->getnome()}\" ,'$cepSoNumero', \"{$filial->getLogradouro()}\", \"{$filial->getNumero()}\", \"{$filial->getComplemento()}\", \"{$filial->getBairro()}\", \"{$filial->getCidade()}\", \"{$filial->getEstado()}\")";
         } else {
-            if (static::verificar($filial->getCep(), $filial->getEstado())) {
-                $sql = "UPDATE filial SET ";
-                $sql .= "empresa_id = '{$filial->getEmpresa()->getId()}', ";
-                $sql .= "nome = '{$filial->getNome()}', ";
-                $sql .= "cep = '$cepSoNumero', ";
-                $sql .= "logradouro = '{$filial->getLogradouro()}', ";
-                $sql .= "numero = '{$filial->getNumero()}', ";
-                $sql .= "complemento = '{$filial->getComplemento()}', ";
-                $sql .= "bairro = '{$filial->getBairro()}', ";
-                $sql .= "cidade = '{$filial->getCidade()}', ";
-                $sql .= "estado = '{$filial->getEstado()}', ";
-                $sql .= " WHERE filial_id = {$filial->getId()} ";
-            }
+            $sql = "UPDATE filial SET ";
+            $sql .= "empresa_id = '{$filial->getEmpresa()->getId()}', ";
+            $sql .= "cep = '$cepSoNumero', ";
+            $sql .= "logradouro = '{$filial->getLogradouro()}', ";
+            $sql .= "numero = '{$filial->getNumero()}', ";
+            $sql .= "complemento = '{$filial->getComplemento()}', ";
+            $sql .= "bairro = '{$filial->getBairro()}', ";
+            $sql .= "cidade = '{$filial->getCidade()}', ";
+            $sql .= "estado = '{$filial->getEstado()}', ";
+            $sql .= " WHERE filial_id = {$filial->getId()} ";
+            $sql .= "nome = '{$filial->getNome()}', ";
         }
 
         $stmt = $pdo->prepare($sql);

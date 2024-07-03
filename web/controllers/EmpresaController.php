@@ -18,9 +18,16 @@ class EmpresaController
     {
         AutenticacaoController::renegaSessao();
         header('Location: /autenticacao');
-        if(!EmpresaDTO::verificaDadosExistentes($_POST['nome'], $_POST['cnpj']) || !FilialDTO::verificar($_POST['filialCep'], $_POST['filialEstado']))
+        if(EmpresaDTO::verificaDadosExistentes($_POST['nome'], $_POST['cnpj']))
         {   
+            FlashMessage::addMessage('Dados repetidos', FlashMessage::FLASH_ERROR);
             die();
+        } 
+        
+        if (!FilialDTO::verificar($_POST['filialCep'], $_POST['filialEstado'])){
+
+            die();
+
         }
 
         $empresa = new Empresa($_POST['nome'], $_POST['cnpj'], $_POST['email'], $_POST['descricao'], $_POST['logo']);

@@ -17,15 +17,9 @@ abstract class EmpresaDTO implements DTOInterface
 
         $cnpjSoNumeros = preg_replace('/\D/', '', $empresa->getCnpj());
 
-        if (empty($empresa->getId())) {
-            if (!static::verificaDadosExistentes($empresa->getNome(), $empresa->getCnpj())) {
-                $sql = "INSERT INTO empresa(nome, cnpj, email, descricao, logo)
-                    VALUES (\"{$empresa->getNome()}\", '$cnpjSoNumeros', \"{$empresa->getEmail()}\", \"{$empresa->getDescricao()}\", \"{$empresa->getLogo()}\")";
-            } else {
-                FlashMessage::addMessage('Dados repetidos', FlashMessage::FLASH_ERROR);
-                header('Location: /empresa/cadastrar');
-                die();
-            }
+        if (empty($empresa->getId())) {            
+            $sql = "INSERT INTO empresa(nome, cnpj, email, descricao, logo)
+            VALUES (\"{$empresa->getNome()}\", '$cnpjSoNumeros', \"{$empresa->getEmail()}\", \"{$empresa->getDescricao()}\", \"{$empresa->getLogo()}\")";
         } else {
             $sql = "UPDATE empresa SET ";
             $sql .= "nome = '{$empresa->getNome()}', ";
