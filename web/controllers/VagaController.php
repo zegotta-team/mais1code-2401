@@ -33,9 +33,16 @@ class VagaController
     public function salvar()
     {
         AutenticacaoController::exigeSessao();
+        $post = $_POST['habilidade'];
+
+        $habilidades = [];
+        foreach ($post as $habilidade => $value){
+            $habilidades[] = HabilidadeDTO::recuperar($habilidade);
+
+        }
 
         if (empty($_POST['vagaId'])) {
-            $vaga = new Vaga($_SESSION['usuario']->getEmpresa(), $_POST['titulo'], $_POST['email'], $_POST['salario'], $_POST['beneficios'], $_POST['descricao'], $_POST['requisitos'], $_POST['cargaHoraria'], $_POST['regimeContratacao'], $_POST['regimeTrabalho'], $_POST['nivelSenioridade'], $_POST['nivelHierarquia'], $_POST['status']);
+            $vaga = new Vaga($_SESSION['usuario']->getEmpresa(), $_POST['titulo'], $_POST['email'], $_POST['salario'], $_POST['beneficios'], $_POST['descricao'], $_POST['cargaHoraria'], $_POST['regimeContratacao'], $_POST['regimeTrabalho'], $_POST['nivelSenioridade'], $_POST['nivelHierarquia'], $_POST['status'], $habilidades);
         } else {
             $vaga = VagaDTO::recuperar($_POST['vagaId']);
 
@@ -52,13 +59,13 @@ class VagaController
                 ->setSalario($_POST['salario'])
                 ->setBeneficios($_POST['beneficios'])
                 ->setDescricao($_POST['descricao'])
-                ->setRequisitos($_POST['requisitos'])
                 ->setCargaHoraria($_POST['cargaHoraria'])
                 ->setRegimeContratacao($_POST['regimeContratacao'])
                 ->setRegimeTrabalho($_POST['regimeTrabalho'])
                 ->setNivelSenioridade($_POST['nivelSenioridade'])
                 ->setNivelHierarquico($_POST['nivelHierarquia'])
-                ->setStatus($_POST['status']);
+                ->setStatus($_POST['status'])
+                ->setHabilidades($_POST['habilidades']);
         }
         VagaDTO::salvar($vaga);
 

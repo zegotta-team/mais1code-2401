@@ -6,18 +6,21 @@ abstract class VagaDTO implements DTOInterface
 
     public static function preencher($dados)
     {
+        $habilidades = [];
+        $habilidades = HabilidadeDTO::listar('', $dados['id']);
         $empresa = EmpresaDTO::recuperar($dados['empresa_id']);
-        $vaga = new Vaga($empresa, $dados['titulo'], $dados['email'], $dados['salario'], $dados['beneficios'], $dados['descricao'], $dados['requisitos'], $dados['cargaHoraria'], $dados['regimeContratacao'], $dados['regimeTrabalho'], $dados['nivelSenioridade'], $dados['nivelHierarquia'], $dados['status']);
+        $vaga = new Vaga($empresa, $dados['titulo'], $dados['email'], $dados['salario'], $dados['beneficios'], $dados['descricao'], $dados['cargaHoraria'], $dados['regimeContratacao'], $dados['regimeTrabalho'], $dados['nivelSenioridade'], $dados['nivelHierarquia'], $dados['status'], $habilidades );
         $vaga->setId($dados['id']);
         return $vaga;
     }
 
     public static function salvar($vaga)
     {
+
         $pdo = static::conectarDB();
         if (empty($vaga->getId())) {
-            $sql = "INSERT INTO vaga (empresa_id, titulo, email, salario, beneficios, descricao, requisitos, cargaHoraria, regimeContratacao, regimeTrabalho, nivelSenioridade, nivelHierarquia, status) 
-            VALUES ({$vaga->getEmpresa()->getId()}, \"{$vaga->getTitulo()}\", \"{$vaga->getEmail()}\", {$vaga->getSalario()}, \"{$vaga->getBeneficios()}\", \"{$vaga->getDescricao()}\", \"{$vaga->getRequisitos()}\", \"{$vaga->getCargaHoraria()}\", \"{$vaga->getRegimeContratacao()}\", \"{$vaga->getRegimeTrabalho()}\", \"{$vaga->getNivelSenioridade()}\", \"{$vaga->getNivelHierarquico()}\", {$vaga->getStatus()})";
+            $sql = "INSERT INTO vaga(empresa_id, titulo, email, salario, beneficios, descricao, cargaHoraria, regimeContratacao, regimeTrabalho, nivelSenioridade, nivelHierarquia, status) 
+            VALUES ({$vaga->getEmpresa()->getId()}, \"{$vaga->getTitulo()}\", \"{$vaga->getEmail()}\", {$vaga->getSalario()}, \"{$vaga->getBeneficios()}\", \"{$vaga->getDescricao()}\", \"{$vaga->getCargaHoraria()}\", \"{$vaga->getRegimeContratacao()}\", \"{$vaga->getRegimeTrabalho()}\", \"{$vaga->getNivelSenioridade()}\", \"{$vaga->getNivelHierarquico()}\", \"{$vaga->getStatus()}\")";
         } else {
             $sql = "UPDATE vaga SET ";
             $sql .= "titulo = '{$vaga->getTitulo()}', ";
@@ -25,7 +28,6 @@ abstract class VagaDTO implements DTOInterface
             $sql .= "salario = '{$vaga->getSalario()}', ";
             $sql .= "beneficios = '{$vaga->getBeneficios()}', ";
             $sql .= "descricao = '{$vaga->getDescricao()}', ";
-            $sql .= "requisitos = '{$vaga->getRequisitos()}', ";
             $sql .= "cargaHoraria = '{$vaga->getCargaHoraria()}', ";
             $sql .= "regimeContratacao = '{$vaga->getRegimeContratacao()}', ";
             $sql .= "regimeTrabalho = '{$vaga->getRegimeTrabalho()}', ";
@@ -40,6 +42,19 @@ abstract class VagaDTO implements DTOInterface
         
         if (empty($vaga->getId())) {
             $vaga->setId($pdo->lastInsertId());
+        }
+        $sql = "DELETE FROM vaga_habilidade WHERE vaga_id = {$vaga->getId()}";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        if(!empty($vaga->getHabilidades())){
+
+            foreach ($vaga->getHabilidades() as $habilidade ){
+
+                $sql= "INSERT INTO vaga_habilidade(vaga_id, habilidade_id) 
+                        VALUES(\"{$vaga->getId()}\",\"{$habilidade->getId()}\" )";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute();
+            }
         }
     }
 
