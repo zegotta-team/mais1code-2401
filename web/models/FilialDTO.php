@@ -16,6 +16,7 @@ abstract class FilialDTO implements DTOInterface
         } else {
             $sql = "UPDATE filial SET ";
             $sql .= "empresa_id = '{$filial->getEmpresa()->getId()}', ";
+            $sql .= "nome = '{$filial->getNome()}', ";
             $sql .= "cep = '$cepSoNumero', ";
             $sql .= "logradouro = '{$filial->getLogradouro()}', ";
             $sql .= "numero = '{$filial->getNumero()}', ";
@@ -24,7 +25,6 @@ abstract class FilialDTO implements DTOInterface
             $sql .= "cidade = '{$filial->getCidade()}', ";
             $sql .= "estado = '{$filial->getEstado()}', ";
             $sql .= " WHERE filial_id = {$filial->getId()} ";
-            $sql .= "nome = '{$filial->getNome()}', ";
         }
 
         $stmt = $pdo->prepare($sql);
