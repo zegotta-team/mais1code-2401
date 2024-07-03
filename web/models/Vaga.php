@@ -206,7 +206,6 @@ class Vaga
                         </div>
                         <div class='p-2'>  
                             <p><i class='fas fa-building text-muted'></i> <small>{$this->getEmpresa()->getNome()}</small></p>
-                            <p><i class='fas fa-medal text-muted'></i> {$this->getHabilidades()}</p>
                             <p><i class='fas fa-coins text-muted'></i> R$ {$this->getSalario()}</p>
                             <p>Regime de Contratação: {$textoRegimeContracao}</p>
                             <p>Regime de Trabalho: {$textoRegimeTrabalho}</p>
