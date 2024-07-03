@@ -17,6 +17,11 @@ class EmpresaController
     public function processaCadastrar()
     {
         AutenticacaoController::renegaSessao();
+        header('Location: /autenticacao');
+        if(!EmpresaDTO::verificaDadosExistentes($_POST['nome'], $_POST['cnpj']) || !FilialDTO::verificar($_POST['filialCep'], $_POST['filialEstado']))
+        {   
+            die();
+        }
 
         $empresa = new Empresa($_POST['nome'], $_POST['cnpj'], $_POST['email'], $_POST['descricao'], $_POST['logo']);
         EmpresaDTO::salvar($empresa);
@@ -27,7 +32,6 @@ class EmpresaController
         $filial = new Filial($empresa, $_POST['filialNome'], $_POST['filialCep'], $_POST['filialLogradouro'], $_POST['filialNumero'], $_POST['filialComplemento'], $_POST['filialBairro'], $_POST['filialCidade'], $_POST['filialEstado']);
         FilialDTO::salvar($filial);
 
-        header('Location: /autenticacao');
     }
 
     public function editar()

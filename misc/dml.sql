@@ -3,10 +3,10 @@
 -- Ex: INSERT, UPDATE e DELETE
 
 DELETE FROM empresa WHERE 1;
-INSERT INTO empresa (id, nome, cnpj, email, descricao, logo, endereco) VALUES
-(1, 'IBM', '81289818000178', 'recursos.humanos@ibm.fake.com', 'Empresa de tecnologia', 'ibm.png', 'Av Paulista, 1000'),
-(2, 'TechNew', '31960951000136', 'recursos.humanos@technew.com', 'Startup de tecnologia', 'tnew.png', 'Av Paulista, 1100'),
-(3, 'FoodFinder', '46854682000234', 'rh@foodfinder.com', 'Empresa de desenvolvimento', 'ff.png', 'Av Paulista, 1200')
+INSERT INTO empresa (id, nome, cnpj, email, descricao, logo) VALUES
+(1, 'IBM', '81289818000178', 'recursos.humanos@ibm.fake.com', 'Empresa de tecnologia', 'ibm.png'),
+(2, 'TechNew', '31960951000136', 'recursos.humanos@technew.com', 'Startup de tecnologia', 'tnew.png'),
+(3, 'FoodFinder', '46854682000234', 'rh@foodfinder.com', 'Empresa de desenvolvimento', 'ff.png')
 ;
 
 DELETE FROM usuario WHERE 1;

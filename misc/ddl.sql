@@ -9,8 +9,7 @@ CREATE TABLE empresa
     cnpj      TEXT    NOT NULL,
     email     TEXT    NOT NULL,
     descricao TEXT    NOT NULL,
-    logo      TEXT,
-    endereco  TEXT    NOT NULL
+    logo      TEXT
 );
 
 CREATE TABLE vaga

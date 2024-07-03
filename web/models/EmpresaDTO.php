@@ -97,7 +97,7 @@ abstract class EmpresaDTO implements DTOInterface
         return $retorno;
     }
 
-    private static function verificaDadosExistentes($nome, $cnpj)
+    public static function verificaDadosExistentes($nome, $cnpj)
     {
         $pdo = static::conectarDB();
 
