@@ -13,7 +13,7 @@ abstract class FilialDTO implements DTOInterface
         if (empty($filial->getId())) {
             if (static::verificar($filial->getCep(), $filial->getEstado())) {
                 $sql = "INSERT INTO filial (empresa_id, nome, cep, logradouro, numero, complemento, bairro, cidade, estado)
-                        VALUES (\"{$filial->getEmpresa()->getId()}\", \"{$filial->getnome()}\" ,'$cepSoNumero', \"{$filial->getLogradouro()}\", \"{$filial->getNumero()}\", \"{$filial->getEndereco()}\", \"{$filial->getComplemento()}\", \"{$filial->getBairro()}\", \"{$filial->getCidade()}\", \"{$filial->getEstado()}\")";
+                        VALUES (\"{$filial->getEmpresa()->getId()}\", \"{$filial->getnome()}\" ,'$cepSoNumero', \"{$filial->getLogradouro()}\", \"{$filial->getNumero()}\", \"{$filial->getComplemento()}\", \"{$filial->getBairro()}\", \"{$filial->getCidade()}\", \"{$filial->getEstado()}\")";
             }
         } else {
             if (static::verificar($filial->getCep(), $filial->getEstado())) {

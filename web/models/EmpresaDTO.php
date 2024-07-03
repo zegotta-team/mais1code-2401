@@ -6,7 +6,7 @@ abstract class EmpresaDTO implements DTOInterface
 
     public static function preencher($dados)
     {
-        $empresa = new Empresa($dados['nome'], $dados['cnpj'], $dados['email'], $dados['descricao'], $dados['logo'], $dados['endereco']);
+        $empresa = new Empresa($dados['nome'], $dados['cnpj'], $dados['email'], $dados['descricao'], $dados['logo']);
         $empresa->setId($dados['id']);
         return $empresa;
     }
@@ -19,11 +19,11 @@ abstract class EmpresaDTO implements DTOInterface
 
         if (empty($empresa->getId())) {
             if (!static::verificaDadosExistentes($empresa->getNome(), $empresa->getCnpj())) {
-                $sql = "INSERT INTO empresa(nome, cnpj, email, descricao, logo, endereco)
-                    VALUES (\"{$empresa->getNome()}\", '$cnpjSoNumeros', \"{$empresa->getEmail()}\", \"{$empresa->getDescricao()}\", \"{$empresa->getLogo()}\", \"{$empresa->getEndereco()}\")";
+                $sql = "INSERT INTO empresa(nome, cnpj, email, descricao, logo)
+                    VALUES (\"{$empresa->getNome()}\", '$cnpjSoNumeros', \"{$empresa->getEmail()}\", \"{$empresa->getDescricao()}\", \"{$empresa->getLogo()}\")";
             } else {
-                echo "<pre>";
-                var_dump($empresa);
+                FlashMessage::addMessage('Dados repetidos', FlashMessage::FLASH_ERROR);
+                header('Location: /empresa/cadastrar');
                 die();
             }
         } else {
@@ -33,10 +33,8 @@ abstract class EmpresaDTO implements DTOInterface
             $sql .= "email = '{$empresa->getEmail()}', ";
             $sql .= "descricao = '{$empresa->getDescricao()}', ";
             $sql .= "logo = '{$empresa->getLogo()}', ";
-            $sql .= "endereco = '{$empresa->getEndereco()}' ";
             $sql .= "WHERE id = '{$empresa->getId()}' ";
         }
-
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
@@ -97,7 +95,6 @@ abstract class EmpresaDTO implements DTOInterface
         }
 
         return $retorno;
-
     }
 
     private static function verificaDadosExistentes($nome, $cnpj)
@@ -113,5 +110,4 @@ abstract class EmpresaDTO implements DTOInterface
 
         return $totalDeRegistros['Total'] != 0;
     }
-
 }
