@@ -34,22 +34,38 @@ abstract class HabilidadeDTO implements DTOInterface
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
     }
-    public static function listar($habilidade_id = '')
+    public static function listar($habilidade_id = '', $vaga_id ='')
     {
         $pdo = static::conectarDB();
-        $sql = "SELECT habilidade.*, vaga_habilidade.* 
-                FROM habilidade 
-                INNER JOIN vaga_habilidade ON id  = habilidade_id 
-                WHERE 1 ";
+
+        $sql = "SELECT habilidade.* 
+                FROM habilidade ";
+        $sql .= !empty($vaga_id) ? "INNER JOIN vaga_habilidade ON habilidade.id = vaga_habilidade.habilidade_id " : '' ;
+        $sql .= "WHERE 1 ";
         $sql .= !empty($habilidade_id) ? "AND habilidade.id = $habilidade_id " : '';
+        $sql .= !empty($vaga_id) ? "AND vaga_habilidade.vaga_id = $vaga_id " : '';
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
         $retorno = [];
         while ($habilidade = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $retorno[] = static::preecher($habilidade);
+            $retorno[] = static::preencher($habilidade);
         }
+        return $retorno;
+    }
+    public static function recuperar($id)
+    {
+        $pdo = static::conectarDB();
+        $sql = "SELECT * FROM habilidade WHERE id = $id ";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+
+        $retorno = null;
+        while ($habilidade = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $retorno = static::preencher($habilidade);
+        }
+
         return $retorno;
     }
 }

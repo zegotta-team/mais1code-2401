@@ -7,7 +7,7 @@
     <p>Salário: R$ <?= $vaga->getSalario() ?></p>
     <p>Benefícios: <?= $vaga->getBeneficios() ?></p>
     <p>Descrição: <?= $vaga->getDescricao() ?></p>
-    <p>Requisitos: <?= $vaga->getRequisitos() ?></p>
+    <p>Habilidades: <?= $vaga->getHabilidades() ?></p>
     <p>Carga Horária: <?= $vaga->getCargaHoraria() ?></p>
     <p>Regime de Contratação: <?= RegimeContratacaoEnum::from($vaga->getRegimeContratacao())->label() ?></p>
     <p>Regime de Trabalho: <?= RegimeTrabalhoEnum::from($vaga->getRegimeTrabalho())->label() ?></p>

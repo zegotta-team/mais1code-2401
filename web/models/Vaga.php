@@ -31,7 +31,7 @@ class Vaga
         $this->setNivelSenioridade($nivelSenioridade);
         $this->setNivelHierarquico($nivelHierarquico);
         $this->setStatus($status);
-        $this->setHabilidade($habilidades);
+        $this->setHabilidades($habilidades);
     }
 
     public function getId()
@@ -206,7 +206,7 @@ class Vaga
                         </div>
                         <div class='p-2'>  
                             <p><i class='fas fa-building text-muted'></i> <small>{$this->getEmpresa()->getNome()}</small></p>
-                            <p><i class='fas fa-medal text-muted'></i> {$this->getRequisitos()}</p>
+                            <p><i class='fas fa-medal text-muted'></i> {$this->getHabilidades()}</p>
                             <p><i class='fas fa-coins text-muted'></i> R$ {$this->getSalario()}</p>
                             <p>Regime de Contratação: {$textoRegimeContracao}</p>
                             <p>Regime de Trabalho: {$textoRegimeTrabalho}</p>
@@ -232,7 +232,7 @@ class Vaga
                                 <p>Salário: R$ {$this->getSalario()}</p>
                                 <p>Benefícios: {$this->getBeneficios()}</p>
                                 <p>Descrição: {$this->getDescricao()}</p>
-                                <p>Requisitos: {$this->getRequisitos()}</p>
+                                <p>Habilidades: {$this->getHabilidades()}</p>
                                 <p>Carga Horária: {$this->getCargaHoraria()}</p>
                                 <p>Regime de Contratação: {$textoRegimeContracao}</p>
                                 <p>Regime de Trabalho: {$textoRegimeTrabalho}</p>

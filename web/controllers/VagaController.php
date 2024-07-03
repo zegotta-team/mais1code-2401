@@ -33,9 +33,16 @@ class VagaController
     public function salvar()
     {
         AutenticacaoController::exigeSessao();
+        $post = $_POST['habilidade'];
+
+        $habilidades = [];
+        foreach ($post as $habilidade => $value){
+            $habilidades[] = HabilidadeDTO::recuperar($habilidade);
+
+        }
 
         if (empty($_POST['vagaId'])) {
-            $vaga = new Vaga($_SESSION['usuario']->getEmpresa(), $_POST['titulo'], $_POST['email'], $_POST['salario'], $_POST['beneficios'], $_POST['descricao'], $_POST['cargaHoraria'], $_POST['regimeContratacao'], $_POST['regimeTrabalho'], $_POST['nivelSenioridade'], $_POST['nivelHierarquia'], $_POST['status'], $_POST['habilidades']);
+            $vaga = new Vaga($_SESSION['usuario']->getEmpresa(), $_POST['titulo'], $_POST['email'], $_POST['salario'], $_POST['beneficios'], $_POST['descricao'], $_POST['cargaHoraria'], $_POST['regimeContratacao'], $_POST['regimeTrabalho'], $_POST['nivelSenioridade'], $_POST['nivelHierarquia'], $_POST['status'], $habilidades);
         } else {
             $vaga = VagaDTO::recuperar($_POST['vagaId']);
 
@@ -73,8 +80,6 @@ class VagaController
         $vaga = VagaDTO::recuperar($idVaga);
 
         $candidato_vagas = CandidatoVagaDTO::listar('', $vaga->getId());
-        var_dump($candidato_vagas);
-        die();
 
         if (empty($vaga)) {
             die('Vaga não encontrada');
