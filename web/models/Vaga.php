@@ -232,7 +232,6 @@ class Vaga
                                 <p>Salário: R$ {$this->getSalario()}</p>
                                 <p>Benefícios: {$this->getBeneficios()}</p>
                                 <p>Descrição: {$this->getDescricao()}</p>
-                                <p>Habilidades: {$this->getHabilidades()}</p>
                                 <p>Carga Horária: {$this->getCargaHoraria()}</p>
                                 <p>Regime de Contratação: {$textoRegimeContracao}</p>
                                 <p>Regime de Trabalho: {$textoRegimeTrabalho}</p>
