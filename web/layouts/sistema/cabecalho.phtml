@@ -47,7 +47,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li>
-                            <a class="dropdown-item" href="/filial/cadastrar?id=<?= $_SESSION['usuario']->getId() ?>">Cadastrar</a>
+                            <a class="dropdown-item" href="/filial/cadastrar?id=<?= $_SESSION['usuario']->getEmpresa()->getId() ?>">Cadastrar</a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="/filial/listar">Listar</a>
