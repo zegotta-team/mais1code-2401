@@ -1,0 +1,30 @@
+<div class="container container-sm w-50">
+    <form method="post" action="/filial/processacadastrar">
+    <?php FlashMessage::getMessage() ?>
+        <input type="hidden" name="empresaId" value="<?= isset($empresaId) ? $empresaId->getEmpresa()->getId() : '' ?>"/>
+        <div class="row g-3 align-items-center mb-2">
+            <label for="nome" class="col-form-label text-end align-content-end col-md-2">Nome</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="nome" id="nome" placeholder="Nome do usuário">
+            </div>
+        </div>
+        <div class="row g-3 align-items-center mb-2">
+            <label for="cpf" class="col-form-label text-end align-content-end col-md-2">CPF <span class="text-danger">*</span></label></label>
+            <div class="col-md-3">
+                <input type="text" class="form-control" name="cpf" id="cpf" placeholder="CPF">
+            </div>
+            <label for="email" class="col-form-label text-end align-content-end col-md-2">E-mail</label>
+            <div class="col-md-5">
+                <input type="text" class="form-control" name="email" id="email" placeholder="E-mail do usuário">
+            </div>
+        </div>
+
+        <div class="row gy-3 gy-md-4 overflow-hidden mt-4 mb-2">
+            <div class="col-12">
+                <div class="d-grid">
+                    <button class="btn btn-primary" type="submit"><i class="fas fa-save"></i> Salvar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
