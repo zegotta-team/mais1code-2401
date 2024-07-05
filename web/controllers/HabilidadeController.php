@@ -2,37 +2,45 @@
 
 class HabilidadeController
 {
-    public function __construct()
-    {
+    public function __construct(){
     }
 
-    public function cadastrar()
-    {
+    public function cadastrar() {
         AutenticacaoController::exigeSessao();
 
         View::renderizar('/habilidade/cadastrar', [], 'sistema');
     }
 
-    public function processaCadastrar()
-    {
+    public function processaCadastrar() {
         AutenticacaoController::exigeSessao();
-        $post = $_POST['habilidade'];
-        $habilidade = new Habilidade($post);
-        $dados = HabilidadeDTO::salvar($habilidade);
+
+        if(empty($_POST['id'])){
+            $habilidade = new Habilidade($_POST['habilidade']);
+        }else {
+            $habilidade = HabilidadeDTO::recuperar($_POST['id']);
+
+            $habilidade->setHabilidade($_POST['habilidade']);
+            HabilidadeDTO::salvar($habilidade);
+        }
 
 
-        View::renderizar('/habilidade/cadastrar', [], 'sistema');
+        header('Location:/habilidade/listar');
     }
 
-    public function listar()
-    {
+    public function listar() {
         AutenticacaoController::exigeSessao();
 
-        $vagas = VagaDTO::listar($_SESSION['usuario']->getEmpresa()->getId(), '');
-        $habilidades = HabilidadeDTO::listar('','vagas');
+        $habilidade = HabilidadeDTO::listar();
 
+        View::renderizar('/habilidade/listar', compact('habilidade'), 'sistema');
+    }
+    public function editar() {
+        AutenticacaoController::exigeSessao();
 
-        View::renderizar('/habilidade/listar', compact('vagas'));
+        $habilidadeId = $_GET['id'];
+        $habilidade = HabilidadeDTO::recuperar($habilidadeId);
+
+        View::renderizar('habilidade/cadastrar', compact('habilidade'), 'sistema');
     }
 
 }
