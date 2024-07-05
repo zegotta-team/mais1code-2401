@@ -25,43 +25,4 @@ class FilialController
 
     }
 
-    public function editar()
-    {
-        AutenticacaoController::exigeSessao();
-
-        View::renderizar('empresa/editar');
-    }
-
-    public function processaEditar()
-    {
-        AutenticacaoController::exigeSessao();
-
-        $_SESSION['usuario']->getEmpresa()
-            ->setNome($_POST["nome"])
-            ->setCNPJ($_POST["cnpj"])
-            ->setEmail($_POST["email"])
-            ->setDescricao($_POST['descricao'])
-            ->setLogo($_POST['logo'])
-            ->setEndereco($_POST['endereco']);
-
-        EmpresaDTO::salvar($_SESSION['usuario']->getEmpresa());
-
-        header('Location: /vaga/listar');
-    }
-
-    public function excluir()
-    {
-        AutenticacaoController::exigeSessao();
-
-        View::renderizar('empresa/excluir');
-    }
-
-    public function processaExcluir()
-    {
-        AutenticacaoController::exigeSessao();
-
-        EmpresaDTO::deletar($_SESSION['usuario']->getEmpresa());
-
-        header('Location: /autenticacao/processaLogout');
-    }
 }
