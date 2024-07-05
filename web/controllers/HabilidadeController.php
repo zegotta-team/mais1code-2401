@@ -8,21 +8,21 @@ class HabilidadeController
     public function cadastrar() {
         AutenticacaoController::exigeSessao();
 
-        View::renderizar('/habilidade/cadastrar', [], 'sistema');
+        View::renderizar('/habilidade/formulario', [], 'sistema');
     }
 
-    public function processaCadastrar() {
+    public function salvar() {
         AutenticacaoController::exigeSessao();
 
-        if(empty($_POST['id'])){
+        if (empty($_POST['id'])) {
             $habilidade = new Habilidade($_POST['habilidade']);
-        }else {
+        } else {
             $habilidade = HabilidadeDTO::recuperar($_POST['id']);
 
             $habilidade->setHabilidade($_POST['habilidade']);
-            HabilidadeDTO::salvar($habilidade);
         }
 
+        HabilidadeDTO::salvar($habilidade);
 
         header('Location:/habilidade/listar');
     }
@@ -40,7 +40,7 @@ class HabilidadeController
         $habilidadeId = $_GET['id'];
         $habilidade = HabilidadeDTO::recuperar($habilidadeId);
 
-        View::renderizar('habilidade/cadastrar', compact('habilidade'), 'sistema');
+        View::renderizar('habilidade/formulario', compact('habilidade'), 'sistema');
     }
 
 }
