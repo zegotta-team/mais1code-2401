@@ -10,15 +10,16 @@ class Vaga
     private $salario;
     private $beneficios;
     private $descricao;
-    private $requisitos;
     private $cargaHoraria;
     private $regimeContratacao;
     private $regimeTrabalho;
     private $nivelSenioridade;
     private $nivelHierarquico;
     private $status;
+    private $habilidades;
 
-    public function __construct($filial, $empresa, $titulo, $email, $salario, $beneficios, $descricao, $requisitos, $cargaHoraria, $regimeContratacao, $regimeTrabalho, $nivelSenioridade, $nivelHierarquico, $status)
+
+    public function __construct($filial, $empresa, $titulo, $email, $salario, $beneficios, $descricao, $cargaHoraria, $regimeContratacao, $regimeTrabalho, $nivelSenioridade, $nivelHierarquico, $status, $habilidades)
     {
         $this->setFilial($filial);
         $this->setEmpresa($empresa);
@@ -27,13 +28,13 @@ class Vaga
         $this->setSalario($salario);
         $this->setBeneficios($beneficios);
         $this->setDescricao($descricao);
-        $this->setRequisitos($requisitos);
         $this->setCargaHoraria($cargaHoraria);
         $this->setRegimeContratacao($regimeContratacao);
         $this->setRegimeTrabalho($regimeTrabalho);
         $this->setNivelSenioridade($nivelSenioridade);
         $this->setNivelHierarquico($nivelHierarquico);
         $this->setStatus($status);
+        $this->setHabilidades($habilidades);
     }
 
     public function getId()
@@ -124,17 +125,6 @@ class Vaga
         return $this->descricao;
     }
 
-    public function setRequisitos($Requisitos)
-    {
-        $this->requisitos = $Requisitos;
-        return $this;
-    }
-
-    public function getRequisitos()
-    {
-        return $this->requisitos;
-    }
-
     public function setCargaHoraria($CargaHoraria)
     {
         $this->cargaHoraria = $CargaHoraria;
@@ -205,6 +195,15 @@ class Vaga
         return $this;
     }
 
+    public function getHabilidades(){
+        return $this->habilidades;
+    }
+
+    public function setHabilidades($habilidades){
+        $this->habilidades = $habilidades;
+        return $this;
+    }
+
     public function cardFormatado()
     {
 
@@ -221,7 +220,6 @@ class Vaga
                         </div>
                         <div class='p-2'>  
                             <p><i class='fas fa-building text-muted'></i> <small>{$this->getEmpresa()->getNome()}</small></p>
-                            <p><i class='fas fa-medal text-muted'></i> {$this->getRequisitos()}</p>
                             <p><i class='fas fa-coins text-muted'></i> R$ {$this->getSalario()}</p>
                             <p><i class='fas fa-home text-muted'></i> {$this->getFilial()->getCidade()}, {$this->getFilial()->getBairro()}</p>
                             <p>Regime de Contratação: {$textoRegimeContracao}</p>
@@ -249,7 +247,6 @@ class Vaga
                                 <p>Salário: R$ {$this->getSalario()}</p>
                                 <p>Benefícios: {$this->getBeneficios()}</p>
                                 <p>Descrição: {$this->getDescricao()}</p>
-                                <p>Requisitos: {$this->getRequisitos()}</p>
                                 <p>Carga Horária: {$this->getCargaHoraria()}</p>
                                 <p>Regime de Contratação: {$textoRegimeContracao}</p>
                                 <p>Regime de Trabalho: {$textoRegimeTrabalho}</p>

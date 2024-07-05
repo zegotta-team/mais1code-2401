@@ -22,7 +22,6 @@ CREATE TABLE vaga
     salario      INTEGER NOT NULL,
     beneficios   TEXT,
     descricao    TEXT    NOT NULL,
-    requisitos   TEXT    NOT NULL,
     cargaHoraria INTEGER NOT NULL,
     regimeContratacao INTEGER NOT NULL,
     regimeTrabalho INTEGER NOT NULL,
