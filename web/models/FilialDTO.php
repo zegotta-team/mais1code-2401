@@ -10,6 +10,10 @@ abstract class FilialDTO implements DTOInterface
 
         $cepSoNumero = preg_replace('/\D/', '', $filial->getCep());
 
+        if (!FilialDTO::verificar($filial->getCep(),$filial->getEstado())){
+            return;
+        }
+        
         if (empty($filial->getId())) {
             $sql = "INSERT INTO filial (empresa_id, nome, cep, logradouro, numero, complemento, bairro, cidade, estado)
                 VALUES (\"{$filial->getEmpresa()->getId()}\", \"{$filial->getnome()}\" ,'$cepSoNumero', \"{$filial->getLogradouro()}\", \"{$filial->getNumero()}\", \"{$filial->getComplemento()}\", \"{$filial->getBairro()}\", \"{$filial->getCidade()}\", \"{$filial->getEstado()}\")";
