@@ -3,6 +3,7 @@
 class Vaga
 {
     private $id;
+    private Filial $filial;
     private Empresa $empresa;
     private $titulo;
     private $email;
@@ -17,8 +18,9 @@ class Vaga
     private $nivelHierarquico;
     private $status;
 
-    public function __construct($empresa, $titulo, $email, $salario, $beneficios, $descricao, $requisitos, $cargaHoraria, $regimeContratacao, $regimeTrabalho, $nivelSenioridade, $nivelHierarquico, $status)
+    public function __construct($filial, $empresa, $titulo, $email, $salario, $beneficios, $descricao, $requisitos, $cargaHoraria, $regimeContratacao, $regimeTrabalho, $nivelSenioridade, $nivelHierarquico, $status)
     {
+        $this->setFilial($filial);
         $this->setEmpresa($empresa);
         $this->setTitulo($titulo);
         $this->setEmail($email);
@@ -42,6 +44,17 @@ class Vaga
     public function setId($id)
     {
         $this->id = $id;
+        return $this;
+    }
+
+    public function getFilial()
+    {
+        return $this->filial;
+    }
+
+    public function setFilial($filial)
+    {
+        $this->filial = $filial;
         return $this;
     }
 

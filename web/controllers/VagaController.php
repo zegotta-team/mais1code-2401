@@ -27,15 +27,20 @@ class VagaController
     {
         AutenticacaoController::exigeSessao();
 
-        View::renderizar('vaga/formulario');
+        $filiais = FilialDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
+
+        View::renderizar('vaga/formulario', compact('filiais'));
     }
 
     public function salvar()
     {
         AutenticacaoController::exigeSessao();
 
+        $filial = FilialDTO::recuperar($_POST['filial']);
+
+        
         if (empty($_POST['vagaId'])) {
-            $vaga = new Vaga($_SESSION['usuario']->getEmpresa(), $_POST['titulo'], $_POST['email'], $_POST['salario'], $_POST['beneficios'], $_POST['descricao'], $_POST['requisitos'], $_POST['cargaHoraria'], $_POST['regimeContratacao'], $_POST['regimeTrabalho'], $_POST['nivelSenioridade'], $_POST['nivelHierarquia'], $_POST['status']);
+            $vaga = new Vaga($filial,$_SESSION['usuario']->getEmpresa(), $_POST['titulo'], $_POST['email'], $_POST['salario'], $_POST['beneficios'], $_POST['descricao'], $_POST['requisitos'], $_POST['cargaHoraria'], $_POST['regimeContratacao'], $_POST['regimeTrabalho'], $_POST['nivelSenioridade'], $_POST['nivelHierarquia'], $_POST['status']);
         } else {
             $vaga = VagaDTO::recuperar($_POST['vagaId']);
 
@@ -47,7 +52,8 @@ class VagaController
                 die('Sai pilantra, a vaga não é sua');
             }
 
-            $vaga->setTitulo($_POST['titulo'])
+            $vaga->setFilial($filial)
+                ->setTitulo($_POST['titulo'])
                 ->setEmail($_POST['email'])
                 ->setSalario($_POST['salario'])
                 ->setBeneficios($_POST['beneficios'])
@@ -68,8 +74,9 @@ class VagaController
     public function editar()
     {
         AutenticacaoController::exigeSessao();
-
+        
         $idVaga = $_GET['id'];
+        $filiais = FilialDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
         $vaga = VagaDTO::recuperar($idVaga);
 
         $candidato_vagas = CandidatoVagaDTO::listar('', $vaga->getId());
@@ -82,7 +89,7 @@ class VagaController
             die('Sai pilantra, a vaga não é sua');
         }
 
-        View::renderizar('vaga/formulario', compact('vaga', 'candidato_vagas'));
+        View::renderizar('vaga/formulario', compact('vaga', 'candidato_vagas', 'filiais'));
     }
 
     public function excluir()
