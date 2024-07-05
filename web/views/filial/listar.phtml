@@ -1,0 +1,20 @@
+<table class="table table-bordered table-striped table-hover caption-top">
+    <caption>Minhas Filiais</caption>
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th class="minimal"><i class="fas fa-cog"></i></th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($filiais as $filial) : ?>
+        <tr>
+            <td><?= $filial->getNome() ?></td>
+            <td class="minimal">
+                <a class="btn btn-primary btn-sm" href="/filial/editar?id=<?= $filial->getId() ?>" title="Editar"><i class="fas fa-edit"></i></a>
+                <a class="btn btn-danger btn-sm" href="/filial/excluir?id=<?= $filial->getId() ?>" title="Excluir"><i class="fas fa-trash"></i></a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>

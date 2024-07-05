@@ -9,13 +9,13 @@ CREATE TABLE empresa
     cnpj      TEXT    NOT NULL,
     email     TEXT    NOT NULL,
     descricao TEXT    NOT NULL,
-    logo      TEXT,
-    endereco  TEXT    NOT NULL
+    logo      TEXT
 );
 
 CREATE TABLE vaga
 (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    filial_id    INTEGER NOT NULL,
     empresa_id   INTEGER NOT NULL,
     titulo       TEXT    NOT NULL,
     email        TEXT    NOT NULL,

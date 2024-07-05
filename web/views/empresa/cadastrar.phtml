@@ -1,16 +1,15 @@
 <form action="/empresa/processaCadastrar" method="post">
+<?php FlashMessage::getMessage() ?>
     <div class="row mt-3">
         <div class="col-6 col-md-6">
             <div class="p-3 p-md-4 p-xl-5">
                 <div class="row gy-3 gy-md-4 overflow-hidden">
                     <h6>Dados da empresa</h6>
-
                     <div class="col-12">
                         <label for="nome" class="form-label">Nome da empresa
                             <span>*</span></label>
                         <input type="text" class="form-control" name="nome" id="nome" placeholder="Nome da empresa" required>
                     </div>
-
                     <div class="col-6">
                         <label for="cnpj" class="form-label">CNPJ
                             <span>*</span></label>
@@ -21,24 +20,17 @@
                             <span>*</span></label>
                         <input type="email" class="form-control" name="email" id="email" placeholder="Informe um email válido" required>
                     </div>
-
                     <div class="col-12">
                         <label for="descricao" class="form-label">Descrição
                             <span>*</span></label>
                         <textarea type="text" class="form-control" name="descricao" id="descricao" placeholder="Descrição" required></textarea>
                     </div>
-
                     <div class="col-12">
                         <label for="logo" class="form-label">Logo
                             <span>*</span></label>
                         <input type="text" class="form-control" name="logo" id="logo" placeholder="Adicione uma imagem" required>
                     </div>
 
-                    <div class="col-12">
-                        <label for="endereco" class="form-label">Endereço
-                            <span>*</span></label>
-                        <input type="text" class="form-control" name="endereco" id="endereco" placeholder="Digite o endereço atual" required>
-                    </div>
                 </div>
             </div>
         </div>
@@ -66,12 +58,52 @@
                             <span>*</span></label>
                         <input type="text" class="form-control" name="usuarioEmail" id="usuarioEmail" placeholder="Informe o e-mail do usuário" required>
                     </div>
-
+                    
+                    <h6>Dados da filial</h6>
+                    <div class="col-12">
+                        <label for="filialNome" class="form-label">Nome da filial *</label>
+                        <input type="filialNome" class="form-control" name="filialNome" id="filialNome" required>
+                    </div>
+                    <div class="col-12">
+                        <label for="filialCep" class="form-label">Cep *</label>
+                        <input type="text" class="form-control" name="filialCep" id="filialCep" minlength="8" maxlength="8" required oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                        <div class="notification" id="notification">
+                    Apenas 8 digitos
+                        </div>
+                        
+                    </div>
+                    <div class="col-12">
+                        <label for="filialLogradouro" class="form-label">Logradouro *</label>
+                        <input type="text" class="form-control" name="filialLogradouro" id="filialLogradouro">
+                    </div>
+                    <div class="col-12">
+                        <label for="filialNumero" class="form-label">Numero *</label>
+                        <input type="text" class="form-control" name="filialNumero" id="filialNumero">
+                    </div>
+                    <div class="col-12">
+                        <label for="filialComplemento" class="form-label">Complemento *</label>
+                        <input type="text" class="form-control" name="filialComplemento" id="filialComplemento">
+                    </div>
+                    <div class="col-12">
+                        <label for="filialBairro" class="form-label">Bairro *</label>
+                        <input type="text" class="form-control" name="filialBairro" id="filialBairro">
+                    </div>
+                    <div class="col-12">
+                        <label for="filialCidade" class="form-label">Cidade *</label>
+                        <input type="text" class="form-control" name="filialCidade" id="filialCidade" required>
+                    </div>
+                    <div class="col-12">
+                        <label for="filialEstado" class="form-label">Estado *</label>
+                        <input type="text" class="form-control" name="filialEstado" id="filialEstado" required maxlength="2">
+                        <div class="notification" id="notification">
+                    Somente 2 digitos
+                        </div>
+                    </div>
 
                 </div>
             </div>
         </div>
-    </div>
+    </div>            
     <div class="row mt-4">
         <div class="col-12">
             <div class="d-grid">
