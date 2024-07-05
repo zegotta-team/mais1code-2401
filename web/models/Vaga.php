@@ -270,6 +270,7 @@ class Vaga
                                 <p>Regime de Trabalho: {$textoRegimeTrabalho}</p>
                                 <p>Senioridade: {$textoNivelSenioridade}</p>
                                 <p>Hierarquia: {$textoNivelHierarquico}</p>
+                                <p>Habilidades: {$habilidades}</p>
                                 <p>Localização: {$this->getFilial()->getBairro()} - {$this->getFilial()->getCidade()}, {$this->getFilial()->getEstado()}</p>
                             </div>
                             <div class='modal-footer'>

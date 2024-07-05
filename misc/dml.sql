@@ -44,3 +44,8 @@ INSERT INTO candidato (nome, email, senha, habilidades, cpf, nascimento, enderec
 ('Kauan Nascimento', 'kauan@candidato.com', '$argon2id$v=19$m=65536,t=4,p=1$Aab6wOgF6HbEY/Q3J42ClA$BoFioL4aRuvWJllGa5nOFd5hGUL+X9/SA6j0YXFvTzY', 'PHP', '00025166085', '1990-01-01', 'Av Paulista, 1000', '1', 'Masculino', 'Cisgenero', 1),
 ('Thiago Abreu', 'thiago@candidato.com', '$argon2id$v=19$m=65536,t=4,p=1$Aab6wOgF6HbEY/Q3J42ClA$BoFioL4aRuvWJllGa5nOFd5hGUL+X9/SA6j0YXFvTzY', 'PHP', '22972285454', '1990-01-01', 'Av Paulista, 1000', '1', 'Masculino', 'Cisgenero', 1)
 ;
+DELETE FROM filial WHERE 1;
+INSERT INTO filial (id, empresa_id, nome, cep, logradouro, numero, complemento, bairro, cidade, estado) VALUES
+(1, 1, 'FILIAL 1', '11111111', 'Rua 1', '1', '1', 'Bairro 1', 'Cidade 1', 'SP'),
+(2, 2, 'FILIAL 2', '22222222', 'Rua 2', '2', '2', 'Bairro 2', 'Cidade 2', 'SP'),
+(3, 3, 'FILIAL 3', '33333333', 'Rua 3', '3', '3', 'Bairro 3', 'Cidade3','SP');
