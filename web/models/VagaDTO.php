@@ -66,8 +66,14 @@ abstract class VagaDTO implements DTOInterface
 
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
+
+            $sql = "DELETE FROM vaga_habilidade WHERE vaga_id = {$vaga->getId()}";
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
         } catch (Exception $e) {
             echo "Erro: " . $e->getMessage();
+
         }
     }
 

@@ -49,6 +49,7 @@ abstract class HabilidadeDTO implements DTOInterface
         $sql .= !empty($habilidade_id) ? "AND habilidade.id = $habilidade_id " : '';
         $sql .= !empty($vaga_id) ? "AND vaga_habilidade.vaga_id = $vaga_id " : '';
 
+
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
