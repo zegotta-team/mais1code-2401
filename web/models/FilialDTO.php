@@ -27,10 +27,10 @@ abstract class FilialDTO implements DTOInterface
             $sql .= "complemento = '{$filial->getComplemento()}', ";
             $sql .= "bairro = '{$filial->getBairro()}', ";
             $sql .= "cidade = '{$filial->getCidade()}', ";
-            $sql .= "estado = '{$filial->getEstado()}', ";
-            $sql .= " WHERE filial_id = {$filial->getId()} ";
+            $sql .= "estado = '{$filial->getEstado()}' ";
+            $sql .= " WHERE id = {$filial->getId()} ";
         }
-
+        
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
@@ -90,4 +90,21 @@ abstract class FilialDTO implements DTOInterface
         }
         return true;
     }
+
+    public static function recuperar($id)
+    {
+        $pdo = static::conectarDB();
+        $sql = "SELECT * FROM filial WHERE id = $id ";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+
+        $retorno = null;
+        while ($filial = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $retorno = static::preencher($filial);
+        }
+
+        return $retorno;
+    }
+
 }
