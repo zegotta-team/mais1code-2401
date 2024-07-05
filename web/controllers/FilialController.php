@@ -19,7 +19,6 @@ class FilialController
         AutenticacaoController::exigeSessao();
         header('Location: /filial/listar');
         
-        
         if (empty($_POST['filialId'])) {
             $filial = new Filial($_SESSION['usuario']->getEmpresa(), $_POST['filialNome'], $_POST['filialCep'], $_POST['filialLogradouro'], $_POST['filialNumero'], $_POST['filialComplemento'], $_POST['filialBairro'], $_POST['filialCidade'], $_POST['filialEstado']);
         } else {
@@ -72,6 +71,26 @@ class FilialController
         }
 
         View::renderizar('filial/formulario', compact('filial'));
+    }
+
+    public function excluir()
+    {
+        AutenticacaoController::exigeSessao();
+
+        $filialId = $_GET['id'];
+
+        $filialExclusao = FilialDTO::recuperar($filialId);
+
+        if (empty($filialExclusao)) {
+            die('Filial não encontrada');
+        }
+
+        if ($_SESSION['usuario']->getEmpresa()->getId() !== $filialExclusao->getEmpresa()->getId()) {
+            die('Sai pilantra, está filial não é sua');
+        }
+
+        FilialDTO::deletar($filialExclusao);
+        header('Location: /filial/listar');
     }
 
 }
