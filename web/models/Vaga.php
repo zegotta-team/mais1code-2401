@@ -222,6 +222,13 @@ class Vaga
         $textoNivelSenioridade = NivelSenioridadeEnum::from($this->getNivelSenioridade())->label();
         $textoNivelHierarquico = NivelHierarquicoEnum::from($this->getNivelHierarquico())->label();
 
+        $habilidades = '';
+        foreach ($this->getHabilidades() as $habilidade){
+                 $habilidades .= ' ' . $habilidade->getHabilidade();
+
+
+        }
+
         return <<<HTML
                 <div class='d-flex justify-content-between h-100 flex-column'>   
                     <div>
@@ -236,6 +243,7 @@ class Vaga
                             <p>Regime de Trabalho: {$textoRegimeTrabalho}</p>
                             <p>Senioridade: {$textoNivelSenioridade}</p>
                             <p>Hierarquia: {$textoNivelHierarquico}</p>
+                            <p>Habilidades: {$habilidades}</p>
                         </div>
                     </div>
                     <div class='ver-mais ps-2 pe-2 text-end d-flex justify-content-end align-items-baseline'>

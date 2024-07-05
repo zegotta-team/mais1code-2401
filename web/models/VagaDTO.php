@@ -11,6 +11,7 @@ abstract class VagaDTO implements DTOInterface
         $filial = FilialDTO::recuperar($dados['filial_id']);
         $habilidades = HabilidadeDTO::listar('', $dados['id']);
 
+
         $vaga = new Vaga($filial, $empresa, $dados['titulo'], $dados['email'], $dados['salario'], $dados['beneficios'], $dados['descricao'], $dados['cargaHoraria'], $dados['regimeContratacao'], $dados['regimeTrabalho'], $dados['nivelSenioridade'], $dados['nivelHierarquia'], $dados['status'], $habilidades );
         $vaga->setId($dados['id']);
 
