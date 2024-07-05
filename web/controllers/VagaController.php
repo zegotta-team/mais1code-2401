@@ -99,6 +99,7 @@ class VagaController
         $idVaga = $_GET['id'];
         $vaga = VagaDTO::recuperar($idVaga);
 
+
         if (empty($vaga)) {
             die('Vaga não encontrada');
         }
