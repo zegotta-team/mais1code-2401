@@ -5,12 +5,14 @@ class HabilidadeController
     public function __construct()
     {
     }
+
     public function cadastrar()
     {
         AutenticacaoController::exigeSessao();
 
         View::renderizar('/habilidade/cadastrar', [], 'sistema');
     }
+
     public function processaCadastrar()
     {
         AutenticacaoController::exigeSessao();
@@ -21,6 +23,7 @@ class HabilidadeController
 
         View::renderizar('/habilidade/cadastrar', [], 'sistema');
     }
+
     public function listar()
     {
         AutenticacaoController::exigeSessao();
@@ -31,4 +34,5 @@ class HabilidadeController
 
         View::renderizar('/habilidade/listar', compact('vagas'));
     }
+
 }

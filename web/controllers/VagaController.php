@@ -65,7 +65,7 @@ class VagaController
                 ->setNivelSenioridade($_POST['nivelSenioridade'])
                 ->setNivelHierarquico($_POST['nivelHierarquia'])
                 ->setStatus($_POST['status'])
-                ->setHabilidades($_POST['habilidade']);
+                ->setHabilidades($habilidades);
         }
         VagaDTO::salvar($vaga);
 
