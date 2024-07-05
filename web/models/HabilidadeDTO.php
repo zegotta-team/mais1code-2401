@@ -14,17 +14,21 @@ abstract class HabilidadeDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
 
-        if (empty($habilidade->getHabilidade())) {
-            $sql = "INSERT INTO habilidade (id, habilidade) 
-        VALUES ({$habilidade->getId()}, \"{$habilidade->getHabilidade()}\")";
-        } else {
-            $sql = "UPDATE habilidade SET ";
-            $sql .= "habilidade = \"{$habilidade->getHabilidade()}\" ";
-            $sql .= " WHERE id = {$habilidade->getId()}";
+        if (!static::verificaDadosExistentes($habilidade->getHabilidade())){
+            if(empty($habilidade->getId())) {
+                $sql = "INSERT INTO habilidade (habilidade) 
+                        VALUES ( \"{$habilidade->getHabilidade()}\")";
+
+            } else {
+                $sql = "UPDATE habilidade SET ";
+                $sql .= "habilidade = \"{$habilidade->getHabilidade()}\" ";
+                $sql .= " WHERE id = {$habilidade->getId()}";
+            }
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
         }
 
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
+
     }
     public static function deletar($habilidade)
     {
@@ -67,5 +71,21 @@ abstract class HabilidadeDTO implements DTOInterface
         }
 
         return $retorno;
+    }
+    private static function verificaDadosExistentes($habilidade)
+    {
+        $pdo = static::conectarDB();
+
+        if(empty($habilidade)){
+            return true;
+        }
+        $sql = "SELECT COUNT(1) AS Total FROM habilidade ";
+        $sql .= "WHERE habilidade.habilidade LIKE '$habilidade' ";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $totalDeRegistros = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $totalDeRegistros['Total'] != 0;
     }
 }
