@@ -1,0 +1,61 @@
+<div class="container container-sm w-50">
+    <form method="post" action="/filial/processaCadastrar">
+    <?php FlashMessage::getMessage() ?>
+        <input type="hidden" name="filialId" value="<?= isset($filalId) ? $filialId->getId() : '' ?>"/>
+        <div class="row g-3 align-items-center mb-2">
+            <label for="nome" class="col-form-label text-end align-content-end col-md-2">Nome</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="filialNome" id="filialNome" required>
+            </div>
+        </div>   
+        <div class="row g-3 align-items-center mb-2">
+            <label for="nome" class="col-form-label text-end align-content-end col-md-2">Cep</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="filialCep" id="filialCep" minlength="8" maxlength="8" required oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+            </div>
+        </div>   
+        <div class="row g-3 align-items-center mb-2">
+            <label for="logradouro" class="col-form-label text-end align-content-end col-md-2">Logadrouro</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="filialLogradouro" id="logradouro">
+            </div>
+        </div>   
+        <div class="row g-3 align-items-center mb-2">
+            <label for="filialnumero" class="col-form-label text-end align-content-end col-md-2">Numero</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="filialNumero" id="filialNumero">
+            </div>
+        </div>   
+        <div class="row g-3 align-items-center mb-2">
+            <label for="complemento" class="col-form-label text-end align-content-end col-md-2">Complemento</label>
+            <div class="col-md-10">
+                <input type="complemento" class="form-control" name="filialComplemento" id="complemento">
+            </div>
+        </div>   
+        <div class="row g-3 align-items-center mb-2">
+            <label for="bairro" class="col-form-label text-end align-content-end col-md-2">Bairro</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="filialBairro" id="bairro">
+            </div>
+        </div>   
+        <div class="row g-3 align-items-center mb-2">
+            <label for="cidade" class="col-form-label text-end align-content-end col-md-2">Cidade</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="filialCidade" id="cidade" required>
+            </div>
+        </div>   
+        <div class="row g-3 align-items-center mb-2">
+            <label for="estado" class="col-form-label text-end align-content-end col-md-2">Estado</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="filialEstado" id="estado" required maxlength="2">
+            </div>
+        </div>   
+        <div class="row gy-3 gy-md-4 overflow-hidden mt-4 mb-2">
+            <div class="col-12">
+                <div class="d-grid">
+                    <button class="btn btn-primary" type="submit"><i class="fas fa-save"></i> Salvar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
