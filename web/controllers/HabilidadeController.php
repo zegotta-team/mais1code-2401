@@ -42,5 +42,21 @@ class HabilidadeController
 
         View::renderizar('habilidade/formulario', compact('habilidade'), 'sistema');
     }
+    public function excluir()
+    {
+        AutenticacaoController::exigeSessao();
+
+        $habilidadeId = $_GET['id'];
+        $habilidade = HabilidadeDTO::recuperar($habilidadeId);
+
+        if (empty($habilidade)) {
+            die('Habilidade não encontrada');
+        }
+
+
+        HabilidadeDTO::deletar($habilidade);
+
+        header('Location: /habilidade/listar');
+    }
 
 }
