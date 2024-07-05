@@ -98,6 +98,7 @@ class VagaController
 
         $idVaga = $_GET['id'];
         $vaga = VagaDTO::recuperar($idVaga);
+        $habilidade = HabilidadeDTO::listar('', $vaga->getId());
 
 
         if (empty($vaga)) {
@@ -107,6 +108,7 @@ class VagaController
         if ($_SESSION['usuario']->getEmpresa()->getId() !== $vaga->getEmpresa()->getId()) {
             die('Sai pilantra, a vaga não é sua');
         }
+
 
         VagaDTO::deletar($vaga);
 
