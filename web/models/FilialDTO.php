@@ -50,7 +50,7 @@ abstract class FilialDTO implements DTOInterface
             VagaDTO::salvar($vaga);
         }
 
-        $sql = "DELETE FROM filial WHERE filial_id = {$filialExclusao->getId()}";
+        $sql = "DELETE FROM filial WHERE id = {$filialExclusao->getId()}";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
