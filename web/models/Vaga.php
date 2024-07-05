@@ -223,6 +223,7 @@ class Vaga
                             <p><i class='fas fa-building text-muted'></i> <small>{$this->getEmpresa()->getNome()}</small></p>
                             <p><i class='fas fa-medal text-muted'></i> {$this->getRequisitos()}</p>
                             <p><i class='fas fa-coins text-muted'></i> R$ {$this->getSalario()}</p>
+                            <p><i class='fas fa-home text-muted'></i> {$this->getFilial()->getCidade()}, {$this->getFilial()->getBairro()}</p>
                             <p>Regime de Contratação: {$textoRegimeContracao}</p>
                             <p>Regime de Trabalho: {$textoRegimeTrabalho}</p>
                             <p>Senioridade: {$textoNivelSenioridade}</p>
@@ -234,6 +235,7 @@ class Vaga
                     </div>
                 </div>
                 
+                <!-- DIV DA MODAL -->
                 <div class='modal fade' id='modal{$this->getId()}' tabindex='-1' aria-labelledby='modal{$this->getId()}Label' aria-hidden='true'>
                     <div class='modal-dialog modal-lg'>
                         <div class='modal-content'>
@@ -253,6 +255,7 @@ class Vaga
                                 <p>Regime de Trabalho: {$textoRegimeTrabalho}</p>
                                 <p>Senioridade: {$textoNivelSenioridade}</p>
                                 <p>Hierarquia: {$textoNivelHierarquico}</p>
+                                <p>Localização: {$this->getFilial()->getBairro()} - {$this->getFilial()->getCidade()}, {$this->getFilial()->getEstado()}</p>
                             </div>
                             <div class='modal-footer'>
                                 <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Fechar</button>
