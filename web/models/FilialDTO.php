@@ -30,7 +30,7 @@ abstract class FilialDTO implements DTOInterface
             $sql .= "estado = '{$filial->getEstado()}' ";
             $sql .= " WHERE id = {$filial->getId()} ";
         }
-
+        
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
@@ -103,7 +103,7 @@ abstract class FilialDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
         $sql = "SELECT * FROM filial WHERE id = $id ";
-
+        
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 

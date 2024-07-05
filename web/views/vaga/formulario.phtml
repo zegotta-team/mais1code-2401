@@ -99,7 +99,17 @@
                     <option value="4" <?= !empty($vaga) && $vaga->getNivelHierarquico() == '4' ? 'selected' : '' ?>>Diretoria</option>
                     <option value="5" <?= !empty($vaga) && $vaga->getNivelHierarquico() == '5' ? 'selected' : '' ?>>C-Level</option>
                 </select>
-                <label for="status" class="col-form-label">Nível de Hierarquia</label>
+                <label for="status" class="col-form-label">Selecione a filial</label>
+            </div>
+            
+            <div class="col-md-6 form-floating">
+                <select class="form-control form-select" name="filial" id="filial" required>
+                    <option value="">Selecione a filial</option>  
+                    <?php foreach ($filiais as $filial) : ?>
+                        <option value="<?php echo $filial->getId() ?>" <?= !empty($vaga) && $vaga->getFilial()->getId() == $filial->getId() ? 'selected' : '' ?>><?php echo $filial->getNome() ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <label for="status" class="col-form-label">Selecione a filial</label>
             </div>
         </div>
         <div class="row gy-3 gy-md-4 overflow-hidden mt-4 mb-2">
