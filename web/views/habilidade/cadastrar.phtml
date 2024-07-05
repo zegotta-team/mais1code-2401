@@ -1,10 +1,10 @@
 <div class="container container-sm w-50">
     <form method="post" action="/habilidade/processaCadastrar">
-        <input type="hidden" name="habilidadeId"/>
+        <input type="hidden" name="id" value="<?=isset($habilidade) ? $habilidade->getId() : ''?>"/>
         <div class="row g-3 align-items-center mb-2">
             <div class="col-md-10">
                 <label for="nome" class="col-form-label text-end align-content-center col-md-2">Habilidades
-                    <input type="text" name="habilidade" value="<?= isset($post) ? $post->getHabilidade() : '' ?>">
+                    <input type="text" name="habilidade" value="<?= isset($habilidade) ? $habilidade->getHabilidade() : '' ?>">
                 </label>
         </div>
 
