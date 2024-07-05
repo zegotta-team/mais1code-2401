@@ -139,8 +139,17 @@ class VagaController
     public function exibir()
     {
         session_start();
-
         $vaga = VagaDTO::recuperar($_GET['id']);
+
+        $habilidades = $vaga->getHabilidades();
+
+        $habilidadesDescrita = '';
+
+        foreach ($habilidades as $habilidade ){
+                $habilidadesDescrita .= ' '. $habilidade->getHabilidade();
+
+        }
+
         if (CandidatoController::estaLogado()) {
             $candidato_vaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(),$vaga->getId());
             $layout = 'sistema-candidato';
@@ -148,7 +157,7 @@ class VagaController
             $candidato_vaga = null;
             $layout = 'painel-vagas';
         }
-        View::renderizar('vaga/detalhes', compact('vaga', 'candidato_vaga'), $layout);
+        View::renderizar('vaga/detalhes', compact('vaga', 'candidato_vaga', 'habilidadesDescrita'), $layout);
 
     }
 
