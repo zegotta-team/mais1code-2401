@@ -27,6 +27,8 @@ class VagaController
     {
         AutenticacaoController::exigeSessao();
 
+
+
         View::renderizar('vaga/formulario');
     }
 
@@ -35,7 +37,7 @@ class VagaController
         AutenticacaoController::exigeSessao();
 
         if (empty($_POST['vagaId'])) {
-            $vaga = new Vaga($_SESSION['usuario']->getEmpresa(), $_POST['titulo'], $_POST['email'], $_POST['salario'], $_POST['beneficios'], $_POST['descricao'], $_POST['requisitos'], $_POST['cargaHoraria'], $_POST['regimeContratacao'], $_POST['regimeTrabalho'], $_POST['nivelSenioridade'], $_POST['nivelHierarquia'], $_POST['status']);
+            $vaga = new Vaga( $_SESSION['usuario']->getEmpresa(), $_POST['titulo'], $_POST['email'], $_POST['salario'], $_POST['beneficios'], $_POST['descricao'], $_POST['requisitos'], $_POST['cargaHoraria'], $_POST['regimeContratacao'], $_POST['regimeTrabalho'], $_POST['nivelSenioridade'], $_POST['nivelHierarquia'], $_POST['status']);
         } else {
             $vaga = VagaDTO::recuperar($_POST['vagaId']);
 

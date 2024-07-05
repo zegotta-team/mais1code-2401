@@ -43,7 +43,15 @@ abstract class FilialDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
 
-        $sql = "DELETE FROM filial WHERE id = {$filialExclusao->getId()}";
+        $vagas = VagaDTO::listar(filialId:$filialExclusao->getId());
+
+        foreach ($vagas as $vaga) {
+            $vaga->setStatus(VagaStatusEnum::Inativa->value);
+            VagaDTO::salvar($vaga);
+        }
+
+        $sql = "DELETE FROM filial WHERE filial_id = {$filialExclusao->getId()}";
+
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
     }
