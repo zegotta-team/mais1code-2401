@@ -38,7 +38,6 @@ class VagaController
 
         $filial = FilialDTO::recuperar($_POST['filial']);
 
-        
         if (empty($_POST['vagaId'])) {
             $vaga = new Vaga($filial,$_SESSION['usuario']->getEmpresa(), $_POST['titulo'], $_POST['email'], $_POST['salario'], $_POST['beneficios'], $_POST['descricao'], $_POST['requisitos'], $_POST['cargaHoraria'], $_POST['regimeContratacao'], $_POST['regimeTrabalho'], $_POST['nivelSenioridade'], $_POST['nivelHierarquia'], $_POST['status']);
         } else {

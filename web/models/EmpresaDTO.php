@@ -58,6 +58,7 @@ abstract class EmpresaDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
         $sql = "SELECT * FROM empresa WHERE id = $id ";
+        
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
