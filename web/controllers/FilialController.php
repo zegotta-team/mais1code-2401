@@ -25,4 +25,13 @@ class FilialController
 
     }
 
+    public function listar()
+    {
+        AutenticacaoController::exigeSessao();
+
+        $filial = FilialDTO::listar($_SESSION['usuario']->getEmpresa()->getId(),'');
+
+        View::renderizar('filial/listar', compact('filial'));
+    }
+
 }
