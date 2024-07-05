@@ -2,6 +2,7 @@
 -- Comandos dentro do SQL que tem a finalidade de definir e/ou redefinir atributos de um objeto.
 -- Ex: CREATE, ALTER e DROP
 
+DROP TABLE empresa;
 CREATE TABLE empresa
 (
     id        INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -12,6 +13,7 @@ CREATE TABLE empresa
     logo      TEXT
 );
 
+DROP TABLE vaga;
 CREATE TABLE vaga
 (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -30,6 +32,9 @@ CREATE TABLE vaga
     `status`       INTEGER NOT NULL DEFAULT 1
 );
 
+
+
+DROP TABLE usuario;
 CREATE TABLE usuario
 (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -40,6 +45,7 @@ CREATE TABLE usuario
     senha       TEXT NOT NULL
 );
 
+DROP TABLE candidato;
 CREATE TABLE candidato
 (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -56,6 +62,7 @@ CREATE TABLE candidato
     `status`        INTEGER NOT NULL DEFAULT 1
 );
 
+DROP TABLE candidato_vaga;
 CREATE TABLE candidato_vaga (
     candidato_id       INTEGER NOT NULL,
     vaga_id            INTEGER NOT NULL,
@@ -64,6 +71,7 @@ CREATE TABLE candidato_vaga (
     PRIMARY KEY (candidato_id, vaga_id)
 );
 
+DROP TABLE filial;
 CREATE TABLE filial
 (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -78,6 +86,7 @@ CREATE TABLE filial
     estado      TEXT NOT NULL   
 );
 
+DROP TABLE habilidade;
 CREATE TABLE habilidade
 (
     id INTEGER NOT NULL,
@@ -85,6 +94,7 @@ CREATE TABLE habilidade
     PRIMARY KEY (id)
 );
 
+DROP TABLE vaga_habilidade;
 CREATE TABLE vaga_habilidade
 (   vaga_id INTEGER NOT NULL,
     habilidade_id INTEGER NOT NULL,

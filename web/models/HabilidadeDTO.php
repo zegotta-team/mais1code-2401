@@ -4,12 +4,14 @@
 abstract class HabilidadeDTO implements DTOInterface
 {
     use DbTrait;
+
     public static function preencher($dados)
     {
         $habilidade = new Habilidade($dados['habilidade']);
         $habilidade->setId($dados['id']);
         return $habilidade;
     }
+
     public static function salvar($habilidade)
     {
         $pdo = static::conectarDB();
@@ -19,14 +21,15 @@ abstract class HabilidadeDTO implements DTOInterface
                 $sql = "INSERT INTO habilidade (habilidade) 
                         VALUES ( \"{$habilidade->getHabilidade()}\")";
 
-            } else {
-                $sql = "UPDATE habilidade SET ";
-                $sql .= "habilidade = \"{$habilidade->getHabilidade()}\" ";
-                $sql .= " WHERE id = {$habilidade->getId()}";
-            }
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute();
+        } else {
+            $sql = "UPDATE habilidade SET ";
+            $sql .= "habilidade = \"{$habilidade->getHabilidade()}\" ";
+            $sql .= " WHERE id = {$habilidade->getId()}";
         }
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+    }
 
 
     }
@@ -38,17 +41,17 @@ abstract class HabilidadeDTO implements DTOInterface
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
     }
-    public static function listar($habilidade_id = '', $vaga_id ='')
+
+    public static function listar($habilidade_id = '', $vaga_id = '')
     {
         $pdo = static::conectarDB();
 
-        $sql = "SELECT habilidade.* 
-                FROM habilidade ";
-        $sql .= !empty($vaga_id) ? "INNER JOIN vaga_habilidade ON habilidade.id = vaga_habilidade.habilidade_id " : '' ;
+        $sql = "SELECT h.*
+                FROM habilidade h ";
+        $sql .= !empty($vaga_id) ? "INNER JOIN vaga_habilidade vh ON h.id = vh.habilidade_id " : "";
         $sql .= "WHERE 1 ";
-        $sql .= !empty($habilidade_id) ? "AND habilidade.id = $habilidade_id " : '';
-        $sql .= !empty($vaga_id) ? "AND vaga_habilidade.vaga_id = $vaga_id " : '';
-
+        $sql .= !empty($habilidade_id) ? "AND h.id = $habilidade_id " : '';
+        $sql .= !empty($vaga_id) ? "AND vh.vaga_id = $vaga_id " : '';
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
@@ -59,10 +62,12 @@ abstract class HabilidadeDTO implements DTOInterface
         }
         return $retorno;
     }
+
     public static function recuperar($id)
     {
         $pdo = static::conectarDB();
         $sql = "SELECT * FROM habilidade WHERE id = $id ";
+
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 

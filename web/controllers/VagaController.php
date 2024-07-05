@@ -45,6 +45,14 @@ class VagaController
 
         $filial = FilialDTO::recuperar($_POST['filial']);
 
+        $habilidades = [];
+
+        if (!empty($_POST['habilidades'])) {
+            foreach ($_POST['habilidades'] as $habilidadeId => $value) {
+                $habilidades[] = HabilidadeDTO::recuperar($habilidadeId);
+            }
+        }
+
         if (empty($_POST['vagaId'])) {
             $vaga = new Vaga($filial, $_SESSION['usuario']->getEmpresa(), $_POST['titulo'], $_POST['email'], $_POST['salario'], $_POST['beneficios'], $_POST['descricao'], $_POST['cargaHoraria'], $_POST['regimeContratacao'], $_POST['regimeTrabalho'], $_POST['nivelSenioridade'], $_POST['nivelHierarquia'], $_POST['status'], $habilidades);
         } else {
@@ -80,7 +88,7 @@ class VagaController
     public function editar()
     {
         AutenticacaoController::exigeSessao();
-        
+
         $idVaga = $_GET['id'];
         $filiais = FilialDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
         $vaga = VagaDTO::recuperar($idVaga);
@@ -175,7 +183,7 @@ class VagaController
         header('Location: /vaga/exibir?id='.$_GET['id']);
     }
 
-    public function processaMudancaDeStatus() 
+    public function processaMudancaDeStatus()
     {
         $candidatura = CandidatoVagaDTO::recuperar($_GET['candidatoId'], $_GET['id']);
 

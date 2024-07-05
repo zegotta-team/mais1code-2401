@@ -204,6 +204,16 @@ class Vaga
         return $this;
     }
 
+    public function temHabilidadeId($id){
+        foreach ($this->habilidades as $habilidade){
+            if ($id === $habilidade->getId()){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function cardFormatado()
     {
 
