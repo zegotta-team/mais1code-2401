@@ -8,16 +8,14 @@ class Empresa
     private $email;
     private $descricao;
     private $logo;
-    private $endereco;
 
-    public function __construct($nome, $cnpj, $email, $descricao, $logo, $endereco)
+    public function __construct($nome, $cnpj, $email, $descricao, $logo)
     {
         $this->setNome($nome);
         $this->setCNPJ($cnpj);
         $this->setEmail($email);
         $this->setDescricao($descricao);
         $this->setLogo($logo);
-        $this->setEndereco($endereco);
     }
 
     public function getId()
@@ -86,14 +84,4 @@ class Empresa
         return $this->logo;
     }
 
-    public function setEndereco($Endereco)
-    {
-        $this->endereco = $Endereco;
-        return $this;
-    }
-
-    public function getEndereco()
-    {
-        return $this->endereco;
-    }
 }

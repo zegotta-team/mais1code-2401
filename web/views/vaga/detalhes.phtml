@@ -12,6 +12,7 @@
     <p>Regime de Trabalho: <?= RegimeTrabalhoEnum::from($vaga->getRegimeTrabalho())->label() ?></p>
     <p>Senioridade: <?= NivelSenioridadeEnum::from($vaga->getNivelSenioridade())->label() ?></p>
     <p>Hierarquia: <?= NivelHierarquicoEnum::from($vaga->getNivelHierarquico())->label() ?></p>
+    <p>Localização: <?= "{$vaga->getFilial()->getBairro()} - {$vaga->getFilial()->getCidade()}, {$vaga->getFilial()->getEstado()}"?></p>
     <br>
     <div>
         <?php if ($vaga->getStatus() == VagaStatusEnum::Ativa->value): ?>

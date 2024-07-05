@@ -6,11 +6,13 @@ abstract class VagaDTO implements DTOInterface
 
     public static function preencher($dados)
     {
-        $habilidades = [];
+
+        $filial = FilialDTO::recuperar($dados['filial_id']);
         $habilidades = HabilidadeDTO::listar('', $dados['id']);
-        $empresa = EmpresaDTO::recuperar($dados['empresa_id']);
-        $vaga = new Vaga($empresa, $dados['titulo'], $dados['email'], $dados['salario'], $dados['beneficios'], $dados['descricao'], $dados['cargaHoraria'], $dados['regimeContratacao'], $dados['regimeTrabalho'], $dados['nivelSenioridade'], $dados['nivelHierarquia'], $dados['status'], $habilidades );
+        
+        $vaga = new Vaga($filial, $empresa, $dados['titulo'], $dados['email'], $dados['salario'], $dados['beneficios'], $dados['descricao'], $dados['cargaHoraria'], $dados['regimeContratacao'], $dados['regimeTrabalho'], $dados['nivelSenioridade'], $dados['nivelHierarquia'], $dados['status'], $habilidades );
         $vaga->setId($dados['id']);
+
         return $vaga;
     }
 
@@ -19,10 +21,11 @@ abstract class VagaDTO implements DTOInterface
 
         $pdo = static::conectarDB();
         if (empty($vaga->getId())) {
-            $sql = "INSERT INTO vaga(empresa_id, titulo, email, salario, beneficios, descricao, cargaHoraria, regimeContratacao, regimeTrabalho, nivelSenioridade, nivelHierarquia, status) 
-            VALUES ({$vaga->getEmpresa()->getId()}, \"{$vaga->getTitulo()}\", \"{$vaga->getEmail()}\", {$vaga->getSalario()}, \"{$vaga->getBeneficios()}\", \"{$vaga->getDescricao()}\", \"{$vaga->getCargaHoraria()}\", \"{$vaga->getRegimeContratacao()}\", \"{$vaga->getRegimeTrabalho()}\", \"{$vaga->getNivelSenioridade()}\", \"{$vaga->getNivelHierarquico()}\", \"{$vaga->getStatus()}\")";
+            $sql = "INSERT INTO vaga (filial_id, empresa_id, titulo, email, salario, beneficios, descricao, cargaHoraria, regimeContratacao, regimeTrabalho, nivelSenioridade, nivelHierarquia, status) 
+                    VALUES ({$vaga->getFilial()->getId()}, {$vaga->getEmpresa()->getId()}, \"{$vaga->getTitulo()}\", \"{$vaga->getEmail()}\", {$vaga->getSalario()}, \"{$vaga->getBeneficios()}\", \"{$vaga->getDescricao()}\", \"{$vaga->getCargaHoraria()}\", \"{$vaga->getRegimeContratacao()}\", \"{$vaga->getRegimeTrabalho()}\", \"{$vaga->getNivelSenioridade()}\", \"{$vaga->getNivelHierarquico()}\", \"{$vaga->getStatus()}\")";
         } else {
             $sql = "UPDATE vaga SET ";
+            $sql .= "filial_id = '{$vaga->getFilial()->getId()}', ";
             $sql .= "titulo = '{$vaga->getTitulo()}', ";
             $sql .= "email = '{$vaga->getEmail()}', ";
             $sql .= "salario = '{$vaga->getSalario()}', ";
@@ -93,7 +96,7 @@ abstract class VagaDTO implements DTOInterface
         return $retorno;
     }
 
-    public static function listar($empresaId = '', $filtro = '', $status = '')
+    public static function listar($empresaId = '', $filtro = '', $status = '', $filialId = '')
     {
 
         $pdo = static::conectarDB();
@@ -102,6 +105,7 @@ abstract class VagaDTO implements DTOInterface
         $sql .= "WHERE (v.titulo LIKE :curinga OR v.email LIKE :curinga OR e.email LIKE :curinga OR e.nome LIKE :curinga) ";
         $sql .= !empty($empresaId) ? "AND e.id = '$empresaId' " : "";
         $sql .= !empty($status) || $status == '0' ? "AND v.status = '$status' " : "";
+        $sql .= !empty($filialId) ? "AND v.filial_id = '$filialId' " : "";
 
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':curinga', "%{$filtro}%");

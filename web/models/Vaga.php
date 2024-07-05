@@ -3,6 +3,7 @@
 class Vaga
 {
     private $id;
+    private Filial $filial;
     private Empresa $empresa;
     private $titulo;
     private $email;
@@ -17,8 +18,10 @@ class Vaga
     private $status;
     private $habilidades;
 
-    public function __construct($empresa, $titulo, $email, $salario, $beneficios, $descricao, $cargaHoraria, $regimeContratacao, $regimeTrabalho, $nivelSenioridade, $nivelHierarquico, $status, $habilidades)
+
+    public function __construct($filial, $empresa, $titulo, $email, $salario, $beneficios, $descricao, $cargaHoraria, $regimeContratacao, $regimeTrabalho, $nivelSenioridade, $nivelHierarquico, $status, $habilidades)
     {
+        $this->setFilial($filial);
         $this->setEmpresa($empresa);
         $this->setTitulo($titulo);
         $this->setEmail($email);
@@ -42,6 +45,17 @@ class Vaga
     public function setId($id)
     {
         $this->id = $id;
+        return $this;
+    }
+
+    public function getFilial()
+    {
+        return $this->filial;
+    }
+
+    public function setFilial($filial)
+    {
+        $this->filial = $filial;
         return $this;
     }
 
@@ -207,6 +221,7 @@ class Vaga
                         <div class='p-2'>  
                             <p><i class='fas fa-building text-muted'></i> <small>{$this->getEmpresa()->getNome()}</small></p>
                             <p><i class='fas fa-coins text-muted'></i> R$ {$this->getSalario()}</p>
+                            <p><i class='fas fa-home text-muted'></i> {$this->getFilial()->getCidade()}, {$this->getFilial()->getBairro()}</p>
                             <p>Regime de Contratação: {$textoRegimeContracao}</p>
                             <p>Regime de Trabalho: {$textoRegimeTrabalho}</p>
                             <p>Senioridade: {$textoNivelSenioridade}</p>
@@ -218,6 +233,7 @@ class Vaga
                     </div>
                 </div>
                 
+                <!-- DIV DA MODAL -->
                 <div class='modal fade' id='modal{$this->getId()}' tabindex='-1' aria-labelledby='modal{$this->getId()}Label' aria-hidden='true'>
                     <div class='modal-dialog modal-lg'>
                         <div class='modal-content'>
@@ -236,6 +252,7 @@ class Vaga
                                 <p>Regime de Trabalho: {$textoRegimeTrabalho}</p>
                                 <p>Senioridade: {$textoNivelSenioridade}</p>
                                 <p>Hierarquia: {$textoNivelHierarquico}</p>
+                                <p>Localização: {$this->getFilial()->getBairro()} - {$this->getFilial()->getCidade()}, {$this->getFilial()->getEstado()}</p>
                             </div>
                             <div class='modal-footer'>
                                 <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Fechar</button>
