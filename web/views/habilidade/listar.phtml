@@ -3,20 +3,20 @@
     <thead>
     <tr>
         <th class="minimal">#</th>
-        <th>Habilidades
-        </th>
+        <th>Habilidades</th>
+        <th class="minimal"><i class="fas fa-cog"></i></th>
     </tr>
     </thead>
     <tbody>
-            <?php foreach ($habilidade as $valorHabilidade) :?>
+    <?php foreach ($habilidade as $valorHabilidade) : ?>
         <tr>
-            <td class="minimal"><?= $valorHabilidade->getId()?></td>
-            <td><?=$valorHabilidade->getHabilidade()?></td>
+            <td class="minimal"><?= $valorHabilidade->getId() ?></td>
+            <td><?= $valorHabilidade->getHabilidade() ?></td>
             <td class="minimal">
-                <a class="btn btn-primary btn-sm" href="/habilidade/editar?id=<?= $valorHabilidade->getId()?>" title="Editar"><i class="fas fa-edit"></i></a>
-                <a class="btn btn-danger btn-sm" href="/habilidade/excluir?id=<?= $valorHabilidade->getId()?>" title="Excluir"><i class="fas fa-trash"></i></a>
+                <a class="btn btn-primary btn-sm" href="/habilidade/editar?id=<?= $valorHabilidade->getId() ?>" title="Editar"><i class="fas fa-edit"></i></a>
+                <a class="btn btn-danger btn-sm" href="/habilidade/excluir?id=<?= $valorHabilidade->getId() ?>" title="Excluir"><i class="fas fa-trash"></i></a>
             </td>
         </tr>
-        <?php endforeach; ?>
+    <?php endforeach; ?>
     </tbody>
 </table>

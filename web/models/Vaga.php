@@ -140,8 +140,8 @@ class Vaga
     {
         $this->regimeContratacao = $RegimeContratacao;
         return $this;
-    }    
-    
+    }
+
     public function getRegimeContratacao()
     {
         return $this->regimeContratacao;
@@ -151,8 +151,8 @@ class Vaga
     {
         $this->regimeTrabalho = $RegimeTrabalho;
         return $this;
-    }    
-    
+    }
+
     public function getRegimeTrabalho()
     {
         return $this->regimeTrabalho;
@@ -162,8 +162,8 @@ class Vaga
     {
         $this->nivelSenioridade = $NivelSenioridade;
         return $this;
-    }    
-    
+    }
+
     public function getNivelSenioridade()
     {
         return $this->nivelSenioridade;
@@ -173,8 +173,8 @@ class Vaga
     {
         $this->nivelHierarquico = $NivelHierarquico;
         return $this;
-    }    
-    
+    }
+
     public function getNivelHierarquico()
     {
         return $this->nivelHierarquico;
@@ -195,18 +195,21 @@ class Vaga
         return $this;
     }
 
-    public function getHabilidades(){
+    public function getHabilidades()
+    {
         return $this->habilidades;
     }
 
-    public function setHabilidades($habilidades){
+    public function setHabilidades($habilidades)
+    {
         $this->habilidades = $habilidades;
         return $this;
     }
 
-    public function temHabilidadeId($id){
-        foreach ($this->habilidades as $habilidade){
-            if ($id === $habilidade->getId()){
+    public function temHabilidadeId($id)
+    {
+        foreach ($this->habilidades as $habilidade) {
+            if ($id === $habilidade->getId()) {
                 return true;
             }
         }
@@ -222,11 +225,15 @@ class Vaga
         $textoNivelSenioridade = NivelSenioridadeEnum::from($this->getNivelSenioridade())->label();
         $textoNivelHierarquico = NivelHierarquicoEnum::from($this->getNivelHierarquico())->label();
 
-        $habilidades = '';
-        foreach ($this->getHabilidades() as $habilidade){
-                 $habilidades .= ' ' . $habilidade->getHabilidade();
+        $habilidades = $habilidadesCard = $habilidadesModal = '';
+        foreach ($this->getHabilidades() as $habilidade) {
+            $habilidades .= !empty($habilidades) ? ", " : '';
+            $habilidades .= $habilidade->getHabilidade();
+        }
 
-
+        if (!empty(trim($habilidades))) {
+            $habilidadesCard = "<p><i class='fas fa-check-square text-muted'></i> $habilidades</p>";
+            $habilidadesModal = "<p>Habilidades: $habilidades</p>";
         }
 
         return <<<HTML
@@ -236,14 +243,14 @@ class Vaga
                             <strong><a type='button' data-bs-toggle='modal' data-bs-target='#modal{$this->getId()}'>{$this->getTitulo()}</a></strong><i class='fas fa-thumbtack'></i>
                         </div>
                         <div class='p-2'>  
-                            <p><i class='fas fa-building text-muted'></i> <small>{$this->getEmpresa()->getNome()}</small></p>
+                            <p class="small">
+                                <i class='fas fa-building text-muted'></i> {$this->getEmpresa()->getNome()}<br>
+                                {$textoRegimeContracao} - {$textoRegimeTrabalho}<br>
+                                {$textoNivelHierarquico} {$textoNivelSenioridade}
+                            </p>
                             <p><i class='fas fa-coins text-muted'></i> R$ {$this->getSalario()}</p>
                             <p><i class='fas fa-home text-muted'></i> {$this->getFilial()->getCidade()}, {$this->getFilial()->getBairro()}</p>
-                            <p>Regime de Contratação: {$textoRegimeContracao}</p>
-                            <p>Regime de Trabalho: {$textoRegimeTrabalho}</p>
-                            <p>Senioridade: {$textoNivelSenioridade}</p>
-                            <p>Hierarquia: {$textoNivelHierarquico}</p>
-                            <p>Habilidades: {$habilidades}</p>
+                             {$habilidadesCard}
                         </div>
                     </div>
                     <div class='ver-mais ps-2 pe-2 text-end d-flex justify-content-end align-items-baseline'>
@@ -262,15 +269,14 @@ class Vaga
                                 <h1>{$this->getTitulo()}</h1>
                                 <h5>{$this->getEmpresa()->getNome()}</h5>
                                 <br>
+                                <p class="small">
+                                    {$textoRegimeContracao} - {$textoRegimeTrabalho} -  {$this->getCargaHoraria()} horas/mês<br>
+                                    {$textoNivelHierarquico} {$textoNivelSenioridade}
+                                </p>
                                 <p>Salário: R$ {$this->getSalario()}</p>
                                 <p>Benefícios: {$this->getBeneficios()}</p>
                                 <p>Descrição: {$this->getDescricao()}</p>
-                                <p>Carga Horária: {$this->getCargaHoraria()}</p>
-                                <p>Regime de Contratação: {$textoRegimeContracao}</p>
-                                <p>Regime de Trabalho: {$textoRegimeTrabalho}</p>
-                                <p>Senioridade: {$textoNivelSenioridade}</p>
-                                <p>Hierarquia: {$textoNivelHierarquico}</p>
-                                <p>Habilidades: {$habilidades}</p>
+                                {$habilidadesModal}
                                 <p>Localização: {$this->getFilial()->getBairro()} - {$this->getFilial()->getCidade()}, {$this->getFilial()->getEstado()}</p>
                             </div>
                             <div class='modal-footer'>

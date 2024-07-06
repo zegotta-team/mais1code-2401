@@ -1,5 +1,5 @@
 <form action="/empresa/processaCadastrar" method="post">
-<?php FlashMessage::getMessage() ?>
+    <?php FlashMessage::getMessage() ?>
     <div class="row mt-3">
         <div class="col-6 col-md-6">
             <div class="p-3 p-md-4 p-xl-5">
@@ -58,52 +58,78 @@
                             <span>*</span></label>
                         <input type="text" class="form-control" name="usuarioEmail" id="usuarioEmail" placeholder="Informe o e-mail do usuário" required>
                     </div>
-                    
+                </div>
+                <hr>
+                <div class="row gy-3 gy-md-4 overflow-hidden">
                     <h6>Dados da filial</h6>
-                    <div class="col-12">
+                    <div class="col-8">
                         <label for="filialNome" class="form-label">Nome da filial *</label>
-                        <input type="filialNome" class="form-control" name="filialNome" id="filialNome" required>
+                        <input type="text" class="form-control" name="filialNome" id="filialNome" required>
                     </div>
-                    <div class="col-12">
+                    <div class="col-4">
                         <label for="filialCep" class="form-label">Cep *</label>
                         <input type="text" class="form-control" name="filialCep" id="filialCep" minlength="8" maxlength="8" required oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-                        <div class="notification" id="notification">
-                    Apenas 8 digitos
-                        </div>
-                        
                     </div>
                     <div class="col-12">
                         <label for="filialLogradouro" class="form-label">Logradouro *</label>
                         <input type="text" class="form-control" name="filialLogradouro" id="filialLogradouro">
                     </div>
-                    <div class="col-12">
+                    <div class="col-4">
                         <label for="filialNumero" class="form-label">Numero *</label>
                         <input type="text" class="form-control" name="filialNumero" id="filialNumero">
                     </div>
-                    <div class="col-12">
+                    <div class="col-8">
                         <label for="filialComplemento" class="form-label">Complemento *</label>
                         <input type="text" class="form-control" name="filialComplemento" id="filialComplemento">
                     </div>
-                    <div class="col-12">
+                    <div class="col-5">
                         <label for="filialBairro" class="form-label">Bairro *</label>
                         <input type="text" class="form-control" name="filialBairro" id="filialBairro">
                     </div>
-                    <div class="col-12">
+                    <div class="col-5">
                         <label for="filialCidade" class="form-label">Cidade *</label>
                         <input type="text" class="form-control" name="filialCidade" id="filialCidade" required>
                     </div>
-                    <div class="col-12">
+                    <div class="col-2">
                         <label for="filialEstado" class="form-label">Estado *</label>
-                        <input type="text" class="form-control" name="filialEstado" id="filialEstado" required maxlength="2">
-                        <div class="notification" id="notification">
-                    Somente 2 digitos
-                        </div>
+                        <select class="form-control" name="filialEstado" id="filialEstado" required>
+                            <option value="" disabled selected>-</option>
+                            <option value="AC" <?= isset($filial) && $filial->getEstado() == 'AC' ? 'selected' : '' ?>>AC</option>
+                            <option value="AL" <?= isset($filial) && $filial->getEstado() == 'AL' ? 'selected' : '' ?>>AL</option>
+                            <option value="AP" <?= isset($filial) && $filial->getEstado() == 'AP' ? 'selected' : '' ?>>AP</option>
+                            <option value="AM" <?= isset($filial) && $filial->getEstado() == 'AM' ? 'selected' : '' ?>>AM</option>
+                            <option value="BA" <?= isset($filial) && $filial->getEstado() == 'BA' ? 'selected' : '' ?>>BA</option>
+                            <option value="CE" <?= isset($filial) && $filial->getEstado() == 'CE' ? 'selected' : '' ?>>CE</option>
+                            <option value="DF" <?= isset($filial) && $filial->getEstado() == 'DF' ? 'selected' : '' ?>>DF</option>
+                            <option value="ES" <?= isset($filial) && $filial->getEstado() == 'ES' ? 'selected' : '' ?>>ES</option>
+                            <option value="GO" <?= isset($filial) && $filial->getEstado() == 'GO' ? 'selected' : '' ?>>GO</option>
+                            <option value="MA" <?= isset($filial) && $filial->getEstado() == 'MA' ? 'selected' : '' ?>>MA</option>
+                            <option value="MT" <?= isset($filial) && $filial->getEstado() == 'MT' ? 'selected' : '' ?>>MT</option>
+                            <option value="MS" <?= isset($filial) && $filial->getEstado() == 'MS' ? 'selected' : '' ?>>MS</option>
+                            <option value="MG" <?= isset($filial) && $filial->getEstado() == 'MG' ? 'selected' : '' ?>>MG</option>
+                            <option value="PA" <?= isset($filial) && $filial->getEstado() == 'PA' ? 'selected' : '' ?>>PA</option>
+                            <option value="PB" <?= isset($filial) && $filial->getEstado() == 'PB' ? 'selected' : '' ?>>PB</option>
+                            <option value="PR" <?= isset($filial) && $filial->getEstado() == 'PR' ? 'selected' : '' ?>>PR</option>
+                            <option value="PE" <?= isset($filial) && $filial->getEstado() == 'PE' ? 'selected' : '' ?>>PE</option>
+                            <option value="PI" <?= isset($filial) && $filial->getEstado() == 'PI' ? 'selected' : '' ?>>PI</option>
+                            <option value="RJ" <?= isset($filial) && $filial->getEstado() == 'RJ' ? 'selected' : '' ?>>RJ</option>
+                            <option value="RN" <?= isset($filial) && $filial->getEstado() == 'RN' ? 'selected' : '' ?>>RN</option>
+                            <option value="RS" <?= isset($filial) && $filial->getEstado() == 'RS' ? 'selected' : '' ?>>RS</option>
+                            <option value="RO" <?= isset($filial) && $filial->getEstado() == 'RO' ? 'selected' : '' ?>>RO</option>
+                            <option value="RR" <?= isset($filial) && $filial->getEstado() == 'RR' ? 'selected' : '' ?>>RR</option>
+                            <option value="SC" <?= isset($filial) && $filial->getEstado() == 'SC' ? 'selected' : '' ?>>SC</option>
+                            <option value="SP" <?= isset($filial) && $filial->getEstado() == 'SP' ? 'selected' : '' ?>>SP</option>
+                            <option value="SE" <?= isset($filial) && $filial->getEstado() == 'SE' ? 'selected' : '' ?>>SE</option>
+                            <option value="TO" <?= isset($filial) && $filial->getEstado() == 'TO' ? 'selected' : '' ?>>TO</option>
+
+                        </select>
+
                     </div>
 
                 </div>
             </div>
         </div>
-    </div>            
+    </div>
     <div class="row mt-4">
         <div class="col-12">
             <div class="d-grid">

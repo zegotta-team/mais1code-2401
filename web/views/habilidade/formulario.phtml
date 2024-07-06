@@ -1,14 +1,12 @@
 <div class="container container-sm w-50">
     <form method="post" action="/habilidade/salvar">
-        <input type="hidden" name="id" value="<?=isset($habilidade) ? $habilidade->getId() : ''?>"/>
+        <input type="hidden" name="id" value="<?= isset($habilidade) ? $habilidade->getId() : '' ?>"/>
         <div class="row g-3 align-items-center mb-2">
-            <div class="col-md-10">
-                <label for="nome" class="col-form-label text-end align-content-center col-md-2">Habilidades
-                    <input type="text" name="habilidade" value="<?= isset($habilidade) ? $habilidade->getHabilidade() : '' ?>">
-                </label>
+            <div class="col-md-12 form-floating">
+                <input type="text" class="form-control" name="habilidade" id="habilidade" value="<?= isset($habilidade) ? $habilidade->getHabilidade() : '' ?>">
+                <label for="habilidade" class="col-form-label">Habilidade</label>
+            </div>
         </div>
-
-
         <div class="row gy-3 gy-md-4 overflow-hidden mt-4 mb-2">
             <div class="col-12">
                 <div class="d-grid">

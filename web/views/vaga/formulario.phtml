@@ -2,9 +2,18 @@
     <form method="post" action="/vaga/salvar">
         <input type="hidden" name="vagaId" value="<?= isset($vaga) ? $vaga->getId() : '' ?>"/>
         <div class="row g-3 align-items-center mb-2">
-            <div class="col-md-12 form-floating">
+            <div class="col-md-8 form-floating">
                 <input type="text" class="form-control" name="titulo" id="titulo" value="<?= isset($vaga) ? $vaga->getTitulo() : '' ?>">
                 <label for="titulo" class="col-form-label">Título</label>
+            </div>
+            <div class="col-md-4 form-floating">
+                <select class="form-control form-select" name="status" id="status">
+                    <option value="1" <?= !empty($vaga) && $vaga->getStatus() == '1' ? 'selected' : '' ?>>Ativa</option>
+                    <?php if (!empty($vaga)) : ?>
+                        <option value="0" <?= $vaga->getStatus() == '0' ? 'selected' : '' ?>>Inativa</option>
+                    <?php endif; ?>
+                </select>
+                <label for="status" class="col-form-label">Status</label>
             </div>
         </div>
         <div class="row g-3 align-items-center mb-2">
@@ -35,24 +44,14 @@
             </div>
         </div>
         <div class="row g-3 align-items-center mb-2">
-            <div class="col-md-6 form-floating">
+            <div class="col-md-12 form-floating">
                 <textarea class="form-control" name="beneficios" id="beneficios" style="min-height: 100px;"><?= isset($vaga) ? $vaga->getBeneficios() : '' ?></textarea>
                 <label for="beneficios" class="col-form-label">Benefícios</label>
             </div>
         </div>
-
         <div class="row g-3 align-items-center mb-2">
-            <div class="col-md-3 form-floating">
-                <select class="form-control form-select" name="status" id="status">
-                    <option value="1" <?= !empty($vaga) && $vaga->getStatus() == '1' ? 'selected' : '' ?>>Ativa</option>
-                    <?php if (!empty($vaga)) : ?>
-                        <option value="0" <?= !empty($vaga) && $vaga->getStatus() == '0' ? 'selected' : '' ?>>Inativa</option>
-                    <?php endif; ?>
-                </select>
-                <label for="status" class="col-form-label">Status</label>
-            </div>
             <!-- REGIME DE CONTRATAÇÃO -->
-            <div class="col-md-3 form-floating">
+            <div class="col-md-4 form-floating">
                 <select class="form-control form-select" name="regimeContratacao" id="regimeContratacao" required>
                     <option value="">Selecione</option>
                     <option value="1" <?= !empty($vaga) && $vaga->getRegimeContratacao() == '1' ? 'selected' : '' ?>>CLT</option>
@@ -60,33 +59,42 @@
                     <option value="3" <?= !empty($vaga) && $vaga->getRegimeContratacao() == '3' ? 'selected' : '' ?>>Estágio</option>
                     <option value="4" <?= !empty($vaga) && $vaga->getRegimeContratacao() == '4' ? 'selected' : '' ?>>Jovem Aprendiz</option>
                 </select>
-                <label for="status" class="col-form-label">Regime de Contratação</label>
+                <label for="regimeContratacao" class="col-form-label">Regime de Contratação</label>
             </div>
-
             <!-- REGIME DE TRABALHO -->
-            <div class="col-md-2 form-floating">
+            <div class="col-md-4 form-floating">
                 <select class="form-control form-select" name="regimeTrabalho" id="regimeTrabalho" required>
                     <option value="">Selecione</option>
                     <option value="1" <?= !empty($vaga) && $vaga->getRegimeTrabalho() == '1' ? 'selected' : '' ?>>Presencial</option>
                     <option value="2" <?= !empty($vaga) && $vaga->getRegimeTrabalho() == '2' ? 'selected' : '' ?>>Híbrido</option>
                     <option value="3" <?= !empty($vaga) && $vaga->getRegimeTrabalho() == '3' ? 'selected' : '' ?>>Remoto</option>
                 </select>
-                <label for="status" class="col-form-label">Regime de Trabalho</label>
+                <label for="regimeTrabalho" class="col-form-label">Regime de Trabalho</label>
             </div>
-
+            <div class="col-md-4 form-floating">
+                <select class="form-control form-select" name="filial" id="filial" required>
+                    <option value="">Selecione a filial</option>
+                    <?php foreach ($filiais as $filial) : ?>
+                        <option value="<?php echo $filial->getId() ?>" <?= !empty($vaga) && $vaga->getFilial()->getId() == $filial->getId() ? 'selected' : '' ?>><?php echo $filial->getNome() ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <label for="filial" class="col-form-label">Selecione a filial</label>
+            </div>
+        </div>
+        <div class="row g-3 align-items-center mb-2">
             <!-- NÍVEL DE SENIORIDADE -->
-            <div class="col-md-2 form-floating">
+            <div class="col-md-6 form-floating">
                 <select class="form-control form-select" name="nivelSenioridade" id="nivelSenioridade" required>
                     <option value="">Selecione</option>
                     <option value="1" <?= !empty($vaga) && $vaga->getNivelSenioridade() == '1' ? 'selected' : '' ?>>Júnior</option>
                     <option value="2" <?= !empty($vaga) && $vaga->getNivelSenioridade() == '2' ? 'selected' : '' ?>>Pleno</option>
                     <option value="3" <?= !empty($vaga) && $vaga->getNivelSenioridade() == '3' ? 'selected' : '' ?>>Sênior</option>
                 </select>
-                <label for="status" class="col-form-label">Nível de Senioridade</label>
+                <label for="nivelSenioridade" class="col-form-label">Nível de Senioridade</label>
             </div>
 
             <!-- NÍVEL DE HIERARQUIA -->
-            <div class="col-md-2 form-floating">
+            <div class="col-md-6 form-floating">
                 <select class="form-control form-select" name="nivelHierarquia" id="nivelHierarquia" required>
                     <option value="">Selecione</option>
                     <option value="1" <?= !empty($vaga) && $vaga->getNivelHierarquico() == '1' ? 'selected' : '' ?>>Auxiliar/Assistente/Analista</option>
@@ -95,21 +103,19 @@
                     <option value="4" <?= !empty($vaga) && $vaga->getNivelHierarquico() == '4' ? 'selected' : '' ?>>Diretoria</option>
                     <option value="5" <?= !empty($vaga) && $vaga->getNivelHierarquico() == '5' ? 'selected' : '' ?>>C-Level</option>
                 </select>
-                <label for="status" class="col-form-label">Selecione a filial</label>
+                <label for="nivelHierarquia" class="col-form-label">Nível hierárquico</label>
             </div>
+        </div>
+        <div class="row g-3 align-items-center mb-2">
+            <label class="col-form-label">Habilidades</label>
+            <?php foreach ($habilidades as $habilidade) : ?>
+                <div class="col-3 mb-3" style="text-wrap: nowrap">
+                    <input type="checkbox" class="form-check-input" name="habilidade[]" id="habilidade_<?= $habilidade->getId() ?>" value="<?= $habilidade->getId() ?> "<?= !empty($vaga) && $vaga->temHabilidadeId($habilidade->getId()) ? 'checked' : '' ?>>
+                    <label class="form-check-label ms-1" for="habilidade_<?= $habilidade->getId() ?>"><?= $habilidade->getHabilidade() ?></label>
+                </div>
 
-            <div class="col-md-6 form-floating">
-                <select class="form-control form-select" name="filial" id="filial" required>
-                    <option value="">Selecione a filial</option>
-                    <?php foreach ($filiais as $filial) : ?>
-                        <option value="<?php echo $filial->getId() ?>" <?= !empty($vaga) && $vaga->getFilial()->getId() == $filial->getId() ? 'selected' : '' ?>><?php echo $filial->getNome() ?></option>
-                    <?php endforeach; ?>
-                </select>
-                <label for="status" class="col-form-label">Selecione a filial</label>
-                <?php foreach ($habilidades as $habilidade) : ?>
-                    <input type="checkbox" name="habilidade[]" value="<?= $habilidade->getId() ?> "<?= !empty($vaga) && $vaga->temHabilidadeId($habilidade->getId()) ? 'checked' : '' ?>> <?= $habilidade->getHabilidade()?><br>
-                <?php endforeach; ?>
-            </div>
+            <?php endforeach; ?>
+
         </div>
         <div class="row gy-3 gy-md-4 overflow-hidden mt-4 mb-2">
             <div class="col-12">
@@ -122,36 +128,41 @@
         </div>
     </form>
 
-        <?php if (!empty($vaga)): ?>
+    <?php if (!empty($vaga)): ?>
+        <hr>
         <table class="table table-bordered table-striped table-hover caption-top">
+            <caption>Lista de Candidatos</caption>
             <thead>
-                <tr>Lista de Candidatos
-                    <th scope="col">Nome</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Última Desistência</th>
-                    <th scope="col">Status da Candidatura</th>
-                    <th scope="col">Opções</th>
-                </tr>
+            <tr>
+                <th scope="col" class="minimal">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Email</th>
+                <th scope="col">Última Desistência</th>
+                <th scope="col">Status da Candidatura</th>
+                <th scope="col" class="minimal">
+                    <i class="fas fa-cog"></i>
+                </th>
+            </tr>
             </thead>
             <tbody>
-                <?php foreach ($candidato_vagas as $candidato_vaga) : ?>
-                    <tr>
-                        <th><?= $candidato_vaga->getCandidato()->getNome() ?></th>
-                        <td><?= $candidato_vaga->getCandidato()->getEmail() ?></td>
-                        <td><?= $candidato_vaga->getUltimaDesistencia() ?></td>
-                        <td><?=$candidato_vaga->getStatus(true)?></td>
-                        <td>
-                            <?php if ($candidato_vaga->getStatus() !== CandidatoVagaStatusEnum::Desistencia->value && $candidato_vaga->getStatus() !== CandidatoVagaStatusEnum::Aprovado->value && $candidato_vaga->getStatus() !== CandidatoVagaStatusEnum::Reprovado->value) : ?>
-                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                    <a class="btn btn-success" href="/vaga/processaMudancaDeStatus?id=<?=$vaga->getId()?>&candidatoId=<?=$candidato_vaga->getCandidato()->getId()?>&resultado=1" role="button">Aprovado</a>
-
-                                    <a class="btn btn-danger" href="/vaga/processaMudancaDeStatus?id=<?=$vaga->getId()?>&candidatoId=<?=$candidato_vaga->getCandidato()->getId()?>&resultado=0" role="button">Reprovado</a>
-                                </div>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
-        <?php endif; ?>
+            <?php foreach ($candidato_vagas as $candidato_vaga) : ?>
+                <tr>
+                    <td><?= $candidato_vaga->getCandidato()->getId() ?></td>
+                    <td><?= $candidato_vaga->getCandidato()->getNome() ?></td>
+                    <td><?= $candidato_vaga->getCandidato()->getEmail() ?></td>
+                    <td><?= $candidato_vaga->getUltimaDesistencia() ?></td>
+                    <td><?= $candidato_vaga->getStatus(true) ?></td>
+                    <td>
+                        <?php if ($candidato_vaga->getStatus() !== CandidatoVagaStatusEnum::Desistencia->value && $candidato_vaga->getStatus() !== CandidatoVagaStatusEnum::Aprovado->value && $candidato_vaga->getStatus() !== CandidatoVagaStatusEnum::Reprovado->value) : ?>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a class="btn btn-success" href="/vaga/processaMudancaDeStatus?id=<?= $vaga->getId() ?>&candidatoId=<?= $candidato_vaga->getCandidato()->getId() ?>&resultado=1" role="button">Aprovado</a>
+                                <a class="btn btn-danger" href="/vaga/processaMudancaDeStatus?id=<?= $vaga->getId() ?>&candidatoId=<?= $candidato_vaga->getCandidato()->getId() ?>&resultado=0" role="button">Reprovado</a>
+                            </div>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
 </div>

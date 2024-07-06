@@ -1,59 +1,83 @@
+<?php FlashMessage::getMessage() ?>
+
 <div class="container container-sm w-50">
     <form method="post" action="/filial/processaCadastrar">
-    <?php FlashMessage::getMessage() ?>
         <input type="hidden" name="filialId" value="<?= isset($filial) ? $filial->getId() : '' ?>"/>
         <div class="row g-3 align-items-center mb-2">
-            <label for="nome" class="col-form-label text-end align-content-end col-md-2">Nome</label>
-            <div class="col-md-10">
+            <div class="col-md-7 form-floating">
                 <input type="text" class="form-control" name="filialNome" value="<?= isset($filial) ? $filial->getNome() : '' ?>" id="filialNome" required>
+                <label for="filialNome" class="col-form-label">Nome</label>
             </div>
-        </div>   
-        <div class="row g-3 align-items-center mb-2">
-            <label for="nome" class="col-form-label text-end align-content-end col-md-2">Cep</label>
-            <div class="col-md-10">
+            <div class="col-md-5 form-floating">
                 <input type="text" class="form-control" name="filialCep" value="<?= isset($filial) ? $filial->getCep() : '' ?>" id="filialCep" minlength="8" maxlength="8" required oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-            </div>  
-        </div>   
-        <div class="row g-3 align-items-center mb-2">
-            <label for="logradouro" class="col-form-label text-end align-content-end col-md-2">Logadrouro</label>
-            <div class="col-md-10">
-                <input type="text" class="form-control" name="filialLogradouro" value="<?= isset($filial) ? $filial->getLogradouro() : '' ?>" id="logradouro">
+                <label for="filialCep" class="col-form-label">Cep</label>
             </div>
-        </div>   
+        </div>
         <div class="row g-3 align-items-center mb-2">
-            <label for="filialnumero" class="col-form-label text-end align-content-end col-md-2">Numero</label>
-            <div class="col-md-10">
+            <div class="col-md-12 form-floating">
+                <input type="text" class="form-control" name="filialLogradouro" value="<?= isset($filial) ? $filial->getLogradouro() : '' ?>" id="filialLogradouro">
+                <label for="filialLogradouro" class="col-form-label">Logradouro</label>
+            </div>
+        </div>
+        <div class="row g-3 align-items-center mb-2">
+            <div class="col-md-4 form-floating">
                 <input type="text" class="form-control" name="filialNumero" value="<?= isset($filial) ? $filial->getNumero() : '' ?>" id="filialNumero">
+                <label for="filialNumero" class="col-form-label">Número</label>
             </div>
-        </div>   
-        <div class="row g-3 align-items-center mb-2">
-            <label for="complemento" class="col-form-label text-end align-content-end col-md-2">Complemento</label>
-            <div class="col-md-10">
-                <input type="complemento" class="form-control" name="filialComplemento" value="<?= isset($filial) ? $filial->getComplemento() : '' ?>" id="complemento">
+            <div class="col-md-8 form-floating">
+                <input type="text" class="form-control" name="filialComplemento" value="<?= isset($filial) ? $filial->getComplemento() : '' ?>" id="complemento">
+                <label for="complemento" class="col-form-label">Complemento</label>
             </div>
-        </div>   
+        </div>
         <div class="row g-3 align-items-center mb-2">
-            <label for="bairro" class="col-form-label text-end align-content-end col-md-2">Bairro</label>
-            <div class="col-md-10">
+            <div class="col-md-5 form-floating">
                 <input type="text" class="form-control" name="filialBairro" value="<?= isset($filial) ? $filial->getBairro() : '' ?>" id="bairro">
+                <label for="bairro" class="col-form-label">Bairro</label>
             </div>
-        </div>   
-        <div class="row g-3 align-items-center mb-2">
-            <label for="cidade" class="col-form-label text-end align-content-end col-md-2">Cidade</label>
-            <div class="col-md-10">
+            <div class="col-md-5 form-floating">
                 <input type="text" class="form-control" name="filialCidade" value="<?= isset($filial) ? $filial->getCidade() : '' ?>" id="cidade" required>
+                <label for="cidade" class="col-form-label">Cidade</label>
             </div>
-        </div>   
-        <div class="row g-3 align-items-center mb-2">
-            <label for="estado" class="col-form-label text-end align-content-end col-md-2">Estado</label>
-            <div class="col-md-10">
-                <input type="text" class="form-control" name="filialEstado" value="<?= isset($filial) ? $filial->getEstado() : '' ?>" id="estado" required maxlength="2">
+            <div class="col-md-2 form-floating">
+                <select class="form-control" name="filialEstado" id="filialEstado" required>
+                    <option value="" disabled selected>-</option>
+                    <option value="AC" <?= isset($filial) && $filial->getEstado() == 'AC' ? 'selected' : '' ?>>AC</option>
+                    <option value="AL" <?= isset($filial) && $filial->getEstado() == 'AL' ? 'selected' : '' ?>>AL</option>
+                    <option value="AP" <?= isset($filial) && $filial->getEstado() == 'AP' ? 'selected' : '' ?>>AP</option>
+                    <option value="AM" <?= isset($filial) && $filial->getEstado() == 'AM' ? 'selected' : '' ?>>AM</option>
+                    <option value="BA" <?= isset($filial) && $filial->getEstado() == 'BA' ? 'selected' : '' ?>>BA</option>
+                    <option value="CE" <?= isset($filial) && $filial->getEstado() == 'CE' ? 'selected' : '' ?>>CE</option>
+                    <option value="DF" <?= isset($filial) && $filial->getEstado() == 'DF' ? 'selected' : '' ?>>DF</option>
+                    <option value="ES" <?= isset($filial) && $filial->getEstado() == 'ES' ? 'selected' : '' ?>>ES</option>
+                    <option value="GO" <?= isset($filial) && $filial->getEstado() == 'GO' ? 'selected' : '' ?>>GO</option>
+                    <option value="MA" <?= isset($filial) && $filial->getEstado() == 'MA' ? 'selected' : '' ?>>MA</option>
+                    <option value="MT" <?= isset($filial) && $filial->getEstado() == 'MT' ? 'selected' : '' ?>>MT</option>
+                    <option value="MS" <?= isset($filial) && $filial->getEstado() == 'MS' ? 'selected' : '' ?>>MS</option>
+                    <option value="MG" <?= isset($filial) && $filial->getEstado() == 'MG' ? 'selected' : '' ?>>MG</option>
+                    <option value="PA" <?= isset($filial) && $filial->getEstado() == 'PA' ? 'selected' : '' ?>>PA</option>
+                    <option value="PB" <?= isset($filial) && $filial->getEstado() == 'PB' ? 'selected' : '' ?>>PB</option>
+                    <option value="PR" <?= isset($filial) && $filial->getEstado() == 'PR' ? 'selected' : '' ?>>PR</option>
+                    <option value="PE" <?= isset($filial) && $filial->getEstado() == 'PE' ? 'selected' : '' ?>>PE</option>
+                    <option value="PI" <?= isset($filial) && $filial->getEstado() == 'PI' ? 'selected' : '' ?>>PI</option>
+                    <option value="RJ" <?= isset($filial) && $filial->getEstado() == 'RJ' ? 'selected' : '' ?>>RJ</option>
+                    <option value="RN" <?= isset($filial) && $filial->getEstado() == 'RN' ? 'selected' : '' ?>>RN</option>
+                    <option value="RS" <?= isset($filial) && $filial->getEstado() == 'RS' ? 'selected' : '' ?>>RS</option>
+                    <option value="RO" <?= isset($filial) && $filial->getEstado() == 'RO' ? 'selected' : '' ?>>RO</option>
+                    <option value="RR" <?= isset($filial) && $filial->getEstado() == 'RR' ? 'selected' : '' ?>>RR</option>
+                    <option value="SC" <?= isset($filial) && $filial->getEstado() == 'SC' ? 'selected' : '' ?>>SC</option>
+                    <option value="SP" <?= isset($filial) && $filial->getEstado() == 'SP' ? 'selected' : '' ?>>SP</option>
+                    <option value="SE" <?= isset($filial) && $filial->getEstado() == 'SE' ? 'selected' : '' ?>>SE</option>
+                    <option value="TO" <?= isset($filial) && $filial->getEstado() == 'TO' ? 'selected' : '' ?>>TO</option>
+                </select>
+                <label for="filialEstado" class="col-form-label">Estado</label>
             </div>
-        </div>   
+        </div>
         <div class="row gy-3 gy-md-4 overflow-hidden mt-4 mb-2">
             <div class="col-12">
                 <div class="d-grid">
-                    <button class="btn btn-primary" type="submit"><i class="fas fa-save"></i> Salvar</button>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
                 </div>
             </div>
         </div>

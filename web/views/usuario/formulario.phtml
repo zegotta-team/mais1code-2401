@@ -2,26 +2,28 @@
     <form method="post" action="/usuario/salvar">
         <input type="hidden" name="usuarioId" value="<?= isset($usuarioEdicao) ? $usuarioEdicao->getId() : '' ?>"/>
         <div class="row g-3 align-items-center mb-2">
-            <label for="nome" class="col-form-label text-end align-content-end col-md-2">Nome</label>
-            <div class="col-md-10">
-                <input type="text" class="form-control" name="nome" id="nome" value="<?= isset($usuarioEdicao) ? $usuarioEdicao->getNome() : '' ?>" placeholder="Nome do usuário">
+            <div class="col-md-12 form-floating">
+                <input type="text" class="form-control" name="nome" id="nome" value="<?= isset($usuarioEdicao) ? $usuarioEdicao->getNome() : '' ?>">
+                <label for="nome" class="col-form-label">Nome</label>
             </div>
         </div>
         <div class="row g-3 align-items-center mb-2">
-            <label for="cpf" class="col-form-label text-end align-content-end col-md-2">CPF <span class="text-danger">*</span></label></label>
-            <div class="col-md-3">
-                <input type="text" class="form-control" name="cpf" id="cpf" value="<?= isset($usuarioEdicao) ? $usuarioEdicao->getCpf() : '' ?>" placeholder="CPF">
+            <div class="col-md-5 form-floating">
+                <input type="text" class="form-control" name="cpf" id="cpf" value="<?= isset($usuarioEdicao) ? $usuarioEdicao->getCpf() : '' ?>" required>
+                <label for="cpf" class="col-form-label">CPF <span class="text-danger">*</span></label></label>
             </div>
-            <label for="email" class="col-form-label text-end align-content-end col-md-2">E-mail</label>
-            <div class="col-md-5">
-                <input type="text" class="form-control" name="email" id="email" value="<?= isset($usuarioEdicao) ? $usuarioEdicao->getEmail() : '' ?>" placeholder="E-mail do usuário">
+            <div class="col-md-7 form-floating">
+                <input type="text" class="form-control" name="email" id="email" value="<?= isset($usuarioEdicao) ? $usuarioEdicao->getEmail() : '' ?>">
+                <label for="email" class="col-form-label">E-mail</label>
             </div>
         </div>
 
         <div class="row gy-3 gy-md-4 overflow-hidden mt-4 mb-2">
             <div class="col-12">
                 <div class="d-grid">
-                    <button class="btn btn-primary" type="submit"><i class="fas fa-save"></i> Salvar</button>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
                 </div>
             </div>
         </div>
