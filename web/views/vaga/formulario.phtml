@@ -106,6 +106,9 @@
                     <?php endforeach; ?>
                 </select>
                 <label for="status" class="col-form-label">Selecione a filial</label>
+                <?php foreach ($habilidades as $habilidade) : ?>
+                    <input type="checkbox" name="habilidade[]" value="<?= $habilidade->getId() ?> "<?= !empty($vaga) && $vaga->temHabilidadeId($habilidade->getId()) ? 'checked' : '' ?>> <?= $habilidade->getHabilidade()?><br>
+                <?php endforeach; ?>
             </div>
         </div>
         <div class="row gy-3 gy-md-4 overflow-hidden mt-4 mb-2">
