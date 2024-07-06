@@ -204,6 +204,16 @@ class Vaga
         return $this;
     }
 
+    public function temHabilidadeId($id){
+        foreach ($this->habilidades as $habilidade){
+            if ($id === $habilidade->getId()){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function cardFormatado()
     {
 
@@ -211,6 +221,13 @@ class Vaga
         $textoRegimeTrabalho = RegimeTrabalhoEnum::from($this->getRegimeTrabalho())->label();
         $textoNivelSenioridade = NivelSenioridadeEnum::from($this->getNivelSenioridade())->label();
         $textoNivelHierarquico = NivelHierarquicoEnum::from($this->getNivelHierarquico())->label();
+
+        $habilidades = '';
+        foreach ($this->getHabilidades() as $habilidade){
+                 $habilidades .= ' ' . $habilidade->getHabilidade();
+
+
+        }
 
         return <<<HTML
                 <div class='d-flex justify-content-between h-100 flex-column'>   
@@ -226,6 +243,7 @@ class Vaga
                             <p>Regime de Trabalho: {$textoRegimeTrabalho}</p>
                             <p>Senioridade: {$textoNivelSenioridade}</p>
                             <p>Hierarquia: {$textoNivelHierarquico}</p>
+                            <p>Habilidades: {$habilidades}</p>
                         </div>
                     </div>
                     <div class='ver-mais ps-2 pe-2 text-end d-flex justify-content-end align-items-baseline'>
@@ -252,6 +270,7 @@ class Vaga
                                 <p>Regime de Trabalho: {$textoRegimeTrabalho}</p>
                                 <p>Senioridade: {$textoNivelSenioridade}</p>
                                 <p>Hierarquia: {$textoNivelHierarquico}</p>
+                                <p>Habilidades: {$habilidades}</p>
                                 <p>Localização: {$this->getFilial()->getBairro()} - {$this->getFilial()->getCidade()}, {$this->getFilial()->getEstado()}</p>
                             </div>
                             <div class='modal-footer'>

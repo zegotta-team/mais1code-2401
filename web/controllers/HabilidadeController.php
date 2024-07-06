@@ -2,16 +2,19 @@
 
 class HabilidadeController
 {
-    public function __construct(){
+    public function __construct()
+    {
     }
 
-    public function cadastrar() {
+    public function cadastrar()
+    {
         AutenticacaoController::exigeSessao();
 
         View::renderizar('/habilidade/formulario', [], 'sistema');
     }
 
-    public function salvar() {
+    public function salvar()
+    {
         AutenticacaoController::exigeSessao();
 
         if (empty($_POST['id'])) {
@@ -27,20 +30,38 @@ class HabilidadeController
         header('Location:/habilidade/listar');
     }
 
-    public function listar() {
+    public function listar()
+    {
         AutenticacaoController::exigeSessao();
 
         $habilidade = HabilidadeDTO::listar();
 
         View::renderizar('/habilidade/listar', compact('habilidade'), 'sistema');
     }
-    public function editar() {
+
+    public function editar()
+    {
         AutenticacaoController::exigeSessao();
 
         $habilidadeId = $_GET['id'];
         $habilidade = HabilidadeDTO::recuperar($habilidadeId);
 
         View::renderizar('habilidade/formulario', compact('habilidade'), 'sistema');
+    }
+
+    public function excluir()
+    {
+        AutenticacaoController::exigeSessao();
+
+        $habilidade = HabilidadeDTO::recuperar($_GET['id']);
+
+        if (empty($habilidade)) {
+            die('Habilidade não encontrada');
+        }
+
+        HabilidadeDTO::deletar($habilidade);
+
+        header('Location: /habilidade/listar');
     }
 
 }

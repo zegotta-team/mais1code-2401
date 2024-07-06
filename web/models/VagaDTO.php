@@ -7,9 +7,11 @@ abstract class VagaDTO implements DTOInterface
     public static function preencher($dados)
     {
 
+        $empresa = EmpresaDTO::recuperar($dados['empresa_id']);
         $filial = FilialDTO::recuperar($dados['filial_id']);
         $habilidades = HabilidadeDTO::listar('', $dados['id']);
-        
+
+
         $vaga = new Vaga($filial, $empresa, $dados['titulo'], $dados['email'], $dados['salario'], $dados['beneficios'], $dados['descricao'], $dados['cargaHoraria'], $dados['regimeContratacao'], $dados['regimeTrabalho'], $dados['nivelSenioridade'], $dados['nivelHierarquia'], $dados['status'], $habilidades );
         $vaga->setId($dados['id']);
 
@@ -42,7 +44,7 @@ abstract class VagaDTO implements DTOInterface
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
-        
+
         if (empty($vaga->getId())) {
             $vaga->setId($pdo->lastInsertId());
         }
