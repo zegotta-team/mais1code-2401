@@ -52,6 +52,7 @@ abstract class HabilidadeDTO implements DTOInterface
         $sql .= "WHERE 1 ";
         $sql .= !empty($habilidade_id) ? "AND h.id = $habilidade_id " : '';
         $sql .= !empty($vaga_id) ? "AND vh.vaga_id = $vaga_id " : '';
+        $sql .= "ORDER BY h.habilidade ASC ";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();

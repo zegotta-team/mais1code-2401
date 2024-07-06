@@ -78,6 +78,6 @@ class EmpresaController
 
         EmpresaDTO::deletar($_SESSION['usuario']->getEmpresa());
 
-        header('Location: /autenticacao/processaLogout');
+        header('Location: /');
     }
 }

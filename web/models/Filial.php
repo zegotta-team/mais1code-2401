@@ -1,4 +1,5 @@
 <?php
+
 class Filial
 {
 
@@ -34,7 +35,7 @@ class Filial
     public function setId($id)
     {
         $this->id = $id;
-       
+
         return $this;
     }
 
@@ -46,7 +47,7 @@ class Filial
     public function setEmpresa(Empresa $empresa): Filial
     {
         $this->empresa = $empresa;
-       
+
         return $this;
     }
 
@@ -58,7 +59,7 @@ class Filial
     public function setNome($nome)
     {
         $this->nome = $nome;
-       
+
         return $this;
     }
 
@@ -70,7 +71,7 @@ class Filial
     public function setCep($cep)
     {
         $this->cep = $cep;
-       
+
         return $this;
     }
 
@@ -82,7 +83,7 @@ class Filial
     public function setLogradouro($logradouro)
     {
         $this->logradouro = $logradouro;
-       
+
         return $this;
     }
 
@@ -94,7 +95,7 @@ class Filial
     public function setNumero($numero)
     {
         $this->numero = $numero;
-        
+
         return $this;
     }
 
@@ -106,7 +107,7 @@ class Filial
     public function setComplemento($complemento)
     {
         $this->complemento = $complemento;
-       
+
         return $this;
     }
 

@@ -55,7 +55,7 @@ class CandidatoController
     {
         session_start();
         session_destroy();
-        header('Location: /candidato/login');
+        header('Location: /');
     }
 
     public static function renegaSessao()

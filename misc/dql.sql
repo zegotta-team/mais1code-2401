@@ -4,17 +4,37 @@
 -- Ex: SELECT.
 
 SELECT * FROM empresa;
-SELECT * FROM usuario;
+SELECT * FROM filial;
 SELECT * FROM vaga;
+SELECT * FROM habilidade;
+SELECT * FROM usuario;
 SELECT * FROM candidato;
+SELECT * FROM vaga_habilidade;
+SELECT * FROM candidato_vaga;
 
--- vagas com empresa
-SELECT e.nome, v.*
+-- empresas com filiais
+SELECT *
+FROM empresa e
+INNER JOIN filial f ON f.empresa_id = e.id;
+
+-- empresas com usuarios
+SELECT *
+FROM empresa e
+INNER JOIN usuario u ON u.empresa_id = e.id;
+
+-- empresas com vagas
+SELECT *
+FROM empresa e
+INNER JOIN vaga v ON e.id = v.empresa_id;
+
+-- vagas com candidatos
+SELECT v.*, c.*
 FROM vaga v
-INNER JOIN empresa e ON e.id = v.empresa_id;
+LEFT JOIN candidato_vaga cv ON cv.vaga_id = v.id
+LEFT JOIN candidato c ON c.id = cv.candidato_id;
 
--- candidato com vagas
-SELECT c.*, v.*
-FROM candidato c
-LEFT JOIN candidato_vaga cv ON cv.candidato_id = c.id
-LEFT JOIN vaga v ON v.id = cv.vaga_id
+-- vagas com habilidades
+SELECT v.*, h.*
+FROM vaga v
+LEFT JOIN vaga_habilidade vh ON vh.vaga_id = v.id
+LEFT JOIN habilidade h ON h.id = vh.habilidade_id;

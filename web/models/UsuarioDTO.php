@@ -76,8 +76,10 @@ abstract class UsuarioDTO implements DTOInterface
 
         $sql = "SELECT * FROM usuario WHERE 1 ";
         if (!empty($empresaId)) {
-            $sql .= "AND empresa_id = $empresaId";
+            $sql .= "AND empresa_id = $empresaId ";
         }
+        $sql .= "ORDER BY nome ASC ";
+
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 

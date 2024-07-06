@@ -1,3 +1,4 @@
+<?php /** @var Vaga $vaga */ ?>
 <div class="container container-sm w-75">
     <form method="post" action="/vaga/salvar">
         <input type="hidden" name="vagaId" value="<?= isset($vaga) ? $vaga->getId() : '' ?>"/>
@@ -74,7 +75,9 @@
             <div class="col-md-4 form-floating">
                 <select class="form-control form-select" name="filial" id="filial" required>
                     <option value="">Selecione a filial</option>
-                    <?php foreach ($filiais as $filial) : ?>
+                    <?php
+                    /** @var array<Filial> $filiais */
+                    foreach ($filiais as $filial) : ?>
                         <option value="<?php echo $filial->getId() ?>" <?= !empty($vaga) && $vaga->getFilial()->getId() == $filial->getId() ? 'selected' : '' ?>><?php echo $filial->getNome() ?></option>
                     <?php endforeach; ?>
                 </select>
@@ -108,10 +111,11 @@
         </div>
         <div class="row g-3 align-items-center mb-2">
             <label class="col-form-label">Habilidades</label>
-            <?php foreach ($habilidades as $habilidade) : ?>
-                <div class="col-3 mb-3" style="text-wrap: nowrap">
+            <?php /** @var array<Habilidade> $habilidades */
+            foreach ($habilidades as $habilidade) : ?>
+                <div class="col-3 mb-3" style="text-wrap: nowrap;" title="<?= $habilidade->getHabilidade() ?>">
                     <input type="checkbox" class="form-check-input" name="habilidade[]" id="habilidade_<?= $habilidade->getId() ?>" value="<?= $habilidade->getId() ?> "<?= !empty($vaga) && $vaga->temHabilidadeId($habilidade->getId()) ? 'checked' : '' ?>>
-                    <label class="form-check-label ms-1" for="habilidade_<?= $habilidade->getId() ?>"><?= $habilidade->getHabilidade() ?></label>
+                    <label class="form-check-label ms-1 text-truncate" style="max-width: 80%;" for="habilidade_<?= $habilidade->getId() ?>"><?= $habilidade->getHabilidade() ?></label>
                 </div>
 
             <?php endforeach; ?>
@@ -145,7 +149,9 @@
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($candidato_vagas as $candidato_vaga) : ?>
+            <?php
+            /** @var array<CandidatoVaga> $candidato_vagas */
+            foreach ($candidato_vagas as $candidato_vaga) : ?>
                 <tr>
                     <td><?= $candidato_vaga->getCandidato()->getId() ?></td>
                     <td><?= $candidato_vaga->getCandidato()->getNome() ?></td>
@@ -154,9 +160,13 @@
                     <td><?= $candidato_vaga->getStatus(true) ?></td>
                     <td>
                         <?php if ($candidato_vaga->getStatus() !== CandidatoVagaStatusEnum::Desistencia->value && $candidato_vaga->getStatus() !== CandidatoVagaStatusEnum::Aprovado->value && $candidato_vaga->getStatus() !== CandidatoVagaStatusEnum::Reprovado->value) : ?>
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <a class="btn btn-success" href="/vaga/processaMudancaDeStatus?id=<?= $vaga->getId() ?>&candidatoId=<?= $candidato_vaga->getCandidato()->getId() ?>&resultado=1" role="button">Aprovado</a>
-                                <a class="btn btn-danger" href="/vaga/processaMudancaDeStatus?id=<?= $vaga->getId() ?>&candidatoId=<?= $candidato_vaga->getCandidato()->getId() ?>&resultado=0" role="button">Reprovado</a>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                <a class="btn btn-success" href="/vaga/processaMudancaDeStatus?id=<?= $vaga->getId() ?>&candidatoId=<?= $candidato_vaga->getCandidato()->getId() ?>&resultado=1" title="Aprovar" role="button">
+                                    <i class="fas fa-check-circle"></i>
+                                </a>
+                                <a class="btn btn-danger" href="/vaga/processaMudancaDeStatus?id=<?= $vaga->getId() ?>&candidatoId=<?= $candidato_vaga->getCandidato()->getId() ?>&resultado=0" title="Reprovar" role="button">
+                                    <i class="fas fa-times-circle"></i>
+                                </a>
                             </div>
                         <?php endif; ?>
                     </td>

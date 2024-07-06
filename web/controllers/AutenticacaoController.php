@@ -36,14 +36,14 @@ class AutenticacaoController
     {
         session_start();
         session_destroy();
-        header('Location: /autenticacao');
+        header('Location: /');
     }
 
     public static function exigeSessao()
     {
         session_start();
         if (empty($_SESSION['usuario'])) {
-            header("Location: /autenticacao/processaLogout");
+            header("Location: /autenticacao/");
             die();
         }
 

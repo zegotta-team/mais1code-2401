@@ -10,17 +10,10 @@ class VagaController
     {
         session_start();
 
-        $vagas = VagaDTO::listar('', '', VagaStatusEnum::Ativa->value);
+        $vagas = VagaDTO::listar('', '', VagaStatusEnum::Ativa->value, '', VagaOrdenacaoEnum::MaisRecente);
 
-        if (!empty($_SESSION['candidato'])) {
-
-            View::renderizar('vaga/painel', compact('vagas'), 'sistema-candidato');
-
-        } else {
-
-            View::renderizar('vaga/painel', compact('vagas'), 'painel-vagas');
-
-        }
+        $layout = !empty($_SESSION['candidato']) ? 'sistema-candidato' : 'painel-vagas';
+        View::renderizar('vaga/painel', compact('vagas'), $layout);
     }
 
     public function cadastrar()
@@ -28,37 +21,38 @@ class VagaController
         AutenticacaoController::exigeSessao();
 
         $filiais = FilialDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
-
-        $habilidades = HabilidadeDTO::listar('', '');
+        $habilidades = HabilidadeDTO::listar();
 
         View::renderizar('vaga/formulario', compact('filiais', 'habilidades'));
     }
 
     public function salvar()
     {
+        header('Location: /vaga/listar');
         AutenticacaoController::exigeSessao();
 
         $filial = FilialDTO::recuperar($_POST['filial']);
 
         $habilidades = [];
-
-
         if (!empty($_POST['habilidade'])) {
             foreach ($_POST['habilidade'] as $habilidadeId) {
                 $habilidades[] = HabilidadeDTO::recuperar($habilidadeId);
             }
         }
+
         if (empty($_POST['vagaId'])) {
             $vaga = new Vaga($filial, $_SESSION['usuario']->getEmpresa(), $_POST['titulo'], $_POST['email'], $_POST['salario'], $_POST['beneficios'], $_POST['descricao'], $_POST['cargaHoraria'], $_POST['regimeContratacao'], $_POST['regimeTrabalho'], $_POST['nivelSenioridade'], $_POST['nivelHierarquia'], $_POST['status'], $habilidades);
         } else {
             $vaga = VagaDTO::recuperar($_POST['vagaId']);
 
             if (empty($vaga)) {
-                die('Vaga não encontrada');
+                FlashMessage::addMessage('Vaga não encontrada', FlashMessage::FLASH_ERROR);
+                exit();
             }
 
             if ($_SESSION['usuario']->getEmpresa()->getId() !== $vaga->getEmpresa()->getId()) {
-                die('Sai pilantra, a vaga não é sua');
+                FlashMessage::addMessage('Sai pilantra, a vaga não é sua', FlashMessage::FLASH_ERROR);
+                exit();
             }
 
             $vaga->setFilial($filial)
@@ -76,8 +70,9 @@ class VagaController
                 ->setHabilidades($habilidades);
         }
         VagaDTO::salvar($vaga);
+        FlashMessage::addMessage('Dados gravados com sucesso');
 
-        header('Location: /vaga/listar');
+
     }
 
     public function editar()
@@ -127,8 +122,7 @@ class VagaController
     {
         AutenticacaoController::exigeSessao();
 
-        $vagas = VagaDTO::listar($_SESSION['usuario']->getEmpresa()->getId(), '');
-
+        $vagas = VagaDTO::listar($_SESSION['usuario']->getEmpresa()->getId(), '', '', '', VagaOrdenacaoEnum::AlfabeticaCrescente);
 
         View::renderizar('vaga/listar', compact('vagas'));
     }
@@ -142,13 +136,13 @@ class VagaController
 
         $habilidadesDescrita = '';
 
-        foreach ($habilidades as $habilidade ){
-                $habilidadesDescrita .= ' '. $habilidade->getHabilidade();
+        foreach ($habilidades as $habilidade) {
+            $habilidadesDescrita .= ' ' . $habilidade->getHabilidade();
 
         }
 
         if (CandidatoController::estaLogado()) {
-            $candidato_vaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(),$vaga->getId());
+            $candidato_vaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(), $vaga->getId());
             $layout = 'sistema-candidato';
         } else {
             $candidato_vaga = null;
@@ -170,7 +164,7 @@ class VagaController
 
         CandidatoVagaDTO::salvar($candidatoVaga);
 
-        header('Location: /vaga/exibir?id='.$_GET['id']);
+        header('Location: /vaga/exibir?id=' . $_GET['id']);
     }
 
     public function processaCandidatura()
@@ -186,7 +180,7 @@ class VagaController
         $candidatoVaga = new CandidatoVaga($candidato, $vaga, $ultimaDesistencia, CandidatoVagaStatusEnum::TriagemDeCurriculos->value);
         CandidatoVagaDTO::salvar($candidatoVaga);
 
-        header('Location: /vaga/exibir?id='.$_GET['id']);
+        header('Location: /vaga/exibir?id=' . $_GET['id']);
     }
 
     public function processaMudancaDeStatus()
@@ -197,14 +191,14 @@ class VagaController
 
         if ($resultado == 1) {
             $novoStatus = $candidatura->getStatus() < CandidatoVagaStatusEnum::Aprovado->value && $candidatura->getStatus() !== CandidatoVagaStatusEnum::Desistencia->value ? ($candidatura->getStatus() + 1) : $candidatura->getStatus();
-        } else{
+        } else {
             $novoStatus = CandidatoVagaStatusEnum::Reprovado->value;
         }
 
         $candidatura->setStatus($novoStatus);
         CandidatoVagaDTO::salvar($candidatura);
 
-        header('Location: /vaga/editar?id='.$_GET['id']);
+        header('Location: /vaga/editar?id=' . $_GET['id']);
     }
 
 }
