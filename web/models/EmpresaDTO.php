@@ -26,7 +26,7 @@ abstract class EmpresaDTO implements DTOInterface
             $sql .= "cnpj = '$cnpjSoNumeros', ";
             $sql .= "email = '{$empresa->getEmail()}', ";
             $sql .= "descricao = '{$empresa->getDescricao()}', ";
-            $sql .= "logo = '{$empresa->getLogo()}', ";
+            $sql .= "logo = '{$empresa->getLogo()}' ";
             $sql .= "WHERE id = '{$empresa->getId()}' ";
         }
         $stmt = $pdo->prepare($sql);
