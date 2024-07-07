@@ -57,8 +57,7 @@ class EmpresaController
             ->setCNPJ($_POST["cnpj"])
             ->setEmail($_POST["email"])
             ->setDescricao($_POST['descricao'])
-            ->setLogo($_POST['logo'])
-            ->setEndereco($_POST['endereco']);
+            ->setLogo($_POST['logo']);
 
         EmpresaDTO::salvar($_SESSION['usuario']->getEmpresa());
 
