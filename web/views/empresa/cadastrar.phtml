@@ -148,3 +148,35 @@
         </div>
     </div>
 </form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        let campo = document.querySelector("#filialCep");
+
+        campo.addEventListener('blur', function () {
+            let url = 'https://brasilapi.com.br/api/cep/v1/' + campo.value;
+            fetch(url)
+                .then(response => {
+                    if (response.status !== 200) {
+                        throw new Error('Erro lalallaa')
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    document.querySelector("#filialLogradouro").value = data.street;
+                    document.querySelector("#filialBairro").value = data.neighborhood;
+                    document.querySelector("#filialCidade").value = data.city;
+                    document.querySelector("#filialEstado").value = data.state;
+
+                })
+                .catch(error => {
+                    alert('CEP não encontrado');
+                    campo.value = '';
+                    document.querySelector("#filialLogradouro").value = '';
+                    document.querySelector("#filialBairro").value = '';
+                    document.querySelector("#filialCidade").value = '';
+                    document.querySelector("#filialEstado").value = '';
+                })
+        });
+    });
+</script>
