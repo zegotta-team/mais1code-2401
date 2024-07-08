@@ -114,7 +114,7 @@ abstract class CandidatoDTO implements DTOInterface
     public static function verificar($cpf, $email, $senha)
     {
         $min = 0;
-        $maxcpf = 14;
+        $maxcpf = 11;
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             FlashMessage::addMessage('Usuário inválido (usuário precisa ser um email)', FlashMessage::FLASH_ERROR);
