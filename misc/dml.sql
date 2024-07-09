@@ -46,33 +46,33 @@ INSERT INTO vaga (id, filial_id, empresa_id, titulo, email, salario, beneficios,
 ;
 
 DELETE FROM habilidade WHERE 1;
-INSERT INTO habilidade (id, habilidade) VALUES
-(1, 'PHP'),
-(2, 'MySQL'),
-(3, 'SQLite'),
-(4, 'JavaScript'),
-(5, 'Node.js'),
-(6, 'HTML'),
-(7, 'CSS'),
-(8, 'Metodologias ágeis'),
-(9, 'DotNet (.NET)'),
-(10, 'C#'),
-(11, 'C'),
-(12, 'C++'),
-(13, 'React'),
-(14, 'ReactNative'),
-(15, 'Vue'),
-(16, 'Angular'),
-(17, 'GoLang (Go)'),
-(18, 'Python'),
-(19, 'Elixir'),
-(20, 'POO (Orientação a Objetos)'),
-(21, 'Paradigma MVC'),
-(22, 'Design Patterns (Padrões de projeto)'),
-(23, 'Framework Laravel'),
-(24, 'Next.js'),
-(25, 'Framework Zend'),
-(26, 'Nuxt')
+INSERT INTO habilidade (id, habilidade, categoria_id) VALUES
+(1, 'PHP', 2),
+(2, 'MySQL', 1),
+(3, 'SQLite', 1),
+(4, 'JavaScript', 2),
+(5, 'Node.js', 2),
+(6, 'HTML', 2),
+(7, 'CSS', 2),
+(8, 'Metodologias ágeis', 2),
+(9, 'DotNet (.NET)', 2),
+(10, 'C#', 2),
+(11, 'C', 2),
+(12, 'C++', 2),
+(13, 'React', 2),
+(14, 'ReactNative', 2),
+(15, 'Vue', 2),
+(16, 'Angular', 2),
+(17, 'GoLang (Go)', 2),
+(18, 'Python', 2),
+(19, 'Elixir', 2),
+(20, 'POO (Orientação a Objetos)', 2),
+(21, 'Paradigma MVC', 2),
+(22, 'Design Patterns (Padrões de projeto)', 2),
+(23, 'Framework Laravel', 2),
+(24, 'Next.js', 2),
+(25, 'Framework Zend', 2),
+(26, 'Nuxt', 2)
 ;
 
 DELETE FROM vaga_habilidade WHERE 1;
@@ -102,6 +102,9 @@ INSERT INTO vaga_habilidade (vaga_id, habilidade_id) VALUES
 (8, 21),
 (8, 22)
 ;
+
+DELETE FROM categoria_habilidade WHERE 1;
+INSERT INTO categoria_habilidade (id, nome) VALUES (1, 'SQL - Banco de Dados'), (2, 'Linguagem de programação');
 
 DELETE FROM candidato WHERE 1;
 INSERT INTO candidato (id, nome, email, senha, habilidades, cpf, nascimento, endereco, disponibilidade, sexo, genero, `status`) VALUES
