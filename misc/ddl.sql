@@ -87,8 +87,9 @@ CREATE TABLE filial
 DROP TABLE habilidade;
 CREATE TABLE habilidade
 (
-    id         INTEGER NOT NULL,
-    habilidade TEXT    NULL,
+    id           INTEGER   NOT NULL,
+    habilidade   TEXT      NULL,
+    categoria_id INTEGER   NULL,
     PRIMARY KEY (id)
 );
 
@@ -98,4 +99,11 @@ CREATE TABLE vaga_habilidade
     vaga_id       INTEGER NOT NULL,
     habilidade_id INTEGER NOT NULL,
     PRIMARY KEY (vaga_id, habilidade_id)
+);
+
+DROP TABLE categoria_habilidade;
+CREATE TABLE categoria_habilidade
+(
+    id   INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT    NOT NULL
 );
