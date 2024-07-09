@@ -6,17 +6,17 @@
             <div class="p-3 p-md-4 p-xl-5">
                 <div class="row gy-3 gy-md-4 overflow-hidden">
                     <h6>Dados da empresa</h6>
-                    <div class="col-12">
-                        <label for="nome" class="form-label">Nome da empresa
-                            <span>*</span></label>
-                        <input type="text" class="form-control" name="nome" id="nome" placeholder="Nome da empresa" required>
-                    </div>
                     <div class="col-6">
                         <label for="cnpj" class="form-label">CNPJ
                             <span>*</span></label>
                         <input type="text" class="form-control" name="cnpj" id="cnpj" placeholder="CNPJ" maxlength="14" minlength="14" required>
                     </div>
-                    <div class="col-6">
+                    <div class="col-12">
+                        <label for="nome" class="form-label">Nome da empresa
+                            <span>*</span></label>
+                        <input type="text" class="form-control" name="nome" id="nome" placeholder="Nome da empresa" required>
+                    </div>
+                    <div class="col-12">
                         <label for="email" class="form-label">Email
                             <span>*</span></label>
                         <input type="email" class="form-control" name="email" id="email" placeholder="Informe um email válido" required>
@@ -154,7 +154,8 @@
         let campo = document.querySelector("#filialCep");
 
         campo.addEventListener('blur', function () {
-            let url = 'https://brasilapi.com.br/api/cep/v1/' + campo.value;
+            // let url = 'https://brasilapi.com.br/api/cep/v1/' + campo.value;
+            let url = '/api/cep/?cep=' + campo.value;
             fetch(url)
                 .then(response => {
                     if (response.status !== 200) {
@@ -178,5 +179,29 @@
                     document.querySelector("#filialEstado").value = '';
                 })
         });
+
+        let campoCnpj = document.querySelector("#cnpj")
+
+        campoCnpj.addEventListener('blur', function () {
+            // let url = 'https://brasilapi.com.br/api/cnpj/v1/' + campoCnpj.value
+            let url = '/api/cnpj/?cnpj=' + campoCnpj.value;
+            fetch(url)
+                .then(response => {
+                    if (response.status !== 200) {
+                        throw new Error('')
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    document.querySelector('#nome').value = data.nome_fantasia
+                    document.querySelector('#filialNome').value = data.nome_fantasia + ' - Matriz'
+                })
+                .catch(error => {
+                    document.querySelector('#nome').value = ''
+                    document.querySelector('#filialNome').value = 'Matriz'
+                })
+        })
+
+
     });
 </script>
