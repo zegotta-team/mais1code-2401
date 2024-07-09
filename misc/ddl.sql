@@ -36,12 +36,12 @@ DROP TABLE usuario;
 CREATE TABLE usuario
 (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    tipoUsuario INTEGER NOT NULL,
     empresa_id  INTEGER NOT NULL,
     cpf         TEXT    NOT NULL,
     nome        TEXT    NOT NULL,
     email       TEXT    NOT NULL,
-    senha       TEXT    NOT NULL
+    senha       TEXT    NOT NULL,
+    tipo        INTEGER NOT NULL
 );
 
 DROP TABLE candidato;
