@@ -89,7 +89,7 @@ CREATE TABLE habilidade
 (
     id           INTEGER   NOT NULL,
     habilidade   TEXT      NULL,
-    categoria_id INTEGER   NULL,
+    categoria_id INTEGER   NOT NULL,
     PRIMARY KEY (id)
 );
 
