@@ -4,10 +4,12 @@ class Habilidade
 {
     private $id;
     private $habilidade;
+    private CategoriaHabilidade $categoria;
 
-    public function __construct($habilidade)
+    public function __construct($habilidade, $categoria)
     {
         $this->setHabilidade($habilidade);
+        $this->setCategoria($categoria);
     }
 
     public function getId()
@@ -32,4 +34,14 @@ class Habilidade
         return $this;
     }
 
+    public function getCategoria() 
+    {
+        return $this->categoria;
+    }
+
+    public function setCategoria($categoria) 
+    {
+        $this->categoria = $categoria;
+        return $this;
+    }
 }
