@@ -1,9 +1,11 @@
+<input type="text" id="filterInput" class="filter-input" placeholder="Filtrar vagas...">
 <?php
 $maxColunas = 4;
 $coluna = 0;
 ?>
 <table class="table table-bordered caption-top">
     <caption>Painel de vagas</caption>
+    <tbody id="vagaTableBody">
     <?php foreach ($vagas as $vaga): ?>
 
         <?php if (++$coluna === 1) : ?>
@@ -23,4 +25,28 @@ $coluna = 0;
     <?php for (; $coluna % $maxColunas !== 0; $coluna++): ?>
         <td></td>
     <?php endfor; ?>
+    </tbody>
 </table>
+<script>
+        document.getElementById('filterInput').addEventListener('keyup', function() {
+            var filterValue = this.value.toLowerCase();
+            var rows = document.querySelectorAll('#vagaTableBody .vaga-row');
+
+            rows.forEach(function(row) {
+                var cells = row.querySelectorAll('.vaga-cell');
+                var match = false;
+
+                cells.forEach(function(cell) {
+                    if (cell.textContent.toLowerCase().indexOf(filterValue) > -1) {
+                        match = true;
+                    }
+                });
+
+                if (match) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+</script>
