@@ -17,9 +17,10 @@ class Vaga
     private $nivelHierarquico;
     private $status;
     private $habilidades;
+    private $tipo;
 
 
-    public function __construct($filial, $empresa, $titulo, $email, $salario, $beneficios, $descricao, $cargaHoraria, $regimeContratacao, $regimeTrabalho, $nivelSenioridade, $nivelHierarquico, $status, $habilidades)
+    public function __construct($filial, $empresa, $titulo, $email, $salario, $beneficios, $descricao, $cargaHoraria, $regimeContratacao, $regimeTrabalho, $nivelSenioridade, $nivelHierarquico, $status, $habilidades, $tipo)
     {
         $this->setFilial($filial);
         $this->setEmpresa($empresa);
@@ -35,6 +36,7 @@ class Vaga
         $this->setNivelHierarquico($nivelHierarquico);
         $this->setStatus($status);
         $this->setHabilidades($habilidades);
+        $this->setTipo($tipo);
     }
 
     public function getId()
@@ -215,6 +217,17 @@ class Vaga
         }
 
         return false;
+    }
+
+    public function getTipo()
+    {
+        return $this->tipo;
+    }
+
+    public function setTipo($tipo)
+    {
+        $this->tipo = $tipo;
+        return $this;
     }
 
     public function cardFormatado()

@@ -2,6 +2,6 @@
 
 enum TipoUsuarioEnum : int
 {
-    case usuario = 0;
-    case admin = 1;
+    case USUARIO = 2;
+    case ADMINISTRADOR = 1;
 }
