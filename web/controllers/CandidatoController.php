@@ -6,7 +6,13 @@ class CandidatoController
     {
         self::renegaSessao();
 
-        View::renderizar('candidato/login', [], 'login');
+        if (isset($_COOKIE['candidato'])) {
+            $usuarioLembrado = $_COOKIE['candidato'];
+        } else {
+            $usuarioLembrado = '';
+        }
+
+        View::renderizar('candidato/login', compact('usuarioLembrado'), 'login');
     }
 
     public function processaLogin()
@@ -15,6 +21,13 @@ class CandidatoController
 
         $email = $_POST['email'];
         $senha = $_POST['senha'];
+        $remember = isset($_POST['remember_me']);
+
+        if ($remember) {
+            setcookie("candidato", $email, time() + 3600 * 24 * 30 * 12 * 100);
+        } else {
+            setcookie("candidato", "", time() - 3600);
+        }
 
         $candidato = CandidatoDTO::autenticar($email, $senha);
 
