@@ -8,7 +8,7 @@
         <div class="col-12">
             <label for="email" class="form-label">Email
                 <span>*</span></label>
-            <input type="text" class="form-control" name="email" id="email" placeholder="Informe seu e-mail de acesso" required>
+            <input type="text" class="form-control" name="email" id="email" placeholder="Informe seu e-mail de acesso" value="<?=$usuarioLembrado?>" required>
         </div>
         <div class="col-12">
             <label for="senha" class="form-label">Senha
@@ -17,9 +17,9 @@
         </div>
         <div class="col-12 d-flex justify-content-between">
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" name="remember_me" id="remember_me">
+                <input class="form-check-input" type="checkbox" value="1" name="remember_me" id="remember_me" <?= !empty($usuarioLembrado) ? "checked" : "" ?>>
                 <label class="form-check-label" for="remember_me">
-                    Mantenha-me logado
+                    Lembrar meu usuário
                 </label>
             </div>
             <a href="/usuario/esqueci-senha" class="link-secondary text-decoration-none">Esqueci minha senha</a>
