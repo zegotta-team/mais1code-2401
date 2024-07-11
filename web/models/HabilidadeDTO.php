@@ -7,7 +7,8 @@ abstract class HabilidadeDTO implements DTOInterface
 
     public static function preencher($dados)
     {
-        $habilidade = new Habilidade($dados['habilidade']);
+        $categoria = CategoriaHabilidadeDTO::recuperar($dados['categoria_id']);
+        $habilidade = new Habilidade($dados['habilidade'], $categoria);
         $habilidade->setId($dados['id']);
         return $habilidade;
     }
@@ -18,21 +19,20 @@ abstract class HabilidadeDTO implements DTOInterface
 
         if (!static::verificaDadosExistentes($habilidade->getHabilidade())){
             if(empty($habilidade->getId())) {
-                $sql = "INSERT INTO habilidade (habilidade) 
-                        VALUES ( \"{$habilidade->getHabilidade()}\")";
+                $sql = "INSERT INTO habilidade (habilidade, categoria_id) 
+                        VALUES ( \"{$habilidade->getHabilidade()}\", \"{$habilidade->getCategoria()->getId()}\")";
+            } else {
+                $sql = "UPDATE habilidade SET ";
+                $sql .= "habilidade = '{$habilidade->getHabilidade()}', ";
+                $sql .= "categoria_id = '{$habilidade->getCategoria()->getId()}' ";
+                $sql .= "WHERE id = {$habilidade->getId()}";
+            }
 
-        } else {
-            $sql = "UPDATE habilidade SET ";
-            $sql .= "habilidade = \"{$habilidade->getHabilidade()}\" ";
-            $sql .= " WHERE id = {$habilidade->getId()}";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
         }
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
     }
 
-
-    }
     public static function deletar($habilidade)
     {
         $pdo = static::conectarDB();
@@ -42,7 +42,7 @@ abstract class HabilidadeDTO implements DTOInterface
         $stmt->execute();
     }
 
-    public static function listar($habilidade_id = '', $vaga_id = '')
+    public static function listar($habilidade_id = '', $vaga_id = '', $categoria_id = '')
     {
         $pdo = static::conectarDB();
 
@@ -52,6 +52,7 @@ abstract class HabilidadeDTO implements DTOInterface
         $sql .= "WHERE 1 ";
         $sql .= !empty($habilidade_id) ? "AND h.id = $habilidade_id " : '';
         $sql .= !empty($vaga_id) ? "AND vh.vaga_id = $vaga_id " : '';
+        $sql .= !empty($categoria_id) ? "AND h.candidato_id = $categoria_id " : '';
         $sql .= "ORDER BY h.habilidade ASC ";
 
         $stmt = $pdo->prepare($sql);
@@ -79,7 +80,8 @@ abstract class HabilidadeDTO implements DTOInterface
 
         return $retorno;
     }
-    private static function verificaDadosExistentes($habilidade)
+
+    public static function verificaDadosExistentes($habilidade)
     {
         $pdo = static::conectarDB();
 
