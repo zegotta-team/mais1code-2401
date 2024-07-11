@@ -1,19 +1,19 @@
 <?php /** @var array<Habilidade> $habilidades */
-            foreach ($habilidades as $habilidade) : ?>
-                <div class="col-3 mb-3 habilidade-item" style="text-wrap: nowrap;" title="<?= $habilidade->getHabilidade() ?>">
-                    <input type="checkbox" class="form-check-input" name="habilidade[]" id="habilidade_<?= $habilidade->getId() ?>" value="<?= $habilidade->getId() ?> "<?= !empty($vaga) && $vaga->temHabilidadeId($habilidade->getId()) ? 'checked' : '' ?>>
-                    <label class="form-check-label ms-1 text-truncate" style="max-width: 80%;" for="habilidade_<?= $habilidade->getId() ?>"><?= $habilidade->getHabilidade() ?></label>
-                </div>
-            <?php endforeach; ?>
+foreach ($habilidades as $habilidade) : ?>
+    <div class="col-3 mb-3 habilidade-item" style="text-wrap: nowrap;" title="<?= $habilidade->getHabilidade() ?>">
+        <input type="checkbox" class="form-check-input" name="habilidade[]" id="habilidade_<?= $habilidade->getId() ?>" value="<?= $habilidade->getId() ?> " <?= !empty($vaga) && $vaga->temHabilidadeId($habilidade->getId()) ? 'checked' : '' ?>>
+        <label class="form-check-label ms-1 text-truncate" style="max-width: 80%;" for="habilidade_<?= $habilidade->getId() ?>"><?= $habilidade->getHabilidade() ?></label>
+    </div>
+<?php endforeach; ?>
 
 <?php /** @var array<Empresa> $empresas */
-            foreach ($empresas as $empresa) : ?>
-                <div class="col-3 mb-3 habilidade-item" style="text-wrap: nowrap;" title="<?= $empresa->getNome() ?>">
-                    <input type="checkbox" class="form-check-input" name="nome[]" id="empresa_<?= $empresa->getId() ?>" value="<?= $empresa->getNome() ?>"<?= empty($empresa) ? 'checked' : '' ?>>
-                    <label class="form-check-label ms-1 text-truncate" style="max-width: 80%;" for="empresa_<?= $empresa->getId() ?>"><?= $empresa->getNome() ?></label>
-                </div>
-            <?php endforeach; ?>
-    
+foreach ($empresas as $empresa) : ?>
+    <div class="col-3 mb-3 habilidade-item" style="text-wrap: nowrap;" title="<?= $empresa->getNome() ?>">
+        <input type="checkbox" class="form-check-input" name="nome[]" id="empresa_<?= $empresa->getId() ?>" value="<?= $empresa->getNome() ?>" <?= empty($empresa) ? 'checked' : '' ?>>
+        <label class="form-check-label ms-1 text-truncate" style="max-width: 80%;" for="empresa_<?= $empresa->getId() ?>"><?= $empresa->getNome() ?></label>
+    </div>
+<?php endforeach; ?>
+
 <?php
 $maxColunas = 4;
 $coluna = 0;
@@ -21,24 +21,24 @@ $coluna = 0;
 <table class="table table-bordered caption-top">
     <caption>Painel de vagas</caption>
     <tbody id="vagaTableBody">
-    <?php foreach ($vagas as $vaga): ?>
+        <?php foreach ($vagas as $vaga) : ?>
 
-        <?php if (++$coluna === 1) : ?>
-            <tr class="pb-3">
-        <?php endif; ?>
+            <?php if (++$coluna === 1) : ?>
+                <tr class="pb-3">
+                <?php endif; ?>
 
-        <td class="align-top p-0 pb-3" style="height: 1px">
-            <?php echo $vaga->cardFormatado() ?>
-        </td>
+                <td class="align-top p-0 pb-3" style="height: 1px">
+                    <?php echo $vaga->cardFormatado() ?>
+                </td>
 
-        <?php if ($coluna % $maxColunas === 0) : ?>
-            </tr>
-        <?php endif; ?>
+                <?php if ($coluna % $maxColunas === 0) : ?>
+                </tr>
+            <?php endif; ?>
 
-    <?php endforeach; ?>
+        <?php endforeach; ?>
 
-    <?php for (; $coluna % $maxColunas !== 0; $coluna++): ?>
-        <td></td>
-    <?php endfor; ?>
+        <?php for (; $coluna % $maxColunas !== 0; $coluna++) : ?>
+            <td></td>
+        <?php endfor; ?>
     </tbody>
 </table>
