@@ -11,9 +11,11 @@ class VagaController
         session_start();
 
         $vagas = VagaDTO::listar('', '', VagaStatusEnum::Ativa->value, '', VagaOrdenacaoEnum::MaisRecente);
-
+        $habilidades = HabilidadeDTO::listar();
+        $empresas = EmpresaDTO::listar();
+        
         $layout = !empty($_SESSION['candidato']) ? 'sistema-candidato' : 'painel-vagas';
-        View::renderizar('vaga/painel', compact('vagas'), $layout);
+        View::renderizar('vaga/painel', compact('vagas', 'habilidades', 'empresas'), $layout);
     }
 
     public function cadastrar()

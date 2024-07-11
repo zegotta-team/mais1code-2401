@@ -1,50 +1,18 @@
-<div class="filter-container">
-        <div class="row g-3 align-items-center mb-2 filter-input">
-            <!-- REGIME DE CONTRATAÇÃO -->
-            <div class="col-md-4 form-floating">
-                <select class="form-control form-select" name="regimeContratacao" id="regimeContratacao">
-                    <option value="">Selecione</option>
-                    <option value="CLT">CLT</option>
-                    <option value="PJ">PJ</option>
-                    <option value="Estágio">Estágio</option>
-                    <option value="Jovem Aprendiz">Jovem Aprendiz</option>
-                </select>
-                <label for="regimeContratacao" class="col-form-label">Regime de Contratação</label>
-            </div>
+<?php /** @var array<Habilidade> $habilidades */
+            foreach ($habilidades as $habilidade) : ?>
+                <div class="col-3 mb-3 habilidade-item" style="text-wrap: nowrap;" title="<?= $habilidade->getHabilidade() ?>">
+                    <input type="checkbox" class="form-check-input" name="habilidade[]" id="habilidade_<?= $habilidade->getId() ?>" value="<?= $habilidade->getId() ?> "<?= !empty($vaga) && $vaga->temHabilidadeId($habilidade->getId()) ? 'checked' : '' ?>>
+                    <label class="form-check-label ms-1 text-truncate" style="max-width: 80%;" for="habilidade_<?= $habilidade->getId() ?>"><?= $habilidade->getHabilidade() ?></label>
+                </div>
+            <?php endforeach; ?>
 
-            <div class="col-md-4 form-floating">
-                <select class="form-control form-select" name="regimeTrabalho" id="regimeTrabalho">
-                    <option value="">Selecione</option>
-                    <option value="Presencial">Presencial</option>
-                    <option value="Híbrido">Híbrido</option>
-                    <option value="Remoto">Remoto</option>
-                </select>
-                <label for="regimeTrabalho" class="col-form-label">Regime de Trabalho</label>
-            </div>
-
-            <div class="col-md-4 form-floating">
-                <select class="form-control form-select" name="nivelSenioridade" id="nivelSenioridade">
-                    <option value="">Selecione</option>
-                    <option value="Júnior">Júnior</option>
-                    <option value="Pleno">Pleno</option>
-                    <option value="Sênior">Sênior</option>
-                </select>
-                <label for="nivelSenioridade" class="col-form-label">Nível de Senioridade</label>
-            </div>
-
-            <div class="col-md-4 form-floating">
-                <select class="form-control form-select" name="nivelHierarquia" id="nivelHierarquia">
-                    <option value="">Selecione</option>
-                    <option value="Auxiliar/Assistente/Analista">Auxiliar/Assistente/Analista</option>
-                    <option value="Coordenação/Supervisão">Coordenação/Supervisão</option>
-                    <option value="Gerência">Gerência</option>
-                    <option value="Diretoria">Diretoria</option>
-                    <option value="C-Level">C-Level</option>
-                </select>
-                <label for="nivelHierarquia" class="col-form-label">Nível Hierárquico</label>
-            </div>
-        </div>
-    </div>
+<?php /** @var array<Empresa> $empresas */
+            foreach ($empresas as $empresa) : ?>
+                <div class="col-3 mb-3 habilidade-item" style="text-wrap: nowrap;" title="<?= $empresa->getNome() ?>">
+                    <input type="checkbox" class="form-check-input" name="nome[]" id="empresa_<?= $empresa->getId() ?>" value="<?= $empresa->getNome() ?>"<?= empty($empresa) ? 'checked' : '' ?>>
+                    <label class="form-check-label ms-1 text-truncate" style="max-width: 80%;" for="empresa_<?= $empresa->getId() ?>"><?= $empresa->getNome() ?></label>
+                </div>
+            <?php endforeach; ?>
     
 <?php
 $maxColunas = 4;
