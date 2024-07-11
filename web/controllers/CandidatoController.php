@@ -83,4 +83,32 @@ class CandidatoController
         View::renderizar('candidato/listar', compact('vagasCandidatadas'), 'sistema-candidato');
     }
 
+    public function perfil()
+    {
+        session_start();
+
+        View::renderizar('candidato/perfil', [], 'sistema-candidato');
+    }
+
+    public function salvar()
+    {
+        session_start();
+
+        $candidato = $_SESSION['candidato'];
+
+        $candidato->setRegimeTrabalho($_POST['regimeTrabalho'])
+                    ->setRegimeContratacao($_POST['regimeContratacao'])
+                    ->setNivelSenioridade($_POST['nivelSenioridade'])
+                    ->setNivelHierarquia($_POST['nivelHierarquia']);
+        CandidatoDTO::salvar($candidato);
+        header("Location: /");
+    }
+
+    public function editar()
+    {
+        session_start();
+        $candidatoEditar = $_SESSION['candidato'];
+
+        View::renderizar('candidato/perfil',compact('candidatoEditar'), 'sistema-candidato');
+    }
 }
