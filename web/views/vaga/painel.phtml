@@ -1,19 +1,67 @@
-<?php /** @var array<Habilidade> $habilidades */
-foreach ($habilidades as $habilidade) : ?>
-    <div class="col-3 mb-3 habilidade-item" style="text-wrap: nowrap;" title="<?= $habilidade->getHabilidade() ?>">
-        <input type="checkbox" class="form-check-input" name="habilidade[]" id="habilidade_<?= $habilidade->getId() ?>" value="<?= $habilidade->getId() ?> " <?= !empty($vaga) && $vaga->temHabilidadeId($habilidade->getId()) ? 'checked' : '' ?>>
-        <label class="form-check-label ms-1 text-truncate" style="max-width: 80%;" for="habilidade_<?= $habilidade->getId() ?>"><?= $habilidade->getHabilidade() ?></label>
-    </div>
-<?php endforeach; ?>
+<form method="post" action="/vaga/filtrar">
 
-<?php /** @var array<Empresa> $empresas */
-foreach ($empresas as $empresa) : ?>
-    <div class="col-3 mb-3 habilidade-item" style="text-wrap: nowrap;" title="<?= $empresa->getNome() ?>">
-        <input type="checkbox" class="form-check-input" name="nome[]" id="empresa_<?= $empresa->getId() ?>" value="<?= $empresa->getNome() ?>" <?= empty($empresa) ? 'checked' : '' ?>>
-        <label class="form-check-label ms-1 text-truncate" style="max-width: 80%;" for="empresa_<?= $empresa->getId() ?>"><?= $empresa->getNome() ?></label>
-    </div>
-<?php endforeach; ?>
+    <?php /** @var array<Habilidade> $habilidades */
+    foreach ($habilidades as $habilidade) : ?>
+        <div class="col-3 mb-3 habilidade-item" style="text-wrap: nowrap;" title="<?= $habilidade->getHabilidade() ?>">
+            <input type="checkbox" class="form-check-input" name="filtro_habilidades[]" id="habilidade_<?= $habilidade->getId() ?>" value="<?= $habilidade->getId() ?>">
+            <label class="form-check-label ms-1 text-truncate" style="max-width: 80%;" for="habilidade_<?= $habilidade->getId() ?>"><?= $habilidade->getHabilidade() ?></label>
+        </div>
+    <?php endforeach; ?>
 
+    <?php /** @var array<Empresa> $empresas */
+    foreach ($empresas as $empresa) : ?>
+        <div class="col-3 mb-3 empresa-item" style="text-wrap: nowrap;" title="<?= $empresa->getNome() ?>">
+            <input type="checkbox" class="form-check-input" name="filtro_empresas[]" id="empresa_<?= $empresa->getNome() ?>" value="<?= $empresa->getNome() ?>">
+            <label class="form-check-label ms-1 text-truncate" style="max-width: 80%;" for="empresa_<?= $empresa->getNome() ?>"><?= $empresa->getNome() ?></label>
+        </div>
+    <?php endforeach; ?>
+
+    <div class="col-md-12">
+        <label class="form-label">Estado</label>
+        <div class="row">
+            <?php
+            $estados = [
+                'AC' => 'Acre',
+                'AL' => 'Alagoas',
+                'AP' => 'Amapá',
+                'AM' => 'Amazonas',
+                'BA' => 'Bahia',
+                'CE' => 'Ceará',
+                'DF' => 'Distrito Federal',
+                'ES' => 'Espírito Santo',
+                'GO' => 'Goiás',
+                'MA' => 'Maranhão',
+                'MT' => 'Mato Grosso',
+                'MS' => 'Mato Grosso do Sul',
+                'MG' => 'Minas Gerais',
+                'PA' => 'Pará',
+                'PB' => 'Paraíba',
+                'PR' => 'Paraná',
+                'PE' => 'Pernambuco',
+                'PI' => 'Piauí',
+                'RJ' => 'Rio de Janeiro',
+                'RN' => 'Rio Grande do Norte',
+                'RS' => 'Rio Grande do Sul',
+                'RO' => 'Rondônia',
+                'RR' => 'Roraima',
+                'SC' => 'Santa Catarina',
+                'SP' => 'São Paulo',
+                'SE' => 'Sergipe',
+                'TO' => 'Tocantins'
+            ];
+
+            foreach ($estados as $sigla => $nome) : ?>
+                <div class="col-3 mb-3">
+                    <input type="checkbox" class="form-check-input" name="filtro_estados[]" id="estado_<?= $sigla ?>" value="<?= $sigla ?>" <?= isset($filial) && $filial->getEstado() == $sigla ? 'checked' : '' ?>>
+                    <label class="form-check-label ms-1" for="estado_<?= $sigla ?>"><?= $nome ?></label>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+
+
+</form>
 <?php
 $maxColunas = 4;
 $coluna = 0;

@@ -10,12 +10,17 @@ class VagaController
     {
         session_start();
 
+        $filtro_habilidades = isset($_POST['filtro_habilidades']) ? $_POST['filtro_habilidades'] : [];
+        $filtro_empresas = isset($_POST['filtro_empresas']) ? $_POST['filtro_empresas'] : [];
+        $filtro_filiais = isset($_POST['filtro_filiais']) ? $_POST['filtro_filiais'] : [];
+
         $vagas = VagaDTO::listar('', '', VagaStatusEnum::Ativa->value, '', VagaOrdenacaoEnum::MaisRecente);
-        $habilidades = HabilidadeDTO::listar();
-        $empresas = EmpresaDTO::listar();
+        $habilidades = HabilidadeDTO::listar($filtro_habilidades, '');
+        $empresas = EmpresaDTO::listar($filtro_empresas);
+        $filiais = FilialDTO::listar($filtro_filiais);
         
         $layout = !empty($_SESSION['candidato']) ? 'sistema-candidato' : 'painel-vagas';
-        View::renderizar('vaga/painel', compact('vagas', 'habilidades', 'empresas'), $layout);
+        View::renderizar('vaga/painel', compact('vagas', 'habilidades', 'empresas', 'filiais'), $layout);
     }
 
     public function cadastrar()
