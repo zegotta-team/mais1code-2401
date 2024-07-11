@@ -8,6 +8,7 @@ class Usuario {
     private $nome;
     private $email;
     private $senha;
+    private $tipo;
 
     /**
      * @param Empresa $empresa
@@ -15,14 +16,16 @@ class Usuario {
      * @param $nome
      * @param $email
      * @param $senha
+     * @param $tipo
      */
-    public function __construct(Empresa $empresa, $cpf, $nome, $email, $senha)
+    public function __construct(Empresa $empresa, $cpf, $nome, $email, $senha, $tipo)
     {
         $this->empresa = $empresa;
         $this->cpf = $cpf;
         $this->nome = $nome;
         $this->email = $email;
         $this->senha = $senha;
+        $this->tipo = $tipo;
     }
 
 
@@ -89,6 +92,17 @@ class Usuario {
     public function setSenha($senha)
     {
         $this->senha = $senha;
+        return $this;
+    }
+
+    public function getTipo()
+    {
+        return $this->tipo;
+    }
+
+    public function setTipo($tipo)
+    {
+        $this->tipo = $tipo;
         return $this;
     }
 

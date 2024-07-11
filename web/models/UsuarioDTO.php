@@ -7,7 +7,7 @@ abstract class UsuarioDTO implements DTOInterface
     public static function preencher($dados)
     {
         $empresa = EmpresaDTO::recuperar($dados['empresa_id']);
-        $usuario = new Usuario($empresa, $dados['cpf'], $dados['nome'], $dados['email'], $dados['senha']);
+        $usuario = new Usuario($empresa, $dados['cpf'], $dados['nome'], $dados['email'], $dados['senha'], $dados['tipo']);
         $usuario->setId($dados['id']);
         return $usuario;
     }
