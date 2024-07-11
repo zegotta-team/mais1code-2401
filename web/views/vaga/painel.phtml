@@ -1,4 +1,51 @@
-<input type="text" id="filterInput" class="filter-input" placeholder="Filtrar vagas...">
+<div class="filter-container">
+        <div class="row g-3 align-items-center mb-2 filter-input">
+            <!-- REGIME DE CONTRATAÇÃO -->
+            <div class="col-md-4 form-floating">
+                <select class="form-control form-select" name="regimeContratacao" id="regimeContratacao">
+                    <option value="">Selecione</option>
+                    <option value="CLT">CLT</option>
+                    <option value="PJ">PJ</option>
+                    <option value="Estágio">Estágio</option>
+                    <option value="Jovem Aprendiz">Jovem Aprendiz</option>
+                </select>
+                <label for="regimeContratacao" class="col-form-label">Regime de Contratação</label>
+            </div>
+
+            <div class="col-md-4 form-floating">
+                <select class="form-control form-select" name="regimeTrabalho" id="regimeTrabalho">
+                    <option value="">Selecione</option>
+                    <option value="Presencial">Presencial</option>
+                    <option value="Híbrido">Híbrido</option>
+                    <option value="Remoto">Remoto</option>
+                </select>
+                <label for="regimeTrabalho" class="col-form-label">Regime de Trabalho</label>
+            </div>
+
+            <div class="col-md-4 form-floating">
+                <select class="form-control form-select" name="nivelSenioridade" id="nivelSenioridade">
+                    <option value="">Selecione</option>
+                    <option value="Júnior">Júnior</option>
+                    <option value="Pleno">Pleno</option>
+                    <option value="Sênior">Sênior</option>
+                </select>
+                <label for="nivelSenioridade" class="col-form-label">Nível de Senioridade</label>
+            </div>
+
+            <div class="col-md-4 form-floating">
+                <select class="form-control form-select" name="nivelHierarquia" id="nivelHierarquia">
+                    <option value="">Selecione</option>
+                    <option value="Auxiliar/Assistente/Analista">Auxiliar/Assistente/Analista</option>
+                    <option value="Coordenação/Supervisão">Coordenação/Supervisão</option>
+                    <option value="Gerência">Gerência</option>
+                    <option value="Diretoria">Diretoria</option>
+                    <option value="C-Level">C-Level</option>
+                </select>
+                <label for="nivelHierarquia" class="col-form-label">Nível Hierárquico</label>
+            </div>
+        </div>
+    </div>
+    
 <?php
 $maxColunas = 4;
 $coluna = 0;
@@ -27,26 +74,3 @@ $coluna = 0;
     <?php endfor; ?>
     </tbody>
 </table>
-<script>
-        document.getElementById('filterInput').addEventListener('keyup', function() {
-            var filterValue = this.value.toLowerCase();
-            var rows = document.querySelectorAll('#vagaTableBody .vaga-row');
-
-            rows.forEach(function(row) {
-                var cells = row.querySelectorAll('.vaga-cell');
-                var match = false;
-
-                cells.forEach(function(cell) {
-                    if (cell.textContent.toLowerCase().indexOf(filterValue) > -1) {
-                        match = true;
-                    }
-                });
-
-                if (match) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        });
-</script>
