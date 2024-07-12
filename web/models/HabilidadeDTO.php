@@ -17,20 +17,22 @@ abstract class HabilidadeDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
 
-        if (!static::verificaDadosExistentes($habilidade->getHabilidade())){
-            if(empty($habilidade->getId())) {
+        if (empty($habilidade->getId())) {
+            if (!static::verificaDadosExistentes($habilidade->getHabilidade())) {
                 $sql = "INSERT INTO habilidade (habilidade, categoria_id) 
-                        VALUES ( \"{$habilidade->getHabilidade()}\", \"{$habilidade->getCategoria()->getId()}\")";
-            } else {
-                $sql = "UPDATE habilidade SET ";
-                $sql .= "habilidade = '{$habilidade->getHabilidade()}', ";
-                $sql .= "categoria_id = '{$habilidade->getCategoria()->getId()}' ";
-                $sql .= "WHERE id = {$habilidade->getId()}";
+                        VALUES (\"{$habilidade->getHabilidade()}\", \"{$habilidade->getCategoria()->getId()}\")";
+            } else{
+                die();
             }
-
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute();
+        } else {
+            $sql = "UPDATE habilidade SET ";
+            $sql .= "habilidade = '{$habilidade->getHabilidade()}', ";
+            $sql .= "categoria_id = '{$habilidade->getCategoria()->getId()}' ";
+            $sql .= "WHERE id = {$habilidade->getId()}";
         }
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
     }
 
     public static function deletar($habilidade)

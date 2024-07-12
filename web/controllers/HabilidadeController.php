@@ -10,7 +10,9 @@ class HabilidadeController
     {
         AutenticacaoController::exigeSessao();
 
-        View::renderizar('/habilidade/formulario', [], 'sistema');
+        $categorias = CategoriaHabilidadeDTO::listar();
+
+        View::renderizar('/habilidade/formulario', compact('categorias'), 'sistema');
     }
 
     public function salvar()
@@ -18,11 +20,26 @@ class HabilidadeController
         AutenticacaoController::exigeSessao();
 
         if (empty($_POST['id'])) {
-            $habilidade = new Habilidade($_POST['habilidade']);
+            if (!empty($_POST['categoriaNova'])) {
+                $categoria = new CategoriaHabilidade($_POST['categoriaNova']);
+                CategoriaHabilidadeDTO::salvar($categoria);
+            } else{
+                $categoria = CategoriaHabilidadeDTO::recuperar($_POST['categoria']);
+            }
+
+            $habilidade = new Habilidade($_POST['habilidade'], $categoria);
         } else {
             $habilidade = HabilidadeDTO::recuperar($_POST['id']);
 
-            $habilidade->setHabilidade($_POST['habilidade']);
+            if (!empty($_POST['categoriaNova'])) {
+                $categoria = new CategoriaHabilidade($_POST['categoriaNova']);
+                CategoriaHabilidadeDTO::salvar($categoria);
+            } else{
+                $categoria = CategoriaHabilidadeDTO::recuperar($_POST['categoria']);
+            }
+
+            $habilidade->setHabilidade($_POST['habilidade'])
+                        ->setCategoria($categoria);
         }
 
         HabilidadeDTO::salvar($habilidade);
@@ -46,7 +63,9 @@ class HabilidadeController
         $habilidadeId = $_GET['id'];
         $habilidade = HabilidadeDTO::recuperar($habilidadeId);
 
-        View::renderizar('habilidade/formulario', compact('habilidade'), 'sistema');
+        $categorias = CategoriaHabilidadeDTO::listar();
+
+        View::renderizar('habilidade/formulario', compact('habilidade', 'categorias'), 'sistema');
     }
 
     public function excluir()
