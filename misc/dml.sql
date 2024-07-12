@@ -51,28 +51,28 @@ INSERT INTO habilidade (id, habilidade, categoria_id) VALUES
 (2, 'MySQL', 1),
 (3, 'SQLite', 1),
 (4, 'JavaScript', 2),
-(5, 'Node.js', 2),
-(6, 'HTML', 2),
-(7, 'CSS', 2),
-(8, 'Metodologias ágeis', 2),
-(9, 'DotNet (.NET)', 2),
+(5, 'Node.js', 7),
+(6, 'HTML', 4),
+(7, 'CSS', 5),
+(8, 'Metodologias ágeis', 8),
+(9, 'DotNet (.NET)', 3),
 (10, 'C#', 2),
 (11, 'C', 2),
 (12, 'C++', 2),
-(13, 'React', 2),
-(14, 'ReactNative', 2),
-(15, 'Vue', 2),
-(16, 'Angular', 2),
+(13, 'React', 3),
+(14, 'ReactNative', 3),
+(15, 'Vue', 3),
+(16, 'Angular', 3),
 (17, 'GoLang (Go)', 2),
 (18, 'Python', 2),
 (19, 'Elixir', 2),
-(20, 'POO (Orientação a Objetos)', 2),
-(21, 'Paradigma MVC', 2),
-(22, 'Design Patterns (Padrões de projeto)', 2),
-(23, 'Framework Laravel', 2),
-(24, 'Next.js', 2),
-(25, 'Framework Zend', 2),
-(26, 'Nuxt', 2)
+(20, 'POO (Orientação a Objetos)', 6),
+(21, 'Paradigma MVC', 6),
+(22, 'Design Patterns (Padrões de projeto)', 7),
+(23, 'Framework Laravel', 3),
+(24, 'Next.js', 3),
+(25, 'Framework Zend', 3),
+(26, 'Nuxt', 3)
 ;
 
 DELETE FROM vaga_habilidade WHERE 1;
@@ -104,7 +104,7 @@ INSERT INTO vaga_habilidade (vaga_id, habilidade_id) VALUES
 ;
 
 DELETE FROM categoria_habilidade WHERE 1;
-INSERT INTO categoria_habilidade (id, nome) VALUES (1, 'SQL - Banco de Dados'), (2, 'Linguagem de programação');
+INSERT INTO categoria_habilidade (id, nome) VALUES (1, 'SQL - Banco de Dados'), (2, 'Linguagem de Programação'), (3, 'Framework'), (4, 'Linguagem de Marcação'), (5, 'Linguagem de Estilização'), (6, 'Paradigma'), (7, 'Software'), (8, 'Gerenciamento de Projeto');
 
 DELETE FROM candidato WHERE 1;
 INSERT INTO candidato (id, nome, email, senha, habilidades, cpf, nascimento, endereco, disponibilidade, sexo, genero, `status`, regimeContratacao, regimeTrabalho, nivelSenioridade, nivelHierarquia) VALUES

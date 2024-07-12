@@ -3,6 +3,7 @@
     <thead>
     <tr>
         <th class="minimal">#</th>
+        <th class="minimal">Categoria</th>
         <th>Habilidades</th>
         <th class="minimal"><i class="fas fa-cog"></i></th>
     </tr>
@@ -11,6 +12,7 @@
     <?php foreach ($habilidade as $valorHabilidade) : ?>
         <tr>
             <td class="minimal"><?= $valorHabilidade->getId() ?></td>
+            <td class="minimal"><?= $valorHabilidade->getCategoria()->getNome() ?></td>
             <td><?= $valorHabilidade->getHabilidade() ?></td>
             <td class="minimal">
                 <a class="btn btn-primary btn-sm" href="/habilidade/editar?id=<?= $valorHabilidade->getId() ?>" title="Editar"><i class="fas fa-edit"></i></a>
