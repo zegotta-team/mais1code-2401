@@ -78,6 +78,7 @@ abstract class CategoriaHabilidadeDTO implements DTOInterface
         $sql .= "WHERE 1 ";
         $sql .= !empty($categoria_id) ? "AND categoria_habilidade.id = $categoria_id " : '';
         $sql .= !empty($habilidade_id) ? "AND habilidade.id = $habilidade_id " : '';
+        $sql .= "ORDER BY categoria_habilidade.nome ASC ";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
