@@ -2,7 +2,7 @@
     <form method="post" action="/habilidade/salvar">
         <div class="row g-3 align-items-center mb-2">
             <label for="categoria" class="form-label">Categoria *</label>
-            <select class="form-control form-select" name="categoria" id="categoria">
+            <select class="form-control form-select" name="categoria" id="categoria" required>
                 <option value="" disabled selected>Selecione</option>
                 <?php foreach ($categorias as $categoria) : ?>
                     <option value=<?=$categoria->getId()?> <?= isset($habilidade) && $habilidade->getCategoria()->getId() === $categoria->getId() ? 'selected' : '' ?>><?=$categoria->getNome()?></option>
@@ -14,7 +14,7 @@
         <div class="row g-3 align-items-center mb-2">
             <input type="hidden" name="id" value="<?= isset($habilidade) ? $habilidade->getId() : '' ?>"/>
             <div class="col-md-12 form-floating">
-                <input type="text" class="form-control" name="habilidade" id="habilidade" value="<?= isset($habilidade) ? $habilidade->getHabilidade() : '' ?>">
+                <input type="text" class="form-control" name="habilidade" id="habilidade" value="<?= isset($habilidade) ? $habilidade->getHabilidade() : '' ?>" required>
                 <label for="habilidade" class="col-form-label">Habilidade</label>
             </div>
         </div>
