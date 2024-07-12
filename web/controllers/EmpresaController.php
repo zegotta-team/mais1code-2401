@@ -18,22 +18,22 @@ class EmpresaController
     {
         AutenticacaoController::renegaSessao();
         header('Location: /autenticacao');
+
         if(EmpresaDTO::verificaDadosExistentes($_POST['nome'], $_POST['cnpj']))
-        {   
+        {
             FlashMessage::addMessage('Dados repetidos', FlashMessage::FLASH_ERROR);
             die();
         } 
         
         if (!FilialDTO::verificar($_POST['filialCep'], $_POST['filialEstado'])){
 
-            die();
 
         }
 
         $empresa = new Empresa($_POST['nome'], $_POST['cnpj'], $_POST['email'], $_POST['descricao'], $_POST['logo']);
         EmpresaDTO::salvar($empresa);
 
-        $usuario = new Usuario($empresa, $_POST['usuarioCpf'], $_POST['usuarioNome'], $_POST['usuarioEmail'], password_hash($_POST['usuarioSenha'], PASSWORD_ARGON2ID));
+        $usuario = new Usuario($empresa, $_POST['usuarioCpf'], $_POST['usuarioNome'], $_POST['usuarioEmail'], password_hash($_POST['usuarioSenha'], PASSWORD_ARGON2ID),$_POST['tipo']);
         UsuarioDTO::salvar($usuario);
 
         $filial = new Filial($empresa, $_POST['filialNome'], $_POST['filialCep'], $_POST['filialLogradouro'], $_POST['filialNumero'], $_POST['filialComplemento'], $_POST['filialBairro'], $_POST['filialCidade'], $_POST['filialEstado']);

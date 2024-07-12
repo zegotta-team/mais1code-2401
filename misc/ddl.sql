@@ -41,7 +41,7 @@ CREATE TABLE usuario
     nome        TEXT    NOT NULL,
     email       TEXT    NOT NULL,
     senha       TEXT    NOT NULL,
-    tipo        INTEGER NOT NULL
+    tipo        INTEGER NOT NULL DEFAULT 2
 );
 
 DROP TABLE candidato;

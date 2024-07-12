@@ -8,12 +8,44 @@ class VagaController
 
     public function index()
     {
-        session_start();
+        $filtro_contratacao = $_POST['filtro_contratacao'] ?? [];
+        $filtro_trabalho = $_POST['filtro_trabalho'] ?? [];
+        $filtro_habilidades = $_POST['filtro_habilidades'] ?? [];
+        $filtro_empresas = $_POST['filtro_empresas'] ?? [];
+        $filtro_estados = $_POST['filtro_estados'] ?? [];
+        $filtro_hierarquia = $_POST['filtro_hierarquia'] ?? [];
+        $filtro_senioridade = $_POST['filtro_senioridade'] ?? [];
+        $filtro_salarioDe = $_POST['salarioDe'] ?? null;
+        $filtro_salarioAte = $_POST['salarioAte'] ?? null;
 
-        $vagas = VagaDTO::listar('', '', VagaStatusEnum::Ativa->value, '', VagaOrdenacaoEnum::MaisRecente);
+        $idsContratacao = join(',', $filtro_contratacao);
+        $idsTrabalho = join(',', $filtro_trabalho);
+        $idsSenioridade = join(',', $filtro_senioridade);
+        $idsHabilidades = join(',', $filtro_habilidades);
+        $idsHierarquia = join(',', $filtro_hierarquia);
+        $nomesEstados = !empty($filtro_estados) ? "'" . join("','", $filtro_estados) . "'" : '';
+        $idsEmpresas = !empty($filtro_empresas) ? "'" . join("','", $filtro_empresas) . "'" : '';
+
+        $vagas = VagaDTO::listar($idsEmpresas, '',
+            VagaStatusEnum::Ativa->value,
+            '',
+            VagaOrdenacaoEnum::MaisRecente,
+            $idsHierarquia,
+            $idsSenioridade,
+            $idsContratacao,
+            $idsTrabalho,
+            $nomesEstados,
+            $idsHabilidades,
+            $filtro_salarioDe,
+            $filtro_salarioAte,
+        );
+
+        $habilidades = HabilidadeDTO::listar();
+        $empresas = EmpresaDTO::listar();
+        $estados = FilialDTO::listar();
 
         $layout = !empty($_SESSION['candidato']) ? 'sistema-candidato' : 'painel-vagas';
-        View::renderizar('vaga/painel', compact('vagas'), $layout);
+        View::renderizar('vaga/painel', compact('vagas', 'habilidades', 'empresas', 'estados', 'filtro_empresas', 'filtro_contratacao', 'filtro_habilidades', 'filtro_empresas', 'filtro_estados', 'filtro_hierarquia', 'filtro_senioridade', 'filtro_trabalho'), $layout);
     }
 
     public function cadastrar()

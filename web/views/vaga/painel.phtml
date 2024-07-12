@@ -1,26 +1,181 @@
-<?php
-$maxColunas = 4;
-$coluna = 0;
-?>
-<table class="table table-bordered caption-top">
-    <caption>Painel de vagas</caption>
-    <?php foreach ($vagas as $vaga): ?>
+<link href="https://getbootstrap.com/docs/5.3/examples/sidebars/sidebars.css" rel="stylesheet" type="text/css">
 
-        <?php if (++$coluna === 1) : ?>
-            <tr class="pb-3">
-        <?php endif; ?>
+<div class="row">
+    <div class="col-auto">
+        <div class="d-flex flex-column flex-shrink-0 p-3" style="width: 280px;">
+            <a href="/" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
+                <svg class="bi pe-none me-2" width="30" height="24">
+                    <use xlink:href="#bootstrap"></use>
+                </svg>
+                <span class="fs-5 fw-semibold">Filtros</span>
+            </a>
+            <form method="post" action="/vaga/index">
+                <ul class="list-unstyled ps-0">
+                    <li class="mb-1">
+                        <a class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#habilidades-collapse" aria-expanded="false">
+                            Habilidades
+                        </a>
+                        <div class="collapse" id="habilidades-collapse">
+                            <ul class="btn-toggle-nav fw-normal pb-1 small" style="max-height: 200px; overflow-x: hidden; overflow-y: auto;">
+                                <?php /** @var array<Habilidade> $habilidades */
+                                foreach ($habilidades as $habilidade) : ?>
+                                    <div class="mb-3 habilidade-item" style="text-wrap: nowrap;" title="<?= $habilidade->getHabilidade() ?>">
+                                        <input type="checkbox" class="form-check-input" name="filtro_habilidades[]" id="habilidade_<?= $habilidade->getId() ?>" value="<?= $habilidade->getId() ?>"<?= in_array($habilidade->getId(), $filtro_habilidades) ? 'checked' : '' ?>>
+                                        <label class="form-check-label ms-1 text-light" style="max-width: 10%;" for="habilidade_<?= $habilidade->getId() ?>"><?= $habilidade->getHabilidade() ?></label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mb-1">
+                        <a class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#empresa-collapse" aria-expanded="false">
+                            Empresa
+                        </a>
+                        <div class="collapse" id="empresa-collapse">
+                            <ul class="btn-toggle-nav fw-normal pb-1 small" style="max-height: 200px; overflow-x: hidden; overflow-y: auto;">
+                                <?php /** @var array<Empresa> $empresas */
+                                foreach ($empresas as $empresa) : ?>
+                                    <div class="mb-3 empresa-item" style="text-wrap: nowrap;" title="<?= $empresa->getNome() ?>">
+                                        <input type="checkbox" class="form-check-input" name="filtro_empresas[]" id="empresa_<?= $empresa->getId() ?>" value="<?= $empresa->getId() ?>" <?= in_array($empresa->getId(), $filtro_empresas) ? 'checked' : '' ?>>
+                                        <label class="form-check-label ms-1 text-light" style="max-width: 80%;" for="empresa_<?= $empresa->getId() ?>"><?= $empresa->getNome() ?></label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mb-1">
+                        <a class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#estado-collapse" aria-expanded="false">
+                            Estado
+                        </a>
+                        <div class="collapse" id="estado-collapse">
+                            <ul class="btn-toggle-nav fw-normal pb-1 small" style="max-height: 200px; overflow-x: hidden; overflow-y: auto;">
+                                <?php
+                                foreach (FilialEstadoEnum::forSelect() as $sigla => $nome) : ?>
+                                    <div class="mb-3">
+                                        <input type="checkbox" class="form-check-input" name="filtro_estados[]" id="estados_<?= $sigla ?>" value="<?= $sigla ?>" <?= in_array($sigla, $filtro_estados) ? 'checked' : '' ?>>
+                                        <label class="form-check-label ms-1 text-light" for="estados_<?= $sigla ?>"><?= $nome ?></label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mb-1">
+                        <a class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#hierarquia-collapse" aria-expanded="false">
+                            Nível hierárquico
+                        </a>
+                        <div class="collapse" id="hierarquia-collapse">
+                            <ul class="btn-toggle-nav fw-normal pb-1 small" style="max-height: 200px; overflow-x: hidden; overflow-y: auto;">
+                                <?php foreach (NivelHierarquicoEnum::forSelect() as $hierarquia => $descricao) : ?>
+                                    <div class="col-12 mb-3">
+                                        <input type="checkbox" class="form-check-input" name="filtro_hierarquia[]" id="hierarquia_<?= $hierarquia ?>" value="<?= $hierarquia ?>" <?= in_array($hierarquia, $filtro_hierarquia) ? 'checked' : '' ?>>
+                                        <label class="form-check-label ms-1 text-light" for="hierarquia_<?= $hierarquia ?>"><?= $descricao ?></label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mb-1">
+                        <a class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#senioridade-collapse" aria-expanded="false">
+                            Nível de senioridade
+                        </a>
+                        <div class="collapse" id="senioridade-collapse">
+                            <ul class="btn-toggle-nav fw-normal pb-1 small" style="max-height: 200px; overflow-x: hidden; overflow-y: auto;">
+                                <?php foreach (NivelSenioridadeEnum::forSelect() as $senioridade => $descricao) : ?>
+                                    <div class="col-12 mb-3">
+                                        <input type="checkbox" class="form-check-input" name="filtro_senioridade[]" id="senioridade_<?= $senioridade ?>" value="<?= $senioridade ?>" <?= in_array($senioridade, $filtro_senioridade) ? 'checked' : '' ?>>
+                                        <label class="form-check-label ms-1 text-light" for="senioridade_<?= $senioridade ?>"><?= $descricao ?></label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mb-1">
+                        <a class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#regimeContratacao-collapse" aria-expanded="false">
+                            Regime de Contratação
+                        </a>
+                        <div class="collapse" id="regimeContratacao-collapse">
+                            <ul class="btn-toggle-nav fw-normal pb-1 small" style="max-height: 200px; overflow-x: hidden; overflow-y: auto;">
+                                <?php foreach (RegimeContratacaoEnum::forSelect() as $contratacao => $descricao) : ?>
+                                    <div class="col-12 mb-3">
+                                        <input type="checkbox" class="form-check-input" name="filtro_contratacao[]" id="contratacao_<?= $contratacao ?>" value=" <?= $contratacao ?>"<?= in_array($contratacao, $filtro_contratacao) ? 'checked' : '' ?>>
+                                        <label class="form-check-label ms-1 text-light" for="contratacao_<?= $contratacao ?>"><?= $descricao ?></label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mb-1">
+                        <a class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#regimeTrabalho-collapse" aria-expanded="false">
+                            Regime de Trabalho
+                        </a>
+                        <div class="collapse" id="regimeTrabalho-collapse">
+                            <ul class="btn-toggle-nav fw-normal pb-1 small" style="max-height: 200px; overflow-x: hidden; overflow-y: auto;">
+                                <?php foreach (RegimeTrabalhoEnum::forSelect() as $index => $value) : ?>
+                                    <div class="col-12 mb-3">
+                                        <input type="checkbox" class="form-check-input" name="filtro_trabalho[]" id="trabalho_<?= $index ?>" value="<?= $index ?>" <?= in_array($index, $filtro_trabalho) ? 'checked' : '' ?>>
+                                        <label class="form-check-label ms-1 text-light" for="trabalho_<?= $index ?>"><?= $value ?></label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mb-1">
+                        <a class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#faixaSalarial-collapse" aria-expanded="false">
+                            Faixa Salarial
+                        </a>
+                        <div class="collapse" id="faixaSalarial-collapse">
+                            <p>
+                                <label class="text-light" for="salarioDe">De:</label>
+                                <input type="range" id="salarioDe" name="salarioDe" min="0" max="100000" value="0" step="1000" oninput="outputDe.value = salarioDe.value; salarioAte.min = salarioDe.value "><br>
+                                <label class="text-light">R$ </label>
+                                <output class="text-light" id="outputDe" name="outputDe">0</output><label class="text-light">,00</label>
+                            </p>
+                            <p>
+                                <label class="text-light" for="salarioAte">Até:</label>
+                                <input type="range" id="salarioAte" name="salarioAte" min="0" max="100000" value="100000" step="1000" oninput="outputAte.value = salarioAte.value; salarioDe.max = salarioAte.value"><br>
+                                <label class="text-light">R$ </label>
+                                <output class="text-light" id="outputAte" name="outputAte">100000</output><label class="text-light">,00</label>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+                <button class="btn btn-primary" type="submit">
+                    <i class="fas fa-filter"></i> Filtrar
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="col-7 container">
+        <?php
+        $maxColunas = 4;
+        $coluna = 0;
+        ?>
+        <table class="table table-bordered caption-top">
+            <caption>Painel de vagas</caption>
+            <tbody id="vagaTableBody">
+            <?php
+            /** @var array<Vaga> $vagas */
+            foreach ($vagas as $vaga) : ?>
 
-        <td class="align-top p-0 pb-3" style="height: 1px">
-            <?php echo $vaga->cardFormatado() ?>
-        </td>
+                <?php if (++$coluna === 1) : ?>
+                    <tr class="pb-3">
+                <?php endif; ?>
 
-        <?php if ($coluna % $maxColunas === 0) : ?>
-            </tr>
-        <?php endif; ?>
+                <td class="align-top p-0 pb-3" style="height: 1px">
+                    <?php echo $vaga->cardFormatado() ?>
+                </td>
 
-    <?php endforeach; ?>
+                <?php if ($coluna % $maxColunas === 0) : ?>
+                    </tr>
+                <?php endif; ?>
 
-    <?php for (; $coluna % $maxColunas !== 0; $coluna++): ?>
-        <td></td>
-    <?php endfor; ?>
-</table>
+            <?php endforeach;
+            ?>
+
+            <?php for (; $coluna % $maxColunas !== 0; $coluna++) : ?>
+                <td></td>
+            <?php endfor; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
