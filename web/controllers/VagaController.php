@@ -21,9 +21,13 @@ class VagaController
         AutenticacaoController::exigeSessao();
 
         $filiais = FilialDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
-        $habilidades = HabilidadeDTO::listar();
 
-        View::renderizar('vaga/formulario', compact('filiais', 'habilidades'));
+        $categorias = CategoriaHabilidadeDTO::listar();
+        foreach ($categorias as $categoria) {
+            $habilidades[$categoria->getNome()] = HabilidadeDTO::listar('', '', $categoria->getId());
+        }
+
+        View::renderizar('vaga/formulario', compact('filiais', 'habilidades', 'categorias'));
     }
 
     public function salvar()
@@ -83,7 +87,10 @@ class VagaController
         $filiais = FilialDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
         $vaga = VagaDTO::recuperar($idVaga);
 
-        $habilidades = HabilidadeDTO::listar('', '');
+        $categorias = CategoriaHabilidadeDTO::listar();
+        foreach ($categorias as $categoria) {
+            $habilidades[$categoria->getNome()] = HabilidadeDTO::listar('', '', $categoria->getId());
+        }
 
         $candidato_vagas = CandidatoVagaDTO::listar('', $vaga->getId());
 
@@ -95,7 +102,7 @@ class VagaController
             die('Sai pilantra, a vaga não é sua');
         }
 
-        View::renderizar('vaga/formulario', compact('vaga', 'candidato_vagas', 'filiais', 'habilidades'));
+        View::renderizar('vaga/formulario', compact('vaga', 'candidato_vagas', 'filiais', 'habilidades', 'categorias'));
     }
 
     public function excluir()

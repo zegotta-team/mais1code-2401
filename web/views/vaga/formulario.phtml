@@ -117,12 +117,15 @@
                     <input type="text" id="searchInput" class="form-control" placeholder="Filtrar habilidades...">
                 </div>
             </div>
-            <?php /** @var array<Habilidade> $habilidades */
-            foreach ($habilidades as $habilidade) : ?>
-                <div class="col-3 mb-3 habilidade-item" style="text-wrap: nowrap;" title="<?= $habilidade->getHabilidade() ?>">
-                    <input type="checkbox" class="form-check-input" name="habilidade[]" id="habilidade_<?= $habilidade->getId() ?>" value="<?= $habilidade->getId() ?> "<?= !empty($vaga) && $vaga->temHabilidadeId($habilidade->getId()) ? 'checked' : '' ?>>
-                    <label class="form-check-label ms-1 text-truncate" style="max-width: 80%;" for="habilidade_<?= $habilidade->getId() ?>"><?= $habilidade->getHabilidade() ?></label>
-                </div>
+            <?php foreach ($categorias as $categoria) : ?>
+                <p><?= $categoria->getNome() ?></p>
+                <?php /** @var array<Habilidade> $habilidades */
+                foreach ($habilidades[$categoria->getNome()] as $habilidade) : ?>
+                    <div class="col-3 mb-3 habilidade-item" style="text-wrap: nowrap;" title="<?= $habilidade->getHabilidade() ?>">
+                        <input type="checkbox" class="form-check-input" name="habilidade[]" id="habilidade_<?= $habilidade->getId() ?>" value="<?= $habilidade->getId() ?> "<?= !empty($vaga) && $vaga->temHabilidadeId($habilidade->getId()) ? 'checked' : '' ?>>
+                        <label class="form-check-label ms-1 text-truncate" style="max-width: 80%;" for="habilidade_<?= $habilidade->getId() ?>"><?= $habilidade->getHabilidade() ?></label>
+                    </div>
+                <?php endforeach; ?>
             <?php endforeach; ?>
         </div>
         <div class="row gy-3 gy-md-4 overflow-hidden mt-4 mb-2">
