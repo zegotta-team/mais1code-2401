@@ -18,15 +18,15 @@ class EmpresaController
     {
         AutenticacaoController::renegaSessao();
         header('Location: /autenticacao');
+
         if(EmpresaDTO::verificaDadosExistentes($_POST['nome'], $_POST['cnpj']))
-        {   
+        {
             FlashMessage::addMessage('Dados repetidos', FlashMessage::FLASH_ERROR);
             die();
         } 
         
         if (!FilialDTO::verificar($_POST['filialCep'], $_POST['filialEstado'])){
 
-            die();
 
         }
 
@@ -38,7 +38,8 @@ class EmpresaController
 
         $filial = new Filial($empresa, $_POST['filialNome'], $_POST['filialCep'], $_POST['filialLogradouro'], $_POST['filialNumero'], $_POST['filialComplemento'], $_POST['filialBairro'], $_POST['filialCidade'], $_POST['filialEstado']);
         FilialDTO::salvar($filial);
-
+        var_dump($_POST['filialEstado']);
+        die();
     }
 
     public function editar()
