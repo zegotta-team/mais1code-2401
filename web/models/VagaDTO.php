@@ -98,7 +98,7 @@ abstract class VagaDTO implements DTOInterface
         return $retorno;
     }
 
-    public static function listar($empresaId = '', $filtro = '', $status = '', $filialId = '', $ordenacao = '')
+    public static function listar($empresaId = '', $filtro = '', $status = '', $filialId = '', $ordenacao = '', $filtro_hierarquia = '', $filtro_senioridade = '', $filtro_contratacao='')
     {
 
         $pdo = static::conectarDB();
@@ -108,6 +108,9 @@ abstract class VagaDTO implements DTOInterface
         $sql .= !empty($empresaId) ? "AND e.id = '$empresaId' " : "";
         $sql .= !empty($status) || $status == '0' ? "AND v.status = '$status' " : "";
         $sql .= !empty($filialId) ? "AND v.filial_id = '$filialId' " : "";
+        $sql .= !empty($filtro_hierarquia) ? "AND v.nivelHierarquia IN ($filtro_hierarquia) " : "";
+        $sql .= !empty($filtro_senioridade) ? "AND v.nivelSenioridade IN ($filtro_senioridade) " : "";
+        $sql .= !empty($filtro_contratacao) ? "AND v.regimeContratacao IN ($filtro_contratacao) " : "";
         $sql .= !empty($ordenacao) ? "ORDER BY {$ordenacao->value}" : '';
 
         $stmt = $pdo->prepare($sql);

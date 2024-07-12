@@ -50,10 +50,9 @@ abstract class HabilidadeDTO implements DTOInterface
                 FROM habilidade h ";
         $sql .= !empty($vaga_id) ? "INNER JOIN vaga_habilidade vh ON h.id = vh.habilidade_id " : "";
         $sql .= "WHERE 1 ";
-        $sql .= !empty($habilidade_id) ? "AND h.id = $habilidade_id " : '';
+        $sql .= !empty($habilidade_id) ? "AND h.id IN ($habilidade_id) " : '';
         $sql .= !empty($vaga_id) ? "AND vh.vaga_id = $vaga_id " : '';
         $sql .= "ORDER BY h.habilidade ASC ";
-
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 

@@ -10,17 +10,39 @@ class VagaController
     {
         session_start();
 
+        $filtro_contratacao = isset($_POST['filtro_contratacao']) ? $_POST['filtro_contratacao'] : [];
         $filtro_habilidades = isset($_POST['filtro_habilidades']) ? $_POST['filtro_habilidades'] : [];
         $filtro_empresas = isset($_POST['filtro_empresas']) ? $_POST['filtro_empresas'] : [];
-        $filtro_filiais = isset($_POST['filtro_filiais']) ? $_POST['filtro_filiais'] : [];
+        $filtro_estados = isset($_POST['filtro_estados']) ? $_POST['filtro_estados'] : [];
+        $filtro_hierarquia = isset($_POST['filtro_hierarquia']) ? $_POST['filtro_hierarquia'] : [];
+        $filtro_senioridade = isset($_POST['filtro_senioridade']) ? $_POST['filtro_senioridade'] : [];
 
-        $vagas = VagaDTO::listar('', '', VagaStatusEnum::Ativa->value, '', VagaOrdenacaoEnum::MaisRecente);
-        $habilidades = HabilidadeDTO::listar($filtro_habilidades, '');
-        $empresas = EmpresaDTO::listar($filtro_empresas);
-        $filiais = FilialDTO::listar($filtro_filiais);
+        //echo '<pre>';
+        //var_dump($filtro_hierarquia);
+        //die();
+
+        $idsContratacao = join(',', $filtro_contratacao);
+        $idsSenioridade = join(',', $filtro_senioridade);
+        $idsHabilidades = join(',', $filtro_habilidades);
+        $idsHierarquia = join(',', $filtro_hierarquia);
+        $nomesEstados = "'" . join("','", $filtro_estados) . "'";
+        $nomesEmpresas =  "'" . join("','", $filtro_empresas) . "'";
+
+        //echo '<pre>';
+        //var_dump($nomesEstados);
+        //die();
+
+        $vagas = VagaDTO::listar('', '', VagaStatusEnum::Ativa->value, '', VagaOrdenacaoEnum::MaisRecente, $idsHierarquia, $idsSenioridade, $idsContratacao);
+        $habilidades = HabilidadeDTO::listar($idsHabilidades, '');
+        $empresas = EmpresaDTO::listar('', $nomesEmpresas);
+        $estados = FilialDTO::listar('', '', $nomesEstados);
+
+        //echo '<pre>';
+        //var_dump($vagas);
+        //die();
         
         $layout = !empty($_SESSION['candidato']) ? 'sistema-candidato' : 'painel-vagas';
-        View::renderizar('vaga/painel', compact('vagas', 'habilidades', 'empresas', 'filiais'), $layout);
+        View::renderizar('vaga/painel', compact('vagas', 'habilidades', 'empresas', 'estados'), $layout);
     }
 
     public function cadastrar()

@@ -70,14 +70,18 @@ abstract class EmpresaDTO implements DTOInterface
         return $retorno;
     }
 
-    public static function listar($termo = '')
+    public static function listar($termo = '', $nomesEmpresas = '')
     {
         $pdo = static::conectarDB();
 
         $sql = "SELECT * FROM empresa ";
 
         if (!empty($termo)) {
-            $sql .= "WHERE cnpj = '$termo' OR nome LIKE '%$termo%' ";
+            $sql .= "WHERE cnpj = '$termo' OR nome LIKE '%($termo)%' ";
+        } elseif(!empty($nomesEmpresas)) {
+        
+            $sql .= "WHERE nome IN ($nomesEmpresas) ";
+
         }
 
         $stmt = $pdo->prepare($sql);
