@@ -20,7 +20,7 @@
                                 <?php /** @var array<Habilidade> $habilidades */
                                 foreach ($habilidades as $habilidade) : ?>
                                     <div class="mb-3 habilidade-item" style="text-wrap: nowrap;" title="<?= $habilidade->getHabilidade() ?>">
-                                        <input type="checkbox" class="form-check-input" name="filtro_habilidades[]" id="habilidade_<?= $habilidade->getId() ?>" value="<?= $habilidade->getId() ?>">
+                                        <input type="checkbox" class="form-check-input" name="filtro_habilidades[]" id="habilidade_<?= $habilidade->getId() ?>" value="<?= $habilidade->getId() ?>"<?= in_array($habilidade->getId(), $filtro_habilidades) ? 'checked' : '' ?>>
                                         <label class="form-check-label ms-1 text-light" style="max-width: 10%;" for="habilidade_<?= $habilidade->getId() ?>"><?= $habilidade->getHabilidade() ?></label>
                                     </div>
                                 <?php endforeach; ?>
@@ -82,7 +82,7 @@
 
                                 foreach ($estados as $sigla => $nome) : ?>
                                     <div class="mb-3">
-                                        <input type="checkbox" class="form-check-input" name="filtro_estados[]" id="estados_<?= $sigla ?>" value="<?= $sigla ?>" <?= isset($filial) && $filial->getEstado() == $sigla ? 'checked' : '' ?>>
+                                        <input type="checkbox" class="form-check-input" name="filtro_estados[]" id="estados_<?= $sigla ?>" value="<?= $sigla ?>" <?= in_array($sigla, $filtro_estados) ? 'checked' : '' ?>>
                                         <label class="form-check-label ms-1 text-light" for="estados_<?= $sigla ?>"><?= $nome ?></label>
                                     </div>
                                 <?php endforeach; ?>
@@ -97,7 +97,7 @@
                             <ul class="btn-toggle-nav fw-normal pb-1 small" style="max-height: 200px; overflow-x: hidden; overflow-y: auto;">
                                 <?php foreach (NivelHierarquicoEnum::forSelect() as $hierarquia => $descricao) : ?>
                                     <div class="col-12 mb-3">
-                                        <input type="checkbox" class="form-check-input" name="filtro_hierarquia[]" id="hierarquia_<?= $hierarquia ?>" value="<?= $hierarquia ?>">
+                                        <input type="checkbox" class="form-check-input" name="filtro_hierarquia[]" id="hierarquia_<?= $hierarquia ?>" value="<?= $hierarquia ?>" <?= in_array($hierarquia, $filtro_hierarquia) ? 'checked' : '' ?>>
                                         <label class="form-check-label ms-1 text-light" for="hierarquia_<?= $hierarquia ?>"><?= $descricao ?></label>
                                     </div>
                                 <?php endforeach; ?>
@@ -112,7 +112,7 @@
                             <ul class="btn-toggle-nav fw-normal pb-1 small" style="max-height: 200px; overflow-x: hidden; overflow-y: auto;">
                                 <?php foreach (NivelSenioridadeEnum::forSelect() as $senioridade => $descricao) : ?>
                                     <div class="col-12 mb-3">
-                                        <input type="checkbox" class="form-check-input" name="filtro_senioridade[]" id="senioridade_<?= $senioridade ?>" value="<?= $senioridade ?>">
+                                        <input type="checkbox" class="form-check-input" name="filtro_senioridade[]" id="senioridade_<?= $senioridade ?>" value="<?= $senioridade ?>" <?= in_array($senioridade, $filtro_senioridade) ? 'checked' : '' ?>>
                                         <label class="form-check-label ms-1 text-light" for="senioridade_<?= $senioridade ?>"><?= $descricao ?></label>
                                     </div>
                                 <?php endforeach; ?>
@@ -127,7 +127,7 @@
                             <ul class="btn-toggle-nav fw-normal pb-1 small" style="max-height: 200px; overflow-x: hidden; overflow-y: auto;">
                                 <?php foreach (RegimeContratacaoEnum::forSelect() as $contratacao => $descricao) : ?>
                                     <div class="col-12 mb-3">
-                                        <input type="checkbox" class="form-check-input" name="filtro_contratacao[]" id="contratacao_<?= $contratacao ?>" value="<?= $contratacao ?>">
+                                        <input type="checkbox" class="form-check-input" name="filtro_contratacao[]" id="contratacao_<?= $contratacao ?>" value=" <?= $contratacao ?>"<?= in_array($contratacao, $filtro_contratacao) ? 'checked' : '' ?>>
                                         <label class="form-check-label ms-1 text-light" for="contratacao_<?= $contratacao ?>"><?= $descricao ?></label>
                                     </div>
                                 <?php endforeach; ?>
@@ -142,7 +142,7 @@
                             <ul class="btn-toggle-nav fw-normal pb-1 small" style="max-height: 200px; overflow-x: hidden; overflow-y: auto;">
                                 <?php foreach (RegimeTrabalhoEnum::forSelect() as $index => $value) : ?>
                                     <div class="col-12 mb-3">
-                                        <input type="checkbox" class="form-check-input" name="filtro_trabalho[]" id="trabalho_<?= $index ?>" value="<?= $index ?>">
+                                        <input type="checkbox" class="form-check-input" name="filtro_trabalho[]" id="trabalho_<?= $index ?>" value="<?= $index ?>" <?= in_array($index, $filtro_trabalho) ? 'checked' : '' ?>>
                                         <label class="form-check-label ms-1 text-light" for="trabalho_<?= $index ?>"><?= $value ?></label>
                                     </div>
                                 <?php endforeach; ?>

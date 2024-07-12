@@ -42,9 +42,10 @@ class VagaController
 
         $habilidades = HabilidadeDTO::listar();
         $empresas = EmpresaDTO::listar();
+        $estados = FilialDTO::listar();
 
         $layout = !empty($_SESSION['candidato']) ? 'sistema-candidato' : 'painel-vagas';
-        View::renderizar('vaga/painel', compact('vagas', 'habilidades', 'empresas', 'filtro_empresas', 'filtro_contratacao', 'filtro_habilidades', 'filtro_empresas', 'filtro_estados', 'filtro_hierarquia', 'filtro_senioridade'), $layout);
+        View::renderizar('vaga/painel', compact('vagas', 'habilidades', 'empresas', 'estados', 'filtro_empresas', 'filtro_contratacao', 'filtro_habilidades', 'filtro_empresas', 'filtro_estados', 'filtro_hierarquia', 'filtro_senioridade', 'filtro_trabalho'), $layout);
     }
 
     public function cadastrar()
