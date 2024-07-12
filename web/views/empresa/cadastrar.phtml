@@ -92,39 +92,13 @@
                         <input type="text" class="form-control" name="filialCidade" id="filialCidade" required>
                     </div>
                     <div class="col-2">
-                        <label for="filialEstado" class="form-label">Estado *</label>
+                        <label for="filialEstado" class="form-label">Estado</label>
                         <select class="form-control" name="filialEstado" id="filialEstado" required>
                             <option value="" disabled selected>-</option>
-                            <option value="AC" <?= isset($filial) && $filial->getEstado() == 'AC' ? 'selected' : '' ?>>AC</option>
-                            <option value="AL" <?= isset($filial) && $filial->getEstado() == 'AL' ? 'selected' : '' ?>>AL</option>
-                            <option value="AP" <?= isset($filial) && $filial->getEstado() == 'AP' ? 'selected' : '' ?>>AP</option>
-                            <option value="AM" <?= isset($filial) && $filial->getEstado() == 'AM' ? 'selected' : '' ?>>AM</option>
-                            <option value="BA" <?= isset($filial) && $filial->getEstado() == 'BA' ? 'selected' : '' ?>>BA</option>
-                            <option value="CE" <?= isset($filial) && $filial->getEstado() == 'CE' ? 'selected' : '' ?>>CE</option>
-                            <option value="DF" <?= isset($filial) && $filial->getEstado() == 'DF' ? 'selected' : '' ?>>DF</option>
-                            <option value="ES" <?= isset($filial) && $filial->getEstado() == 'ES' ? 'selected' : '' ?>>ES</option>
-                            <option value="GO" <?= isset($filial) && $filial->getEstado() == 'GO' ? 'selected' : '' ?>>GO</option>
-                            <option value="MA" <?= isset($filial) && $filial->getEstado() == 'MA' ? 'selected' : '' ?>>MA</option>
-                            <option value="MT" <?= isset($filial) && $filial->getEstado() == 'MT' ? 'selected' : '' ?>>MT</option>
-                            <option value="MS" <?= isset($filial) && $filial->getEstado() == 'MS' ? 'selected' : '' ?>>MS</option>
-                            <option value="MG" <?= isset($filial) && $filial->getEstado() == 'MG' ? 'selected' : '' ?>>MG</option>
-                            <option value="PA" <?= isset($filial) && $filial->getEstado() == 'PA' ? 'selected' : '' ?>>PA</option>
-                            <option value="PB" <?= isset($filial) && $filial->getEstado() == 'PB' ? 'selected' : '' ?>>PB</option>
-                            <option value="PR" <?= isset($filial) && $filial->getEstado() == 'PR' ? 'selected' : '' ?>>PR</option>
-                            <option value="PE" <?= isset($filial) && $filial->getEstado() == 'PE' ? 'selected' : '' ?>>PE</option>
-                            <option value="PI" <?= isset($filial) && $filial->getEstado() == 'PI' ? 'selected' : '' ?>>PI</option>
-                            <option value="RJ" <?= isset($filial) && $filial->getEstado() == 'RJ' ? 'selected' : '' ?>>RJ</option>
-                            <option value="RN" <?= isset($filial) && $filial->getEstado() == 'RN' ? 'selected' : '' ?>>RN</option>
-                            <option value="RS" <?= isset($filial) && $filial->getEstado() == 'RS' ? 'selected' : '' ?>>RS</option>
-                            <option value="RO" <?= isset($filial) && $filial->getEstado() == 'RO' ? 'selected' : '' ?>>RO</option>
-                            <option value="RR" <?= isset($filial) && $filial->getEstado() == 'RR' ? 'selected' : '' ?>>RR</option>
-                            <option value="SC" <?= isset($filial) && $filial->getEstado() == 'SC' ? 'selected' : '' ?>>SC</option>
-                            <option value="SP" <?= isset($filial) && $filial->getEstado() == 'SP' ? 'selected' : '' ?>>SP</option>
-                            <option value="SE" <?= isset($filial) && $filial->getEstado() == 'SE' ? 'selected' : '' ?>>SE</option>
-                            <option value="TO" <?= isset($filial) && $filial->getEstado() == 'TO' ? 'selected' : '' ?>>TO</option>
-
+                                <?php foreach (FilialEstadoEnum::forSelect() as $indice => $valor): ?>
+                                    <option value="<?= $indice ?>" <?= !empty($filial) && $filial->getEstado() == $indice ? 'selected' : ''?>><?= $valor ?></option>
+                                <?php endforeach; ?>
                         </select>
-
                     </div>
 
                 </div>
