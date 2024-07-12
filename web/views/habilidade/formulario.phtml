@@ -34,8 +34,10 @@
         campoSelect.addEventListener('change', function () {
             if (this.value === 'nova_categoria') {
                 campoInput.style.display = '';
+                campoInput.required = true;
             } else {
                 campoInput.style.display = 'none';
+                campoInput.required = false;
             }
         })
     </script>
