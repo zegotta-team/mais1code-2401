@@ -56,14 +56,13 @@ abstract class FilialDTO implements DTOInterface
         $stmt->execute();
     }
 
-    public static function listar($empresa_id = '', $filial_id = '', $filtro_estados = '')
+    public static function listar($empresa_id = '', $filial_id = '')
     {
         $pdo = static::conectarDB();
 
         $sql = "SELECT * FROM filial WHERE 1 ";
         $sql .= !empty($empresa_id) ? "AND filial.empresa_id = $empresa_id " : '';
         $sql .= !empty($filial_id) ? "AND filial.id = $filial_id " : '';
-        $sql .= !empty($filtro_estados) ? "AND filial.estado IN ($filtro_estados) " : '';
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
