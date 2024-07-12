@@ -50,37 +50,7 @@
                         <div class="collapse" id="estado-collapse">
                             <ul class="btn-toggle-nav fw-normal pb-1 small" style="max-height: 200px; overflow-x: hidden; overflow-y: auto;">
                                 <?php
-                                $estados = [
-                                    'AC' => 'Acre',
-                                    'AL' => 'Alagoas',
-                                    'AP' => 'Amapá',
-                                    'AM' => 'Amazonas',
-                                    'BA' => 'Bahia',
-                                    'CE' => 'Ceará',
-                                    'DF' => 'Distrito Federal',
-                                    'ES' => 'Espírito Santo',
-                                    'GO' => 'Goiás',
-                                    'MA' => 'Maranhão',
-                                    'MT' => 'Mato Grosso',
-                                    'MS' => 'Mato Grosso do Sul',
-                                    'MG' => 'Minas Gerais',
-                                    'PA' => 'Pará',
-                                    'PB' => 'Paraíba',
-                                    'PR' => 'Paraná',
-                                    'PE' => 'Pernambuco',
-                                    'PI' => 'Piauí',
-                                    'RJ' => 'Rio de Janeiro',
-                                    'RN' => 'Rio Grande do Norte',
-                                    'RS' => 'Rio Grande do Sul',
-                                    'RO' => 'Rondônia',
-                                    'RR' => 'Roraima',
-                                    'SC' => 'Santa Catarina',
-                                    'SP' => 'São Paulo',
-                                    'SE' => 'Sergipe',
-                                    'TO' => 'Tocantins'
-                                ];
-
-                                foreach ($estados as $sigla => $nome) : ?>
+                                foreach (FilialEstadoEnum::forSelect() as $sigla => $nome) : ?>
                                     <div class="mb-3">
                                         <input type="checkbox" class="form-check-input" name="filtro_estados[]" id="estados_<?= $sigla ?>" value="<?= $sigla ?>" <?= in_array($sigla, $filtro_estados) ? 'checked' : '' ?>>
                                         <label class="form-check-label ms-1 text-light" for="estados_<?= $sigla ?>"><?= $nome ?></label>
@@ -159,7 +129,6 @@
                                 <input type="range" id="salarioDe" name="salarioDe" min="0" max="100000" value="0" step="1000" oninput="outputDe.value = salarioDe.value; salarioAte.min = salarioDe.value "><br>
                                 <label class="text-light">R$ </label>
                                 <output class="text-light" id="outputDe" name="outputDe">0</output><label class="text-light">,00</label>
-
                             </p>
                             <p>
                                 <label class="text-light" for="salarioAte">Até:</label>
@@ -169,14 +138,10 @@
                             </p>
                         </div>
                     </li>
-
                 </ul>
-
-
                 <button class="btn btn-primary" type="submit">
                     <i class="fas fa-filter"></i> Filtrar
                 </button>
-
             </form>
         </div>
     </div>
