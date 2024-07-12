@@ -77,7 +77,7 @@ abstract class EmpresaDTO implements DTOInterface
         $sql = "SELECT * FROM empresa ";
 
         if (!empty($termo)) {
-            $sql .= "WHERE cnpj = '$termo' OR nome LIKE '%($termo)%' ";
+            $sql .= "WHERE cnpj = '$termo' OR nome LIKE '%$termo%' ";
         }
 
         $stmt = $pdo->prepare($sql);
