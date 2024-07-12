@@ -6,7 +6,7 @@ abstract class CandidatoDTO implements DTOInterface
 
     public static function preencher($dados)
     {
-        $candidato = new Candidato($dados['nome'], $dados['email'], $dados['senha'], $dados['habilidades'], $dados['cpf'], $dados['nascimento'], $dados['endereco'], $dados['disponibilidade'], $dados['sexo'], $dados['genero'], $dados['status']);
+        $candidato = new Candidato($dados['nome'], $dados['email'], $dados['senha'], $dados['habilidades'], $dados['cpf'], $dados['nascimento'], $dados['endereco'], $dados['disponibilidade'], $dados['sexo'], $dados['genero'], $dados['status'], $dados['regimeContratacao'], $dados['regimeTrabalho'], $dados['nivelSenioridade'], $dados['nivelHierarquia']);
         $candidato->setId($dados['id']);
         return $candidato;
     }
@@ -20,8 +20,8 @@ abstract class CandidatoDTO implements DTOInterface
         if (empty($candidato->getId())) {
             if (!static::verificar($candidato->getCpf(), $candidato->getEmail(), $candidato->getSenha())) {
                 $senhaHash = password_hash($candidato->getSenha(), PASSWORD_ARGON2ID);
-                $sql = "INSERT INTO candidato (nome, email, senha, habilidades, cpf, nascimento, endereco, disponibilidade, sexo, genero, status)
-                        VALUES (\"{$candidato->getNome()}\", \"{$candidato->getEmail()}\", \"{$senhaHash}\", \"{$candidato->getHabilidades()}\", '$cpfSoNumero', \"{$candidato->getNascimento()}\", \"{$candidato->getEndereco()}\", \"{$candidato->getDisponibilidade()}\", \"{$candidato->getSexo()}\", \"{$candidato->getGenero()}\", \"{$candidato->getStatus()}\")";
+                $sql = "INSERT INTO candidato (nome, email, senha, habilidades, cpf, nascimento, endereco, disponibilidade, sexo, genero, status, regimeContratacao, regimeTrabalho, nivelSenioridade, nivelHierarquia)
+                        VALUES (\"{$candidato->getNome()}\", \"{$candidato->getEmail()}\", \"{$senhaHash}\", \"{$candidato->getHabilidades()}\", '$cpfSoNumero', \"{$candidato->getNascimento()}\", \"{$candidato->getEndereco()}\", \"{$candidato->getDisponibilidade()}\", \"{$candidato->getSexo()}\", \"{$candidato->getGenero()}\", \"{$candidato->getStatus()}\", \"{$candidato->getRegimeContratacao()}\", \"{$candidato->getRegimeTrabalho()}\", \"{$candidato->getNivelSenioridade()}\", \"{$candidato->getNivelHierarquia()}\" )";
             } else {
                 die('Dados repetidos!');
             }
@@ -37,7 +37,11 @@ abstract class CandidatoDTO implements DTOInterface
             $sql .= "disponibilidade = '{$candidato->getDisponibilidade()}', ";
             $sql .= "sexo = '{$candidato->getSexo()}', ";
             $sql .= "genero = '{$candidato->getGenero()}', ";
-            $sql .= "status = '{$candidato->getStatus()}' ";
+            $sql .= "status = '{$candidato->getStatus()}', ";
+            $sql .= "regimeContratacao = '{$candidato->getRegimeContratacao()}',";
+            $sql .= "regimeTrabalho = '{$candidato->getRegimeTrabalho()}',";
+            $sql .= "nivelSenioridade = '{$candidato->getNivelSenioridade()}',";
+            $sql .= "nivelHierarquia = '{$candidato->getNivelHierarquia()}' ";
             $sql .= "WHERE id = '{$candidato->getId()}' ";
         }
 

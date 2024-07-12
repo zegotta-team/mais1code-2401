@@ -52,7 +52,7 @@ class CandidatoController
     {
         AutenticacaoController::renegaSessao();
 
-        $candidato = new Candidato($_POST['nome'], $_POST['email'], $_POST['senha'], $_POST['habilidades'], $_POST['cpf'], $_POST['nascimento'], $_POST['endereco'], $_POST['disponibilidade'], $_POST['sexo'], $_POST['genero'], $_POST['status']);
+        $candidato = new Candidato($_POST['nome'], $_POST['email'], $_POST['senha'], $_POST['habilidades'], $_POST['cpf'], $_POST['nascimento'], $_POST['endereco'], $_POST['disponibilidade'], $_POST['sexo'], $_POST['genero'], $_POST['status'], $_POST['regimeContratacao'], $_POST['regimeTrabalho'], $_POST['nivelSenioridade'], $_POST['nivelHierarquia']);
 
         CandidatoDTO::salvar($candidato);
         FlashMessage::addMessage('Usuário/candidato cadastrado com sucesso');
@@ -96,4 +96,26 @@ class CandidatoController
         View::renderizar('candidato/listar', compact('vagasCandidatadas'), 'sistema-candidato');
     }
 
+    public function perfil()
+    {
+        CandidatoController::exigeSessao();
+
+        $candidatoId = CandidatoDTO::recuperar($_SESSION['candidato']->getId());
+
+        View::renderizar('candidato/perfil', compact('candidatoId'), 'sistema-candidato');
+    }
+
+    public function salvar()
+    {
+        CandidatoController::exigeSessao();
+
+        $candidato = CandidatoDTO::recuperar($_SESSION['candidato']->getId());
+
+        $candidato->setRegimeTrabalho($_POST['regimeTrabalho'])
+                    ->setRegimeContratacao($_POST['regimeContratacao'])
+                    ->setNivelSenioridade($_POST['nivelSenioridade'])
+                    ->setNivelHierarquia($_POST['nivelHierarquia']);
+        CandidatoDTO::salvar($candidato);
+        header("Location: /");
+    }
 }
