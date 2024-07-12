@@ -14,8 +14,12 @@ class Candidato
     private $sexo;
     private $genero;
     private $status;
+    private $regimeContratacao;
+    private $regimeTrabalho;
+    private $nivelSenioridade;
+    private $nivelHierarquia;
 
-    public function __construct($nome, $email, $senha, $habilidades, $cpf, $nascimento, $endereco, $disponibilidade, $sexo, $genero, $status)
+    public function __construct($nome, $email, $senha, $habilidades, $cpf, $nascimento, $endereco, $disponibilidade, $sexo, $genero, $status, $regimeContratacao, $regimeTrabalho, $nivelSenioridade, $nivelHierarquia)
     {
         $this->setNome($nome);
         $this->setEmail($email);
@@ -28,6 +32,10 @@ class Candidato
         $this->setSexo($sexo);
         $this->setGenero($genero);
         $this->setStatus($status);
+        $this->setRegimeContratacao($regimeContratacao);
+        $this->setRegimeTrabalho($regimeTrabalho);
+        $this->setNivelSenioridade($nivelSenioridade);
+        $this->setNivelHierarquia($nivelHierarquia);
     }
 
     public function getId()
@@ -162,4 +170,47 @@ class Candidato
         return $this;
     }
 
+    public function getRegimeContratacao()
+    {
+        return $this->regimeContratacao;
+    }
+
+    public function setRegimeContratacao($regimeContratacao)
+    {
+        $this->regimeContratacao = $regimeContratacao;
+        return $this;
+    }
+
+    public function getRegimeTrabalho()
+    {
+        return $this->regimeTrabalho;
+    }
+
+    public function setRegimeTrabalho($regimeTrabalho)
+    {
+        $this->regimeTrabalho = $regimeTrabalho;
+        return $this;
+    }
+
+    public function getNivelSenioridade()
+    {
+        return $this->nivelSenioridade;
+    }
+
+    public function setNivelSenioridade($nivelSenioridade)
+    {
+        $this->nivelSenioridade = $nivelSenioridade;
+        return $this;
+    }
+
+    public function getNivelHierarquia()
+    {
+        return $this->nivelHierarquia;
+    }
+
+    public function setNivelHierarquia($nivelHierarquia)
+    {
+        $this->nivelHierarquia = $nivelHierarquia;
+        return $this;
+    }
 }

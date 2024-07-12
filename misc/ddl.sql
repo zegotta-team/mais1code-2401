@@ -58,7 +58,11 @@ CREATE TABLE candidato
     disponibilidade TEXT    NOT NULL,
     sexo            TEXT    NOT NULL,
     genero          TEXT    NOT NULL,
-    `status`        INTEGER NOT NULL DEFAULT 1
+    `status`        INTEGER NOT NULL DEFAULT 1,
+    regimeContratacao INTEGER NOT NULL,
+    regimeTrabalho INTEGER NOT NULL,
+    nivelSenioridade INTEGER NOT NULL,
+    nivelHierarquia INTEGER NOT NULL
 );
 
 DROP TABLE candidato_vaga;
@@ -100,6 +104,14 @@ CREATE TABLE vaga_habilidade
     vaga_id       INTEGER NOT NULL,
     habilidade_id INTEGER NOT NULL,
     PRIMARY KEY (vaga_id, habilidade_id)
+);
+
+DROP TABLE candidato_habilidade;
+CREATE TABLE candidato_habilidade
+(
+    candidato_id INTEGER NOT NULL,
+    habilidade_id INTEGER NOT NULL,
+    PRIMARY KEY( candidato_id, habilidade_id)
 );
 
 DROP TABLE categoria_habilidade;
