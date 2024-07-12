@@ -41,7 +41,7 @@ abstract class CandidatoDTO implements DTOInterface
             $sql .= "regimeContratacao = '{$candidato->getRegimeContratacao()}',";
             $sql .= "regimeTrabalho = '{$candidato->getRegimeTrabalho()}',";
             $sql .= "nivelSenioridade = '{$candidato->getNivelSenioridade()}',";
-            $sql .= "nivelHierarquuia = '{$candidato->getNivelHierarquia()}' ";
+            $sql .= "nivelHierarquia = '{$candidato->getNivelHierarquia()}' ";
             $sql .= "WHERE id = '{$candidato->getId()}' ";
         }
 
