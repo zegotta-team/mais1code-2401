@@ -1,7 +1,18 @@
-<div class="container container-sm w-50">
+<div class="container container-md w-50">
     <form method="post" action="/habilidade/salvar">
-        <input type="hidden" name="id" value="<?= isset($habilidade) ? $habilidade->getId() : '' ?>"/>
         <div class="row g-3 align-items-center mb-2">
+            <label for="categoria" class="form-label">Categoria *</label>
+            <select class="form-control form-select" name="categoria" id="categoria">
+                <option value="" disabled selected>Selecione</option>
+                <?php foreach ($categorias as $categoria) : ?>
+                    <option value=<?=$categoria->getId()?> <?= isset($habilidade) && $habilidade->getCategoria()->getId() === $categoria->getId() ? 'selected' : '' ?>><?=$categoria->getNome()?></option>
+                <?php endforeach; ?>
+                <option value="nova_categoria">Nova Categoria</option>
+            </select>
+            <input type="text" class="form-control" name="categoriaNova" id="categoriaNova" value="">
+        </div>
+        <div class="row g-3 align-items-center mb-2">
+            <input type="hidden" name="id" value="<?= isset($habilidade) ? $habilidade->getId() : '' ?>"/>
             <div class="col-md-12 form-floating">
                 <input type="text" class="form-control" name="habilidade" id="habilidade" value="<?= isset($habilidade) ? $habilidade->getHabilidade() : '' ?>">
                 <label for="habilidade" class="col-form-label">Habilidade</label>
@@ -15,4 +26,17 @@
             </div>
         </div>
     </form>
+
+    <script>
+        let campoSelect = document.querySelector("#categoria");
+        let campoInput = document.querySelector("#categoriaNova");
+
+        campoSelect.addEventListener('change', function () {
+            if (this.value === 'nova_categoria') {
+                campoInput.style.display = '';
+            } else {
+                campoInput.style.display = 'none';
+            }
+        })
+    </script>
 </div>
