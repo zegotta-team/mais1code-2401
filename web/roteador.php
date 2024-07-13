@@ -8,6 +8,8 @@ if (php_sapi_name() == "cli-server") {
     }
 }
 
+define('NOVO_LAYOUT', false);
+
 //echo '<pre>';
 $requestUri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 $requestSegments = explode('/', $requestUri);

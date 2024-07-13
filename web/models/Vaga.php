@@ -237,9 +237,9 @@ class Vaga
         }
 
         return <<<HTML
-                <div class='d-flex justify-content-between h-100 flex-column'>   
+                <div class='d-flex justify-content-between h-100 flex-column rounded bg-white border border-secondary'>   
                     <div>
-                        <div class='titulo ps-2 pe-2 align-items-center d-flex justify-content-between'>
+                        <div class='titulo ps-2 pe-2 align-items-center d-flex justify-content-between rounded'>
                             <strong><a type='button' data-bs-toggle='modal' data-bs-target='#modal{$this->getId()}'>{$this->getTitulo()}</a></strong><i class='fas fa-thumbtack'></i>
                         </div>
                         <div class='p-2'>  
@@ -287,5 +287,37 @@ class Vaga
                     </div>
                 </div>
                 HTML;
+    }
+
+    public function renderCardJob()
+    {
+
+        $textoRegimeContracao = RegimeContratacaoEnum::from($this->getRegimeContratacao())->label();
+        $textoRegimeTrabalho = RegimeTrabalhoEnum::from($this->getRegimeTrabalho())->label();
+        $textoNivelSenioridade = NivelSenioridadeEnum::from($this->getNivelSenioridade())->label();
+        $textoNivelHierarquico = NivelHierarquicoEnum::from($this->getNivelHierarquico())->label();
+
+        $habilidades = '';
+        foreach ($this->getHabilidades() as $habilidade) {
+            $habilidades .= "<span class='badge badge-outline badge-sm sm:badge-md'>{$habilidade->getHabilidade()}</span>";
+        }
+
+        $replaces = [
+            '{id}' => $this->getId(),
+            '{vaga}' => $this->getTitulo(),
+            '{empresa}' => $this->getEmpresa()->getNome(),
+            '{habilidades}' => $habilidades,
+            '{regimeContratacao}' => $textoRegimeContracao,
+            '{regimeTrabalho}' => $textoRegimeTrabalho,
+            '{salario}' => $this->getSalario(),
+            '{niveis}' => $textoNivelHierarquico . ' ' . $textoNivelSenioridade,
+            '{localidade}' => $this->getFilial()->getCidade() . ', ' . $this->getFilial()->getEstado(),
+            '{beneficios}' => $this->getBeneficios(),
+            '{descricao}' => $this->getDescricao(),
+            '{cargaHoraria}' => $this->getCargaHoraria(),
+        ];
+        $card = file_get_contents(__DIR__ . '/../../web/views/vaga/card.html');
+        $card = str_replace(array_keys($replaces), array_values($replaces), $card);
+        return $card;
     }
 }

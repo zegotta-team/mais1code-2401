@@ -1,0 +1,28 @@
+<div class="hero min-h-[calc(100vh-64px)] md:min-h-[50vh] py-12">
+    <div class="hero-content flex-col md:flex-row gap-10">
+        <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Job Hunt" class="w-full max-h-[400px] max-w-sm object-cover mask mask-hexagon">
+        <div>
+            <h1 class="text-5xl font-quicksand font-bold">Encontre sua vaga de emprego</h1>
+            <p class="py-6">
+                Confira gratuitamente as oportunidades de empregos nas empresas clientes da FoodFinder Jobs.
+            </p>
+            <a class="btn btn-primary" href="#vagas">Buscar Vagas</a>
+        </div>
+    </div>
+</div>
+<div class="bg-primary text-primary-content py-10 lg:py-16">
+    <div class="flex flex-col lg:flex-row items-center justify-around max-w-screen-lg mx-auto px-4 gap-8">
+        <h2 class="text-3xl font-bold font-quicksand text-center">Crie seu perfil para buscar milhares de vagas</h2>
+        <div class="flex items-center">
+            <a class="btn" href="#vagas">Buscar Vagas</a>
+        </div>
+    </div>
+</div>
+<div id="vagas" class="flex flex-col px-4 py-10 gap-10 justify-center items-center">
+    <h2 class="text-3xl font-bold">Vagas</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-8 max-w-screen-lg w-full">
+        <?php foreach ($vagas as $vaga) :
+            echo $vaga->renderCardJob();
+        endforeach; ?>
+    </div>
+</div>

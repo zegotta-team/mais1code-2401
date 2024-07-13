@@ -8,13 +8,26 @@ class View
         extract($dados);
 
         if (!$ignorarLayout) {
-            require_once "layouts/$layout/cabecalho.phtml";
+            $cabecalho = "layouts/$layout/cabecalho.phtml";
+            if (NOVO_LAYOUT && file_exists("layouts/$layout/cabecalho_n.phtml")) {
+                $cabecalho = "layouts/$layout/cabecalho_n.phtml";
+            }
+            require_once $cabecalho;
         }
 
-        require_once "views/$arquivo.phtml";
+        $content = "views/$arquivo.phtml";
+        if (NOVO_LAYOUT && file_exists("views/$arquivo" . "_n.phtml")) {
+            $content = "views/$arquivo" . "_n.phtml";
+        }
+
+        require_once $content;
 
         if (!$ignorarLayout) {
-            require_once "layouts/$layout/rodape.phtml";
+            $rodape = "layouts/$layout/rodape.phtml";
+            if (NOVO_LAYOUT && file_exists("layouts/$layout/rodape_n.phtml")) {
+                $rodape = "layouts/$layout/rodape_n.phtml";
+            }
+            require_once $rodape;
         }
     }
 }
