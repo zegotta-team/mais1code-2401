@@ -11,12 +11,12 @@ INSERT INTO empresa (id, nome, cnpj, email, descricao, logo) VALUES
 
 DELETE FROM filial WHERE 1;
 INSERT INTO filial (id, empresa_id, nome, cep, logradouro, numero, complemento, bairro, cidade, estado) VALUES
-(1, 1, 'Matriz', '05615190', 'Av Paulista', '1100', '', 'Centro', 'São Paulo', 'SP'),
-(2, 1, 'Unidade Liberdade', '01905615', 'Av Liberdade', '1234', '', 'Liberdade', 'São Paulo', 'SP'),
-(3, 2, 'Sede', '22222222', 'Av Belo Horizonte', '123', '2 andar', 'Pampulha', 'Belo Horizonte', 'MG'),
-(4, 3, 'Central', '33333333', 'Lagoa de Freitas', '3987', 'Asa Sul', 'Tijuca', 'Rio de Janeiro', 'RJ'),
-(5, 3, 'Niterói', '85236987', 'Via Amarela', '357', '', 'Maré', 'Niterói', 'RJ'),
-(6, 3, 'Salvador', '12345678', 'Av Salvador', '56', '', 'Pelourinho', 'Salvador', 'BA')
+(1, 1, 'Matriz', '05615190', 'Av Paulista', '1100', '', 'Centro', 'São Paulo', '25'),
+(2, 1, 'Unidade Liberdade', '01905615', 'Av Liberdade', '1234', '', 'Liberdade', 'São Paulo', '25'),
+(3, 2, 'Sede', '22222222', 'Av Belo Horizonte', '123', '2 andar', 'Pampulha', 'Belo Horizonte', '13'),
+(4, 3, 'Central', '33333333', 'Lagoa de Freitas', '3987', 'Asa Sul', 'Tijuca', 'Rio de Janeiro', '19'),
+(5, 3, 'Niterói', '85236987', 'Via Amarela', '357', '', 'Maré', 'Niterói', '19'),
+(6, 3, 'Salvador', '12345678', 'Av Salvador', '56', '', 'Pelourinho', 'Salvador', '5')
 ;
 
 DELETE FROM usuario WHERE 1;
