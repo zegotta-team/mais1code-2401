@@ -6,7 +6,17 @@ abstract class CandidatoDTO implements DTOInterface
 
     public static function preencher($dados)
     {
-        $candidato = new Candidato($dados['nome'], $dados['email'], $dados['senha'], $dados['habilidades'], $dados['cpf'], $dados['nascimento'], $dados['endereco'], $dados['disponibilidade'], $dados['sexo'], $dados['genero'], $dados['status'], $dados['regimeContratacao'], $dados['regimeTrabalho'], $dados['nivelSenioridade'], $dados['nivelHierarquia']);
+        $pdo = static::conectarDB();
+        $sql = "SELECT habilidade_id FROM candidato_habilidade WHERE candidato_id = {$dados['id']} ";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+
+        $habilidades = [];
+        while ($habilidade = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $habilidades[] = HabilidadeDTO::recuperar($habilidade['habilidade_id']);
+        }
+
+        $candidato = new Candidato($dados['nome'], $dados['email'], $dados['senha'], $dados['cpf'], $dados['nascimento'], $dados['endereco'], $dados['disponibilidade'], $dados['sexo'], $dados['genero'], $dados['status'], $dados['regimeContratacao'], $dados['regimeTrabalho'], $dados['nivelSenioridade'], $dados['nivelHierarquia'], $habilidades);
         $candidato->setId($dados['id']);
         return $candidato;
     }
@@ -20,8 +30,8 @@ abstract class CandidatoDTO implements DTOInterface
         if (empty($candidato->getId())) {
             if (!static::verificar($candidato->getCpf(), $candidato->getEmail(), $candidato->getSenha())) {
                 $senhaHash = password_hash($candidato->getSenha(), PASSWORD_ARGON2ID);
-                $sql = "INSERT INTO candidato (nome, email, senha, habilidades, cpf, nascimento, endereco, disponibilidade, sexo, genero, status, regimeContratacao, regimeTrabalho, nivelSenioridade, nivelHierarquia)
-                        VALUES (\"{$candidato->getNome()}\", \"{$candidato->getEmail()}\", \"{$senhaHash}\", \"{$candidato->getHabilidades()}\", '$cpfSoNumero', \"{$candidato->getNascimento()}\", \"{$candidato->getEndereco()}\", \"{$candidato->getDisponibilidade()}\", \"{$candidato->getSexo()}\", \"{$candidato->getGenero()}\", \"{$candidato->getStatus()}\", \"{$candidato->getRegimeContratacao()}\", \"{$candidato->getRegimeTrabalho()}\", \"{$candidato->getNivelSenioridade()}\", \"{$candidato->getNivelHierarquia()}\" )";
+                $sql = "INSERT INTO candidato (nome, email, senha, cpf, nascimento, endereco, disponibilidade, sexo, genero, status, regimeContratacao, regimeTrabalho, nivelSenioridade, nivelHierarquia)
+                        VALUES (\"{$candidato->getNome()}\", \"{$candidato->getEmail()}\", \"{$senhaHash}\", '$cpfSoNumero', \"{$candidato->getNascimento()}\", \"{$candidato->getEndereco()}\", \"{$candidato->getDisponibilidade()}\", \"{$candidato->getSexo()}\", \"{$candidato->getGenero()}\", \"{$candidato->getStatus()}\", \"{$candidato->getRegimeContratacao()}\", \"{$candidato->getRegimeTrabalho()}\", \"{$candidato->getNivelSenioridade()}\", \"{$candidato->getNivelHierarquia()}\" )";
             } else {
                 die('Dados repetidos!');
             }
@@ -30,7 +40,6 @@ abstract class CandidatoDTO implements DTOInterface
             $sql .= "nome = '{$candidato->getNome()}', ";
             $sql .= "email = '{$candidato->getEmail()}', ";
             $sql .= "senha = '{$candidato->getSenha()}', ";
-            $sql .= "habilidades = '{$candidato->getHabilidades()}', ";
             $sql .= "cpf = '$cpfSoNumero', ";
             $sql .= "nascimento = '{$candidato->getNascimento()}', ";
             $sql .= "endereco = '{$candidato->getEndereco()}', ";
@@ -50,6 +59,16 @@ abstract class CandidatoDTO implements DTOInterface
 
         if (empty($candidato->getId())) {
             $candidato->setId($pdo->lastInsertId());
+        }
+
+        $sql = "DELETE FROM candidato_habilidade WHERE candidato_id = {$candidato->getId()}";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+
+        foreach ($candidato->getHabilidades() as $habilidade) {
+            $sql = "INSERT INTO candidato_habilidade (candidato_id, habilidade_id) VALUES ({$candidato->getId()}, {$habilidade->getId()})";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
         }
     }
 

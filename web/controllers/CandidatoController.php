@@ -4,7 +4,10 @@ class CandidatoController
 {
     public function login()
     {
-        self::renegaSessao();
+        if (CandidatoController::estaLogado()) {
+            header('Location: /vaga/index');
+            exit();
+        }
 
         if (isset($_COOKIE['candidato'])) {
             $usuarioLembrado = $_COOKIE['candidato'];
@@ -61,6 +64,10 @@ class CandidatoController
 
     public static function estaLogado()
     {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
         return !empty($_SESSION['candidato']);
     }
 
@@ -73,21 +80,27 @@ class CandidatoController
 
     public static function renegaSessao()
     {
-        session_start();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
         if (!empty($_SESSION['candidato'])) {
             header("Location: /");
         }
     }
 
-    public static function exigeSessao() 
+    public static function exigeSessao()
     {
-        session_start();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
         if (empty($_SESSION['candidato'])) {
             header("Location: /candidato/login");
         }
     }
 
-    public function listar() 
+    public function listar()
     {
         CandidatoController::exigeSessao();
 
@@ -100,9 +113,14 @@ class CandidatoController
     {
         CandidatoController::exigeSessao();
 
-        $candidatoId = CandidatoDTO::recuperar($_SESSION['candidato']->getId());
+        $candidato = CandidatoDTO::recuperar($_SESSION['candidato']->getId());
 
-        View::renderizar('candidato/perfil', compact('candidatoId'), 'sistema-candidato');
+        $categorias = CategoriaHabilidadeDTO::listar();
+        foreach ($categorias as $categoria) {
+            $habilidades[$categoria->getNome()] = HabilidadeDTO::listar('', '', $categoria->getId());
+        }
+
+        View::renderizar('candidato/perfil', compact('candidato', 'categorias','habilidades'), 'sistema-candidato');
     }
 
     public function salvar()
@@ -111,10 +129,20 @@ class CandidatoController
 
         $candidato = CandidatoDTO::recuperar($_SESSION['candidato']->getId());
 
+        $habilidades = [];
+        if (isset($_POST['habilidade'])) {
+            foreach ($_POST['habilidade'] as $habilidadeId) {
+                $habilidades[] = HabilidadeDTO::recuperar($habilidadeId);
+            }
+        }
+
         $candidato->setRegimeTrabalho($_POST['regimeTrabalho'])
-                    ->setRegimeContratacao($_POST['regimeContratacao'])
-                    ->setNivelSenioridade($_POST['nivelSenioridade'])
-                    ->setNivelHierarquia($_POST['nivelHierarquia']);
+            ->setRegimeContratacao($_POST['regimeContratacao'])
+            ->setNivelSenioridade($_POST['nivelSenioridade'])
+            ->setNivelHierarquia($_POST['nivelHierarquia'])
+            ->setHabilidades($habilidades)
+        ;
+
         CandidatoDTO::salvar($candidato);
         header("Location: /");
     }

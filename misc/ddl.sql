@@ -51,7 +51,6 @@ CREATE TABLE candidato
     nome            TEXT    NOT NULL,
     email           TEXT    NOT NULL,
     senha           TEXT    NOT NULL,
-    habilidades     TEXT    NOT NULL,
     cpf             TEXT    NOT NULL,
     nascimento      TEXT    NOT NULL,
     endereco        TEXT    NOT NULL,

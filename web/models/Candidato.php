@@ -6,7 +6,6 @@ class Candidato
     private $nome;
     private $email;
     private $senha;
-    private $habilidades;
     private $cpf;
     private $nascimento;
     private $endereco;
@@ -19,12 +18,13 @@ class Candidato
     private $nivelSenioridade;
     private $nivelHierarquia;
 
-    public function __construct($nome, $email, $senha, $habilidades, $cpf, $nascimento, $endereco, $disponibilidade, $sexo, $genero, $status, $regimeContratacao, $regimeTrabalho, $nivelSenioridade, $nivelHierarquia)
+    private $habilidades;
+
+    public function __construct($nome, $email, $senha, $cpf, $nascimento, $endereco, $disponibilidade, $sexo, $genero, $status, $regimeContratacao, $regimeTrabalho, $nivelSenioridade, $nivelHierarquia, $habilidades)
     {
         $this->setNome($nome);
         $this->setEmail($email);
         $this->setSenha($senha);
-        $this->setHabilidades($habilidades);
         $this->setCpf($cpf);
         $this->setNascimento($nascimento);
         $this->setEndereco($endereco);
@@ -36,6 +36,7 @@ class Candidato
         $this->setRegimeTrabalho($regimeTrabalho);
         $this->setNivelSenioridade($nivelSenioridade);
         $this->setNivelHierarquia($nivelHierarquia);
+        $this->setHabilidades($habilidades);
     }
 
     public function getId()
@@ -212,5 +213,16 @@ class Candidato
     {
         $this->nivelHierarquia = $nivelHierarquia;
         return $this;
+    }
+
+    public function temHabilidadeId($id)
+    {
+        foreach ($this->habilidades as $habilidade) {
+            if ($id === $habilidade->getId()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

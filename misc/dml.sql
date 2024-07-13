@@ -104,15 +104,24 @@ INSERT INTO vaga_habilidade (vaga_id, habilidade_id) VALUES
 ;
 
 DELETE FROM categoria_habilidade WHERE 1;
-INSERT INTO categoria_habilidade (id, nome) VALUES (1, 'SQL - Banco de Dados'), (2, 'Linguagem de Programação'), (3, 'Framework'), (4, 'Linguagem de Marcação'), (5, 'Linguagem de Estilização'), (6, 'Paradigma'), (7, 'Software'), (8, 'Gerenciamento de Projeto');
+INSERT INTO categoria_habilidade (id, nome) VALUES
+(1, 'SQL - Banco de Dados'),
+(2, 'Linguagem de Programação'),
+(3, 'Framework'),
+(4, 'Linguagem de Marcação'),
+(5, 'Linguagem de Estilização'),
+(6, 'Paradigma'),
+(7, 'Software'),
+(8, 'Gerenciamento de Projeto')
+;
 
 DELETE FROM candidato WHERE 1;
-INSERT INTO candidato (id, nome, email, senha, habilidades, cpf, nascimento, endereco, disponibilidade, sexo, genero, `status`, regimeContratacao, regimeTrabalho, nivelSenioridade, nivelHierarquia) VALUES
-(1, 'Alana Silva', 'alana@candidato.com', '$argon2id$v=19$m=65536,t=4,p=1$Aab6wOgF6HbEY/Q3J42ClA$BoFioL4aRuvWJllGa5nOFd5hGUL+X9/SA6j0YXFvTzY', 'PHP', '88783818022', '1990-01-01', 'Av Paulista, 1000', '1', 'Feminino', 'Cisgenero', 1, 1, 1, 1, 1),
-(2, 'Douglas Oliveira', 'douglas@candidato.com', '$argon2id$v=19$m=65536,t=4,p=1$Aab6wOgF6HbEY/Q3J42ClA$BoFioL4aRuvWJllGa5nOFd5hGUL+X9/SA6j0YXFvTzY', 'PHP', '42166127096', '1990-01-01', 'Av Paulista, 1000', '1', 'Masculino', 'Cisgenero', 1, 1, 1, 1, 1),
-(3, 'Edyelgue Carneiro', 'edy@candidato.com', '$argon2id$v=19$m=65536,t=4,p=1$Aab6wOgF6HbEY/Q3J42ClA$BoFioL4aRuvWJllGa5nOFd5hGUL+X9/SA6j0YXFvTzY', 'PHP', '80383417082', '1990-01-01', 'Av Paulista, 1000', '1', 'Masculino', 'Cisgenero', 1, 1, 1, 1, 1),
-(4, 'Kauan Nascimento', 'kauan@candidato.com', '$argon2id$v=19$m=65536,t=4,p=1$Aab6wOgF6HbEY/Q3J42ClA$BoFioL4aRuvWJllGa5nOFd5hGUL+X9/SA6j0YXFvTzY', 'PHP', '00025166085', '1990-01-01', 'Av Paulista, 1000', '1', 'Masculino', 'Cisgenero', 1, 1, 1, 1, 1),
-(5, 'Thiago Abreu', 'thiago@candidato.com', '$argon2id$v=19$m=65536,t=4,p=1$Aab6wOgF6HbEY/Q3J42ClA$BoFioL4aRuvWJllGa5nOFd5hGUL+X9/SA6j0YXFvTzY', 'PHP', '22972285454', '1990-01-01', 'Av Paulista, 1000', '1', 'Masculino', 'Cisgenero', 1, 1, 1, 1, 1)
+INSERT INTO candidato (id, nome, email, senha, cpf, nascimento, endereco, disponibilidade, sexo, genero, `status`, regimeContratacao, regimeTrabalho, nivelSenioridade, nivelHierarquia) VALUES
+(1, 'Alana Silva', 'alana@candidato.com', '$argon2id$v=19$m=65536,t=4,p=1$Aab6wOgF6HbEY/Q3J42ClA$BoFioL4aRuvWJllGa5nOFd5hGUL+X9/SA6j0YXFvTzY', '88783818022', '1990-01-01', 'Av Paulista, 1000', '1', 'Feminino', 'Cisgenero', 1, 1, 1, 1, 1),
+(2, 'Douglas Oliveira', 'douglas@candidato.com', '$argon2id$v=19$m=65536,t=4,p=1$Aab6wOgF6HbEY/Q3J42ClA$BoFioL4aRuvWJllGa5nOFd5hGUL+X9/SA6j0YXFvTzY', '42166127096', '1990-01-01', 'Av Paulista, 1000', '1', 'Masculino', 'Cisgenero', 1, 1, 1, 1, 1),
+(3, 'Edyelgue Carneiro', 'edy@candidato.com', '$argon2id$v=19$m=65536,t=4,p=1$Aab6wOgF6HbEY/Q3J42ClA$BoFioL4aRuvWJllGa5nOFd5hGUL+X9/SA6j0YXFvTzY', '80383417082', '1990-01-01', 'Av Paulista, 1000', '1', 'Masculino', 'Cisgenero', 1, 1, 1, 1, 1),
+(4, 'Kauan Nascimento', 'kauan@candidato.com', '$argon2id$v=19$m=65536,t=4,p=1$Aab6wOgF6HbEY/Q3J42ClA$BoFioL4aRuvWJllGa5nOFd5hGUL+X9/SA6j0YXFvTzY', '00025166085', '1990-01-01', 'Av Paulista, 1000', '1', 'Masculino', 'Cisgenero', 1, 1, 1, 1, 1),
+(5, 'Thiago Abreu', 'thiago@candidato.com', '$argon2id$v=19$m=65536,t=4,p=1$Aab6wOgF6HbEY/Q3J42ClA$BoFioL4aRuvWJllGa5nOFd5hGUL+X9/SA6j0YXFvTzY', '22972285454', '1990-01-01', 'Av Paulista, 1000', '1', 'Masculino', 'Cisgenero', 1, 1, 1, 1, 1)
 ;
 
 DELETE FROM candidato_vaga WHERE 1;

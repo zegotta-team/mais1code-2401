@@ -1,53 +1,75 @@
 <div class="container container-sm w-75">
     <form method="post" action="/candidato/salvar">
         <div class="row g-3 align-items-center mb-2">
-        <div class="row g-3 align-items-center mb-2">
             <!-- REGIME DE CONTRATAÇÃO -->
-            <div class="col-md-4 form-floating">
+            <div class="col-md-3 form-floating">
                 <select class="form-control form-select" name="regimeContratacao" id="regimeContratacao" required>
                     <option value="">Selecione</option>
-                    <option value="1" <?= !empty($candidatoId) && $candidatoId->getRegimeContratacao() == '1' ? 'selected' : '' ?>>CLT</option>
-                    <option value="2" <?= !empty($candidatoId) && $candidatoId->getRegimeContratacao() == '2' ? 'selected' : '' ?>>PJ</option>
-                    <option value="3" <?= !empty($candidatoId) && $candidatoId->getRegimeContratacao() == '3' ? 'selected' : '' ?>>Estágio</option>
-                    <option value="4" <?= !empty($candidatoId) && $candidatoId->getRegimeContratacao() == '4' ? 'selected' : '' ?>>Jovem Aprendiz</option>
+                    <?php foreach (RegimeContratacaoEnum::forSelect() as $indice => $valor) : ?>
+                        <option value="<?= $indice ?>" <?= !empty($candidato) && $candidato->getRegimeContratacao() == $indice ? 'selected' : '' ?>><?= $valor ?></option>
+                    <?php endforeach; ?>
                 </select>
                 <label for="regimeContratacao" class="col-form-label">Regime de Contratação</label>
             </div>
             <!-- REGIME DE TRABALHO -->
-            <div class="col-md-4 form-floating">
+            <div class="col-md-3 form-floating">
                 <select class="form-control form-select" name="regimeTrabalho" id="regimeTrabalho" required>
                     <option value="">Selecione</option>
-                    <option value="1" <?= !empty($candidatoId) && $candidatoId->getRegimeTrabalho() == '1' ? 'selected' : '' ?>>Presencial</option>
-                    <option value="2" <?= !empty($candidatoId) && $candidatoId->getRegimeTrabalho() == '2' ? 'selected' : '' ?>>Híbrido</option>
-                    <option value="3" <?= !empty($candidatoId) && $candidatoId->getRegimeTrabalho() == '3' ? 'selected' : '' ?>>Remoto</option>
+                    <?php foreach (RegimeTrabalhoEnum::forSelect() as $indice => $valor) : ?>
+                        <option value="<?= $indice ?>" <?= !empty($candidato) && $candidato->getRegimeTrabalho() == $indice ? 'selected' : '' ?>><?= $valor ?></option>
+                    <?php endforeach; ?>
                 </select>
                 <label for="regimeTrabalho" class="col-form-label">Regime de Trabalho</label>
             </div>
-        <div class="row g-3 align-items-center mb-2">
             <!-- NÍVEL DE SENIORIDADE -->
-            <div class="col-md-6 form-floating">
+            <div class="col-md-3 form-floating">
                 <select class="form-control form-select" name="nivelSenioridade" id="nivelSenioridade" required>
                     <option value="">Selecione</option>
-                    <option value="1" <?= !empty($candidatoId) && $candidatoId->getNivelSenioridade() == '1' ? 'selected' : '' ?>>Júnior</option>
-                    <option value="2" <?= !empty($candidatoId) && $candidatoId->getNivelSenioridade() == '2' ? 'selected' : '' ?>>Pleno</option>
-                    <option value="3" <?= !empty($candidatoId) && $candidatoId->getNivelSenioridade() == '3' ? 'selected' : '' ?>>Sênior</option>
+                    <?php foreach (NivelSenioridadeEnum::forSelect() as $indice => $valor) : ?>
+                        <option value="<?= $indice ?>" <?= !empty($candidato) && $candidato->getNivelSenioridade() == $indice ? 'selected' : '' ?>><?= $valor ?></option>
+                    <?php endforeach; ?>
                 </select>
                 <label for="nivelSenioridade" class="col-form-label">Nível de Senioridade</label>
             </div>
-
             <!-- NÍVEL DE HIERARQUIA -->
-            <div class="col-md-6 form-floating">
+            <div class="col-md-3 form-floating">
                 <select class="form-control form-select" name="nivelHierarquia" id="nivelHierarquia" required>
                     <option value="">Selecione</option>
-                    <option value="1" <?= !empty($candidatoId) && $candidatoId->getNivelHierarquia() == '1' ? 'selected' : '' ?>>Auxiliar/Assistente/Analista</option>
-                    <option value="2" <?= !empty($candidatoId) && $candidatoId->getNivelHierarquia() == '2' ? 'selected' : '' ?>>Coordenação/Supervisão</option>
-                    <option value="3" <?= !empty($candidatoId) && $candidatoId->getNivelHierarquia() == '3' ? 'selected' : '' ?>>Gerência</option>
-                    <option value="4" <?= !empty($candidatoId) && $candidatoId->getNivelHierarquia() == '4' ? 'selected' : '' ?>>Diretoria</option>
-                    <option value="5" <?= !empty($candidatoId) && $candidatoId->getNivelHierarquia() == '5' ? 'selected' : '' ?>>C-Level</option>
+                    <?php foreach (NivelHierarquicoEnum::forSelect() as $indice => $valor) : ?>
+                        <option value="<?= $indice ?>" <?= !empty($candidato) && $candidato->getNivelHierarquia() == $indice ? 'selected' : '' ?>><?= $valor ?></option>
+                    <?php endforeach; ?>
                 </select>
                 <label for="nivelHierarquia" class="col-form-label">Nível hierárquico</label>
             </div>
         </div>
+        <div class="row g-3 align-items-center mb-2">
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <label class="col-form-label col-md-2">Habilidades</label>
+                <div class="input-group w-25 ms-3">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Filtrar habilidades...">
+                </div>
+            </div>
+        </div>
+
+        <?php
+        /** @var array<CategoriaHabilidade> $categorias */
+        foreach ($categorias as $categoria) : ?>
+            <div class="row g-3 align-items-center mb-2">
+                <div class="col-12 justify-content-between align-items-center">
+                    <p class="col-form-label " style="border-bottom: 1px solid #093B6E"><small><?= $categoria->getNome() ?></small></p>
+                </div>
+            </div>
+            <div class="row g-3 align-items-center mb-2">
+                <?php /** @var array<Habilidade> $habilidades */
+                foreach ($habilidades[$categoria->getNome()] as $habilidade) : ?>
+                    <div class="col-3 mb-3 habilidade-item" style="text-wrap: nowrap;" title="<?= $habilidade->getHabilidade() ?>">
+                        <input type="checkbox" class="form-check-input" name="habilidade[]" id="habilidade_<?= $habilidade->getId() ?>" value="<?= $habilidade->getId() ?>" <?= $candidato->temHabilidadeId($habilidade->getId()) ? 'checked' : '' ?>>
+                        <label class="form-check-label ms-1 text-truncate" style="max-width: 80%;" for="habilidade_<?= $habilidade->getId() ?>"><?= $habilidade->getHabilidade() ?></label>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endforeach; ?>
         <div class="row gy-3 gy-md-4 overflow-hidden mt-4 mb-2">
             <div class="col-12">
                 <div class="d-grid">
@@ -58,6 +80,21 @@
             </div>
         </div>
     </form>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('searchInput').addEventListener('keyup', function () {
+            let searchTerm = this.value.toLowerCase();
+            let items = document.querySelectorAll('.habilidade-item');
 
-
-
+            items.forEach(function (item) {
+                let label = item.querySelector('label').textContent.toLowerCase();
+                if (label.includes(searchTerm)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>

@@ -112,7 +112,9 @@
                     <input type="text" id="searchInput" class="form-control" placeholder="Filtrar habilidades...">
                 </div>
             </div>
-            <?php foreach ($categorias as $categoria) : ?>
+            <?php
+            /** @var array<Categoria> $categorias */
+            foreach ($categorias as $categoria) : ?>
                 <p><?= $categoria->getNome() ?></p>
                 <?php /** @var array<Habilidade> $habilidades */
                 foreach ($habilidades[$categoria->getNome()] as $habilidade) : ?>
