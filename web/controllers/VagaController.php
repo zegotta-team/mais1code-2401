@@ -26,7 +26,9 @@ class VagaController
         $nomesEstados = !empty($filtro_estados) ? "'" . join("','", $filtro_estados) . "'" : '';
         $idsEmpresas = !empty($filtro_empresas) ? "'" . join("','", $filtro_empresas) . "'" : '';
 
-        $vagas = VagaDTO::listar($idsEmpresas, '',
+        $vagas = VagaDTO::listar(
+            $idsEmpresas,
+            '',
             VagaStatusEnum::Ativa->value,
             '',
             VagaOrdenacaoEnum::MaisRecente,
@@ -45,7 +47,7 @@ class VagaController
         $estados = FilialDTO::listar();
 
         $layout = CandidatoController::estaLogado() ? 'sistema-candidato' : 'painel-vagas';
-        View::renderizar('vaga/painel', compact('vagas', 'habilidades', 'empresas', 'estados', 'filtro_empresas', 'filtro_contratacao', 'filtro_habilidades', 'filtro_empresas', 'filtro_estados', 'filtro_hierarquia', 'filtro_senioridade', 'filtro_trabalho'), $layout);
+        View::renderizar('vaga/painel', compact('vagas', 'habilidades', 'empresas', 'estados', 'filtro_empresas', 'filtro_contratacao', 'filtro_habilidades', 'filtro_empresas', 'filtro_estados', 'filtro_hierarquia', 'filtro_senioridade', 'filtro_trabalho', 'filtro_salarioDe', 'filtro_salarioAte'), $layout);
     }
 
     public function cadastrar()
@@ -107,8 +109,6 @@ class VagaController
         }
         VagaDTO::salvar($vaga);
         FlashMessage::addMessage('Dados gravados com sucesso');
-
-
     }
 
     public function editar()
@@ -177,7 +177,6 @@ class VagaController
 
         foreach ($habilidades as $habilidade) {
             $habilidadesDescrita .= ' ' . $habilidade->getHabilidade();
-
         }
 
         if (CandidatoController::estaLogado()) {
@@ -188,7 +187,6 @@ class VagaController
             $layout = 'painel-vagas';
         }
         View::renderizar('vaga/detalhes', compact('vaga', 'candidato_vaga', 'habilidadesDescrita'), $layout);
-
     }
 
     public function desistirCandidatura()
@@ -239,5 +237,4 @@ class VagaController
 
         header('Location: /vaga/editar?id=' . $_GET['id']);
     }
-
 }

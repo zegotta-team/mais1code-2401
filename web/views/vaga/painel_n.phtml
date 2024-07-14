@@ -1,3 +1,60 @@
+<?php
+$filtros_badges = [];
+foreach ($filtro_habilidades as $id_habilidade) {
+    foreach ($habilidades as $habilidade) {
+        if ($habilidade->getId() == $id_habilidade) {
+            $filtros_badges[] = $habilidade->getHabilidade();
+            break;
+        }
+    }
+}
+foreach ($filtro_empresas as $id_empresa) {
+    foreach ($empresas as $empresa) {
+        if ($empresa->getId() == $id_empresa) {
+            $filtros_badges[] = $empresa->getNome();
+            break;
+        }
+    }
+}
+
+$estados = FilialEstadoEnum::forSelect();
+foreach ($filtro_estados as $sigla_estado) {
+    $filtros_badges[] = $estados[$sigla_estado];
+}
+
+$hierarquias = NivelHierarquicoEnum::forSelect();
+foreach ($filtro_hierarquia as $indice) {
+    $filtros_badges[] = $hierarquias[$indice];
+}
+
+$senioridades = NivelSenioridadeEnum::forSelect();
+foreach ($filtro_senioridade as $indice) {
+    $filtros_badges[] = $senioridades[$indice];
+}
+
+$regimes_contratacao = RegimeContratacaoEnum::forSelect();
+foreach ($filtro_contratacao as $indice) {
+    $filtros_badges[] = $regimes_contratacao[$indice];
+}
+
+$regimes_trabalho = RegimeTrabalhoEnum::forSelect();
+foreach ($filtro_trabalho as $indice) {
+    $filtros_badges[] = $regimes_trabalho[$indice];
+}
+
+$hasMinSalario = !empty($filtro_salarioDe) && $filtro_salarioDe != 0;
+$hasMaxSalario = !empty($filtro_salarioAte) && $filtro_salarioAte != 50000;
+
+if ($hasMinSalario) {
+    $filtros_badges[] = 'A partir de R$' . $filtro_salarioDe;
+}
+
+if ($hasMaxSalario) {
+    $filtros_badges[] = 'Ate R$' . $filtro_salarioAte;
+}
+
+?>
+
 <div class="hero min-h-[calc(100vh-64px)] md:min-h-[50vh] py-12">
     <div class="hero-content flex-col md:flex-row gap-10">
         <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Job Hunt" class="w-full max-h-[400px] max-w-sm object-cover mask mask-hexagon">
@@ -20,9 +77,156 @@
 </div>
 <div id="vagas" class="flex flex-col px-4 py-10 gap-10 justify-center items-center">
     <h2 class="text-3xl font-bold">Vagas</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-8 max-w-screen-lg w-full">
-        <?php foreach ($vagas as $vaga) :
-            echo $vaga->renderCardJob();
-        endforeach; ?>
+    <div class="grid md:grid-cols-5 xl:grid-cols-7 gap-4">
+        <div class="flex flex-col gap-4 md:col-span-2">
+            <h3 class="font-bold">Filtros</h3>
+            <div>
+                <form method="post" action="/vaga/index#vagas" class="flex flex-col gap-4">
+                    <div class="flex flex-col gap-0.5">
+                        <details class="collapse collapse-arrow border border-base-300">
+                            <summary class="collapse-title font-medium">Habilidades <?= !empty($filtro_habilidades) ? '<div class="badge badge-sm badge-accent">' . count($filtro_habilidades) . '</div>' : '' ?></summary>
+                            <div class="collapse-content">
+                                <?php /** @var array<Habilidade> $habilidades */
+                                foreach ($habilidades as $habilidade) : ?>
+                                    <div class="form-control">
+                                        <label class="label justify-start gap-2 cursor-pointer">
+                                            <input type="checkbox" class="checkbox checkbox-primary" name="filtro_habilidades[]" id="habilidade_<?= $habilidade->getId() ?>" value="<?= $habilidade->getId() ?>" <?= in_array($habilidade->getId(), $filtro_habilidades) ? 'checked' : '' ?> />
+                                            <span class="label-text"><?= $habilidade->getHabilidade() ?></span>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </details>
+                        <details class="collapse collapse-arrow border border-base-300">
+                            <summary class="collapse-title font-medium">Empresa <?= !empty($filtro_empresas) ? '<div class="badge badge-sm badge-accent">' . count($filtro_empresas) . '</div>' : '' ?></summary>
+                            <div class="collapse-content">
+                                <?php /** @var array<Empresa> $empresas */
+                                foreach ($empresas as $empresa) : ?>
+                                    <div class="form-control">
+                                        <label class="label justify-start gap-2 cursor-pointer">
+                                            <input type="checkbox" class="checkbox checkbox-primary" name="filtro_empresas[]" id="empresa_<?= $empresa->getId() ?>" value="<?= $empresa->getId() ?>" <?= in_array($empresa->getId(), $filtro_empresas) ? 'checked' : '' ?> />
+                                            <span class="label-text"><?= $empresa->getNome() ?></span>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </details>
+                        <details class="collapse collapse-arrow border border-base-300">
+                            <summary class="collapse-title font-medium">Estado <?= !empty($filtro_estados) ? '<div class="badge badge-sm badge-accent">' . count($filtro_estados) . '</div>' : '' ?></summary>
+                            <div class="collapse-content">
+                                <?php foreach ($estados as $sigla => $nome) : ?>
+                                    <div class="form-control">
+                                        <label class="label justify-start gap-2 cursor-pointer">
+                                            <input type="checkbox" class="checkbox checkbox-primary" name="filtro_estados[]" id="estados_<?= $sigla ?>" value="<?= $sigla ?>" <?= in_array($sigla, $filtro_estados) ? 'checked' : '' ?> />
+                                            <span class="label-text"><?= $nome ?></span>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </details>
+                        <details class="collapse collapse-arrow border border-base-300">
+                            <summary class="collapse-title font-medium">Nível Hierárquico <?= !empty($filtro_hierarquia) ? '<div class="badge badge-sm badge-accent">' . count($filtro_hierarquia) . '</div>' : '' ?></summary>
+                            <div class="collapse-content">
+                                <?php foreach ($hierarquias as $hierarquia => $descricao) : ?>
+                                    <div class="form-control">
+                                        <label class="label justify-start gap-2 cursor-pointer">
+                                            <input type="checkbox" class="checkbox checkbox-primary" name="filtro_hierarquia[]" id="hierarquia_<?= $hierarquia ?>" value="<?= $hierarquia ?>" <?= in_array($hierarquia, $filtro_hierarquia) ? 'checked' : '' ?> />
+                                            <span class="label-text"><?= $descricao ?></span>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </details>
+                        <details class="collapse collapse-arrow border border-base-300">
+                            <summary class="collapse-title font-medium">Nível de Senioridade <?= !empty($filtro_senioridade) ? '<div class="badge badge-sm badge-accent">' . count($filtro_senioridade) . '</div>' : '' ?></summary>
+                            <div class="collapse-content">
+                                <?php foreach ($senioridades as $senioridade => $descricao) : ?>
+                                    <div class="form-control">
+                                        <label class="label justify-start gap-2 cursor-pointer">
+                                            <input type="checkbox" class="checkbox checkbox-primary" name="filtro_senioridade[]" id="senioridade_<?= $senioridade ?>" value="<?= $senioridade ?>" <?= in_array($senioridade, $filtro_senioridade) ? 'checked' : '' ?> />
+                                            <span class="label-text"><?= $descricao ?></span>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </details>
+                        <details class="collapse collapse-arrow border border-base-300">
+                            <summary class="collapse-title font-medium">Regime de Contratação <?= !empty($filtro_contratacao) ? '<div class="badge badge-sm badge-accent">' . count($filtro_contratacao) . '</div>' : '' ?></summary>
+                            <div class="collapse-content">
+                                <?php foreach ($regimes_contratacao as $contratacao => $descricao) : ?>
+                                    <div class="form-control">
+                                        <label class="label justify-start gap-2 cursor-pointer">
+                                            <input type="checkbox" class="checkbox checkbox-primary" name="filtro_contratacao[]" id="contratacao_<?= $contratacao ?>" value="<?= $contratacao ?>" <?= in_array($contratacao, $filtro_contratacao) ? 'checked' : '' ?> />
+                                            <span class="label-text"><?= $descricao ?></span>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </details>
+                        <details class="collapse collapse-arrow border border-base-300">
+                            <summary class="collapse-title font-medium">Regime de Trabalho <?= !empty($filtro_trabalho) ? '<div class="badge badge-sm badge-accent">' . count($filtro_trabalho) . '</div>' : '' ?></summary>
+                            <div class="collapse-content">
+                                <?php foreach ($regimes_trabalho as $trabalho => $descricao) : ?>
+                                    <div class="form-control">
+                                        <label class="label justify-start gap-2 cursor-pointer">
+                                            <input type="checkbox" class="checkbox checkbox-primary" name="filtro_trabalho[]" id="trabalho_<?= $trabalho ?>" value="<?= $trabalho ?>" <?= in_array($trabalho, $filtro_trabalho) ? 'checked' : '' ?> />
+                                            <span class="label-text"><?= $descricao ?></span>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </details>
+                        <details class="collapse collapse-arrow border border-base-300">
+                            <summary class="collapse-title font-medium">Faixa Salarial <?= $hasMinSalario || $hasMaxSalario ? '<div class="badge badge-sm badge-accent">1</div>' : '' ?></summary>
+                            <div class="collapse-content">
+                                <label class="form-control">
+                                    <div class="label">
+                                        <span class="label-text">De:</span>
+                                    </div>
+                                    <input class="range range-sm range-primary" type="range" id="salarioDe" name="salarioDe" min="0" max="50000" value="<?= $filtro_salarioDe ?? '0' ?>" step="1000" oninput="outputDe.value = salarioDe.value; salarioAte.min = salarioDe.value ">
+                                    <div class="label justify-end">
+                                        <span class="label-alt">R$ </span>
+                                        <output id="outputDe"><?= $filtro_salarioDe ?? '0' ?></output>
+                                        <span class="label-alt">,00</span>
+                                    </div>
+                                </label>
+                                <label class="form-control">
+                                    <div class="label">
+                                        <span class="label-text">Ate:</span>
+                                    </div>
+                                    <input class="range range-sm range-primary" type="range" id="salarioAte" name="salarioAte" min="0" max="50000" value="<?= $filtro_salarioAte ?? '50000' ?>" step="1000" oninput="outputAte.value = salarioAte.value; ">
+                                    <div class="label justify-end">
+                                        <span class="label-alt">R$ </span>
+                                        <output id="outputAte"><?= $filtro_salarioAte ?? '50000' ?></output>
+                                        <span class="label-alt">,00</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </details>
+                    </div>
+                    <div class="flex gap-4 w-full justify-end">
+                        <a href="/#vagas" class="btn btn-ghost">Limpar Filtros</a>
+                        <button type="submit" class="btn btn-accent"><svg class="w-5 h-5" data-slot="icon" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path clip-rule="evenodd" d="M3.792 2.938A49.069 49.069 0 0 1 12 2.25c2.797 0 5.54.236 8.209.688a1.857 1.857 0 0 1 1.541 1.836v1.044a3 3 0 0 1-.879 2.121l-6.182 6.182a1.5 1.5 0 0 0-.439 1.061v2.927a3 3 0 0 1-1.658 2.684l-1.757.878A.75.75 0 0 1 9.75 21v-5.818a1.5 1.5 0 0 0-.44-1.06L3.13 7.938a3 3 0 0 1-.879-2.121V4.774c0-.897.64-1.683 1.542-1.836Z" fill-rule="evenodd"></path>
+                            </svg>Filtrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="flex flex-col gap-4 md:col-span-3 xl:col-span-5">
+            <?php if (!empty($filtros_badges)) : ?>
+                <div class="flex gap-2">
+                    <span>Filtrado por:</span>
+                    <?php foreach ($filtros_badges as $badge) : ?>
+                        <div class="badge badge-primary badge-outline"><?= $badge ?></div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+            <div class="grid xl:grid-cols-2 gap-x-4 gap-y-8 max-w-screen-lg w-full">
+                <?php foreach ($vagas as $vaga) :
+                    echo $vaga->renderCardJob();
+                endforeach; ?>
+            </div>
+        </div>
     </div>
 </div>
