@@ -237,9 +237,9 @@ class Vaga
         }
 
         return <<<HTML
-                <div class='d-flex justify-content-between h-100 flex-column'>   
+                <div class='d-flex justify-content-between h-100 flex-column rounded bg-white border border-secondary'>   
                     <div>
-                        <div class='titulo ps-2 pe-2 align-items-center d-flex justify-content-between'>
+                        <div class='titulo ps-2 pe-2 align-items-center d-flex justify-content-between rounded'>
                             <strong><a type='button' data-bs-toggle='modal' data-bs-target='#modal{$this->getId()}'>{$this->getTitulo()}</a></strong><i class='fas fa-thumbtack'></i>
                         </div>
                         <div class='p-2'>  
