@@ -1,7 +1,21 @@
-<div class="card bg-base-100 w-full shadow-xl">
+<div class="card card-compact bg-base-100 w-full shadow-xl">
   <div class="card-body">
-    <h2 class="card-title">{vaga}</h2>
-    <span class="font-medium text-xs uppercase">{empresa}</span>
+    <div class="flex justify-between gap-4">
+      <div>
+        <h2 class="card-title">{vaga}</h2>
+        <span class="font-medium text-xs uppercase text-accent">{empresa}</span>
+      </div>
+      <div class="h-10 w-10">
+        <img
+          src="/assets/images/emblema-branco.png"
+          width="40"
+          height="40"
+          class="object-cover w-full h-full rounded-full"
+          alt="Logo Empresa X"
+        />
+      </div>
+    </div>
+    <div class="divider my-0"></div>
     <div class="flex flex-wrap gap-x-4 gap-y-2">
       <div class="flex items-center gap-1">
         <svg
@@ -82,7 +96,7 @@
       </div>
     </div>
     <div class="mt-4"><p>{descricao}</p></div>
-    <div class="flex flex-wrap gap-2 my-1">{habilidades}</div>
+    <!-- <div class="flex flex-wrap gap-2 my-1">{habilidades}</div> -->
     <div class="card-actions justify-end mt-auto">
       <button class="btn btn-primary" onclick="modal_vaga_{id}.showModal()">
         Ver mais
@@ -92,8 +106,22 @@
 </div>
 <dialog id="modal_vaga_{id}" class="modal">
   <div class="modal-box">
-    <h3 class="text-lg font-bold">{vaga}</h3>
-    <span class="font-medium text-xs uppercase">{empresa}</span>
+    <div class="flex justify-between gap-4">
+      <div>
+        <h2 class="font-bold text-lg">{vaga}</h2>
+        <span class="font-medium text-xs uppercase text-accent">{empresa}</span>
+      </div>
+      <div class="h-10 w-10">
+        <img
+          src="/assets/images/emblema-branco.png"
+          width="40"
+          height="40"
+          class="object-cover w-full h-full rounded-full"
+          alt="Logo Empresa X"
+        />
+      </div>
+    </div>
+    <div class="divider my-1"></div>
     <div class="flex flex-wrap gap-x-4 gap-y-2">
       <div class="flex items-center gap-1">
         <svg
@@ -190,9 +218,13 @@
         <span>{niveis}</span>
       </div>
     </div>
+    <div class="divider my-1"></div>
     <p class="py-2"><span class="text-base">Benefícios: </span>{beneficios}</p>
     <p class="py-4">{descricao}</p>
-    <div class="flex flex-wrap gap-2 my-1">{habilidades}</div>
+    <div class="flex flex-wrap gap-2 my-1">
+      <span class="text-base">Habilidades:</span>
+      {habilidades}
+    </div>
     <div class="modal-action">
       <form method="dialog">
         <!-- if there is a button in form, it will close the modal -->
