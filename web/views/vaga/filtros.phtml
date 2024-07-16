@@ -100,7 +100,7 @@
                     <div class="label">
                         <span class="label-text">De:</span>
                     </div>
-                    <input class="range range-sm range-primary" type="range" id="salarioDe" name="salarioDe" min="0" max="50000" value="<?= $filtro_salarioDe ?? '0' ?>" step="1000" oninput="outputDe.value = salarioDe.value; salarioAte.min = salarioDe.value ">
+                    <input class="range range-sm range-primary" type="range" id="salarioDe" name="salarioDe" min="0" max="1000000" value="<?= $filtro_salarioDe ?? '0' ?>" step="1000" oninput="outputDe.value = salarioDe.value; salarioAte.min = salarioDe.value ">
                     <div class="label justify-end">
                         <span class="label-alt">R$ </span>
                         <output id="outputDe"><?= $filtro_salarioDe ?? '0' ?></output>
@@ -111,10 +111,10 @@
                     <div class="label">
                         <span class="label-text">Ate:</span>
                     </div>
-                    <input class="range range-sm range-primary" type="range" id="salarioAte" name="salarioAte" min="0" max="50000" value="<?= $filtro_salarioAte ?? '50000' ?>" step="1000" oninput="outputAte.value = salarioAte.value; ">
+                    <input class="range range-sm range-primary" type="range" id="salarioAte" name="salarioAte" min="0" max="1000000" value="<?= $filtro_salarioAte ?? '50000' ?>" step="1000" oninput="outputAte.value = salarioAte.value; ">
                     <div class="label justify-end">
                         <span class="label-alt">R$ </span>
-                        <output id="outputAte"><?= $filtro_salarioAte ?? '50000' ?></output>
+                        <output id="outputAte"><?= $filtro_salarioAte ?? '1000000' ?></output>
                         <span class="label-alt">,00</span>
                     </div>
                 </label>

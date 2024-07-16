@@ -17,7 +17,7 @@ abstract class EmpresaDTO implements DTOInterface
 
         $cnpjSoNumeros = preg_replace('/\D/', '', $empresa->getCnpj());
 
-        if (empty($empresa->getId())) {            
+        if (empty($empresa->getId())) {
             $sql = "INSERT INTO empresa(nome, cnpj, email, descricao, logo)
             VALUES (\"{$empresa->getNome()}\", '$cnpjSoNumeros', \"{$empresa->getEmail()}\", \"{$empresa->getDescricao()}\", \"{$empresa->getLogo()}\")";
         } else {
@@ -34,6 +34,25 @@ abstract class EmpresaDTO implements DTOInterface
 
         if (empty($empresa->getId())) {
             $empresa->setId($pdo->lastInsertId());
+        }
+
+        if (str_starts_with($empresa->getLogo(), '/tmp')) {
+            $partes = explode('|', $empresa->getLogo());
+
+            $extensao = explode('.', $partes[1]);
+
+            $pasta = '/assets/images/empresa/' . $empresa->getId();
+
+            if (!file_exists($pasta)) {
+                mkdir($pasta, 0777);
+            }
+
+            $nomeArquivoPersistido = $pasta . '/' . uniqid() . "." . end($extensao);
+            if (move_uploaded_file($partes[0], $nomeArquivoPersistido)) {
+                $sql = "UPDATE empresa SET logo = '$nomeArquivoPersistido' WHERE id = '{$empresa->getId()}' ";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute();
+            }
         }
     }
 
@@ -58,7 +77,7 @@ abstract class EmpresaDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
         $sql = "SELECT * FROM empresa WHERE id = $id ";
-        
+
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 

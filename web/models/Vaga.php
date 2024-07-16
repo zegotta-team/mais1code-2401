@@ -306,6 +306,7 @@ class Vaga
             '{id}' => $this->getId(),
             '{vaga}' => $this->getTitulo(),
             '{empresa}' => $this->getEmpresa()->getNome(),
+            '{logo}' => $this->getEmpresa()->getLogo(),
             '{habilidades}' => $habilidades,
             '{regimeContratacao}' => $textoRegimeContracao,
             '{regimeTrabalho}' => $textoRegimeTrabalho,

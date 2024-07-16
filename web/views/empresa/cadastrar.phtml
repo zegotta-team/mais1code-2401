@@ -1,6 +1,6 @@
 <?php FlashMessage::getMessage() ?>
 
-<form action="/empresa/processaCadastrar" method="post">
+<form action="/empresa/processaCadastrar" method="post" enctype="multipart/form-data">
     <div class="row mt-3">
         <div class="col-6 col-md-6">
             <div class="p-3 p-md-4 p-xl-5">
@@ -29,7 +29,7 @@
                     <div class="col-12">
                         <label for="logo" class="form-label">Logo
                             <span>*</span></label>
-                        <input type="text" class="form-control" name="logo" id="logo" placeholder="Adicione uma imagem" required>
+                        <input type="file" class="form-control" name="logo" id="logo" placeholder="Adicione uma imagem" required>
                     </div>
 
                 </div>
@@ -95,7 +95,7 @@
                         <label for="filialEstado" class="form-label">Estado</label>
                         <select class="form-control" name="filialEstado" id="filialEstado" required>
                             <option value="" disabled selected>-</option>
-                                <?php foreach (FilialEstadoEnum::forSelect() as $indice => $valor): ?>
+                                <?php foreach (EstadoEnum::forSelect() as $indice => $valor): ?>
                                     <option value="<?= $indice ?>" <?= !empty($filial) && $filial->getEstado() == $indice ? 'selected' : ''?>><?= $valor ?></option>
                                 <?php endforeach; ?>
                         </select>

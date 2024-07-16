@@ -39,7 +39,7 @@
             <div class="col-md-2 form-floating">
                 <select class="form-control" name="filialEstado" id="filialEstado" required>
                     <option value="" disabled selected>-</option>
-                    <?php foreach (FilialEstadoEnum::forSelect() as $indice => $valor): ?>
+                    <?php foreach (EstadoEnum::forSelect() as $indice => $valor): ?>
                         <option value="<?= $indice ?>" <?= !empty($filial) && $filial->getEstado() == $indice ? 'selected' : ''?>><?= $valor ?></option>
                     <?php endforeach; ?>
                 </select>

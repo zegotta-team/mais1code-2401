@@ -63,7 +63,7 @@
                             <div class="collapse" id="estado-collapse">
                                 <ul class="btn-toggle-nav fw-normal pb-1 small" style="max-height: 200px; overflow-x: hidden; overflow-y: auto;">
                                     <?php
-                                    foreach (FilialEstadoEnum::forSelect() as $sigla => $nome) : ?>
+                                    foreach (EstadoEnum::forSelect() as $sigla => $nome) : ?>
                                         <div class="mb-3">
                                             <input type="checkbox" class="form-check-input" name="filtro_estados[]" id="estados_<?= $sigla ?>" value="<?= $sigla ?>" <?= in_array($sigla, $filtro_estados) ? 'checked' : '' ?>>
                                             <label class="form-check-label ms-1 text-light" for="estados_<?= $sigla ?>"><?= $nome ?></label>
@@ -139,15 +139,15 @@
                             <div class="collapse" id="faixaSalarial-collapse">
                                 <p>
                                     <label class="text-light" for="salarioDe">De:</label>
-                                    <input type="range" id="salarioDe" name="salarioDe" min="0" max="100000" value="0" step="1000" oninput="outputDe.value = salarioDe.value; salarioAte.min = salarioDe.value "><br>
+                                    <input type="range" id="salarioDe" name="salarioDe" min="0" max="1000000" value="0" step="1000" oninput="outputDe.value = salarioDe.value; salarioAte.min = salarioDe.value "><br>
                                     <label class="text-light">R$ </label>
                                     <output class="text-light" id="outputDe" name="outputDe">0</output><label class="text-light">,00</label>
                                 </p>
                                 <p>
                                     <label class="text-light" for="salarioAte">Até:</label>
-                                    <input type="range" id="salarioAte" name="salarioAte" min="0" max="100000" value="100000" step="1000" oninput="outputAte.value = salarioAte.value; salarioDe.max = salarioAte.value"><br>
+                                    <input type="range" id="salarioAte" name="salarioAte" min="0" max="1000000" value="1000000" step="1000" oninput="outputAte.value = salarioAte.value; salarioDe.max = salarioAte.value"><br>
                                     <label class="text-light">R$ </label>
-                                    <output class="text-light" id="outputAte" name="outputAte">100000</output><label class="text-light">,00</label>
+                                    <output class="text-light" id="outputAte" name="outputAte">1000000</output><label class="text-light">,00</label>
                                 </p>
                             </div>
                         </li>

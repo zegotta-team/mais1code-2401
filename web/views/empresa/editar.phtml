@@ -1,5 +1,5 @@
 <div class="container container-sm w-75">
-    <form method="post" action="/empresa/processaEditar">
+    <form method="post" action="/empresa/processaEditar" enctype="multipart/form-data">
         <div class="row gy-3 gy-md-4 overflow-hidden mb-2">
             <div class="col-md-6 form-floating">
                 <input type="text" readonly class="form-control form-control-plaintext text-muted" name="nome" id="nome" required value="<?= $_SESSION['usuario']->getEmpresa()->getNome() ?>">
@@ -29,7 +29,7 @@
         </div>
         <div class="row gy-3 gy-md-4 overflow-hidden mb-2">
             <div class="col-md-12 form-floating">
-                <input type="text" class="form-control" name="logo" id="logo" required value="<?= $_SESSION['usuario']->getEmpresa()->getLogo() ?>">
+                <input type="file" class="form-control" name="logo" id="logo" required>
                 <label for="logo" class="form-label">Logo
                     <span class="text-danger">*</span></label>
             </div>

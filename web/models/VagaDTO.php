@@ -102,6 +102,7 @@ abstract class VagaDTO implements DTOInterface
     {
 
         $pdo = static::conectarDB();
+
         $sql = "SELECT e.nome, v. * FROM vaga v ";
         $sql .= "INNER JOIN empresa e ON e.id = v.empresa_id ";
         $sql .= "INNER JOIN filial f ON f.id = v.filial_id ";
