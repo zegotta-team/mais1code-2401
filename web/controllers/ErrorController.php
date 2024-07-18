@@ -5,6 +5,14 @@ class ErrorController
 
     public function index()
     {
-        View::renderizar('error/index', [], 'sistema', !AutenticacaoController::estaLogado());
+
+        $ignorarLayout = !AutenticacaoController::estaLogado() && !CandidatoController::estaLogado();
+        if (!$ignorarLayout) {
+            $layout = AutenticacaoController::estaLogado() ? 'sistema' : 'sistema-candidato';
+        } else {
+            $layout = '';
+        }
+
+        View::renderizar('error/index', [], $layout, $ignorarLayout);
     }
 }

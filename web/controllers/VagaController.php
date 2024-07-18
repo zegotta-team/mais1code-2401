@@ -44,10 +44,80 @@ class VagaController
 
         $habilidades = HabilidadeDTO::listar();
         $empresas = EmpresaDTO::listar();
-        $estados = FilialDTO::listar();
+
+        $filtros_badges = [];
+
+        foreach ($filtro_habilidades as $id_habilidade) {
+            $habilidade = HabilidadeDTO::recuperar($id_habilidade);
+            $filtros_badges[] = $habilidade->getHabilidade();
+        }
+
+        foreach ($filtro_empresas as $id_empresa) {
+            $empresa = EmpresaDTO::recuperar($id_empresa);
+            $filtros_badges[] = $empresa->getNome();
+        }
+
+        $estados = EstadoEnum::forSelect();
+
+        foreach ($filtro_estados as $indice) {
+            $filtros_badges[] = $estados[$indice];
+        }
+
+        $hierarquias = NivelHierarquicoEnum::forSelect();
+        foreach ($filtro_hierarquia as $indice) {
+            $filtros_badges[] = $hierarquias[$indice];
+        }
+
+        $senioridades = NivelSenioridadeEnum::forSelect();
+        foreach ($filtro_senioridade as $indice) {
+            $filtros_badges[] = $senioridades[$indice];
+        }
+
+        $regimes_contratacao = RegimeContratacaoEnum::forSelect();
+        foreach ($filtro_contratacao as $indice) {
+            $filtros_badges[] = $regimes_contratacao[$indice];
+        }
+
+        $regimes_trabalho = RegimeTrabalhoEnum::forSelect();
+        foreach ($filtro_trabalho as $indice) {
+            $filtros_badges[] = $regimes_trabalho[$indice];
+        }
+
+        $hasMinSalario = !empty($filtro_salarioDe) && $filtro_salarioDe != 0;
+        $hasMaxSalario = !empty($filtro_salarioAte) && $filtro_salarioAte != 1000000;
+
+        if ($hasMinSalario) {
+            $filtros_badges[] = 'A partir de R$' . $filtro_salarioDe;
+        }
+
+        if ($hasMaxSalario) {
+            $filtros_badges[] = 'Até R$' . $filtro_salarioAte;
+        }
 
         $layout = CandidatoController::estaLogado() ? 'sistema-candidato' : 'painel-vagas';
-        View::renderizar('vaga/painel', compact('vagas', 'habilidades', 'empresas', 'estados', 'filtro_empresas', 'filtro_contratacao', 'filtro_habilidades', 'filtro_empresas', 'filtro_estados', 'filtro_hierarquia', 'filtro_senioridade', 'filtro_trabalho', 'filtro_salarioDe', 'filtro_salarioAte'), $layout);
+        View::renderizar('vaga/painel', compact(
+            'vagas',
+            'habilidades',
+            'empresas',
+            'estados',
+            'hierarquias',
+            'senioridades',
+            'regimes_contratacao',
+            'regimes_trabalho',
+            'filtro_empresas',
+            'filtro_contratacao',
+            'filtro_habilidades',
+            'filtro_empresas',
+            'filtro_estados',
+            'filtro_hierarquia',
+            'filtro_senioridade',
+            'filtro_trabalho',
+            'filtro_salarioDe',
+            'filtro_salarioAte',
+            'filtros_badges',
+            'hasMinSalario',
+            'hasMaxSalario'
+        ), $layout);
     }
 
     public function cadastrar()

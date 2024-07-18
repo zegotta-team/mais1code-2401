@@ -21,7 +21,9 @@ class AutenticacaoController
 
     public function processaLogin()
     {
-        session_start();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
 
         $email = $_POST['email'];
         $senha = $_POST['senha'];
@@ -47,14 +49,18 @@ class AutenticacaoController
 
     public function processaLogout()
     {
-        session_start();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
         session_destroy();
         header('Location: /');
     }
 
     public static function exigeSessao()
     {
-        session_start();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
         if (empty($_SESSION['usuario'])) {
             header("Location: /autenticacao/");
             die();
@@ -64,7 +70,10 @@ class AutenticacaoController
 
     public static function renegaSessao()
     {
-        session_start();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
         if (!empty($_SESSION['usuario'])) {
             header("Location: /vaga/listar");
         }
@@ -72,7 +81,10 @@ class AutenticacaoController
 
     public static function estaLogado()
     {
-        session_start();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
         return !empty($_SESSION['usuario']);
     }
 
