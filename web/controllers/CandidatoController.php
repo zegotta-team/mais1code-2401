@@ -144,6 +144,8 @@ class CandidatoController
         ;
 
         CandidatoDTO::salvar($candidato);
-        header("Location: /");
+        FlashMessage::addMessage('Dados gravados com sucesso', FlashMessage::FLASH_SUCCESS);
+
+        header("Location: /candidato/perfil");
     }
 }

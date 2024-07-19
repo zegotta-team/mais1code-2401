@@ -1,98 +1,100 @@
 <!--<div class="container container-sm w-75">-->
-<div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-12 lg:px-8">
-    <div class="mx-auto max-w-7xl">
+<div class="mx-auto max-w-7xl px-4 py-14">
+    <div class="mx-auto max-w-7xl border p-4 rounded-xl bg-white">
         <form method="post" action="/candidato/salvar">
-            <div class="space-y-12">
-                <div class="border-gray-900/10">
-                    <h2 class="text-base font-semibold leading-7 text-gray-900">Meu perfil</h2>
-                    <p class="mt-1 text-sm leading-6 text-gray-600">Informe aqui suas preferências para facilitar o encontro de vagas com o seu perfil.</p>
+            <div class="my-8 p-2 bg-slate-100 rounded-xl">
+                <h2 class="text-base font-semibold text-gray-900">Meu perfil</h2>
+                <p class="mt-1 text-sm text-gray-600">Informe aqui suas preferências para facilitar o encontro de vagas com o seu perfil.</p>
+            </div>
 
-                    <div class="mt-10 grid grid-cols-4 gap-x-4 gap-y-8 sm:grid-cols-4">
-
-                        <div class="sm:col-span-1">
-                            <label for="regimeContratacao" class="block text-sm font-medium leading-6 text-gray-900">Regime de Contratação</label>
-                            <div class="mt-2">
-                                <select id="regimeContratacao" name="regimeContratacao" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                                    <option value="">Selecione</option>
-                                    <?php foreach (RegimeContratacaoEnum::forSelect() as $indice => $valor) : ?>
-                                        <option value="<?= $indice ?>" <?= !empty($candidato) && $candidato->getRegimeContratacao() == $indice ? 'selected' : '' ?>><?= $valor ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="sm:col-span-1">
-                            <label for="regimeTrabalho" class="block text-sm font-medium leading-6 text-gray-900">Regime de Trabalho</label>
-                            <div class="mt-2">
-                                <select id="regimeTrabalho" name="regimeTrabalho" autocomplete="regimeTrabalho" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                                    <option value="">Selecione</option>
-                                    <?php foreach (RegimeTrabalhoEnum::forSelect() as $indice => $valor) : ?>
-                                        <option value="<?= $indice ?>" <?= !empty($candidato) && $candidato->getRegimeTrabalho() == $indice ? 'selected' : '' ?>><?= $valor ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="sm:col-span-1">
-                            <label for="nivelSenioridade" class="block text-sm font-medium leading-6 text-gray-900">Nível de Senioridade</label>
-                            <div class="mt-2">
-                                <select required id="nivelSenioridade" name="nivelSenioridade" autocomplete="nivelSenioridade" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                                    <option value="">Selecione</option>
-                                    <?php foreach (NivelSenioridadeEnum::forSelect() as $indice => $valor) : ?>
-                                        <option value="<?= $indice ?>" <?= !empty($candidato) && $candidato->getNivelSenioridade() == $indice ? 'selected' : '' ?>><?= $valor ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="sm:col-span-1">
-                            <label for="nivelHierarquia" class="block text-sm font-medium leading-6 text-gray-900">Nível hierárquico</label>
-                            <div class="mt-2">
-                                <select id="nivelHierarquia" name="nivelHierarquia" autocomplete="nivelHierarquia" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                                    <option value="">Selecione</option>
-                                    <?php foreach (NivelHierarquicoEnum::forSelect() as $indice => $valor) : ?>
-                                        <option value="<?= $indice ?>" <?= !empty($candidato) && $candidato->getNivelHierarquia() == $indice ? 'selected' : '' ?>><?= $valor ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-
+            <div class="px-1 gap-3 mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+                <label class="form-control">
+                    <div class="label">
+                        <span class="label-text">Regime de contratação</span>
                     </div>
-
-                    <div class="py-10 flex justify-between">
-                        <h2 class="text-base font-semibold leading-7 text-gray-900">Habilidades</h2>
-                        <input type="text" id="searchInput" autocomplete="searchInput" placeholder="Filtrar habilidades..." class="block px-3 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    <select id="regimeContratacao" name="regimeContratacao" class="select select-bordered">
+                        <option disabled selected>Selecione</option>
+                        <?php foreach (RegimeContratacaoEnum::forSelect() as $indice => $valor) : ?>
+                            <option value="<?= $indice ?>" <?= !empty($candidato) && $candidato->getRegimeContratacao() == $indice ? 'selected' : '' ?>><?= $valor ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+                <label class="form-control">
+                    <div class="label">
+                        <span class="label-text">Regime de Trabalho</span>
                     </div>
+                    <select id="regimeTrabalho" name="regimeTrabalho" class="select select-bordered">
+                        <option disabled selected>Selecione</option>
+                        <?php foreach (RegimeTrabalhoEnum::forSelect() as $indice => $valor) : ?>
+                            <option value="<?= $indice ?>" <?= !empty($candidato) && $candidato->getRegimeTrabalho() == $indice ? 'selected' : '' ?>><?= $valor ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+                <label class="form-control">
+                    <div class="label">
+                        <span class="label-text">Senioridade</span>
+                    </div>
+                    <select id="nivelSenioridade" name="nivelSenioridade" class="select select-bordered">
+                        <option disabled selected>Selecione</option>
+                        <?php foreach (NivelSenioridadeEnum::forSelect() as $indice => $valor) : ?>
+                            <option value="<?= $indice ?>" <?= !empty($candidato) && $candidato->getNivelSenioridade() == $indice ? 'selected' : '' ?>><?= $valor ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+                <label class="form-control">
+                    <div class="label">
+                        <span class="label-text">Nível hierárquico</span>
+                    </div>
+                    <select id="nivelHierarquia" name="nivelHierarquia" class="select select-bordered">
+                        <option disabled selected>Selecione</option>
+                        <?php foreach (NivelHierarquicoEnum::forSelect() as $indice => $valor) : ?>
+                            <option value="<?= $indice ?>" <?= !empty($candidato) && $candidato->getNivelHierarquia() == $indice ? 'selected' : '' ?>><?= $valor ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+            </div>
 
-                    <?php
-                    /** @var array<CategoriaHabilidade> $categorias */
-                    foreach ($categorias as $categoria) : ?>
+            <div class="my-8 p-2 flex justify-between bg-slate-100 rounded-lg items-center">
+                <div>
+                    <h2 class="text-base font-semibold text-gray-900 card-title">Habilidades</h2>
+                    <p class="mt-1 text-sm text-gray-600">Informe aqui suas habilidades técnicas e comportamentais.</p>
+                </div>
+                <label class="input input-sm input-bordered flex items-center gap-2">
+                    <input type="text" class="grow" placeholder="Filtrar habilidades..." id="searchInput" autocomplete="searchInput"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4 opacity-70">
+                        <path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd"/>
+                    </svg>
+                </label>
+            </div>
 
-                        <legend class="text-sm font-semibold leading-6 text-gray-900"><?= strtoupper($categoria->getNome()) ?></legend>
-                        <div class="grid sm:grid-cols-4 pb-7 mb-7 border-b">
+            <?php
+            /** @var array<CategoriaHabilidade> $categorias */
+            foreach ($categorias as $categoria) : ?>
+                <div tabindex="0" class="collapse collapse-arrow border-base-300">
+                    <input type="checkbox" checked/>
+                    <div class="collapse-title items-center mt-2 flex justify-between bg-sky-100 rounded-md text-sm font-semibold text-gray-900">
+                        <?= $categoria->getNome() ?>
+                    </div>
+                    <div class="collapse-content">
+                        <div class="gap-3 mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5">
                             <?php /** @var array<Habilidade> $habilidades */
                             foreach ($habilidades[$categoria->getNome()] as $habilidade) : ?>
-                                <div class="sm:col-span-1 habilidade-item">
-                                    <div class="mt-6 space-y-6">
-                                        <div class="relative flex gap-x-3">
-                                            <div class="flex h-6 items-center">
-                                                <input id="habilidade_<?= $habilidade->getId() ?>" name="habilidade[]" type="checkbox" value="<?= $habilidade->getId() ?>" <?= $candidato->temHabilidadeId($habilidade->getId()) ? 'checked' : '' ?> class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
-                                            </div>
-                                            <div class="text-sm leading-6">
-                                                <label for="habilidade_<?= $habilidade->getId() ?>" class="font-medium text-gray-900"><?= $habilidade->getHabilidade() ?></label>
-                                            </div>
-                                        </div>
+                                <div class="form-control habilidade-item">
+                                    <div class="tooltip" data-tip="<?= $habilidade->getHabilidade() ?>">
+                                        <label for="habilidade_<?= $habilidade->getId() ?>" class="label cursor-pointer justify-start gap-2">
+                                            <input id="habilidade_<?= $habilidade->getId() ?>" name="habilidade[]" type="checkbox" value="<?= $habilidade->getId() ?>" <?= $candidato->temHabilidadeId($habilidade->getId()) ? 'checked' : '' ?> class="checkbox checkbox-info"/>
+                                            <span class="label-text truncate"><?= $habilidade->getHabilidade() ?></span>
+                                        </label>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
                         </div>
-                    <?php endforeach; ?>
-
+                    </div>
                 </div>
+            <?php endforeach; ?>
 
-                <div class="mt-6 flex items-center justify-end gap-x-6">
-                    <button type="submit" class="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Salvar</button>
-                </div>
+            <div class="mt-6 flex items-center justify-end">
+                <button type="submit" class="btn rounded-md btn-success text-white hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">Salvar</button>
             </div>
         </form>
 
