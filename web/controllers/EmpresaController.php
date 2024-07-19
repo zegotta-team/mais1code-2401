@@ -58,13 +58,14 @@ class EmpresaController
             ->setEmail($_POST["email"])
             ->setDescricao($_POST['descricao']);
 
-        if (isset($_FILES['logo'])) {
+        if (!empty($_FILES['logo']['tmp_name']) && $_FILES['logo']['error'] === 0) {
             $empresa->setLogo($_FILES['logo']['tmp_name'] . "|" . $_FILES['logo']['name']);
         }
 
         EmpresaDTO::salvar($empresa);
+        FlashMessage::addMessage('Dados atualizados com sucesso', FlashMessage::FLASH_SUCCESS);
 
-        header('Location: /vaga/listar');
+        header('Location: /empresa/editar');
     }
 
     public function excluir()
