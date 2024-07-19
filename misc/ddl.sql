@@ -130,7 +130,7 @@ CREATE TABLE vaga_beneficio
 (
     vaga_id         INTEGER NOT NULL,
     beneficio_id    INTEGER NOT NULL,
-    informacao      TEXT NOT NULL,
+    informacao      TEXT,
     PRIMARY KEY (vaga_id, beneficio_id)
 );
 
