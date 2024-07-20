@@ -12,6 +12,7 @@ SELECT * FROM candidato;
 SELECT * FROM vaga_habilidade;
 SELECT * FROM candidato_vaga;
 SELECT * FROM candidato_habilidade;
+SELECT * FROM propostas;
 
 -- empresas com filiais
 SELECT *
@@ -45,4 +46,6 @@ LEFT JOIN habilidade h ON h.id = vh.habilidade_id;
 SELECT c.* , h.*
 FROM candidato c
 LEFT JOIN candidato_habilidade ch ON ch.candidato_id = c.id
-LEFT JOIN habilidade h ON h.id = ch.habilidade_id
+LEFT JOIN habilidade h ON h.id = ch.habilidade_id;
+
+
