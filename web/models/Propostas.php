@@ -2,8 +2,8 @@
 
 class Propostas
 {
-    private Vaga $id_vaga;
-    private Candidato $id_candidato;
+    private Vaga $vaga;
+    private Candidato $candidato;
     private $salario;
     private $regime_contratacao;
     private $regime_trabalho;
@@ -14,10 +14,10 @@ class Propostas
     private $expediente;
     private $data_inicio;
     private $aceite;
-    public function __construct($id_vaga, $id_candidato, $salario, $regime_contratacao, $regime_trabalho, $nivel_hierarquico, $nivel_senioridade, $cargo, $endereco, $expediente, $data_inicio, $aceite)
+    public function __construct($vaga, $candidato, $salario, $regime_contratacao, $regime_trabalho, $nivel_hierarquico, $nivel_senioridade, $cargo, $endereco, $expediente, $data_inicio, $aceite)
     {
-        $this->setIdVaga($id_vaga);
-        $this->setIdCandidato($id_candidato);
+        $this->setVaga($vaga);
+        $this->setCandidato($candidato);
         $this->setSalario($salario);
         $this->setRegimeContratacao($regime_contratacao);
         $this->setRegimeTrabalho($regime_trabalho);
@@ -30,25 +30,25 @@ class Propostas
         $this->setAceite($aceite);
     }
 
-    public function getIdVaga()
+    public function getVaga()
     {
-        return $this->id_vaga;
+        return $this->vaga;
     }
 
-    public function setIdVaga($id_vaga)
+    public function setVaga($vaga)
     {
-        $this->id_vaga = $id_vaga;
+        $this->vaga = $vaga;
         return $this;
     }
 
-    public function getIdCandidato()
+    public function getCandidato()
     {
-        return $this->id_candidato;
+        return $this->candidato;
     }
 
-    public function setIdCandidato($id_candidato)
+    public function setCandidato($candidato)
     {
-        $this->id_candidato = $id_candidato;
+        $this->candidato = $candidato;
         return $this;
     }
 
