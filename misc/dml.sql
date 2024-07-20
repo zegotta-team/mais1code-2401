@@ -154,7 +154,7 @@ INSERT INTO candidato_habilidade(candidato_id, habilidade_id) VALUES
 DELETE FROM propostas WHERE 1;
 INSERT INTO propostas(id_vaga, id_candidato, salario, regime_contratacao, regime_trabalho, nivel_hierarquico, nivel_senioridade, cargo, endereco, expediente, data_inicio, aceite)
 VALUES
-(6 , 3, 2500, 1, 1, 1, 1,'programador php jr ','rua xyz','8h as 18h ', '19/07/2024','aprovado'),
-(7 , 4, 4500, 1, 2, 2, 2,'programador php pleno','rua xyz','8h as 18h ', '19/07/2024','aprovado'),
-(8 , 5, 5500, 1, 2, 2, 3,'programador php senior','rua xyz','8h as 18h ', '19/07/2024','aprovado')
+(6 , 3, 2500, 1, 1, 1, 1,'programador php jr ','rua xyz','8h as 18h ', '19/07/2024', 1),
+(7 , 4, 4500, 1, 2, 2, 2,'programador php pleno','rua xyz','8h as 18h ', '19/07/2024', 1),
+(8 , 5, 5500, 1, 2, 2, 3,'programador php senior','rua xyz','8h as 18h ', '19/07/2024', 1)
 ;

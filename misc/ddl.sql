@@ -134,5 +134,5 @@ CREATE TABLE propostas
     endereco TEXT NOT NULL,
     expediente TEXT NOT NULL,
     data_inicio TEXT NULL,
-    aceite TEXT NOT NUll
+    aceite INTEGER NOT NULL
 );
