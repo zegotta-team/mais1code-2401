@@ -119,3 +119,24 @@ CREATE TABLE categoria_habilidade
     id   INTEGER PRIMARY KEY AUTOINCREMENT,
     nome TEXT    NOT NULL
 );
+
+CREATE TABLE beneficios
+(
+    id      INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome    TEXT NOT NULL
+);
+
+CREATE TABLE vaga_beneficio
+(
+    vaga_id         INTEGER NOT NULL,
+    beneficio_id    INTEGER NOT NULL,
+    informacao      TEXT,
+    PRIMARY KEY (vaga_id, beneficio_id)
+);
+
+CREATE TABLE candidato_beneficio
+(
+    candidato_id INTEGER NOT NULL,
+    beneficio_id INTEGER NOT NULL,
+    PRIMARY KEY (candidato_id, beneficio_id)
+);
