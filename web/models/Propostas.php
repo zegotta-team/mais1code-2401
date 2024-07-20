@@ -14,6 +14,7 @@ class Propostas
     private $expediente;
     private $data_inicio;
     private $aceite;
+
     public function __construct($vaga, $candidato, $salario, $regime_contratacao, $regime_trabalho, $nivel_hierarquico, $nivel_senioridade, $cargo, $endereco, $expediente, $data_inicio, $aceite)
     {
         $this->setVaga($vaga);
