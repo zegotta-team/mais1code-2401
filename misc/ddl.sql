@@ -81,7 +81,7 @@ CREATE TABLE notificacoes
     empresa_id   INTEGER NOT NULL,
     titulo       TEXT    NOT NULL,
     descricao    TEXT,
-    status       INTEGER NOT NULL,
+    `status`     INTEGER NOT NULL,
     data_hora    TEXT    NOT NULL
 );
 

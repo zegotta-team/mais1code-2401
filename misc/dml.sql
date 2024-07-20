@@ -125,7 +125,7 @@ INSERT INTO candidato (id, nome, email, senha, cpf, nascimento, endereco, dispon
 ;
 
 DELETE FROM candidato_vaga WHERE 1;
-INSERT INTO candidato_vaga (candidato_id, vaga_id, ultima_desistencia, status) VALUES
+INSERT INTO candidato_vaga (candidato_id, vaga_id, ultima_desistencia, `status`) VALUES
 (5, 1, '', 1),
 (5, 2, '2024-07-06 00:00:00', 0),
 (1, 6, '', 2),
@@ -153,5 +153,5 @@ INSERT INTO candidato_habilidade(candidato_id, habilidade_id) VALUES
 
 DELETE FROM notificacoes WHERE 1;
 INSERT INTO notificacoes
-(id, candidato_id, empresa_id, titulo, descricao, status, data_hora)
+(id, candidato_id, empresa_id, titulo, descricao, `status`, data_hora)
 VALUES(1, 1, 3, 'Alterado o status de Triagem de Currículos para Entrevista com RH na vaga de Programador PHP Jr', '', 1, '2024-07-19 18:04:00');
