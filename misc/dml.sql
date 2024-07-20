@@ -150,3 +150,81 @@ INSERT INTO candidato_habilidade(candidato_id, habilidade_id) VALUES
 (4,12),
 (5,13)
 ;
+
+DELETE FROM beneficios WHERE 1;
+INSERT INTO beneficios (nome) VALUES
+('Horário flexível'),
+('Vale-cultura'),
+('Auxílio Home Office'),
+('Desenvolvimento contínuo'),
+('Vale-combustível'),
+('Plano odontológico'),
+('Programa de educação financeira'),
+('Convenio com farmácias'),
+('Cobertura de saúde mental'),
+('Vale-presente digital'),
+('Auxílio-educação'),
+('Vale-alimentação'),
+('Vale-refeição'),
+('Parcerias com Academias'),
+('Participação nos lucros'),
+('Bolsa de estudos'),
+('Sala de lazer'),
+('Viagem de incentivo')
+;
+
+DELETE FROM vaga_beneficio WHERE 1;
+INSERT INTO vaga_beneficio (vaga_id, beneficio_id, informacao) VALUES
+(1, 1, ''),
+(2, 2, 'R$ 200,00 mensais'),
+(3, 3, 'R$ 500,00 mensais'),
+(4, 4, ''),
+(5, 5, 'R$ 500,00 mensais'),
+(6, 6, ''),
+(7, 7, ''),
+(8, 8, ''),
+(1, 9, ''),
+(2, 10, 'R$ 100,00 mensais'),
+(3, 11, 'R$ 600,00 mensais'),
+(4, 12, 'R$ 600,00 mensais'),
+(5, 13, 'R$ 600,00 mensais'),
+(6, 14, ''),
+(7, 15, ''),
+(8, 16, ''),
+(1, 17, ''),
+(2, 18, '')
+;
+
+DELETE FROM candidato_beneficio WHERE 1;
+INSERT INTO candidato_beneficio (candidato_id, beneficio_id) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 4),
+(1, 5),
+(1, 6),
+(2, 7),
+(2, 8),
+(2, 9),
+(2, 10),
+(2, 11),
+(2, 12),
+(3, 13),
+(3, 14),
+(3, 15),
+(3, 16),
+(3, 17),
+(3, 18),
+(4, 1),
+(4, 2),
+(4, 3),
+(4, 4),
+(4, 5),
+(4, 6),
+(5, 7),
+(5, 8),
+(5, 9),
+(5, 10),
+(5, 11),
+(5, 12)
+;

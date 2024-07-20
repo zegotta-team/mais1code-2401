@@ -12,6 +12,9 @@ SELECT * FROM candidato;
 SELECT * FROM vaga_habilidade;
 SELECT * FROM candidato_vaga;
 SELECT * FROM candidato_habilidade;
+SELECT * FROM beneficios;
+SELECT * FROM vaga_beneficio;
+SELECT * FROM candidato_beneficio;
 
 -- empresas com filiais
 SELECT *
@@ -46,3 +49,16 @@ SELECT c.* , h.*
 FROM candidato c
 LEFT JOIN candidato_habilidade ch ON ch.candidato_id = c.id
 LEFT JOIN habilidade h ON h.id = ch.habilidade_id
+
+-- vagas com beneficios
+SELECT v.*, b.* 
+FROM vaga v
+LEFT JOIN vaga_beneficio vb ON vb.vaga_id = v.id
+LEFT JOIN beneficios b ON b.id = vb.beneficio_id
+
+
+-- candidato com beneficios
+SELECT c.*, b.*
+FROM candidato c
+LEFT JOIN candidato_beneficio cb ON cb.candidato_id = c.id
+LEFT JOIN beneficios b ON b.id = cb.beneficio_id
