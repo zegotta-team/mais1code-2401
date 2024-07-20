@@ -124,7 +124,7 @@ DROP TABLE propostas;
 CREATE TABLE propostas
 (
     id_vaga INTEGER NOT NULL PRIMARY KEY,
-    id_empresa INTEGER NOT NULL,
+    id_candidato INTEGER NOT NULL,
     salario INTEGER NOT NULL,
     regime_contratacao INTEGER NOT NULL ,
     regime_trabalho INTEGER NOT NULL,
