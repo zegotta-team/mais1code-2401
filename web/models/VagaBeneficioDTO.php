@@ -45,15 +45,15 @@ abstract class VagaBeneficioDTO implements DTOInterface
         $stmt->execute();
     }
 
-    public static function recuperar($Vaga, $Beneficio = ''){
-        if (empty($Beneficio)) {
+    public static function recuperar($vaga, $beneficio = ''){
+        if (empty($beneficio)) {
             return null;
         }
 
         $pdo = static::conectarDB();
         $sql = "SELECT * FROM vaga_beneficio ";
-        $sql .= "WHERE vaga_id = $Vaga ";
-        $sql .= "AND beneficio_id = $Beneficio ";
+        $sql .= "WHERE vaga_id = $vaga ";
+        $sql .= "AND beneficio_id = $beneficio ";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
@@ -87,9 +87,9 @@ abstract class VagaBeneficioDTO implements DTOInterface
     }
 
     public static function preencher($dados){
-        $Vaga = VagaDTO::recuperar($dados['id']);
-        $Beneficio = BeneficioDTO::recuperar($dados['id']);
-        $vagaBeneficio = new VagaBeneficio($Vaga, $Beneficio, $dados['informacao']);
+        $vaga = VagaDTO::recuperar($dados['id']);
+        $beneficio = BeneficioDTO::recuperar($dados['id']);
+        $vagaBeneficio = new VagaBeneficio($vaga, $beneficio, $dados['informacao']);
 
         return $vagaBeneficio;
     }
