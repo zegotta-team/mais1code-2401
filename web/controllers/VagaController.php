@@ -295,6 +295,7 @@ class VagaController
         $candidatura = CandidatoVagaDTO::recuperar($_GET['candidatoId'], $_GET['id']);
 
         $resultado = $_GET['resultado'];
+        $antigoStatus = $candidatura->getStatus(true);
 
         if ($resultado == 1) {
             $novoStatus = $candidatura->getStatus() < CandidatoVagaStatusEnum::Aprovado->value && $candidatura->getStatus() !== CandidatoVagaStatusEnum::Desistencia->value ? ($candidatura->getStatus() + 1) : $candidatura->getStatus();
@@ -303,6 +304,8 @@ class VagaController
         }
 
         $candidatura->setStatus($novoStatus);
+        NotificacoesController::criar($candidatura, $antigoStatus);
+
         CandidatoVagaDTO::salvar($candidatura);
 
         header('Location: /vaga/editar?id=' . $_GET['id']);
