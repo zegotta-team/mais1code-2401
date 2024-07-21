@@ -123,7 +123,7 @@ CREATE TABLE categoria_habilidade
 DROP TABLE propostas;
 CREATE TABLE propostas
 (
-    id_vaga INTEGER NOT NULL PRIMARY KEY,
+    id_vaga INTEGER NOT NULL,
     id_candidato INTEGER NOT NULL,
     salario INTEGER NOT NULL,
     regime_contratacao INTEGER NOT NULL ,
@@ -134,5 +134,6 @@ CREATE TABLE propostas
     endereco TEXT NOT NULL,
     expediente TEXT NOT NULL,
     data_inicio TEXT NULL,
-    aceite INTEGER NOT NULL
+    aceite INTEGER NOT NULL,
+    PRIMARY KEY(id_vaga, id_candidato)
 );
