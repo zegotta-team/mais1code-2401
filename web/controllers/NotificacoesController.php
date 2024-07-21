@@ -26,4 +26,19 @@ class NotificacoesController
 
         View::renderizar('/candidato/painel', compact('notificacoes'), 'sistema-candidato');
     }
+
+    public function alterar() {
+        $notificacao = NotificacoesDTO::recuperar($_GET['id']);
+        $resultado = $_GET['indice'];
+
+        if ($resultado == 2) {
+            $notificacao->setStatus(NotificacoesStatusEnum::Inativa->value);
+        } else{
+            $notificacao->setStatus(NotificacoesStatusEnum::Lida->value);
+        }
+
+        NotificacoesDTO::salvar($notificacao);
+
+        header('Location: /notificacoes/listar');
+    }
 }

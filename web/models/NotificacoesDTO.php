@@ -56,6 +56,7 @@ abstract class NotificacoesDTO implements DTOInterface
         $sql .= !empty($candidato_id) ? "AND n.candidato_id = $candidato_id " : '';
         $sql .= !empty($empresa_id) ? "AND n.empresa_id = $empresa_id " : '';
         $sql .= !empty($status) ? "AND n.status = $status " : '';
+        $sql .= "ORDER BY data_hora DESC ";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();

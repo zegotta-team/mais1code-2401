@@ -9,7 +9,7 @@ enum NotificacoesStatusEnum: int
     public function label(): string 
     {
         return match ($this) {
-            NotificacoesStatusEnum::Inativa => 'Deletada',
+            NotificacoesStatusEnum::Inativa => 'Inativa',
             NotificacoesStatusEnum::NaoLida => 'Não lida',
             NotificacoesStatusEnum::Lida => 'Lida'
         };

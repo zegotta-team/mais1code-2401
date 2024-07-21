@@ -81,9 +81,13 @@ class Notificacoes
         return $this;
     }
 
-    public function getStatus() 
+    public function getStatus($formatado = false) 
     {
-        return $this->status;
+        if ($formatado) {
+            return NotificacoesStatusEnum::from($this->status)->label();
+        } else{
+            return $this->status;
+        }
     }
 
     public function setDataHora($data_hora) 
