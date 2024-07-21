@@ -140,3 +140,4 @@ CREATE TABLE candidato_beneficio
     beneficio_id INTEGER NOT NULL,
     PRIMARY KEY (candidato_id, beneficio_id)
 );
+
