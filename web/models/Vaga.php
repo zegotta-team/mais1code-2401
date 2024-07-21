@@ -217,7 +217,7 @@ class Vaga
         return false;
     }
 
-    public function cardFormatado()
+    public function cardFormatado($percentual = null)
     {
 
         $textoRegimeContracao = RegimeContratacaoEnum::from($this->getRegimeContratacao())->label();
@@ -244,6 +244,7 @@ class Vaga
             '{beneficios}' => $this->getBeneficios(),
             '{descricao}' => $this->getDescricao(),
             '{cargaHoraria}' => $this->getCargaHoraria(),
+            '{percentual}' => empty($percentual) ? '' : "| $percentual%"
         ];
         $card = file_get_contents(__DIR__ . '/../../web/views/vaga/card.html');
         $card = str_replace(array_keys($replaces), array_values($replaces), $card);
