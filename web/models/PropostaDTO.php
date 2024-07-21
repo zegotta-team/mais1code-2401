@@ -57,7 +57,7 @@ abstract class PropostaDTO implements DTOInterface
     {
 
         $pdo = static::conectarDB();
-        $sql = "SELECT * FROM prpostas WHERE id_vaga = $id_vaga AND id_candidato = $id_candidato";
+        $sql = "SELECT * FROM propostas WHERE id_vaga = $id_vaga AND id_candidato = $id_candidato";
 
 
         $stmt = $pdo->prepare($sql);
