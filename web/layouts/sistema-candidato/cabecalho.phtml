@@ -86,13 +86,10 @@
                 </div>
                 <ul tabindex="0" class="menu menu-md dropdown-content bg-base-200 rounded-box z-[1] mt-3 w-[200px] p-2 shadow">
                     <li>
-                        <a href="/">Painel de vagas</a>
+                        <a href="/vaga/index">Painel de vagas</a>
                     </li>
                     <li>
-                        <a href="/autenticacao">Área da empresa</a>
-                    </li>
-                    <li>
-                        <a href="/candidato/login">Área do candidato</a>
+                        <a href="/autenticacao">Login</a>
                     </li>
                     <li>
                         <label class="swap swap-rotate">
@@ -135,7 +132,7 @@
                     </label>
                 </li>
                 <li>
-                    <a class="btn btn-ghost" href="/candidato/login">Painel de vagas</a>
+                    <a class="btn btn-ghost" href="/vaga/index">Painel de vagas</a>
                 </li>
                 <li>
                     <a class="btn btn-ghost" href="/candidato/listar">Minhas Vagas</a>
@@ -162,4 +159,4 @@
 </header>
 
 <main>
-<?php echo FlashMessage::getMessage(FlashMessage::FLASH_FRONT_TAILWIND); ?>
+<?php echo FlashMessage::getMessage(); ?>

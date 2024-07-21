@@ -9,14 +9,14 @@ class EmpresaController
 
     public function cadastrar()
     {
-        AutenticacaoController::renegaSessao();
+        UsuarioController::renegaSessao();
 
-        View::renderizar('empresa/cadastrar', [], 'cadastro-empresa');
+        View::renderizar('empresa/cadastrar', [], 'login');
     }
 
     public function processaCadastrar()
     {
-        AutenticacaoController::renegaSessao();
+        UsuarioController::renegaSessao();
 
         header('Location: /autenticacao');
 
@@ -42,14 +42,14 @@ class EmpresaController
 
     public function editar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         View::renderizar('empresa/editar');
     }
 
     public function processaEditar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         $empresa = EmpresaDTO::recuperar($_SESSION['usuario']->getEmpresa()->getId());
 
@@ -70,14 +70,14 @@ class EmpresaController
 
     public function excluir()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         View::renderizar('empresa/excluir');
     }
 
     public function processaExcluir()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         EmpresaDTO::deletar($_SESSION['usuario']->getEmpresa());
 

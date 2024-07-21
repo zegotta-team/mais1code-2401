@@ -1,44 +1,67 @@
-<div class="container container-md w-50">
+<div class="mx-auto max-w-4xl border p-4 m-14 rounded-xl bg-white">
     <form method="post" action="/habilidade/salvar">
-        <div class="row g-3 align-items-center mb-2">
-            <label for="categoria" class="form-label">Categoria *</label>
-            <select class="form-control form-select" name="categoria" id="categoria" required>
-                <option value="" disabled selected>Selecione</option>
-                <?php foreach ($categorias as $categoria) : ?>
-                    <option value=<?=$categoria->getId()?> <?= isset($habilidade) && $habilidade->getCategoria()->getId() === $categoria->getId() ? 'selected' : '' ?>><?=$categoria->getNome()?></option>
-                <?php endforeach; ?>
-                <option value="nova_categoria">Nova Categoria</option>
-            </select>
-            <input type="text" class="form-control" name="categoriaNova" id="categoriaNova" value="">
-        </div>
-        <div class="row g-3 align-items-center mb-2">
-            <input type="hidden" name="id" value="<?= isset($habilidade) ? $habilidade->getId() : '' ?>"/>
-            <div class="col-md-12 form-floating">
-                <input type="text" class="form-control" name="habilidade" id="habilidade" value="<?= isset($habilidade) ? $habilidade->getHabilidade() : '' ?>" required>
-                <label for="habilidade" class="col-form-label">Habilidade</label>
-            </div>
-        </div>
-        <div class="row gy-3 gy-md-4 overflow-hidden mt-4 mb-2">
-            <div class="col-12">
-                <div class="d-grid">
-                    <button class="btn btn-primary" type="submit"><i class="fas fa-save"></i> Salvar</button>
+        <input type="hidden" name="id" value="<?= isset($habilidade) ? $habilidade->getId() : '' ?>"/>
+        <div class="flex space-x-2">
+            <label class="form-control w-full">
+                <div class="label">
+                    <span class="label-text">Categoria</span>
                 </div>
-            </div>
+                <select name="categoria" id="categoria" required class="select select-bordered">
+                    <option value="" disabled selected>Selecione</option>
+                    <optgroup label="Categorias cadastradas">
+                        <?php
+                        /** @var array<CategoriaHabilidade> $categorias */
+                        foreach ($categorias as $categoria) : ?>
+                            <option value=<?= $categoria->getId() ?> <?= isset($habilidade) && $habilidade->getCategoria()->getId() === $categoria->getId() ? 'selected' : '' ?>><?= $categoria->getNome() ?></option>
+                        <?php endforeach; ?>
+                    </optgroup>
+                    <option value="nova_categoria">Nova Categoria</option>
+                </select>
+            </label>
+        </div>
+        <div class="flex space-x-2 hidden">
+            <label class="form-control w-full">
+                <div class="label">
+                    <span class="label-text">Nova categoria</span>
+                </div>
+                <input type="text" name="categoriaNova" id="categoriaNova" required value="" class="input input-bordered w-full"/>
+            </label>
+        </div>
+        <div class="flex space-x-2">
+            <label class="form-control w-full">
+                <div class="label">
+                    <span class="label-text">Habilidade</span>
+                </div>
+                <input type="text" name="habilidade" id="habilidade" required value="<?= isset($habilidade) ? $habilidade->getHabilidade() : '' ?>" class="input input-bordered w-full"/>
+            </label>
+        </div>
+
+
+        <div class="mt-6 flex items-center justify-end">
+            <button class="btn btn-success btn-wide" type="submit">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                </svg>
+                Salvar
+            </button>
         </div>
     </form>
 
     <script>
-        let campoSelect = document.querySelector("#categoria");
-        let campoInput = document.querySelector("#categoriaNova");
+        document.addEventListener('DOMContentLoaded', function () {
+            let campoSelect = document.querySelector("#categoria");
+            let campoInput = document.querySelector("#categoriaNova");
 
-        campoSelect.addEventListener('change', function () {
-            if (this.value === 'nova_categoria') {
-                campoInput.style.display = '';
-                campoInput.required = true;
-            } else {
-                campoInput.style.display = 'none';
-                campoInput.required = false;
-            }
+            campoSelect.addEventListener('change', function () {
+
+                if (this.value === 'nova_categoria') {
+                    campoInput.parentNode.parentNode.classList.remove('hidden')
+                    campoInput.required = true;
+                } else {
+                    campoInput.parentNode.parentNode.classList.add('hidden')
+                    campoInput.required = false;
+                }
+            })
         })
     </script>
 </div>
