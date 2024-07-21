@@ -13,11 +13,10 @@
             <?php endif; ?>
             <div class="grid xl:grid-cols-2 gap-x-4 gap-y-8 w-full">
                 <?php
-
                 /** @var array<Vaga> $vagasPorPercentual */
                 foreach ($vagasPorPercentual as $percentual) :
                     foreach ($percentual as $vaga) :
-                    echo $vaga->cardFormatado();
+                        echo $vaga->cardFormatado();
                     endforeach;
                 endforeach; ?>
             </div>

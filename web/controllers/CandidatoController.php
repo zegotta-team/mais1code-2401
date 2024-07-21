@@ -182,10 +182,6 @@ class CandidatoController
 
         $layout = CandidatoController::estaLogado() ? 'sistema-candidato' : 'painel-vagas';
 
-        echo '<pre>';
-        print_r($vagasPorPercentual);
-        die();
-
         View::renderizar('vaga/painelRecomendado', compact('vagasPorPercentual','vagas','percentual'), $layout);
 
         }
