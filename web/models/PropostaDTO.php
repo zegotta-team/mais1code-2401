@@ -14,9 +14,9 @@ abstract class PropostaDTO implements DTOInterface
     public static function salvar($propostas)
     {
         $pdo = static::conectarDB();
-        if(empty($propostas)){
+        if($propostas->getCandidadto()->getStatus() == 6){
             $sql = "INSERT INTO propostas(id_vaga, id_candidato, salario, regime_contratacao, regime_trabalho, nivel_hierarquico, nivel_senioridade, cargo, endereco, expediente, aceite)
-                    VALUES()";
+                    VALUES({$propostas->getVaga()->getId()}, {$propostas->getCandidato()->getId()}, {$propostas->getSalario()}, {$propostas->getRegimeContratacao()}, {$propostas->getRegimeTrabalho()}, {$propostas->getNivelHierarquico()}, {$propostas->getNivelSenioridade()}, {$propostas->getCargo()}, {$propostas->getEndereco()}, {$propostas->getExpediente()}, {$propostas->getAceite()})";
         }else{
             $sql = "UPDATE propostas SET ";
             $sql .= "salario = '{$propostas->getSalario()}',";
@@ -51,6 +51,33 @@ abstract class PropostaDTO implements DTOInterface
             $retorno[] = static::preencher($propostas);
         }
         return $retorno;
+    }
+
+    public static function recuperar($id_vaga, $id_candidato = '')
+    {
+
+        $pdo = static::conectarDB();
+        $sql = "SELECT * FROM prpostas WHERE id_vaga = $id_vaga AND id_candidato = $id_candidato";
+
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+
+        $retorno = null;
+        while ($propostas = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $retorno = static::preencher($propostas);
+        }
+
+        return $retorno;
+    }
+
+    public static function deletar($propostas)
+    {
+        $pdo = static::conectarDB();
+
+        $sql = "DELETE FROM propostas WHERE id_vaga = {$propostas->getVaga()->getId()}";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
     }
 
 }
