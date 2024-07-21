@@ -41,7 +41,7 @@ abstract class BeneficioDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
 
-        $sql = "SELECT * FROM empresa WHERE id = $id";
+        $sql = "SELECT * FROM beneficios WHERE id = $id";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
     }

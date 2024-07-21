@@ -7,7 +7,17 @@ abstract class VagaBeneficioDTO implements DTOInterface
     public static function salvar($vagaBeneficio){
         $pdo = static::conectarDB();
 
-        if (empty($vagaBeneficio->getVagaId()) && empty($vagaBeneficio->getBeneficioId())) {
+        $sql = "SELECT * FROM vaga_beneficio WHERE vaga_id = {$vagaBeneficio->getVagaId()} AND beneficio_id = {$vagaBeneficio->getBeneficioId()}";
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+
+        $retorno = [];
+        while($beneficio = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $retorno[] = static::preencher($beneficio);
+        }
+
+        if (empty($retorno)) {
             $sql = "INSERT INTO vaga_beneficio (vaga_id, beneficio_id, informacao)
                     VALUES ({$vagaBeneficio->getVaga()->getId()}, 
                             {$vagaBeneficio->getBeneficio()->getId()}, 
@@ -63,7 +73,7 @@ abstract class VagaBeneficioDTO implements DTOInterface
         $sql = "SELECT * ";
         $sql .= "FROM vaga_beneficio ";
         $sql .= "LEFT JOIN beneficios b ";
-        $sql .= "ON b.id = beneficio_id";
+        $sql .= "ON b.id = beneficio_id ";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
