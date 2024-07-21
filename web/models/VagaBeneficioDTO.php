@@ -7,7 +7,7 @@ abstract class VagaBeneficioDTO implements DTOInterface
     public static function salvar($vagaBeneficio){
         $pdo = static::conectarDB();
 
-        $sql = "SELECT * FROM vaga_beneficio WHERE vaga_id = {$vagaBeneficio->getVagaId()} AND beneficio_id = {$vagaBeneficio->getBeneficioId()}";
+        $sql = "SELECT * FROM vaga_beneficio WHERE vaga_id = {$vagaBeneficio->getVaga()} AND beneficio_id = {$vagaBeneficio->getBeneficio()}";
         
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
@@ -38,22 +38,22 @@ abstract class VagaBeneficioDTO implements DTOInterface
         $pdo = static::conectarDB();
 
         $sql = "DELETE FROM vaga_beneficio ";
-        $sql .= "WHERE vaga_id = {$vagaBeneficio->getVagaId()} ";
-        $sql .= "AND beneficio_id = {$vagaBeneficio->getBeneficioId()} ";
+        $sql .= "WHERE vaga_id = {$vagaBeneficio->getVaga()} ";
+        $sql .= "AND beneficio_id = {$vagaBeneficio->getBeneficio()} ";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
     }
 
-    public static function recuperar($vagaId, $beneficioId = ''){
-        if (empty($beneficioId)) {
+    public static function recuperar($Vaga, $Beneficio = ''){
+        if (empty($Beneficio)) {
             return null;
         }
 
         $pdo = static::conectarDB();
         $sql = "SELECT * FROM vaga_beneficio ";
-        $sql .= "WHERE vaga_id = $vagaId ";
-        $sql .= "AND beneficio_id = $beneficioId ";
+        $sql .= "WHERE vaga_id = $Vaga ";
+        $sql .= "AND beneficio_id = $Beneficio ";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
@@ -87,9 +87,9 @@ abstract class VagaBeneficioDTO implements DTOInterface
     }
 
     public static function preencher($dados){
-        $vagaId = VagaDTO::recuperar($dados['id']);
-        $beneficioId = BeneficioDTO::recuperar($dados['id']);
-        $vagaBeneficio = new VagaBeneficio($vagaId, $beneficioId, $dados['informacao']);
+        $Vaga = VagaDTO::recuperar($dados['id']);
+        $Beneficio = BeneficioDTO::recuperar($dados['id']);
+        $vagaBeneficio = new VagaBeneficio($Vaga, $Beneficio, $dados['informacao']);
 
         return $vagaBeneficio;
     }
