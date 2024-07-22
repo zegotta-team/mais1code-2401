@@ -83,11 +83,8 @@ abstract class PropostaDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
 
-        if(empty($propostas)){
-            return true;
-        }
         $sql = "SELECT COUNT(1) AS Total FROM propostas ";
-        $sql .= "WHERE propostas.propostas LIKE '$propostas' ";
+        $sql .= "WHERE propostas.id_vaga LIKE '{$propostas->getVaga()->getId()}' AND propostas.id_candidato LIKE '{$propostas->getCandidato()->getId()}'";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
