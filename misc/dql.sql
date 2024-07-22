@@ -48,17 +48,17 @@ LEFT JOIN habilidade h ON h.id = vh.habilidade_id;
 SELECT c.* , h.*
 FROM candidato c
 LEFT JOIN candidato_habilidade ch ON ch.candidato_id = c.id
-LEFT JOIN habilidade h ON h.id = ch.habilidade_id
+LEFT JOIN habilidade h ON h.id = ch.habilidade_id;
 
 -- vagas com beneficios
 SELECT v.*, b.* 
 FROM vaga v
 LEFT JOIN vaga_beneficio vb ON vb.vaga_id = v.id
-LEFT JOIN beneficios b ON b.id = vb.beneficio_id
+LEFT JOIN beneficios b ON b.id = vb.beneficio_id;
 
 
 -- candidato com beneficios
 SELECT c.*, b.*
 FROM candidato c
 LEFT JOIN candidato_beneficio cb ON cb.candidato_id = c.id
-LEFT JOIN beneficios b ON b.id = cb.beneficio_id
+LEFT JOIN beneficios b ON b.id = cb.beneficio_id;

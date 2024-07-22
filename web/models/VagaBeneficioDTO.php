@@ -67,13 +67,13 @@ abstract class VagaBeneficioDTO implements DTOInterface
         return $retorno;
     }
 
-    public static function listar(){
+    public static function listar($vagaId = '', $beneficioId = ''){
         $pdo = static::conectarDB();
 
-        $sql = "SELECT * ";
-        $sql .= "FROM vaga_beneficio ";
-        $sql .= "LEFT JOIN beneficios b ";
-        $sql .= "ON b.id = beneficio_id ";
+        $sql = "SELECT * FROM vaga_beneficio vb ";
+        $sql .= !empty($beneficioId) ? "LEFT JOIN beneficios b ON vb.beneficio_id = b.id WHERE 1 " : '';
+        $sql .= !empty($beneficioId) ? "AND vb.beneficio_id = $beneficioId " : '';
+        $sql .= !empty($vagaId) ? "AND vb.vaga_id = $vagaId " : '';
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();

@@ -45,4 +45,13 @@ class BeneficioController
 
         View::renderizar('beneficio/formulario', compact('beneficio'), 'sistema');
     }
+
+    public function excluir() 
+    {
+        AutenticacaoController::exigeSessao();
+
+        $beneficio = BeneficioDTO::recuperar($_GET['id']);
+
+        BeneficioDTO::deletar($beneficio);
+    }
 }
