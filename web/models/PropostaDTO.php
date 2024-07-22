@@ -14,7 +14,7 @@ abstract class PropostaDTO implements DTOInterface
     public static function salvar($propostas)
     {
         $pdo = static::conectarDB();
-        if($propostas->getCandidadto()->getStatus() == 6){
+        if(!static::verificaDadosExistentes($propostas)){
             $sql = "INSERT INTO propostas(id_vaga, id_candidato, salario, regime_contratacao, regime_trabalho, nivel_hierarquico, nivel_senioridade, cargo, endereco, expediente, aceite)
                     VALUES({$propostas->getVaga()->getId()}, {$propostas->getCandidato()->getId()}, {$propostas->getSalario()}, {$propostas->getRegimeContratacao()}, {$propostas->getRegimeTrabalho()}, {$propostas->getNivelHierarquico()}, {$propostas->getNivelSenioridade()}, {$propostas->getCargo()}, {$propostas->getEndereco()}, {$propostas->getExpediente()}, {$propostas->getAceite()})";
         }else{
@@ -78,6 +78,19 @@ abstract class PropostaDTO implements DTOInterface
         $sql = "DELETE FROM propostas WHERE id_vaga = {$propostas->getVaga()->getId()}";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
+    }
+    public static function verificaDadosExistentes($propostas)
+    {
+        $pdo = static::conectarDB();
+
+        $sql = "SELECT COUNT(1) AS Total FROM propostas ";
+        $sql .= "WHERE propostas.id_vaga LIKE '{$propostas->getVaga()->getId()}' AND propostas.id_candidato LIKE '{$propostas->getCandidato()->getId()}'";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $totalDeRegistros = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $totalDeRegistros['Total'] != 0;
     }
 
 }

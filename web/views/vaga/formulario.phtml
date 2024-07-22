@@ -173,6 +173,12 @@
                                 </a>
                             </div>
                         <?php endif; ?>
+                        <?php if($candidato_vaga->getStatus() == CandidatoVagaStatusEnum::Aprovado->value) : ?>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                <button class="btn btn-success" href="#" type="submit">Enviar Proposta
+                                </button>
+                            </div>
+                        <?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
