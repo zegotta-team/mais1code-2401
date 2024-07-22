@@ -1,0 +1,24 @@
+<table class="table table-bordered table-striped table-hover caption-top">
+    <caption>Benefícios</caption>
+    <thead>
+        <tr>
+            <th class="minimal">#</th>
+            <th>Benefícios</th>
+            <th class="minimal"><i class="fas fa-cog"></i></th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($beneficio as $valorBeneficio) : ?>
+        <tr>
+            <td class="minimal"><?= $valorBeneficio->getId() ?></td>
+            <td><?= $valorBeneficio->getNome() ?></td>
+            <td class="minimal">
+                <?php if($_SESSION['usuario']->getTipo() == TipoUsuarioEnum::ADMINISTRADOR->value) : ?>
+                    <a class="btn btn-primary btn-sm" href="/beneficio/editar?id=<?= $valorBeneficio->getId() ?>" title="Editar"><i class="fas fa-edit"></i></a>
+                    <a class="btn btn-danger btn-sm" href="" title="Excluir"><i class="fas fa-trash"></i></a>
+                <?php endif ?>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
