@@ -4,9 +4,9 @@
 
 DELETE FROM empresa WHERE 1;
 INSERT INTO empresa (id, nome, cnpj, email, descricao, logo) VALUES
-(1, 'IBM', '81289818000178', 'recursos.humanos@ibm.fake.com', 'Empresa de tecnologia', 'ibm.png'),
-(2, 'TechNew', '31960951000136', 'recursos.humanos@technew.com', 'Startup de tecnologia', 'tnew.png'),
-(3, 'FoodFinder', '46854682000234', 'rh@foodfinder.com', 'Empresa de desenvolvimento', 'ff.png')
+(1, 'IBM', '81289818000178', 'recursos.humanos@ibm.fake.com', 'Empresa de tecnologia', '/assets/images/mock-data/company-logo-1.jpg'),
+(2, 'TechNew', '31960951000136', 'recursos.humanos@technew.com', 'Startup de tecnologia', '/assets/images/mock-data/company-logo-2.png'),
+(3, 'FoodFinder', '46854682000234', 'rh@foodfinder.com', 'Empresa de desenvolvimento', '/assets/images/mock-data/company-logo-3.jpg')
 ;
 
 DELETE FROM filial WHERE 1;
