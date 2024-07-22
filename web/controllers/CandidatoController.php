@@ -148,41 +148,41 @@ class CandidatoController
 
         header("Location: /candidato/perfil");
     }
-    public function vagasRecomendadas()
-    {
-            CandidatoController::estaLogado();
+    public function vagasRecomendadas() {
+        CandidatoController::estaLogado();
+        $vagasCandidatadas = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId());
+        $vagas= VagaDTO::listar();
+        $vagasPorPercentual= [];
+            
+        foreach ($vagas as $vaga) {
+            $candidatura = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(),$vaga->getId()); 
+            if (!empty($candidatura)) {
+                continue;
+            }
 
-            $vagas= VagaDTO::listar();
-            foreach ($vagas as $vaga){
             $vagaHabilidades = $vaga->getHabilidades();
             $totalDeHabilidades = 0;
             $totalDeHabilidadesAtendidas = 0;
 
-            foreach ($vagaHabilidades as $habilidadeVaga) 
-            {
+            foreach ($vagaHabilidades as $habilidadeVaga) { 
                 $totalDeHabilidades = $totalDeHabilidades + 1;
 
-                if($_SESSION['candidato']->temHabilidadeId($habilidadeVaga->getId())){
+                if ($_SESSION['candidato']->temHabilidadeId($habilidadeVaga->getId())) {
                     $totalDeHabilidadesAtendidas = $totalDeHabilidadesAtendidas + 1;
-                }
-                
+                }  
             }
 
-            if($totalDeHabilidades > 0 ){
+            if ($totalDeHabilidades > 0 ) {
                 $percentual = floor($totalDeHabilidadesAtendidas / $totalDeHabilidades * 100);
             } else {
                 $percentual = 100;
             }
 
             $vagasPorPercentual[$percentual][] = $vaga;
-            
         }
 
-         krsort($vagasPorPercentual);
-
+        krsort($vagasPorPercentual);
         $layout = CandidatoController::estaLogado() ? 'sistema-candidato' : 'painel-vagas';
-
         View::renderizar('vaga/painelRecomendado', compact('vagasPorPercentual','vagas','percentual'), $layout);
-
-        }
+    }
 }
