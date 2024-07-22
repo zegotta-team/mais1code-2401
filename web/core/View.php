@@ -3,7 +3,7 @@
 class View
 {
 
-    public static function renderizar($arquivo, $dados = [], $layout = 'sistema',  $ignorarLayout = false)
+    public static function renderizar($arquivo, $dados = [], $layout = 'sistema-usuario',  $ignorarLayout = false)
     {
         extract($dados);
 

@@ -94,7 +94,13 @@ class VagaController
             $filtros_badges[] = 'Até R$' . $filtro_salarioAte;
         }
 
-        $layout = CandidatoController::estaLogado() ? 'sistema-candidato' : 'painel-vagas';
+        $layout = 'painel-vagas';
+        if (CandidatoController::estaLogado()) {
+            $layout = 'sistema-candidato';
+        } elseif (UsuarioController::estaLogado()){
+            $layout = 'sistema-usuario';
+        }
+
         View::renderizar('vaga/painel', compact(
             'vagas',
             'habilidades',
@@ -122,7 +128,7 @@ class VagaController
 
     public function cadastrar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         $filiais = FilialDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
 
@@ -137,7 +143,7 @@ class VagaController
     public function salvar()
     {
         header('Location: /vaga/listar');
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         $filial = FilialDTO::recuperar($_POST['filial']);
 
@@ -183,7 +189,7 @@ class VagaController
 
     public function editar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         $idVaga = $_GET['id'];
         $filiais = FilialDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
@@ -209,7 +215,7 @@ class VagaController
 
     public function excluir()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         $idVaga = $_GET['id'];
         $vaga = VagaDTO::recuperar($idVaga);
@@ -229,7 +235,7 @@ class VagaController
 
     public function listar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         $vagas = VagaDTO::listar($_SESSION['usuario']->getEmpresa()->getId(), '', '', '', VagaOrdenacaoEnum::AlfabeticaCrescente);
 
@@ -295,6 +301,7 @@ class VagaController
         $candidatura = CandidatoVagaDTO::recuperar($_GET['candidatoId'], $_GET['id']);
 
         $resultado = $_GET['resultado'];
+        $antigoStatus = $candidatura->getStatus(true);
 
         if ($resultado == 1) {
             $novoStatus = $candidatura->getStatus() < CandidatoVagaStatusEnum::Aprovado->value && $candidatura->getStatus() !== CandidatoVagaStatusEnum::Desistencia->value ? ($candidatura->getStatus() + 1) : $candidatura->getStatus();
@@ -303,6 +310,8 @@ class VagaController
         }
 
         $candidatura->setStatus($novoStatus);
+        NotificacoesController::criar($candidatura, $antigoStatus);
+
         CandidatoVagaDTO::salvar($candidatura);
 
         header('Location: /vaga/editar?id=' . $_GET['id']);

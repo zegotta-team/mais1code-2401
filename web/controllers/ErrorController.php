@@ -6,9 +6,9 @@ class ErrorController
     public function index()
     {
 
-        $ignorarLayout = !AutenticacaoController::estaLogado() && !CandidatoController::estaLogado();
+        $ignorarLayout = !UsuarioController::estaLogado() && !CandidatoController::estaLogado();
         if (!$ignorarLayout) {
-            $layout = AutenticacaoController::estaLogado() ? 'sistema' : 'sistema-candidato';
+            $layout = UsuarioController::estaLogado() ? 'sistema-usuario' : 'sistema-candidato';
         } else {
             $layout = '';
         }

@@ -13,14 +13,14 @@ class UsuarioController
 
     public function cadastrar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         View::renderizar('usuario/formulario');
     }
 
     public function salvar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         if (empty($_POST['usuarioId'])) {
             $usuario = new Usuario($_SESSION['usuario']->getEmpresa(), $_POST['cpf'], $_POST['nome'], $_POST['email'], $_POST['senha']);
@@ -47,7 +47,7 @@ class UsuarioController
 
     public function editar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         $idUsuario = $_GET['id'];
         $usuarioEdicao = UsuarioDTO::recuperar($idUsuario);
@@ -65,14 +65,14 @@ class UsuarioController
 
     public function trocarSenha()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         View::renderizar('usuario/trocarsenha');
     }
 
     public function salvarSenha()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         $usuario = UsuarioDTO::recuperar($_SESSION['usuario']->getId());
         $usuario->setSenha(password_hash($_POST['senha'], PASSWORD_ARGON2ID));
@@ -82,7 +82,7 @@ class UsuarioController
 
     public function excluir()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         $idUsuario = $_GET['id'];
 
@@ -102,10 +102,79 @@ class UsuarioController
 
     public function listar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         $usuarios = UsuarioDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
 
         View::renderizar('usuario/listar', compact('usuarios'));
+    }
+
+    public function processaLogin()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $email = $_POST['email'];
+        $senha = $_POST['senha'];
+        $remember = isset($_POST['remember_me']);
+
+        if ($remember) {
+            setcookie("usuario", $email, time() + 3600 * 24 * 30 * 12 * 100, '/');
+        } else {
+            setcookie("usuario", "", time() - 3600, '/');
+        }
+
+        $usuario = UsuarioDTO::autenticar($email, $senha);
+
+        if (!empty($usuario)) {
+            header('Location: /vaga/listar');
+            $_SESSION['usuario'] = $usuario;
+        } else {
+            header('Location: /autenticacao/?tab=2');
+            $_SESSION['usuario'] = null;
+            FlashMessage::addMessage('Falha ao autenticar', FlashMessage::FLASH_ERROR);
+        }
+    }
+
+    public function processaLogout()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        session_destroy();
+        header('Location: /');
+    }
+
+    public static function exigeSessao()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (empty($_SESSION['usuario'])) {
+            header("Location: /autenticacao/");
+            die();
+        }
+
+    }
+
+    public static function renegaSessao()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!empty($_SESSION['usuario'])) {
+            header("Location: /vaga/listar");
+        }
+    }
+
+    public static function estaLogado()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        return !empty($_SESSION['usuario']);
     }
 }

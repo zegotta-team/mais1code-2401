@@ -1,0 +1,61 @@
+<div class="mx-auto max-w-7xl border pb-10 rounded-xl bg-white mt-10">
+    <div class="overflow-x-auto flex justify-center w-full">
+        <table class="border-collapse table-md table-zebra border-collapse border border-slate-400 dark:border-slate-500 bg-white dark:bg-slate-800 text-sm shadow-sm">
+            <caption class="text-slate-500 dark:text-slate-400 pb-4 text-md caption-top p-4">Minhas Notificações</caption>
+            <thead class="bg-slate-50 dark:bg-slate-700">
+            <tr>
+                <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200">#</th>
+                <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200">Empresa</th>
+                <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200">Título</th>
+                <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200">Descrição</th>
+                <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200">Status</th>
+                <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200">Data e Hora</th>
+                <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200">Opções</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            /** @var array<Notificacoes> $notificacoes */
+            foreach ($notificacoes as $notificacao) : ?>
+                <tr class="hover">
+                    <?php if ($notificacao->getStatus() !== NotificacoesStatusEnum::Inativa->value) : ?>
+                        <td class="border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400"><?= $notificacao->getId() ?></td>
+                        <td class="border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400"><?= $notificacao->getEmpresa()->getNome() ?></td>
+                        <td class="border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400"><?= $notificacao->getTitulo() ?></td>
+                        <td class="border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400">
+                            <?php if(!empty($notificacao->getDescricao())) : ?>
+                                <button class="btn btn-primary" onclick="modal_notificacao_<?=$notificacao->getId()?>.showModal()">Detalhes</button>
+                            <?php endif; ?>
+                        </td>
+                        <td class="border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400"><?= $notificacao->getStatus(true) ?></td>
+                        <td class="border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400"><?= $notificacao->getDataHora() ?></td>
+                        <td class="border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400">
+                            <?php if ($notificacao->getStatus() !== NotificacoesStatusEnum::Lida->value) : ?>
+                                <a class="" href="/notificacoes/alterar?id=<?= $notificacao->getId() ?>&indice=1">Marcar como Lida</a>
+                            <?php endif; ?>
+                            <a class="" href="/notificacoes/alterar?id=<?= $notificacao->getId() ?>&indice=2">Deletar</a>
+                        </td>
+                    <?php endif; ?>
+                </tr>
+                <dialog id="modal_notificacao_<?=$notificacao->getId()?>" class="modal">
+                    <div class="modal-box">
+                        <div class="flex justify-between gap-4">
+                            <h2 class="font-bold text-lg"><?= $notificacao->getTitulo() ?></h2>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <span class="font-medium text-xs uppercase text-accent">Descrição:</span>
+                            <p class="py-4"><?= $notificacao->getDescricao() ?></p>
+                        </div>
+                        <div class="modal-action">
+                            <form method="dialog">
+                                <!-- if there is a button in form, it will close the modal -->
+                                <button class="btn btn-ghost">Fechar</button>
+                            </form>
+                        </div>
+                    </div>
+                </dialog>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
