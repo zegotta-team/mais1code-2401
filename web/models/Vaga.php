@@ -230,6 +230,10 @@ class Vaga
             $habilidades .= "<span class='badge badge-outline badge-sm sm:badge-md'>{$habilidade->getHabilidade()}</span>";
         }
 
+        if (!empty($percentual) || $percentual == 0) {
+            $percentual = "<span class='indicator-item indicator-start left-5 badge badge-success text-white rounded-full h-10 w-10 p-4'>{$percentual}%</span>";
+        }
+
         $replaces = [
             '{id}' => $this->getId(),
             '{vaga}' => $this->getTitulo(),
@@ -244,7 +248,7 @@ class Vaga
             '{beneficios}' => $this->getBeneficios(),
             '{descricao}' => $this->getDescricao(),
             '{cargaHoraria}' => $this->getCargaHoraria(),
-            '{percentual}' => empty($percentual) ? '' : "| $percentual%"
+            '{percentual}' => $percentual
         ];
         $card = file_get_contents(__DIR__ . '/../../web/views/vaga/card.html');
         $card = str_replace(array_keys($replaces), array_values($replaces), $card);

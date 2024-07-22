@@ -1,4 +1,7 @@
 <?php
+
+use JetBrains\PhpStorm\NoReturn;
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -22,3 +25,14 @@ spl_autoload_register(function ($nomeClasse) {
     }
 
 });
+
+#[NoReturn] function dd(): void
+{
+    $args = func_get_args();
+    echo '<pre>';
+    foreach ($args as $arg) {
+        var_dump($arg);
+    }
+    echo '</pre>';
+    die();
+}

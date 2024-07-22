@@ -137,12 +137,17 @@ class CandidatoController
             } else {
                 $percentual = 100;
             }
+            if ($percentual == 0) $percentual = 51;
+            if ($percentual < 50) {
+                continue;
+            }
 
             $vagasPorPercentual[$percentual][] = $vaga;
         }
 
         krsort($vagasPorPercentual);
         $layout = CandidatoController::estaLogado() ? 'sistema-candidato' : 'painel-vagas';
+
         View::renderizar('vaga/painelRecomendado', compact('vagasPorPercentual','vagas','percentual'), $layout);
     }
 
