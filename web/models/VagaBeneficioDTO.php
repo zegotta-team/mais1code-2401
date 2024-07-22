@@ -82,9 +82,7 @@ abstract class VagaBeneficioDTO implements DTOInterface
         while($beneficio = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $retorno[] = static::preencher($beneficio);
         }
-        echo '<pre>';
-        var_dump($retorno);
-        die();
+        
         return $retorno;
     }
 
