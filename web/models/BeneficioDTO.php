@@ -16,10 +16,10 @@ abstract class BeneficioDTO implements DTOInterface
         $pdo = static::conectarDB();
 
         if (empty($beneficio->getId())) {
-            $sql = "INSERT INTO beneficio(nome)
-            VALUES (\"{$beneficio->getNome()}\"";
+            $sql = "INSERT INTO beneficios(nome)
+            VALUES (\"{$beneficio->getNome()}\")";
         } else {
-            $sql = "UPDATE beneficio SET ";
+            $sql = "UPDATE beneficios SET ";
             $sql .= "nome = '{$beneficio->getNome()}' ";
             $sql .= "WHERE id = '{$beneficio->getId()}' ";
         }
@@ -32,7 +32,7 @@ abstract class BeneficioDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
 
-        $sql = "DELETE FROM beneficio WHERE id = {$beneficio->getId()}";
+        $sql = "DELETE FROM beneficios WHERE id = {$beneficio->getId()}";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
     }
@@ -50,7 +50,7 @@ abstract class BeneficioDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
         
-        $sql = "SELECT * FROM beneficio";
+        $sql = "SELECT * FROM beneficios";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
