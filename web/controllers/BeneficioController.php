@@ -53,5 +53,7 @@ class BeneficioController
         $beneficio = BeneficioDTO::recuperar($_GET['id']);
 
         BeneficioDTO::deletar($beneficio);
+
+        header("Location: /beneficio/listar");
     }
 }
