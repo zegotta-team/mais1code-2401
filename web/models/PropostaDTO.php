@@ -14,7 +14,7 @@ abstract class PropostaDTO implements DTOInterface
     public static function salvar($propostas)
     {
         $pdo = static::conectarDB();
-        if($propostas->getCandidadto()->getStatus() == 6){
+        if($propostas->getCandidadto()->getStatus() == 5){
             $sql = "INSERT INTO propostas(id_vaga, id_candidato, salario, regime_contratacao, regime_trabalho, nivel_hierarquico, nivel_senioridade, cargo, endereco, expediente, aceite)
                     VALUES({$propostas->getVaga()->getId()}, {$propostas->getCandidato()->getId()}, {$propostas->getSalario()}, {$propostas->getRegimeContratacao()}, {$propostas->getRegimeTrabalho()}, {$propostas->getNivelHierarquico()}, {$propostas->getNivelSenioridade()}, {$propostas->getCargo()}, {$propostas->getEndereco()}, {$propostas->getExpediente()}, {$propostas->getAceite()})";
         }else{
