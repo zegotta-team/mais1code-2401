@@ -152,6 +152,6 @@ INSERT INTO candidato_habilidade(candidato_id, habilidade_id) VALUES
 ;
 
 DELETE FROM notificacoes WHERE 1;
-INSERT INTO notificacoes
-(id, candidato_id, empresa_id, titulo, descricao, `status`, data_hora)
-VALUES(1, 1, 3, 'Alterado o status de Triagem de Currículos para Entrevista com RH na vaga de Programador PHP Jr', 'Aprovado na etapa de Triagem de Currículos', 1, '2024-07-19 18:04:00');
+INSERT INTO notificacoes (id, candidato_id, empresa_id, titulo, descricao, `status`, data_hora) VALUES
+(1, 1, 3, 'Alterado o status de Triagem de Currículos para Entrevista com RH na vaga de Programador PHP Jr', 'Aprovado na etapa de Triagem de Currículos', 1, '2024-07-19 18:04:00')
+;
