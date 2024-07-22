@@ -42,8 +42,16 @@ abstract class BeneficioDTO implements DTOInterface
         $pdo = static::conectarDB();
 
         $sql = "SELECT * FROM beneficios WHERE id = $id";
+
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
+
+        $retorno = null;
+        while ($beneficio = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $retorno = static::preencher($beneficio);
+        }
+        
+        return $retorno;
     }
 
     public static function listar()

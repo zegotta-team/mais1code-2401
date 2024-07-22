@@ -6,18 +6,43 @@ class BeneficioController
     {
         AutenticacaoController::exigeSessao();
 
-        View::renderizar('/beneficio/cadastrar', [], 'sistema');
+        View::renderizar('/beneficio/formulario', [], 'sistema');
     }
 
     public function processaCadastrar()
     {
         AutenticacaoController::exigeSessao();
 
-        if(!empty($_POST['beneficio'])){
+        if(empty($_POST['id'])){
             $beneficio = new Beneficio($_POST['beneficio']);
-            BeneficioDTO::salvar($beneficio);
+        } else {
+            $beneficio = BeneficioDTO::recuperar($_POST['id']);
+            $beneficio->setNome($_POST['beneficio']);
         }
 
-        header('Location:/beneficio/cadastrar');
+        BeneficioDTO::salvar($beneficio);
+        
+        header('Location:/beneficio/listar');
+    }
+    
+
+    public function listar()
+    {
+        AutenticacaoController::exigeSessao();
+        
+        $beneficio = BeneficioDTO::listar();
+
+        View::renderizar('/beneficio/listar', compact('beneficio'), 'sistema');
+    }
+
+    public function editar()
+    {
+        AutenticacaoController::exigeSessao();
+
+        $beneficioId = $_GET['id'];
+
+        $beneficio = BeneficioDTO::recuperar($beneficioId);
+
+        View::renderizar('beneficio/formulario', compact('beneficio'), 'sistema');
     }
 }
