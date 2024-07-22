@@ -9,14 +9,14 @@ class FilialController
 
     public function cadastrar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
-        View::renderizar('filial/formulario', [], 'sistema');
+        View::renderizar('filial/formulario', [], 'sistema-usuario');
     }
 
     public function processaCadastrar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
         header('Location: /filial/listar');
         
         if (empty($_POST['filialId'])) {
@@ -48,7 +48,7 @@ class FilialController
 
     public function listar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         $filiais = FilialDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
 
@@ -57,7 +57,7 @@ class FilialController
 
     public function editar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
         
         $idFilial = $_GET['id'];
         $filial = FilialDTO::recuperar($idFilial);
@@ -75,7 +75,7 @@ class FilialController
 
     public function excluir()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         $filialId = $_GET['id'];
 

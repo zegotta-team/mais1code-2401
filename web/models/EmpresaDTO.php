@@ -37,22 +37,33 @@ abstract class EmpresaDTO implements DTOInterface
         }
 
         if (str_starts_with($empresa->getLogo(), '/tmp')) {
-            $partes = explode('|', $empresa->getLogo());
+            static::processaImagemEnviada($empresa, $pdo);
+        }
+    }
 
-            $extensao = explode('.', $partes[1]);
+    private static function processaImagemEnviada(Empresa $empresa, PDO $pdo)
+    {
+        $partesArquivoTemporario = explode('|', $empresa->getLogo());
+        $nomeArquivoTemporario = $partesArquivoTemporario[0];
+        $nomeArquivoOriginal = $partesArquivoTemporario[1];
 
-            $pasta = '/assets/images/empresa/' . $empresa->getId();
+        $extensao = explode('.', $nomeArquivoOriginal);
+        $nomeArquivoPersistido = uniqid() . "." . end($extensao);
 
-            if (!file_exists($pasta)) {
-                mkdir($pasta, 0777);
-            }
+        $caminhoRelativoPasta = '/assets/images/empresa/' . $empresa->getId();
+        $caminhoAbsolutoPasta = dirname(__DIR__) . $caminhoRelativoPasta;
 
-            $nomeArquivoPersistido = $pasta . '/' . uniqid() . "." . end($extensao);
-            if (move_uploaded_file($partes[0], $nomeArquivoPersistido)) {
-                $sql = "UPDATE empresa SET logo = '$nomeArquivoPersistido' WHERE id = '{$empresa->getId()}' ";
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute();
-            }
+        if (!file_exists($caminhoAbsolutoPasta)) {
+            mkdir($caminhoAbsolutoPasta, 0777);
+        }
+
+        $caminhoRelativoArquivo = "$caminhoRelativoPasta/$nomeArquivoPersistido";
+        $caminhoAbsolutoArquivo = "$caminhoAbsolutoPasta/$nomeArquivoPersistido";
+
+        if (move_uploaded_file($nomeArquivoTemporario, $caminhoAbsolutoArquivo)) {
+            $sql = "UPDATE empresa SET logo = '$caminhoRelativoArquivo' WHERE id = '{$empresa->getId()}' ";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
         }
     }
 

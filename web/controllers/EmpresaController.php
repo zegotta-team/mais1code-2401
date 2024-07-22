@@ -9,14 +9,14 @@ class EmpresaController
 
     public function cadastrar()
     {
-        AutenticacaoController::renegaSessao();
+        UsuarioController::renegaSessao();
 
-        View::renderizar('empresa/cadastrar', [], 'cadastro-empresa');
+        View::renderizar('empresa/cadastrar', [], 'login');
     }
 
     public function processaCadastrar()
     {
-        AutenticacaoController::renegaSessao();
+        UsuarioController::renegaSessao();
 
         header('Location: /autenticacao');
 
@@ -42,14 +42,14 @@ class EmpresaController
 
     public function editar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         View::renderizar('empresa/editar');
     }
 
     public function processaEditar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         $empresa = EmpresaDTO::recuperar($_SESSION['usuario']->getEmpresa()->getId());
 
@@ -58,25 +58,26 @@ class EmpresaController
             ->setEmail($_POST["email"])
             ->setDescricao($_POST['descricao']);
 
-        if (isset($_FILES['logo'])) {
+        if (!empty($_FILES['logo']['tmp_name']) && $_FILES['logo']['error'] === 0) {
             $empresa->setLogo($_FILES['logo']['tmp_name'] . "|" . $_FILES['logo']['name']);
         }
 
         EmpresaDTO::salvar($empresa);
+        FlashMessage::addMessage('Dados atualizados com sucesso', FlashMessage::FLASH_SUCCESS);
 
-        header('Location: /vaga/listar');
+        header('Location: /empresa/editar');
     }
 
     public function excluir()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         View::renderizar('empresa/excluir');
     }
 
     public function processaExcluir()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         EmpresaDTO::deletar($_SESSION['usuario']->getEmpresa());
 

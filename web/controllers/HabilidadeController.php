@@ -8,16 +8,16 @@ class HabilidadeController
 
     public function cadastrar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         $categorias = CategoriaHabilidadeDTO::listar();
 
-        View::renderizar('/habilidade/formulario', compact('categorias'), 'sistema');
+        View::renderizar('/habilidade/formulario', compact('categorias'), 'sistema-usuario');
     }
 
     public function salvar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         if (empty($_POST['id'])) {
             if (!empty($_POST['categoriaNova'])) {
@@ -49,28 +49,28 @@ class HabilidadeController
 
     public function listar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         $habilidade = HabilidadeDTO::listar();
 
-        View::renderizar('/habilidade/listar', compact('habilidade'), 'sistema');
+        View::renderizar('/habilidade/listar', compact('habilidade'), 'sistema-usuario');
     }
 
     public function editar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         $habilidadeId = $_GET['id'];
         $habilidade = HabilidadeDTO::recuperar($habilidadeId);
 
         $categorias = CategoriaHabilidadeDTO::listar();
 
-        View::renderizar('habilidade/formulario', compact('habilidade', 'categorias'), 'sistema');
+        View::renderizar('habilidade/formulario', compact('habilidade', 'categorias'), 'sistema-usuario');
     }
 
     public function excluir()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         $habilidade = HabilidadeDTO::recuperar($_GET['id']);
 

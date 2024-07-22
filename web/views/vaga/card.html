@@ -1,12 +1,12 @@
 <div class="card card-compact bg-base-100 w-full shadow-xl">
     <div class="card-body">
-        <div class="flex justify-between gap-4">
+        <div class="flex justify-between gap-4 items-center">
             <div>
                 <h2 class="card-title">{vaga}</h2>
                 <span class="font-medium text-xs uppercase text-accent">{empresa}</span>
             </div>
-            <div class="h-10 w-10">
-                <img src="{logo}" width="40" height="40" class="object-cover w-full h-full rounded-full" alt="Logo {empresa}"/>
+            <div class="h-[3rem] w-[3rem] flex items-center border rounded-full">
+                <img src="{logo}" class="object-cover rounded-full " alt="Logo {empresa}"/>
             </div>
         </div>
         <div class="divider my-0"></div>
@@ -49,13 +49,13 @@
 </div>
 <dialog id="modal_vaga_{id}" class="modal">
     <div class="modal-box">
-        <div class="flex justify-between gap-4">
+        <div class="flex justify-between gap-4 items-center">
             <div>
-                <h2 class="font-bold text-lg">{vaga}</h2>
+                <h2 class="card-title">{vaga}</h2>
                 <span class="font-medium text-xs uppercase text-accent">{empresa}</span>
             </div>
-            <div class="h-10 w-10">
-                <img src="{logo}" width="40" height="40" class="object-cover w-full h-full rounded-full" alt="Logo {empresa}"/>
+            <div class="h-[3rem] w-[3rem] flex items-center border rounded-full">
+                <img src="{logo}" class="object-cover rounded-full " alt="Logo {empresa}"/>
             </div>
         </div>
         <div class="divider my-1"></div>
@@ -107,7 +107,7 @@
             <form method="dialog">
                 <!-- if there is a button in form, it will close the modal -->
                 <button class="btn btn-ghost">Fechar</button>
-                <a href="/vaga/exibir/?id={id}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Quero me candidatar</a>
+                <a href="/vaga/exibir/?id={id}" class="btn btn-primary" rel="noopener noreferrer">Quero me candidatar</a>
             </form>
         </div>
     </div>
