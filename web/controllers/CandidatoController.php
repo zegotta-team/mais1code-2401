@@ -105,8 +105,9 @@ class CandidatoController
         CandidatoController::exigeSessao();
 
         $vagasCandidatadas = CandidatoVagaDTO::listar($_SESSION['candidato']->getId());
+        $propostas = PropostaDTO::listar('', $_SESSION['candidato']->getId());
 
-        View::renderizar('candidato/listar', compact('vagasCandidatadas'), 'sistema-candidato');
+        View::renderizar('candidato/listar', compact('vagasCandidatadas', 'propostas'), 'sistema-candidato');
     }
 
     public function perfil()
