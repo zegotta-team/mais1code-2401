@@ -123,6 +123,45 @@ class CandidatoController
         View::renderizar('candidato/perfil', compact('candidato', 'categorias','habilidades'), 'sistema-candidato');
     }
 
+    public function vagasRecomendadas() {
+        CandidatoController::estaLogado();
+        $vagasCandidatadas = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId());
+        $vagas= VagaDTO::listar();
+        $vagasPorPercentual= [];
+        $percentual= 0;
+
+        foreach ($vagas as $vaga) {
+            $candidatura = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(),$vaga->getId()); 
+            if (!empty($candidatura)) {
+                continue;
+            }
+
+            $vagaHabilidades = $vaga->getHabilidades();
+            $totalDeHabilidades = 0;
+            $totalDeHabilidadesAtendidas = 0;
+
+            foreach ($vagaHabilidades as $habilidadeVaga) { 
+                $totalDeHabilidades = $totalDeHabilidades + 1;
+
+                if ($_SESSION['candidato']->temHabilidadeId($habilidadeVaga->getId())) {
+                    $totalDeHabilidadesAtendidas = $totalDeHabilidadesAtendidas + 1;
+                }  
+            }
+
+            if ($totalDeHabilidades > 0 ) {
+                $percentual = floor($totalDeHabilidadesAtendidas / $totalDeHabilidades * 100);
+            } else {
+                $percentual = 100;
+            }
+
+            $vagasPorPercentual[$percentual][] = $vaga;
+        }
+
+        krsort($vagasPorPercentual);
+        $layout = CandidatoController::estaLogado() ? 'sistema-candidato' : 'painel-vagas';
+        View::renderizar('vaga/painelRecomendado', compact('vagasPorPercentual','vagas','percentual'), $layout);
+    }
+
     public function salvar()
     {
         CandidatoController::exigeSessao();
