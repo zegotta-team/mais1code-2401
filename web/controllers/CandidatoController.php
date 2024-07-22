@@ -128,6 +128,7 @@ class CandidatoController
         $vagasCandidatadas = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId());
         $vagas= VagaDTO::listar();
         $vagasPorPercentual= [];
+        $percentual= 0;
 
         foreach ($vagas as $vaga) {
             $candidatura = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(),$vaga->getId()); 
@@ -160,7 +161,7 @@ class CandidatoController
         $layout = CandidatoController::estaLogado() ? 'sistema-candidato' : 'painel-vagas';
         View::renderizar('vaga/painelRecomendado', compact('vagasPorPercentual','vagas','percentual'), $layout);
     }
-    
+
     public function salvar()
     {
         CandidatoController::exigeSessao();
