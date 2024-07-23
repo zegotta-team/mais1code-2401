@@ -230,7 +230,7 @@ class Vaga
             $habilidades .= "<span class='badge badge-outline badge-sm sm:badge-md'>{$habilidade->getHabilidade()}</span>";
         }
 
-        if (!empty($percentual) || $percentual == 0) {
+        if (!empty($percentual) || $percentual === 0) {
             $percentual = "<span class='indicator-item indicator-start left-5 badge badge-success text-white rounded-full h-10 w-10 p-4'>{$percentual}%</span>";
         }
 

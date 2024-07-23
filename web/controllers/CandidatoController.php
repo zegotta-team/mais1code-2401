@@ -139,7 +139,7 @@ class CandidatoController
             } else {
                 $percentual = 100;
             }
-            if ($percentual == 0) $percentual = 51;
+
             if ($percentual < 50) {
                 continue;
             }
