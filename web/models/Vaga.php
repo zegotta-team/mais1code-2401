@@ -206,17 +206,6 @@ class Vaga
         return $this;
     }
 
-    public function temHabilidadeId($id)
-    {
-        foreach ($this->habilidades as $habilidade) {
-            if ($id === $habilidade->getId()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public function cardFormatado($percentual = null)
     {
 
@@ -253,5 +242,12 @@ class Vaga
         $card = file_get_contents(__DIR__ . '/../../web/views/vaga/card.html');
         $card = str_replace(array_keys($replaces), array_values($replaces), $card);
         return $card;
+    }
+
+    public function temCandidatos()
+    {
+        $lista = CandidatoVagaDTO::listar('', $this->id);
+
+        return !empty($lista);
     }
 }

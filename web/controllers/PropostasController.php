@@ -4,7 +4,7 @@ class PropostasController
 {
     public function cadastrar()
     {
-        AutenticacaoController::estaLogado();
+        UsuarioController::estaLogado();
 
 
         View::renderizar('propostas/cadastrar');
@@ -12,7 +12,7 @@ class PropostasController
 
     public function salvar()
     {
-      AutenticacaoController::estaLogado();
+        UsuarioController::estaLogado();
         $vagaId = $_POST['vaga'];
         $vaga = VagaDTO::recuperar($vagaId);
 
@@ -33,7 +33,7 @@ class PropostasController
 
     public function exibir()
     {
-        AutenticacaoController::estaLogado();
+        UsuarioController::estaLogado();
         $vagaId = $_GET['vagaId'];
 
         $candidato = $_SESSION['candidato']->getId();

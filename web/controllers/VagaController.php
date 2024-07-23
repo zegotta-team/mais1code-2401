@@ -314,6 +314,6 @@ class VagaController
 
         CandidatoVagaDTO::salvar($candidatura);
 
-        header('Location: /vaga/editar?id=' . $_GET['id']);
+        header('Location: /vaga/editar?id=' . $_GET['id']."#candidatos");
     }
 }
