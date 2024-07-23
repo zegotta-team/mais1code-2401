@@ -1,6 +1,6 @@
 <form method="post" action="/vaga/index#vagas" class="flex flex-col gap-4">
     <div class="flex flex-col gap-0.5">
-        <details class="collapse collapse-arrow border border-base-300">
+        <details class="collapse collapse-arrow border border-base-300 bg-neutral-content/50 ">
             <summary class="collapse-title font-medium">Habilidades <?= !empty($filtro_habilidades) ? '<div class="badge badge-sm badge-accent">' . count($filtro_habilidades) . '</div>' : '' ?></summary>
             <div class="collapse-content">
                 <?php /** @var array<Habilidade> $habilidades */
@@ -14,7 +14,7 @@
                 <?php endforeach; ?>
             </div>
         </details>
-        <details class="collapse collapse-arrow border border-base-300">
+        <details class="collapse collapse-arrow border border-base-300  bg-neutral-content/50">
             <summary class="collapse-title font-medium">Empresa <?= !empty($filtro_empresas) ? '<div class="badge badge-sm badge-accent">' . count($filtro_empresas) . '</div>' : '' ?></summary>
             <div class="collapse-content">
                 <?php /** @var array<Empresa> $empresas */
@@ -28,10 +28,12 @@
                 <?php endforeach; ?>
             </div>
         </details>
-        <details class="collapse collapse-arrow border border-base-300">
+        <details class="collapse collapse-arrow border border-base-300  bg-neutral-content/50">
             <summary class="collapse-title font-medium">Estado <?= !empty($filtro_estados) ? '<div class="badge badge-sm badge-accent">' . count($filtro_estados) . '</div>' : '' ?></summary>
             <div class="collapse-content">
-                <?php foreach ($estados as $sigla => $nome) : ?>
+                <?php
+                /** @var  array<string> $estados */
+                foreach ($estados as $sigla => $nome) : ?>
                     <div class="form-control">
                         <label class="label justify-start gap-2 cursor-pointer">
                             <input type="checkbox" class="checkbox checkbox-primary" name="filtro_estados[]" id="estados_<?= $sigla ?>" value="<?= $sigla ?>" <?= in_array($sigla, $filtro_estados) ? 'checked' : '' ?> />
@@ -41,10 +43,12 @@
                 <?php endforeach; ?>
             </div>
         </details>
-        <details class="collapse collapse-arrow border border-base-300">
+        <details class="collapse collapse-arrow border border-base-300  bg-neutral-content/50">
             <summary class="collapse-title font-medium">Nível Hierárquico <?= !empty($filtro_hierarquia) ? '<div class="badge badge-sm badge-accent">' . count($filtro_hierarquia) . '</div>' : '' ?></summary>
             <div class="collapse-content">
-                <?php foreach ($hierarquias as $hierarquia => $descricao) : ?>
+                <?php
+                /** @var  array<string> $hierarquias */
+                foreach ($hierarquias as $hierarquia => $descricao) : ?>
                     <div class="form-control">
                         <label class="label justify-start gap-2 cursor-pointer">
                             <input type="checkbox" class="checkbox checkbox-primary" name="filtro_hierarquia[]" id="hierarquia_<?= $hierarquia ?>" value="<?= $hierarquia ?>" <?= in_array($hierarquia, $filtro_hierarquia) ? 'checked' : '' ?> />
@@ -54,10 +58,12 @@
                 <?php endforeach; ?>
             </div>
         </details>
-        <details class="collapse collapse-arrow border border-base-300">
+        <details class="collapse collapse-arrow border border-base-300  bg-neutral-content/50">
             <summary class="collapse-title font-medium">Nível de Senioridade <?= !empty($filtro_senioridade) ? '<div class="badge badge-sm badge-accent">' . count($filtro_senioridade) . '</div>' : '' ?></summary>
             <div class="collapse-content">
-                <?php foreach ($senioridades as $senioridade => $descricao) : ?>
+                <?php
+                /** @var  array<string> $senioridades */
+                foreach ($senioridades as $senioridade => $descricao) : ?>
                     <div class="form-control">
                         <label class="label justify-start gap-2 cursor-pointer">
                             <input type="checkbox" class="checkbox checkbox-primary" name="filtro_senioridade[]" id="senioridade_<?= $senioridade ?>" value="<?= $senioridade ?>" <?= in_array($senioridade, $filtro_senioridade) ? 'checked' : '' ?> />
@@ -67,10 +73,12 @@
                 <?php endforeach; ?>
             </div>
         </details>
-        <details class="collapse collapse-arrow border border-base-300">
+        <details class="collapse collapse-arrow border border-base-300  bg-neutral-content/50">
             <summary class="collapse-title font-medium">Regime de Contratação <?= !empty($filtro_contratacao) ? '<div class="badge badge-sm badge-accent">' . count($filtro_contratacao) . '</div>' : '' ?></summary>
             <div class="collapse-content">
-                <?php foreach ($regimes_contratacao as $contratacao => $descricao) : ?>
+                <?php
+                /** @var  array<string> $regimes_contratacao */
+                foreach ($regimes_contratacao as $contratacao => $descricao) : ?>
                     <div class="form-control">
                         <label class="label justify-start gap-2 cursor-pointer">
                             <input type="checkbox" class="checkbox checkbox-primary" name="filtro_contratacao[]" id="contratacao_<?= $contratacao ?>" value="<?= $contratacao ?>" <?= in_array($contratacao, $filtro_contratacao) ? 'checked' : '' ?> />
@@ -80,10 +88,12 @@
                 <?php endforeach; ?>
             </div>
         </details>
-        <details class="collapse collapse-arrow border border-base-300">
+        <details class="collapse collapse-arrow border border-base-300  bg-neutral-content/50">
             <summary class="collapse-title font-medium">Regime de Trabalho <?= !empty($filtro_trabalho) ? '<div class="badge badge-sm badge-accent">' . count($filtro_trabalho) . '</div>' : '' ?></summary>
             <div class="collapse-content">
-                <?php foreach ($regimes_trabalho as $trabalho => $descricao) : ?>
+                <?php
+                /** @var  array<string> $regimes_trabalho */
+                foreach ($regimes_trabalho as $trabalho => $descricao) : ?>
                     <div class="form-control">
                         <label class="label justify-start gap-2 cursor-pointer">
                             <input type="checkbox" class="checkbox checkbox-primary" name="filtro_trabalho[]" id="trabalho_<?= $trabalho ?>" value="<?= $trabalho ?>" <?= in_array($trabalho, $filtro_trabalho) ? 'checked' : '' ?> />
@@ -93,7 +103,13 @@
                 <?php endforeach; ?>
             </div>
         </details>
-        <details class="collapse collapse-arrow border border-base-300">
+        <details class="collapse collapse-arrow border border-base-300  bg-neutral-content/50">
+            <?php
+            /**
+             * @var bool $hasMinSalario
+             * @var bool $hasMaxSalario
+             */
+            ?>
             <summary class="collapse-title font-medium">Faixa Salarial <?= $hasMinSalario || $hasMaxSalario ? '<div class="badge badge-sm badge-accent">1</div>' : '' ?></summary>
             <div class="collapse-content">
                 <label class="form-control">

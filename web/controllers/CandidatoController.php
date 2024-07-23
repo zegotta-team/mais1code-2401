@@ -2,22 +2,6 @@
 
 class CandidatoController
 {
-    public function login()
-    {
-        if (CandidatoController::estaLogado()) {
-            header('Location: /vaga/index');
-            exit();
-        }
-
-        if (isset($_COOKIE['candidato'])) {
-            $usuarioLembrado = $_COOKIE['candidato'];
-        } else {
-            $usuarioLembrado = '';
-        }
-
-        View::renderizar('candidato/login', compact('usuarioLembrado'), 'login');
-    }
-
     public function processaLogin()
     {
         session_start();
@@ -27,9 +11,9 @@ class CandidatoController
         $remember = isset($_POST['remember_me']);
 
         if ($remember) {
-            setcookie("candidato", $email, time() + 3600 * 24 * 30 * 12 * 100);
+            setcookie("candidato", $email, time() + 3600 * 24 * 30 * 12 * 100, '/');
         } else {
-            setcookie("candidato", "", time() - 3600);
+            setcookie("candidato", "", time() - 3600 , '/');
         }
 
         $candidato = CandidatoDTO::autenticar($email, $senha);
@@ -38,7 +22,7 @@ class CandidatoController
             header('Location: /vaga/index');
             $_SESSION['candidato'] = $candidato;
         } else {
-            header('Location: /candidato/login');
+            header('Location: /autenticacao/');
             $_SESSION['candidato'] = null;
             FlashMessage::addMessage("Falha ao autenticar candidato! Email ou senha incorretos.", FlashMessage::FLASH_ERROR);
         }
@@ -46,20 +30,20 @@ class CandidatoController
 
     public function cadastrar()
     {
-        AutenticacaoController::renegaSessao();
+        UsuarioController::renegaSessao();
 
-        View::renderizar('candidato/cadastrar', [], 'cadastro-candidato');
+        View::renderizar('candidato/cadastrar', [], 'login');
     }
 
     public function processaCadastrar()
     {
-        AutenticacaoController::renegaSessao();
+        UsuarioController::renegaSessao();
 
         $candidato = new Candidato($_POST['nome'], $_POST['email'], $_POST['senha'], $_POST['habilidades'], $_POST['cpf'], $_POST['nascimento'], $_POST['endereco'], $_POST['disponibilidade'], $_POST['sexo'], $_POST['genero'], $_POST['status'], $_POST['regimeContratacao'], $_POST['regimeTrabalho'], $_POST['nivelSenioridade'], $_POST['nivelHierarquia']);
 
         CandidatoDTO::salvar($candidato);
         FlashMessage::addMessage('Usuário/candidato cadastrado com sucesso');
-        header('Location: /candidato/login');
+        header('Location: /autenticacao');
     }
 
     public static function estaLogado()
@@ -96,7 +80,7 @@ class CandidatoController
         }
 
         if (empty($_SESSION['candidato'])) {
-            header("Location: /candidato/login");
+            header("Location: /autenticacao");
         }
     }
 
@@ -123,6 +107,50 @@ class CandidatoController
         }
 
         View::renderizar('candidato/perfil', compact('candidato', 'categorias','habilidades'), 'sistema-candidato');
+    }
+
+    public function vagasRecomendadas() {
+        CandidatoController::estaLogado();
+        $vagasCandidatadas = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId());
+        $vagas= VagaDTO::listar();
+        $vagasPorPercentual= [];
+        $percentual= 0;
+
+        foreach ($vagas as $vaga) {
+            $candidatura = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(),$vaga->getId()); 
+            if (!empty($candidatura)) {
+                continue;
+            }
+
+            $vagaHabilidades = $vaga->getHabilidades();
+            $totalDeHabilidades = 0;
+            $totalDeHabilidadesAtendidas = 0;
+
+            foreach ($vagaHabilidades as $habilidadeVaga) { 
+                $totalDeHabilidades = $totalDeHabilidades + 1;
+
+                if ($_SESSION['candidato']->temHabilidadeId($habilidadeVaga->getId())) {
+                    $totalDeHabilidadesAtendidas = $totalDeHabilidadesAtendidas + 1;
+                }  
+            }
+
+            if ($totalDeHabilidades > 0 ) {
+                $percentual = floor($totalDeHabilidadesAtendidas / $totalDeHabilidades * 100);
+            } else {
+                $percentual = 100;
+            }
+            if ($percentual == 0) $percentual = 51;
+            if ($percentual < 50) {
+                continue;
+            }
+
+            $vagasPorPercentual[$percentual][] = $vaga;
+        }
+
+        krsort($vagasPorPercentual);
+        $layout = CandidatoController::estaLogado() ? 'sistema-candidato' : 'painel-vagas';
+
+        View::renderizar('vaga/painelRecomendado', compact('vagasPorPercentual','vagas','percentual'), $layout);
     }
 
     public function salvar()

@@ -4,9 +4,9 @@
 
 DELETE FROM empresa WHERE 1;
 INSERT INTO empresa (id, nome, cnpj, email, descricao, logo) VALUES
-(1, 'IBM', '81289818000178', 'recursos.humanos@ibm.fake.com', 'Empresa de tecnologia', 'ibm.png'),
-(2, 'TechNew', '31960951000136', 'recursos.humanos@technew.com', 'Startup de tecnologia', 'tnew.png'),
-(3, 'FoodFinder', '46854682000234', 'rh@foodfinder.com', 'Empresa de desenvolvimento', 'ff.png')
+(1, 'IBM', '81289818000178', 'recursos.humanos@ibm.fake.com', 'Empresa de tecnologia', '/assets/images/mock-data/company-logo-1.jpg'),
+(2, 'TechNew', '31960951000136', 'recursos.humanos@technew.com', 'Startup de tecnologia', '/assets/images/mock-data/company-logo-2.png'),
+(3, 'FoodFinder', '46854682000234', 'rh@foodfinder.com', 'Empresa de desenvolvimento', '/assets/images/mock-data/company-logo-3.jpg')
 ;
 
 DELETE FROM filial WHERE 1;
@@ -125,10 +125,10 @@ INSERT INTO candidato (id, nome, email, senha, cpf, nascimento, endereco, dispon
 ;
 
 DELETE FROM candidato_vaga WHERE 1;
-INSERT INTO candidato_vaga (candidato_id, vaga_id, ultima_desistencia, status) VALUES
+INSERT INTO candidato_vaga (candidato_id, vaga_id, ultima_desistencia, `status`) VALUES
 (5, 1, '', 1),
 (5, 2, '2024-07-06 00:00:00', 0),
-(1, 6, '', 1),
+(1, 6, '', 2),
 (1, 7, '', 1),
 (1, 8, '', 1),
 (2, 6, '', 1),
@@ -151,9 +151,13 @@ INSERT INTO candidato_habilidade(candidato_id, habilidade_id) VALUES
 (5,13)
 ;
 
+DELETE FROM notificacoes WHERE 1;
+INSERT INTO notificacoes (id, candidato_id, empresa_id, titulo, descricao, `status`, data_hora) VALUES
+(1, 1, 3, 'Alterado o status de Triagem de Currículos para Entrevista com RH na vaga de Programador PHP Jr', 'Aprovado na etapa de Triagem de Currículos', 1, '2024-07-19 18:04:00')
+;
+
 DELETE FROM propostas WHERE 1;
-INSERT INTO propostas(id_vaga, id_candidato, salario, regime_contratacao, regime_trabalho, nivel_hierarquico, nivel_senioridade, cargo, endereco, expediente, data_inicio, aceite)
-VALUES
+INSERT INTO propostas(id_vaga, id_candidato, salario, regime_contratacao, regime_trabalho, nivel_hierarquico, nivel_senioridade, cargo, endereco, expediente, data_inicio, aceite) VALUES
 (6 , 3, 2500, 1, 1, 1, 1,'programador php jr ','rua xyz','8h as 18h ', '19/07/2024', 0),
 (7 , 4, 4500, 1, 2, 2, 2,'programador php pleno','rua xyz','8h as 18h ', '19/07/2024', 0),
 (8 , 5, 5500, 1, 2, 2, 3,'programador php senior','rua xyz','8h as 18h ', '19/07/2024', 0)
