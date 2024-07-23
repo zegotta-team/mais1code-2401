@@ -175,8 +175,8 @@
                         <?php endif; ?>
                         <?php if($candidato_vaga->getStatus() == CandidatoVagaStatusEnum::Aprovado->value) : ?>
                             <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                                <button class="btn btn-success" href="#" type="submit">Enviar Proposta
-                                </button>
+                                <a class="btn btn-success" href="/propostas/cadastrar?id=<?= $vaga->getId()?>&candidatoId=<?= $candidato_vaga->getCandidato()->getId() ?>" target="_blank" type="submit">Enviar Proposta
+                                </a>
                             </div>
                         <?php endif; ?>
                     </td>

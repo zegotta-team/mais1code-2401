@@ -132,7 +132,7 @@ class Propostas
 
     public function getExpediente()
     {
-        return $this;
+        return $this->expediente;
     }
 
     public function setExpediente($expediente)

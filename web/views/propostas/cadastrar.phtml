@@ -1,0 +1,118 @@
+<?php /** @var Vaga $vaga */ ?>
+<div class="container container-sm w-75">
+    <form method="post" action="/propostas/salvar">
+        <input type="hidden" />
+            <div class="col-md-6">
+                <div class="col-md-2 form-floating">
+                    <input type="text" class="form-control" name="vaga" id="vaga" value="<?= $_GET['id']?>">
+                    <label for="vaga" class="col-form-label">Vaga</label>
+                </div>
+                <div class="col-md-2 form-floating">
+                    <input type="text" class="form-control" name="candidato" id="candidato" value="<?= $_GET['candidatoId'] ?>">
+                    <label for="candidato" class="col-form-label">Candidato</label>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-text">R$</span>
+                    <div class="form-floating">
+                        <input type="number" class="form-control" name="salario" id="salario" value="<?= isset($vaga) ? $vaga->getSalario() : '' ?>" min="0">
+                        <label for="salario" class="col-form-label">Salário</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row g-3 align-items-center mb-2">
+            <!-- REGIME DE CONTRATAÇÃO -->
+            <div class="col-md-6 form-floating">
+                <select class="form-control form-select" name="regime_contratacao" id="regime_contratacao" required>
+                    <option value="">Selecione</option>
+                    <?php foreach (RegimeContratacaoEnum::forSelect() as $indice => $valor): ?>
+                        <option value="<?= $indice ?>" <?= !empty($vaga) && $vaga->getRegimeContratacao() == $indice ? 'selected' : '' ?>><?= $valor ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <label for="regimeContratacao" class="col-form-label">Regime de Contratação</label>
+            </div>
+            <!-- REGIME DE TRABALHO -->
+            <div class="col-md-6 form-floating">
+                <select class="form-control form-select" name="regime_trabalho" id="regime_trabalho" required>
+                    <option value="">Selecione</option>
+                    <?php foreach (RegimeTrabalhoEnum::forSelect() as $indice => $valor): ?>
+                        <option value="<?= $indice ?>" <?= !empty($vaga) && $vaga->getRegimeTrabalho() == $indice ? 'selected' : '' ?>><?= $valor ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <label for="regimeTrabalho" class="col-form-label">Regime de Trabalho</label>
+            </div>
+        </div>
+        <div class="row g-3 align-items-center mb-2">
+            <!-- NÍVEL DE SENIORIDADE -->
+            <div class="col-md-6 form-floating">
+                <select class="form-control form-select" name="nivel_senioridade" id="nivel_senioridade" required>
+                    <option value="">Selecione</option>
+                    <?php foreach (NivelSenioridadeEnum::forSelect() as $indice => $valor): ?>
+                        <option value="<?= $indice ?>" <?= !empty($vaga) && $vaga->getNivelSenioridade() == $indice ? 'selected' : '' ?>><?= $valor ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <label for="nivelSenioridade" class="col-form-label">Nível de Senioridade</label>
+            </div>
+
+            <!-- NÍVEL DE HIERARQUIA -->
+            <div class="col-md-6 form-floating">
+                <select class="form-control form-select" name="nivel_hierarquico" id="nivel_hierarquico" required>
+                    <option value="">Selecione</option>
+                    <?php foreach (NivelHierarquicoEnum::forSelect() as $indice => $valor): ?>
+                        <option value="<?= $indice ?>" <?= !empty($vaga) && $vaga->getNivelHierarquico() == $indice ? 'selected' : '' ?>><?= $valor ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <label for="nivelHierarquia" class="col-form-label">Nível hierárquico</label>
+            </div>
+            <div class="row md-6 align-items-center mb-2">
+                <div class=" form-floating">
+                    <input type="text" class="form-control" name="cargo" id="cargo" >
+                    <label for="titulo" class="col-form-label">Cargo</label>
+                </div>
+                <div class="row md-6 align-items-center mb-2">
+                    <div class=" form-floating">
+                        <input type="text" class="form-control" name="endereco" id="endereco" >
+                        <label for="titulo" class="col-form-label">Endereco</label>
+                    </div>
+                    <div class="row md-3 align-items-center mb-2">
+                        <div class="col-md-2 form-floating">
+                            <input type="text" class="form-control" name="expediente" id="expediente" >
+                            <label for="expediente" class="col-form-label">Expediente</label>
+                        </div>
+                        <div class="row g-3 align-items-center mb-2">
+                            <div class="col-md-2 form-floating">
+                                <input type="text" class="form-control" name="data_inicio" id="data_inicio" value="">
+                                <label for="data_inicio" class="col-form-label">Data Inicio</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row gy-3 gy-md-4 overflow-hidden mt-4 mb-2">
+            <div class="col-12">
+                <div class="d-grid">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('searchInput').addEventListener('keyup', function () {
+            let searchTerm = this.value.toLowerCase();
+            let items = document.querySelectorAll('.habilidade-item');
+
+            items.forEach(function (item) {
+                let label = item.querySelector('label').textContent.toLowerCase();
+                if (label.includes(searchTerm)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>

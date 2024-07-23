@@ -23,8 +23,8 @@ abstract class PropostaDTO implements DTOInterface
         */
 
         if(!static::verificaDadosExistentes($propostas)){
-            $sql = "INSERT INTO propostas(id_vaga, id_candidato, salario, regime_contratacao, regime_trabalho, nivel_hierarquico, nivel_senioridade, cargo, endereco, expediente, aceite)
-                    VALUES({$propostas->getVaga()->getId()}, {$propostas->getCandidato()->getId()}, {$propostas->getSalario()}, {$propostas->getRegimeContratacao()}, {$propostas->getRegimeTrabalho()}, {$propostas->getNivelHierarquico()}, {$propostas->getNivelSenioridade()}, \"{$propostas->getCargo()}\", \"{$propostas->getEndereco()}\", \"{$propostas->getExpediente()}\", {$propostas->getAceite()})";
+            $sql = "INSERT INTO propostas(id_vaga, id_candidato, salario, regime_contratacao, regime_trabalho, nivel_hierarquico, nivel_senioridade, cargo, endereco, expediente, data_inicio, aceite)
+                    VALUES({$propostas->getVaga()->getId()}, {$propostas->getCandidato()->getId()}, {$propostas->getSalario()}, {$propostas->getRegimeContratacao()}, {$propostas->getRegimeTrabalho()}, {$propostas->getNivelHierarquico()}, {$propostas->getNivelSenioridade()}, \"{$propostas->getCargo()}\", \"{$propostas->getEndereco()}\", \"{$propostas->getExpediente()}\", \"{$propostas->getDataInicio()}\" , {$propostas->getAceite()})";
         }else{
             $sql = "UPDATE propostas SET ";
             $sql .= "salario = '{$propostas->getSalario()}', ";
@@ -87,7 +87,7 @@ abstract class PropostaDTO implements DTOInterface
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
     }
-    
+
     public static function verificaDadosExistentes($propostas)
     {
         $pdo = static::conectarDB();
