@@ -41,7 +41,7 @@
                         /** @var array<Propostas> $propostas */
                         foreach ($propostas as $proposta) : ?>
                             <?php if (!empty($proposta) && $proposta->getVaga()->getId() == $vaga->getVaga()->getId()) : ?>
-                                <a class="btn btn-primary" href="/proposta/exibir?vagaId=<?=$proposta->getVaga()->getId()?>">Detalhes</a>
+                                <a class="btn btn-primary" href="/propostas/exibir?vagaId=<?=$proposta->getVaga()->getId()?>">Detalhes</a>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </td>
