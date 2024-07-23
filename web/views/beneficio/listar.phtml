@@ -15,7 +15,7 @@
             <td class="minimal">
                 <?php if($_SESSION['usuario']->getTipo() == TipoUsuarioEnum::ADMINISTRADOR->value) : ?>
                     <a class="btn btn-primary btn-sm" href="/beneficio/editar?id=<?= $valorBeneficio->getId() ?>" title="Editar"><i class="fas fa-edit"></i></a>
-                    <a class="btn btn-danger btn-sm" href="" title="Excluir"><i class="fas fa-trash"></i></a>
+                    <a class="btn btn-danger btn-sm" href="/beneficio/excluir?id=<?= $valorBeneficio->getId() ?>" title="Excluir"><i class="fas fa-trash"></i></a>
                 <?php endif ?>
             </td>
         </tr>

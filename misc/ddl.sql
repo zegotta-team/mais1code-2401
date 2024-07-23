@@ -120,12 +120,14 @@ CREATE TABLE categoria_habilidade
     nome TEXT    NOT NULL
 );
 
+DROP TABLE beneficios;
 CREATE TABLE beneficios
 (
     id      INTEGER PRIMARY KEY AUTOINCREMENT,
     nome    TEXT NOT NULL
 );
 
+DROP TABLE vaga_beneficio;
 CREATE TABLE vaga_beneficio
 (
     vaga_id         INTEGER NOT NULL,
@@ -134,6 +136,7 @@ CREATE TABLE vaga_beneficio
     PRIMARY KEY (vaga_id, beneficio_id)
 );
 
+DROP TABLE candidato_beneficio;
 CREATE TABLE candidato_beneficio
 (
     candidato_id INTEGER NOT NULL,

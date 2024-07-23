@@ -32,7 +32,17 @@ abstract class BeneficioDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
 
-        $sql = "DELETE FROM beneficios WHERE id = {$beneficio->getId()}";
+        foreach (VagaBeneficioDTO::listar('', $beneficio->getId()) as $vagaBeneficio) {
+            VagaBeneficioDTO::deletar($vagaBeneficio);
+        }
+
+        if (!empty($beneficio->getId())) {
+            $sql = "DELETE FROM candidato_beneficio WHERE beneficio_id = '{$beneficio->getId()}'";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+        }
+
+        $sql = "DELETE FROM beneficios WHERE id = '{$beneficio->getId()}'";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
     }

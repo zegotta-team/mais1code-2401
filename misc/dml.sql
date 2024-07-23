@@ -152,25 +152,25 @@ INSERT INTO candidato_habilidade(candidato_id, habilidade_id) VALUES
 ;
 
 DELETE FROM beneficios WHERE 1;
-INSERT INTO beneficios (nome) VALUES
-('Horário flexível'),
-('Vale-cultura'),
-('Auxílio Home Office'),
-('Desenvolvimento contínuo'),
-('Vale-combustível'),
-('Plano odontológico'),
-('Programa de educação financeira'),
-('Convenio com farmácias'),
-('Cobertura de saúde mental'),
-('Vale-presente digital'),
-('Auxílio-educação'),
-('Vale-alimentação'),
-('Vale-refeição'),
-('Parcerias com Academias'),
-('Participação nos lucros'),
-('Bolsa de estudos'),
-('Sala de lazer'),
-('Viagem de incentivo')
+INSERT INTO beneficios (id, nome) VALUES
+(1, 'Horário flexível'),
+(2, 'Vale-cultura'),
+(3, 'Auxílio Home Office'),
+(4, 'Desenvolvimento contínuo'),
+(5, 'Vale-combustível'),
+(6, 'Plano odontológico'),
+(7, 'Programa de educação financeira'),
+(8, 'Convenio com farmácias'),
+(9, 'Cobertura de saúde mental'),
+(10, 'Vale-presente digital'),
+(11, 'Auxílio-educação'),
+(12, 'Vale-alimentação'),
+(13, 'Vale-refeição'),
+(14, 'Parcerias com Academias'),
+(15, 'Participação nos lucros'),
+(16, 'Bolsa de estudos'),
+(17, 'Sala de lazer'),
+(18, 'Viagem de incentivo')
 ;
 
 DELETE FROM vaga_beneficio WHERE 1;
