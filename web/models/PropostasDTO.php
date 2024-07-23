@@ -1,6 +1,6 @@
 <?php
 
-abstract class PropostaDTO implements DTOInterface
+abstract class PropostasDTO implements DTOInterface
 {
     use DbTrait;
 
