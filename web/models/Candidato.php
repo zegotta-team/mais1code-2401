@@ -19,8 +19,9 @@ class Candidato
     private $nivelHierarquia;
 
     private $habilidades;
+    private $beneficios;
 
-    public function __construct($nome, $email, $senha, $cpf, $nascimento, $endereco, $disponibilidade, $sexo, $genero, $status, $regimeContratacao, $regimeTrabalho, $nivelSenioridade, $nivelHierarquia, $habilidades)
+    public function __construct($nome, $email, $senha, $cpf, $nascimento, $endereco, $disponibilidade, $sexo, $genero, $status, $regimeContratacao, $regimeTrabalho, $nivelSenioridade, $nivelHierarquia, $habilidades, $beneficios)
     {
         $this->setNome($nome);
         $this->setEmail($email);
@@ -37,6 +38,7 @@ class Candidato
         $this->setNivelSenioridade($nivelSenioridade);
         $this->setNivelHierarquia($nivelHierarquia);
         $this->setHabilidades($habilidades);
+        $this->setBeneficios($beneficios);
     }
 
     public function getId()
@@ -215,10 +217,32 @@ class Candidato
         return $this;
     }
 
+    public function getBeneficios() 
+    {
+        return $this->beneficios;
+    }
+
+    public function setBeneficios($beneficios) 
+    {
+        $this->beneficios = $beneficios;
+        return $this;
+    }
+
     public function temHabilidadeId($id)
     {
         foreach ($this->habilidades as $habilidade) {
             if ($id === $habilidade->getId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function temBeneficioId($id) 
+    {
+        foreach ($this->beneficios as $beneficio) {
+            if ($id === $beneficio->getId()) {
                 return true;
             }
         }

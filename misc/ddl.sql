@@ -47,21 +47,21 @@ CREATE TABLE usuario
 DROP TABLE candidato;
 CREATE TABLE candidato
 (
-    id              INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome            TEXT    NOT NULL,
-    email           TEXT    NOT NULL,
-    senha           TEXT    NOT NULL,
-    cpf             TEXT    NOT NULL,
-    nascimento      TEXT    NOT NULL,
-    endereco        TEXT    NOT NULL,
-    disponibilidade TEXT    NOT NULL,
-    sexo            TEXT    NOT NULL,
-    genero          TEXT    NOT NULL,
-    `status`        INTEGER NOT NULL DEFAULT 1,
-    regimeContratacao INTEGER NOT NULL,
-    regimeTrabalho INTEGER NOT NULL,
-    nivelSenioridade INTEGER NOT NULL,
-    nivelHierarquia INTEGER NOT NULL
+    id                INTEGER   PRIMARY KEY AUTOINCREMENT,
+    nome              TEXT      NOT NULL,
+    email             TEXT      NOT NULL,
+    senha             TEXT      NOT NULL,
+    cpf               TEXT      NOT NULL,
+    nascimento        TEXT      NOT NULL,
+    endereco          TEXT      NOT NULL,
+    disponibilidade   TEXT      NOT NULL,
+    sexo              TEXT      NOT NULL,
+    genero            TEXT      NOT NULL,
+    `status`          INTEGER   NOT NULL DEFAULT 1,
+    regimeContratacao INTEGER,
+    regimeTrabalho    INTEGER,
+    nivelSenioridade  INTEGER,
+    nivelHierarquia   INTEGER
 );
 
 DROP TABLE candidato_vaga;

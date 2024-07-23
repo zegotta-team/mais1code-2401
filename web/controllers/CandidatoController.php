@@ -55,7 +55,7 @@ class CandidatoController
     {
         AutenticacaoController::renegaSessao();
 
-        $candidato = new Candidato($_POST['nome'], $_POST['email'], $_POST['senha'], $_POST['habilidades'], $_POST['cpf'], $_POST['nascimento'], $_POST['endereco'], $_POST['disponibilidade'], $_POST['sexo'], $_POST['genero'], $_POST['status'], $_POST['regimeContratacao'], $_POST['regimeTrabalho'], $_POST['nivelSenioridade'], $_POST['nivelHierarquia']);
+        $candidato = new Candidato($_POST['nome'], $_POST['email'], $_POST['senha'], $_POST['cpf'], $_POST['nascimento'], $_POST['endereco'], $_POST['disponibilidade'], $_POST['sexo'], $_POST['genero'], $_POST['status'], '', '', '', '', $_POST['habilidades'], []);
 
         CandidatoDTO::salvar($candidato);
         FlashMessage::addMessage('Usuário/candidato cadastrado com sucesso');
@@ -120,7 +120,9 @@ class CandidatoController
             $habilidades[$categoria->getNome()] = HabilidadeDTO::listar('', '', $categoria->getId());
         }
 
-        View::renderizar('candidato/perfil', compact('candidato', 'categorias','habilidades'), 'sistema-candidato');
+        $beneficios = BeneficioDTO::listar();
+
+        View::renderizar('candidato/perfil', compact('candidato', 'categorias','habilidades', 'beneficios'), 'sistema-candidato');
     }
 
     public function salvar()
@@ -136,11 +138,19 @@ class CandidatoController
             }
         }
 
+        $beneficios = [];
+        if (isset($_POST['beneficio'])) {
+            foreach ($_POST['beneficio'] as $beneficioId) {
+                $beneficios[] = BeneficioDTO::recuperar($beneficioId);
+            }
+        }
+
         $candidato->setRegimeTrabalho($_POST['regimeTrabalho'])
             ->setRegimeContratacao($_POST['regimeContratacao'])
             ->setNivelSenioridade($_POST['nivelSenioridade'])
             ->setNivelHierarquia($_POST['nivelHierarquia'])
             ->setHabilidades($habilidades)
+            ->setBeneficios($beneficios)
         ;
 
         CandidatoDTO::salvar($candidato);

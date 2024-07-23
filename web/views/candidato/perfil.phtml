@@ -93,6 +93,28 @@
                 </div>
             <?php endforeach; ?>
 
+            <div class="my-8 p-2 flex justify-between bg-slate-100 rounded-lg items-center">
+                <div>
+                    <h2 class="text-base font-semibold text-gray-900 card-title">Benefícios</h2>
+                    <p class="mt-1 text-sm text-gray-600">Selecione os benefícios que deseja.</p>
+                </div>
+            </div>
+
+            <div class="gap-3 mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5">
+                <?php 
+                /** @var array<Beneficio> $beneficios */
+                foreach ($beneficios as $beneficio) : ?>
+                    <div class="form-control beneficio-item">
+                        <div class="tooltip" data-tip="<?= $beneficio->getNome() ?>">
+                            <label for="beneficio_<?= $beneficio->getId() ?>" class="label cursor-pointer justify-start gap-2">
+                                <input id="beneficio_<?= $beneficio->getId() ?>" name="beneficio[]" type="checkbox" value="<?= $beneficio->getId() ?>" <?= $candidato->temBeneficioId($beneficio->getId()) ? 'checked' : '' ?> class="checkbox checkbox-info"/>
+                                <span class="label-text truncate"><?= $beneficio->getNome() ?></span>
+                            </label>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
             <div class="mt-6 flex items-center justify-end">
                 <button type="submit" class="btn rounded-md btn-success text-white hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">Salvar</button>
             </div>
