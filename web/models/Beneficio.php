@@ -6,28 +6,28 @@ class Beneficio
 
    public function __construct($nome)
    {
-    $this->setNome($nome);
+     $this->setNome($nome);
    }
 
    public function getId()
    {
-        return $this->id;
+     return $this->id;
    }
 
    public function setId($id)
    {
-        $this->id = $id;
-        return $this;
+     $this->id = $id;
+     return $this;
    }
 
    public function getNome()
    {
-        return $this->nome;
+     return $this->nome;
    }
 
    public function setNome($nome)
    {
-        $this->nome = $nome;
-        return $this;
+     $this->nome = $nome;
+     return $this;
    }
 }

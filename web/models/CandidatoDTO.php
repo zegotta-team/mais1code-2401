@@ -16,7 +16,16 @@ abstract class CandidatoDTO implements DTOInterface
             $habilidades[] = HabilidadeDTO::recuperar($habilidade['habilidade_id']);
         }
 
-        $candidato = new Candidato($dados['nome'], $dados['email'], $dados['senha'], $dados['cpf'], $dados['nascimento'], $dados['endereco'], $dados['disponibilidade'], $dados['sexo'], $dados['genero'], $dados['status'], $dados['regimeContratacao'], $dados['regimeTrabalho'], $dados['nivelSenioridade'], $dados['nivelHierarquia'], $habilidades);
+        $sql = "SELECT beneficio_id FROM candidato_beneficio WHERE candidato_id = {$dados['id']}";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+
+        $beneficios = [];
+        while ($beneficio = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $beneficios[] = BeneficioDTO::recuperar($beneficio['beneficio_id']);
+        }
+
+        $candidato = new Candidato($dados['nome'], $dados['email'], $dados['senha'], $dados['cpf'], $dados['nascimento'], $dados['endereco'], $dados['disponibilidade'], $dados['sexo'], $dados['genero'], $dados['status'], $dados['regimeContratacao'], $dados['regimeTrabalho'], $dados['nivelSenioridade'], $dados['nivelHierarquia'], $habilidades, $beneficios);
         $candidato->setId($dados['id']);
         return $candidato;
     }
@@ -65,8 +74,19 @@ abstract class CandidatoDTO implements DTOInterface
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
+        $sql = "DELETE FROM candidato_beneficio WHERE candidato_id = {$candidato->getId()}";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+
         foreach ($candidato->getHabilidades() as $habilidade) {
             $sql = "INSERT INTO candidato_habilidade (candidato_id, habilidade_id) VALUES ({$candidato->getId()}, {$habilidade->getId()})";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+        }
+
+        foreach ($candidato->getBeneficios() as $beneficio) {
+            $sql = "INSERT INTO candidato_beneficio (candidato_id, beneficio_id) 
+                    VALUES ({$candidato->getId()}, {$beneficio->getId()})";
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
         }
