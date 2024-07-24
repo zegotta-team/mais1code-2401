@@ -1,36 +1,36 @@
 <?php
 class VagaBeneficio
 {
-   private Vaga $vaga;
-   private Beneficio $beneficio;
+   private $vagaId;
+   private $beneficioId;
    private $informacao;
 
-   public function __construct($vaga, $beneficio, $informacao)
+   public function __construct($vagaId, $beneficioId, $informacao)
    {
-        $this->setVaga($vaga);
-        $this->setBeneficio($beneficio);
+        $this->setVagaId($vagaId);
+        $this->setBeneficioId($beneficioId);
         $this->setInformacao($informacao);
    }
 
-   public function getVaga()
+   public function getVagaId()
    {
-        return $this->vaga;
+        return $this->vagaId;
    }
 
-   public function setVaga($vaga)
+   public function setVagaId($vagaId)
    {
-        $this->vaga = $vaga;
+        $this->vagaId = $vagaId;
         return $this;
    }
 
-   public function getBeneficio()
+   public function getBeneficioId()
    {
-        return $this->beneficio;
+        return $this->beneficioId;
    }
 
-   public function setBeneficio($beneficio)
+   public function setBeneficioId($beneficioId)
    {
-        $this->beneficio = $beneficio;
+        $this->beneficioId = $beneficioId;
         return $this;
    }
 

@@ -138,16 +138,9 @@ class VagaController
     public function salvar()
     {
         AutenticacaoController::exigeSessao();
-        
-        $filial = FilialDTO::recuperar($_POST['filial']);
-        
-        $beneficios = [];
 
-        // echo '<pre>';
-        // var_dump($beneficios);
-        // die();
-        // header('Location: /vaga/listar');
-        
+        $filial = FilialDTO::recuperar($_POST['filial']);
+
         $habilidades = [];
         if (!empty($_POST['habilidade'])) {
             foreach ($_POST['habilidade'] as $habilidadeId) {
@@ -156,23 +149,19 @@ class VagaController
         }
 
         if (empty($_POST['vagaId'])) {
-            $vaga = new Vaga($filial, $_SESSION['usuario']->getEmpresa(), $_POST['titulo'], $_POST['email'], $_POST['salario'], $beneficios, $_POST['descricao'], $_POST['cargaHoraria'], $_POST['regimeContratacao'], $_POST['regimeTrabalho'], $_POST['nivelSenioridade'], $_POST['nivelHierarquia'], $_POST['status'], $habilidades);
-            foreach ($beneficios as $beneficio){
-                $vagaBeneficio = new VagaBeneficio($vaga, $beneficio, $_POST['informacao']);
-                VagaBeneficioDTO::salvar($vagaBeneficio);
-            }
+            $vaga = new Vaga($filial, $_SESSION['usuario']->getEmpresa(), $_POST['titulo'], $_POST['email'], $_POST['salario'], $_POST['descricao'], $_POST['cargaHoraria'], $_POST['regimeContratacao'], $_POST['regimeTrabalho'], $_POST['nivelSenioridade'], $_POST['nivelHierarquia'], VagaStatusEnum::Ativa->value, $habilidades, []);
+
         } else {
             $vaga = VagaDTO::recuperar($_POST['vagaId']);
-            $vagaBeneficios = VagaBeneficioDTO::listar($vaga->getId());
-            
-            foreach ($vagaBeneficios as $vagaBeneficio){
-                $vagaBeneficio->setInformacao($_POST['informacao']);
-                echo '<pre>';
-                var_dump($_POST);
-                die();
-                VagaBeneficioDTO::salvar($vagaBeneficio);
+
+            $beneficios = [];
+            foreach ($_POST['beneficio'] as $indice => $beneficioId) {
+                $beneficio = BeneficioDTO::recuperar($beneficioId);
+                $informacao = $_POST['informacao'][$indice];
+
+                $vagaBeneficio = new VagaBeneficio($vaga->getId(), $beneficio->getId(), $informacao);
+                $beneficios[] = $vagaBeneficio;
             }
-            
 
             if (empty($vaga)) {
                 FlashMessage::addMessage('Vaga não encontrada', FlashMessage::FLASH_ERROR);
@@ -183,7 +172,7 @@ class VagaController
                 FlashMessage::addMessage('Sai pilantra, a vaga não é sua', FlashMessage::FLASH_ERROR);
                 exit();
             }
-            
+
             $vaga->setFilial($filial)
                 ->setTitulo($_POST['titulo'])
                 ->setEmail($_POST['email'])
@@ -195,12 +184,29 @@ class VagaController
                 ->setNivelSenioridade($_POST['nivelSenioridade'])
                 ->setNivelHierarquico($_POST['nivelHierarquia'])
                 ->setStatus($_POST['status'])
-                ->setHabilidades($habilidades);
-            }
-            VagaDTO::salvar($vaga);
-            FlashMessage::addMessage('Dados gravados com sucesso');
+                ->setHabilidades($habilidades)
+                ->setBeneficios($beneficios);
         }
-        
+
+        VagaDTO::salvar($vaga);
+
+        if (empty($_POST['vagaId'])) {
+            $beneficios = [];
+            foreach ($_POST['beneficio'] as $indice => $beneficioId) {
+                $beneficio = BeneficioDTO::recuperar($beneficioId);
+                $informacao = $_POST['informacao'][$indice];
+
+                $vagaBeneficio = new VagaBeneficio($vaga->getId(), $beneficio->getId(), $informacao);
+                $beneficios[] = $vagaBeneficio;
+            }
+            $vaga->setBeneficios($beneficios);
+            VagaDTO::salvar($vaga);
+        }
+
+        FlashMessage::addMessage('Dados gravados com sucesso');
+        header('Location: /vaga/listar');
+    }
+
     public function editar()
     {
         AutenticacaoController::exigeSessao();
@@ -208,13 +214,7 @@ class VagaController
         $idVaga = $_GET['id'];
         $filiais = FilialDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
         $vaga = VagaDTO::recuperar($idVaga);
-
         $beneficios = BeneficioDTO::listar();
-
-        $vagaBeneficio = VagaBeneficioDTO::listar($idVaga);
-        // echo '<pre>';
-        // var_dump($vagaBeneficio);
-        // die();
 
         $categorias = CategoriaHabilidadeDTO::listar();
         foreach ($categorias as $categoria) {

@@ -108,11 +108,13 @@
             </div>
             <?php
             /** @var array<Beneficio> $beneficios */
-            foreach ($beneficios as $beneficio) : ?>
+            foreach ($beneficios as $beneficio) :
+                $vagaBeneficio = isset($vaga) ? $vaga->temBeneficioId($beneficio->getId()) : false;
+                ?>
                 <div class="col-4 mb-3 beneficio-item" style="text-wrap: nowrap;" title="<?= $beneficio->getNome() ?>">
-                    <input type="checkbox" class="form-check-input" name="beneficio[]" id="beneficio<?= $beneficio->getId() ?>" value="<?= $beneficio->getId() ?>">
+                    <input type="checkbox" class="form-check-input" name="beneficio[<?= $beneficio->getId() ?>]" id="beneficio<?= $beneficio->getId() ?>" value="<?= $beneficio->getId() ?>" <?= $vagaBeneficio !== false ? 'checked' : ''?>>
                     <label class="form-check-label ms-1 text-truncate" style="max-width: 80%;" for="beneficio<?= $beneficio->getId() ?>"><?= $beneficio->getNome() ?></label>
-                    <input type="text" class="form-control" id="informacao" name="informacao[]">
+                    <input type="text" class="form-control" id="informacao" name="informacao[<?= $beneficio->getId() ?>]" value="<?= $vagaBeneficio !== false ? $vagaBeneficio->getInformacao() : ''?>">
                 </div>
             <?php endforeach; ?>
         </div>

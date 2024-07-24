@@ -16,9 +16,10 @@ class Vaga
     private $nivelHierarquico;
     private $status;
     private $habilidades;
+    private $beneficios;
 
 
-    public function __construct($filial, $empresa, $titulo, $email, $salario, $descricao, $cargaHoraria, $regimeContratacao, $regimeTrabalho, $nivelSenioridade, $nivelHierarquico, $status, $habilidades)
+    public function __construct($filial, $empresa, $titulo, $email, $salario, $descricao, $cargaHoraria, $regimeContratacao, $regimeTrabalho, $nivelSenioridade, $nivelHierarquico, $status, $habilidades, $beneficios)
     {
         $this->setFilial($filial);
         $this->setEmpresa($empresa);
@@ -33,6 +34,7 @@ class Vaga
         $this->setNivelHierarquico($nivelHierarquico);
         $this->setStatus($status);
         $this->setHabilidades($habilidades);
+        $this->setBeneficios($beneficios);
     }
 
     public function getId()
@@ -193,11 +195,40 @@ class Vaga
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getBeneficios()
+    {
+        return $this->beneficios;
+    }
+
+    /**
+     * @param mixed $beneficios
+     * @return Vaga
+     */
+    public function setBeneficios($beneficios)
+    {
+        $this->beneficios = $beneficios;
+        return $this;
+    }
+
     public function temHabilidadeId($id)
     {
         foreach ($this->habilidades as $habilidade) {
             if ($id === $habilidade->getId()) {
                 return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function temBeneficioId($id)
+    {
+        foreach ($this->beneficios as $beneficio) {
+            if ($id === $beneficio->getBeneficioId()) {
+                return $beneficio;
             }
         }
 
