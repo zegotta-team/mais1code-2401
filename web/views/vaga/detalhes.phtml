@@ -1,4 +1,4 @@
-<?php /** @var Vaga $vaga */?>
+<?php /** @var Vaga $vaga */ ?>
 <div class="max-w-screen-lg mx-auto px-4 xl:px-0 pt-5 pb-10">
     <div class="breadcrumbs text-sm">
         <ul>
@@ -50,7 +50,7 @@
             <span class="font-medium uppercase text-accent"><?= $vaga->getEmpresa()->getNome() ?></span>
         </div>
         <div class="h-14 w-14">
-            <img src="<?=$vaga->getEmpresa()->getLogo()?>" width="56" height="56" class="object-cover w-full h-full rounded-full" alt="Logo <?= $vaga->getEmpresa()->getNome() ?>"/>
+            <img src="<?= $vaga->getEmpresa()->getLogo() ?>" width="56" height="56" class="object-cover w-full h-full rounded-full" alt="Logo <?= $vaga->getEmpresa()->getNome() ?>"/>
         </div>
     </div>
     <div class="px-4 pt-2 pb-4 bg-base-100 shadow rounded-lg mt-4 flex flex-col gap-4">
@@ -110,10 +110,15 @@
                     <path clip-rule="evenodd" d="m11.54 22.351.07.04.028.016a.76.76 0 0 0 .723 0l.028-.015.071-.041a16.975 16.975 0 0 0 1.144-.742 19.58 19.58 0 0 0 2.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 0 0-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 0 0 2.682 2.282 16.975 16.975 0 0 0 1.145.742ZM12 13.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" fill-rule="evenodd"></path>
                 </svg>
                 <span><?= "{$vaga->getFilial()->getBairro()} - {$vaga->getFilial()->getCidade()}, {$vaga->getFilial()->getEstado()}" ?></span>
-                <a target="_blank" href="https://www.google.com/maps/search/?api=1&query=<?= join("+", [$vaga->getFilial()->getBairro(), $vaga->getFilial()->getCidade(), $vaga->getFilial()->getEstado()]) ?>">
-                    <svg class="w-6 h-6" data-slot="icon" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z"/>
+            </div>
+        </div>
+        <div class="flex flex-wrap gap-x-4 gap-y-2">
+            <div class="flex items-center gap-1">
+               <a class="flex items-center gap-1" target="_blank" href="https://www.google.com/maps/search/?api=1&query=<?= urlencode("{$vaga->getFilial()->getBairro()} - {$vaga->getFilial()->getCidade()}, {$vaga->getFilial()->getEstado()}") ?>" title="Ver no Google Maps®">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z"/>
                     </svg>
+                   Veja a localização no Google Maps
                 </a>
             </div>
         </div>

@@ -72,9 +72,3 @@ INNER JOIN candidato c ON n.candidato_id = c.id;
 SELECT *
 FROM notificacoes n
 INNER JOIN empresa e ON n.empresa_id = e.id;
-
--- candidato com beneficios
-SELECT c.*, b.*
-FROM candidato c
-LEFT JOIN candidato_beneficio cb ON cb.candidato_id = c.id
-LEFT JOIN beneficios b ON b.id = cb.beneficio_id;
