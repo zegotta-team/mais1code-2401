@@ -8,7 +8,6 @@ class Vaga
     private $titulo;
     private $email;
     private $salario;
-    private $beneficios;
     private $descricao;
     private $cargaHoraria;
     private $regimeContratacao;
@@ -19,14 +18,13 @@ class Vaga
     private $habilidades;
 
 
-    public function __construct($filial, $empresa, $titulo, $email, $salario, $beneficios, $descricao, $cargaHoraria, $regimeContratacao, $regimeTrabalho, $nivelSenioridade, $nivelHierarquico, $status, $habilidades)
+    public function __construct($filial, $empresa, $titulo, $email, $salario, $descricao, $cargaHoraria, $regimeContratacao, $regimeTrabalho, $nivelSenioridade, $nivelHierarquico, $status, $habilidades)
     {
         $this->setFilial($filial);
         $this->setEmpresa($empresa);
         $this->setTitulo($titulo);
         $this->setEmail($email);
         $this->setSalario($salario);
-        $this->setBeneficios($beneficios);
         $this->setDescricao($descricao);
         $this->setCargaHoraria($cargaHoraria);
         $this->setRegimeContratacao($regimeContratacao);
@@ -101,17 +99,6 @@ class Vaga
     public function getSalario()
     {
         return $this->salario;
-    }
-
-    public function setBeneficios($Beneficios)
-    {
-        $this->beneficios = $Beneficios;
-        return $this;
-    }
-
-    public function getBeneficios()
-    {
-        return $this->beneficios;
     }
 
     public function setDescricao($Descricao)
@@ -241,7 +228,6 @@ class Vaga
             '{salario}' => $this->getSalario(),
             '{niveis}' => $textoNivelHierarquico . ' ' . $textoNivelSenioridade,
             '{localidade}' => $this->getFilial()->getCidade() . ', ' . $this->getFilial()->getEstado(),
-            '{beneficios}' => $this->getBeneficios(),
             '{descricao}' => $this->getDescricao(),
             '{cargaHoraria}' => $this->getCargaHoraria(),
         ];

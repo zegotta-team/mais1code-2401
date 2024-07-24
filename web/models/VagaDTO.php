@@ -12,7 +12,7 @@ abstract class VagaDTO implements DTOInterface
         $habilidades = HabilidadeDTO::listar('', $dados['id']);
 
 
-        $vaga = new Vaga($filial, $empresa, $dados['titulo'], $dados['email'], $dados['salario'], $dados['beneficios'], $dados['descricao'], $dados['cargaHoraria'], $dados['regimeContratacao'], $dados['regimeTrabalho'], $dados['nivelSenioridade'], $dados['nivelHierarquia'], $dados['status'], $habilidades);
+        $vaga = new Vaga($filial, $empresa, $dados['titulo'], $dados['email'], $dados['salario'], $dados['descricao'], $dados['cargaHoraria'], $dados['regimeContratacao'], $dados['regimeTrabalho'], $dados['nivelSenioridade'], $dados['nivelHierarquia'], $dados['status'], $habilidades);
         $vaga->setId($dados['id']);
 
         return $vaga;
@@ -23,15 +23,14 @@ abstract class VagaDTO implements DTOInterface
 
         $pdo = static::conectarDB();
         if (empty($vaga->getId())) {
-            $sql = "INSERT INTO vaga (filial_id, empresa_id, titulo, email, salario, beneficios, descricao, cargaHoraria, regimeContratacao, regimeTrabalho, nivelSenioridade, nivelHierarquia, status) 
-                    VALUES ({$vaga->getFilial()->getId()}, {$vaga->getEmpresa()->getId()}, \"{$vaga->getTitulo()}\", \"{$vaga->getEmail()}\", {$vaga->getSalario()}, \"{$vaga->getBeneficios()}\", \"{$vaga->getDescricao()}\", \"{$vaga->getCargaHoraria()}\", \"{$vaga->getRegimeContratacao()}\", \"{$vaga->getRegimeTrabalho()}\", \"{$vaga->getNivelSenioridade()}\", \"{$vaga->getNivelHierarquico()}\", \"{$vaga->getStatus()}\")";
+            $sql = "INSERT INTO vaga (filial_id, empresa_id, titulo, email, salario, descricao, cargaHoraria, regimeContratacao, regimeTrabalho, nivelSenioridade, nivelHierarquia, status) 
+                    VALUES ({$vaga->getFilial()->getId()}, {$vaga->getEmpresa()->getId()}, \"{$vaga->getTitulo()}\", \"{$vaga->getEmail()}\", {$vaga->getSalario()}, \"{$vaga->getDescricao()}\", \"{$vaga->getCargaHoraria()}\", \"{$vaga->getRegimeContratacao()}\", \"{$vaga->getRegimeTrabalho()}\", \"{$vaga->getNivelSenioridade()}\", \"{$vaga->getNivelHierarquico()}\", \"{$vaga->getStatus()}\")";
         } else {
             $sql = "UPDATE vaga SET ";
             $sql .= "filial_id = '{$vaga->getFilial()->getId()}', ";
             $sql .= "titulo = '{$vaga->getTitulo()}', ";
             $sql .= "email = '{$vaga->getEmail()}', ";
             $sql .= "salario = '{$vaga->getSalario()}', ";
-            $sql .= "beneficios = '{$vaga->getBeneficios()}', ";
             $sql .= "descricao = '{$vaga->getDescricao()}', ";
             $sql .= "cargaHoraria = '{$vaga->getCargaHoraria()}', ";
             $sql .= "regimeContratacao = '{$vaga->getRegimeContratacao()}', ";

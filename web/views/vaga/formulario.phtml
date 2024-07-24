@@ -43,12 +43,6 @@
             </div>
         </div>
         <div class="row g-3 align-items-center mb-2">
-            <div class="col-md-12 form-floating">
-                <textarea class="form-control" name="beneficios" id="beneficios" style="min-height: 100px;"><?= isset($vaga) ? $vaga->getBeneficios() : '' ?></textarea>
-                <label for="beneficios" class="col-form-label">Benefícios</label>
-            </div>
-        </div>
-        <div class="row g-3 align-items-center mb-2">
             <!-- REGIME DE CONTRATAÇÃO -->
             <div class="col-md-4 form-floating">
                 <select class="form-control form-select" name="regimeContratacao" id="regimeContratacao" required>
@@ -103,6 +97,24 @@
                 </select>
                 <label for="nivelHierarquia" class="col-form-label">Nível hierárquico</label>
             </div>
+        </div>
+        <div class="row g-3 align-items-center mb-2">
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <label class="col-form-label col-md-2">Beneficios</label>
+                <div class="input-group w-25 ms-3">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Filtrar beneficios...">
+                </div>
+            </div>
+            <?php
+            /** @var array<Beneficio> $beneficios */
+            foreach ($beneficios as $beneficio) : ?>
+                <div class="col-4 mb-3 beneficio-item" style="text-wrap: nowrap;" title="<?= $beneficio->getNome() ?>">
+                    <input type="checkbox" class="form-check-input" name="beneficio[]" id="beneficio<?= $beneficio->getId() ?>" value="<?= $beneficio->getId() ?>">
+                    <label class="form-check-label ms-1 text-truncate" style="max-width: 80%;" for="beneficio<?= $beneficio->getId() ?>"><?= $beneficio->getNome() ?></label>
+                    <input type="text" class="form-control" id="informacao" name="informacao[]">
+                </div>
+            <?php endforeach; ?>
         </div>
         <div class="row g-3 align-items-center mb-2">
             <div class="col-12 d-flex justify-content-between align-items-center">
