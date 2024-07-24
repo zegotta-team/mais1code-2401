@@ -10,9 +10,9 @@ abstract class VagaDTO implements DTOInterface
         $empresa = EmpresaDTO::recuperar($dados['empresa_id']);
         $filial = FilialDTO::recuperar($dados['filial_id']);
         $habilidades = HabilidadeDTO::listar('', $dados['id']);
+        $vagaBeneficios = VagaBeneficioDTO::listar($dados['id']);
 
-
-        $vaga = new Vaga($filial, $empresa, $dados['titulo'], $dados['email'], $dados['salario'], $dados['beneficios'], $dados['descricao'], $dados['cargaHoraria'], $dados['regimeContratacao'], $dados['regimeTrabalho'], $dados['nivelSenioridade'], $dados['nivelHierarquia'], $dados['status'], $habilidades);
+        $vaga = new Vaga($filial, $empresa, $dados['titulo'], $dados['email'], $dados['salario'], $dados['descricao'], $dados['cargaHoraria'], $dados['regimeContratacao'], $dados['regimeTrabalho'], $dados['nivelSenioridade'], $dados['nivelHierarquia'], $dados['status'], $habilidades, $vagaBeneficios);
         $vaga->setId($dados['id']);
 
         return $vaga;
@@ -20,18 +20,18 @@ abstract class VagaDTO implements DTOInterface
 
     public static function salvar($vaga)
     {
+        /** @var Vaga $vaga */
 
         $pdo = static::conectarDB();
         if (empty($vaga->getId())) {
-            $sql = "INSERT INTO vaga (filial_id, empresa_id, titulo, email, salario, beneficios, descricao, cargaHoraria, regimeContratacao, regimeTrabalho, nivelSenioridade, nivelHierarquia, status) 
-                    VALUES ({$vaga->getFilial()->getId()}, {$vaga->getEmpresa()->getId()}, \"{$vaga->getTitulo()}\", \"{$vaga->getEmail()}\", {$vaga->getSalario()}, \"{$vaga->getBeneficios()}\", \"{$vaga->getDescricao()}\", \"{$vaga->getCargaHoraria()}\", \"{$vaga->getRegimeContratacao()}\", \"{$vaga->getRegimeTrabalho()}\", \"{$vaga->getNivelSenioridade()}\", \"{$vaga->getNivelHierarquico()}\", \"{$vaga->getStatus()}\")";
+            $sql = "INSERT INTO vaga (filial_id, empresa_id, titulo, email, salario, descricao, cargaHoraria, regimeContratacao, regimeTrabalho, nivelSenioridade, nivelHierarquia, status) 
+                    VALUES ({$vaga->getFilial()->getId()}, {$vaga->getEmpresa()->getId()}, \"{$vaga->getTitulo()}\", \"{$vaga->getEmail()}\", {$vaga->getSalario()}, \"{$vaga->getDescricao()}\", \"{$vaga->getCargaHoraria()}\", \"{$vaga->getRegimeContratacao()}\", \"{$vaga->getRegimeTrabalho()}\", \"{$vaga->getNivelSenioridade()}\", \"{$vaga->getNivelHierarquico()}\", \"{$vaga->getStatus()}\")";
         } else {
             $sql = "UPDATE vaga SET ";
             $sql .= "filial_id = '{$vaga->getFilial()->getId()}', ";
             $sql .= "titulo = '{$vaga->getTitulo()}', ";
             $sql .= "email = '{$vaga->getEmail()}', ";
             $sql .= "salario = '{$vaga->getSalario()}', ";
-            $sql .= "beneficios = '{$vaga->getBeneficios()}', ";
             $sql .= "descricao = '{$vaga->getDescricao()}', ";
             $sql .= "cargaHoraria = '{$vaga->getCargaHoraria()}', ";
             $sql .= "regimeContratacao = '{$vaga->getRegimeContratacao()}', ";
@@ -48,17 +48,27 @@ abstract class VagaDTO implements DTOInterface
         if (empty($vaga->getId())) {
             $vaga->setId($pdo->lastInsertId());
         }
+
         $sql = "DELETE FROM vaga_habilidade WHERE vaga_id = {$vaga->getId()}";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
+
         if (!empty($vaga->getHabilidades())) {
-
             foreach ($vaga->getHabilidades() as $habilidade) {
-
                 $sql = "INSERT INTO vaga_habilidade(vaga_id, habilidade_id) 
                         VALUES(\"{$vaga->getId()}\",\"{$habilidade->getId()}\" )";
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute();
+            }
+        }
+
+        foreach (VagaBeneficioDTO::listar($vaga->getId()) as $beneficio) {
+            VagaBeneficioDTO::deletar($beneficio);
+        }
+
+        if (!empty($vaga->getBeneficios())) {
+            foreach ($vaga->getBeneficios() as $beneficio) {
+                VagaBeneficioDTO::salvar($beneficio);
             }
         }
     }
@@ -118,8 +128,8 @@ abstract class VagaDTO implements DTOInterface
         $sql .= !empty($filtro_trabalho) ? "AND v.regimeTrabalho IN ($filtro_trabalho) " : "";
         $sql .= !empty($filtro_estado) ? "AND f.estado IN ($filtro_estado) " : "";
         $sql .= !empty($filtro_habilidade) ? "AND vh.habilidade_id IN ($filtro_habilidade) " : "";
-        $sql .= isset($filtro_salarioDe)  ? "AND v.salario >= $filtro_salarioDe " : "";
-        $sql .= isset($filtro_salarioAte)  ? "AND v.salario <= $filtro_salarioAte " : "";
+        $sql .= isset($filtro_salarioDe) ? "AND v.salario >= $filtro_salarioDe " : "";
+        $sql .= isset($filtro_salarioAte) ? "AND v.salario <= $filtro_salarioAte " : "";
         $sql .= "GROUP BY v.id ";
         $sql .= !empty($ordenacao) ? "ORDER BY {$ordenacao->value}" : '';
 

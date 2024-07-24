@@ -22,7 +22,6 @@ CREATE TABLE vaga
     titulo            TEXT    NOT NULL,
     email             TEXT    NOT NULL,
     salario           INTEGER NOT NULL,
-    beneficios        TEXT,
     descricao         TEXT    NOT NULL,
     cargaHoraria      INTEGER NOT NULL,
     regimeContratacao INTEGER NOT NULL,
