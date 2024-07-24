@@ -8,84 +8,15 @@ class AutenticacaoController
 
     public function index()
     {
-        AutenticacaoController::renegaSessao();
+        UsuarioController::renegaSessao();
+        CandidatoController::renegaSessao();
 
-        if (isset($_COOKIE['usuario'])) {
-            $usuarioLembrado = $_COOKIE['usuario'];
-        } else {
-            $usuarioLembrado = '';
-        }
+        $tab = $_GET['tab'] ?? '';
 
-        View::renderizar('autenticacao/login', compact('usuarioLembrado'), 'login');
-    }
+        $usuarioLembrado = $_COOKIE['usuario'] ?? '';
+        $candidatoLembrado = $_COOKIE['candidato'] ?? '';
 
-    public function processaLogin()
-    {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        $email = $_POST['email'];
-        $senha = $_POST['senha'];
-        $remember = isset($_POST['remember_me']);
-
-        if ($remember) {
-            setcookie("usuario", $email, time() + 3600 * 24 * 30 * 12 * 100);
-        } else {
-            setcookie("usuario", "", time() - 3600);
-        }
-
-        $usuario = UsuarioDTO::autenticar($email, $senha);
-
-        if (!empty($usuario)) {
-            header('Location: /vaga/listar');
-            $_SESSION['usuario'] = $usuario;
-        } else {
-            header('Location: /autenticacao');
-            $_SESSION['usuario'] = null;
-            FlashMessage::addMessage('Falha ao autenticar', FlashMessage::FLASH_ERROR);
-        }
-    }
-
-    public function processaLogout()
-    {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-        session_destroy();
-        header('Location: /');
-    }
-
-    public static function exigeSessao()
-    {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-        if (empty($_SESSION['usuario'])) {
-            header("Location: /autenticacao/");
-            die();
-        }
-
-    }
-
-    public static function renegaSessao()
-    {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        if (!empty($_SESSION['usuario'])) {
-            header("Location: /vaga/listar");
-        }
-    }
-
-    public static function estaLogado()
-    {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        return !empty($_SESSION['usuario']);
+        View::renderizar('autenticacao/login', compact('usuarioLembrado', 'candidatoLembrado', 'tab'), 'login');
     }
 
 }

@@ -1,76 +1,109 @@
-<?php FlashMessage::getMessage() ?>
+<div class="mx-auto max-w-7xl border p-4 rounded-xl bg-white mt-10 mb-20">
+    <?php echo FlashMessage::getMessage(); ?>
 
-<div class="container container-sm w-75 form-bg-white pt-4 pb-4">
     <form action="/candidato/processaCadastrar" method="post">
         <input type="hidden" name="status" id="status" value="1">
-        <div class="row gy-3 gy-md-4 overflow-hidden">
-            <div class="col-md-6 form-floating">
-                <input type="text" class="form-control" name="nome" id="nome" required>
-                <label for="nome" class="form-label">Nome Completo *</label>
-            </div>
-            <div class="col-md-6 form-floating">
-                <input type="text" class="form-control" name="cpf" id="cpf" minlength="11" maxlength="11" required>
-                <label for="cpf" class="form-label">CPF *</label>
-            </div>
-            <div class="col-6 form-floating">
-                <input type="email" class="form-control" name="email" id="email" maxlength="30" required>
-                <label for="email" class="form-label">Email *</label>
-                <div class="notification" id="notification">
-                    mail@exemplo.com
+        <div class="flex space-x-2">
+            <label class="form-control w-1/2">
+                <div class="label">
+                    <span class="label-text">E-mail</span>
                 </div>
-            </div>
-            <div class="col-6 form-floating">
-            <input type="password" class="form-control" name="senha" id="senha" minlength="8" required>
-                <label for="senha" class="form-label">Senha *</label>
-                <div class="notification" id="notification">
-                    mínimo 8 caracteres
+                <input type="email" name="email" id="email" required placeholder="" class="input input-bordered w-full"/>
+                <div class="label">
+                    <span class="label-text-alt">Esse e-mail será seu login</span>
                 </div>
-            </div>
-            <div class="col-12 form-floating">
-                <textarea class="form-control" name="habilidades" id="habilidades" required style="min-height: 100px"></textarea>
-                <label for="habilidades" class="form-label">Habilidades *</label>
-            </div>
-            <div class="col-12 form-floating">
-                <input type="text" class="form-control" name="endereco" id="endereco" required>
-                <label for="endereco" class="form-label">Endereço *</label>
-            </div>
-            <div class="col-3 form-floating">
-                <input type="date" class="form-control" name="nascimento" id="nascimento" required>
-                <label for="nascimento" class="form-label">Data de nascimento *</label>
-            </div>
-            <div class="col-3 form-floating">
-                <select class="form-control form-select" name="disponibilidade" id="disponibilidade">
+            </label>
+            <label class="form-control w-1/2">
+                <div class="label">
+                    <span class="label-text">Senha</span>
+                </div>
+                <input type="password" name="senha" id="senha" required minlength="8" placeholder="" class="input input-bordered w-full"/>
+                <div class="label">
+                    <span class="label-text-alt">Mínimo 8 caracteres</span>
+                </div>
+            </label>
+        </div>
+        <div class="divider"></div>
+        <div class="flex space-x-2 mt-5">
+            <label class="form-control w-1/2">
+                <div class="label">
+                    <span class="label-text">Nome completo</span>
+                </div>
+                <input type="text" name="nome" id="nome" required placeholder="" class="input input-bordered w-full"/>
+            </label>
+            <label class="form-control w-1/4">
+                <div class="label">
+                    <span class="label-text">CPF</span>
+                </div>
+                <input type="text" name="cpf" id="cpf" minlength="11" maxlength="11" required placeholder="" class="input input-bordered w-full" oninput="this.value = this.value.replace(/[^0-9]/g, '');"/>
+            </label>
+            <label class="form-control w-1/4">
+                <div class="label">
+                    <span class="label-text">Data de nascimento</span>
+                </div>
+                <input type="date" name="nascimento" id="nascimento" required placeholder="" class="input input-bordered w-full"/>
+            </label>
+        </div>
+        <div class="flex space-x-2 mt-5">
+            <label class="form-control w-full">
+                <div class="label">
+                    <span class="label-text">Endereço</span>
+                </div>
+                <input type="text" name="endereco" id="endereco" required placeholder="" class="input input-bordered w-full"/>
+            </label>
+        </div>
+        <div class="flex space-x-2 mt-5">
+            <label class="form-control w-1/3">
+                <div class="label">
+                    <span class="label-text">Disponibilidade</span>
+                </div>
+                <select class="select select-bordered" name="disponibilidade" id="disponibilidade">
                     <option value="" disabled selected>Selecione</option>
                     <option value="3">Disponibilidade Imediata</option>
                     <option value="2">Disponível após 30 dias</option>
                     <option value="1">Tempo Parcial</option>
                     <option value="0">Tempo Integral</option>
                 </select>
-                <label for="disponibilidade" class="form-label">Disponibilidade *</label>
-            </div>
-            <div class="col-3 form-floating">
-                <select class="form-control form-select" name="sexo" id="sexo">
+            </label>
+            <label class="form-control w-1/3">
+                <div class="label">
+                    <span class="label-text">Sexo</span>
+                </div>
+                <select class="select select-bordered" name="sexo" id="sexo">
                     <option value="" disabled selected>Selecione</option>
                     <?php foreach (SexoEnum::forSelect() as $value => $label): ?>
                         <option value="<?= $value ?>"><?= $label ?></option>
                     <?php endforeach; ?>
                 </select>
-                <label for="sexo" class="form-label">Sexo *</label>
-            </div>
-            <div class="col-3 form-floating">
-                <select class="form-control form-select" name="genero" id="genero">
+            </label>
+            <label class="form-control w-1/3">
+                <div class="label">
+                    <span class="label-text">Gênero</span>
+                </div>
+                <select class="select select-bordered" name="genero" id="genero">
                     <option value="" disabled selected>Selecione</option>
                     <option value="C">Cisgênero</option>
                     <option value="T">Transgênero</option>
                     <option value="O">Outro</option>
                 </select>
-                <label for="genero" class="form-label">Gênero *</label>
-            </div>
-            <div class="col-12">
-                <div class="d-grid">
-                    <button class="btn btn-primary" type="submit">Cadastrar</button>
-                </div>
-            </div>
+            </label>
+        </div>
+
+        <div class="mt-6 flex items-center justify-end">
+            <button class="btn btn-success btn-wide" type="submit">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                </svg>
+                Cadastrar
+            </button>
+        </div>
+
+        <div class="divider"></div>
+        <div class="flex items-center justify-center font-semibold mt-5">
+            Já possui cadastro?
+        </div>
+        <div class="flex items-center justify-center mt-2">
+            <a href="/autenticacao" class="btn btn-neutral font-bold btn-block">Efetue seu login!</a>
         </div>
     </form>
 </div>

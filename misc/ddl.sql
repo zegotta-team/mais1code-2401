@@ -72,6 +72,18 @@ CREATE TABLE candidato_vaga (
     PRIMARY KEY (candidato_id, vaga_id)
 );
 
+DROP TABLE notificacoes;
+CREATE TABLE notificacoes
+(
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    candidato_id INTEGER NOT NULL,
+    empresa_id   INTEGER NOT NULL,
+    titulo       TEXT    NOT NULL,
+    descricao    TEXT,
+    `status`     INTEGER NOT NULL,
+    data_hora    TEXT    NOT NULL
+);
+
 DROP TABLE filial;
 CREATE TABLE filial
 (
@@ -143,3 +155,20 @@ CREATE TABLE candidato_beneficio
     PRIMARY KEY (candidato_id, beneficio_id)
 );
 
+DROP TABLE propostas;
+CREATE TABLE propostas
+(
+    id_vaga INTEGER NOT NULL,
+    id_candidato INTEGER NOT NULL,
+    salario INTEGER NOT NULL,
+    regime_contratacao INTEGER NOT NULL ,
+    regime_trabalho INTEGER NOT NULL,
+    nivel_hierarquico INTEGER NOT NULL,
+    nivel_senioridade INTEGER NOT NULL,
+    cargo TEXT NOT NULL,
+    endereco TEXT NOT NULL,
+    expediente TEXT NOT NULL,
+    data_inicio TEXT NULL,
+    aceite INTEGER NOT NULL,
+    PRIMARY KEY(id_vaga, id_candidato)
+);

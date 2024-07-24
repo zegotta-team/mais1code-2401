@@ -1,4 +1,4 @@
-<?php /** @var Vaga $vaga */ ?>
+<?php /** @var Vaga $vaga */?>
 <div class="max-w-screen-lg mx-auto px-4 xl:px-0 pt-5 pb-10">
     <div class="breadcrumbs text-sm">
         <ul>
@@ -33,7 +33,7 @@
                     <?php endif; ?>
                 <?php endif ?>
             <?php else : ?>
-                <a class="btn btn-primary" href="/candidato/login">Quer se candidatar? Efetue Login</a>
+                <a class="btn btn-primary" href="/autenticacao">Quer se candidatar? Efetue Login</a>
             <?php endif; ?>
         <?php else : ?>
             <div role="alert" class="alert alert-warning flex">
@@ -50,7 +50,7 @@
             <span class="font-medium uppercase text-accent"><?= $vaga->getEmpresa()->getNome() ?></span>
         </div>
         <div class="h-14 w-14">
-            <img src="/assets/images/emblema-branco.png" width="56" height="56" class="object-cover w-full h-full rounded-full" alt="Logo Empresa X"/>
+            <img src="<?=$vaga->getEmpresa()->getLogo()?>" width="56" height="56" class="object-cover w-full h-full rounded-full" alt="Logo <?= $vaga->getEmpresa()->getNome() ?>"/>
         </div>
     </div>
     <div class="px-4 pt-2 pb-4 bg-base-100 shadow rounded-lg mt-4 flex flex-col gap-4">
