@@ -11,6 +11,7 @@ class VagaController
         $filtro_contratacao = $_POST['filtro_contratacao'] ?? [];
         $filtro_trabalho = $_POST['filtro_trabalho'] ?? [];
         $filtro_habilidades = $_POST['filtro_habilidades'] ?? [];
+        $filtro_beneficios = $_POST['filtro_beneficios'] ?? [];
         $filtro_empresas = $_POST['filtro_empresas'] ?? [];
         $filtro_estados = $_POST['filtro_estados'] ?? [];
         $filtro_hierarquia = $_POST['filtro_hierarquia'] ?? [];
@@ -22,6 +23,7 @@ class VagaController
         $idsTrabalho = join(',', $filtro_trabalho);
         $idsSenioridade = join(',', $filtro_senioridade);
         $idsHabilidades = join(',', $filtro_habilidades);
+        $idsBeneficios = join(',', $filtro_beneficios);
         $idsHierarquia = join(',', $filtro_hierarquia);
         $nomesEstados = !empty($filtro_estados) ? "'" . join("','", $filtro_estados) . "'" : '';
         $idsEmpresas = !empty($filtro_empresas) ? "'" . join("','", $filtro_empresas) . "'" : '';
@@ -38,11 +40,14 @@ class VagaController
             $idsTrabalho,
             $nomesEstados,
             $idsHabilidades,
+            $idsBeneficios,
             $filtro_salarioDe,
             $filtro_salarioAte,
         );
 
         $habilidades = HabilidadeDTO::listar();
+        $beneficios = BeneficioDTO::listar();
+
         $empresas = EmpresaDTO::listar();
 
         $filtros_badges = [];
@@ -51,6 +56,12 @@ class VagaController
             $habilidade = HabilidadeDTO::recuperar($id_habilidade);
             $filtros_badges[] = $habilidade->getHabilidade();
         }
+
+        foreach ($filtro_beneficios as $id_beneficio) {
+            $beneficio = BeneficioDTO::recuperar($id_beneficio);
+            $filtros_badges[] = $beneficio->getNome();
+        }
+
 
         foreach ($filtro_empresas as $id_empresa) {
             $empresa = EmpresaDTO::recuperar($id_empresa);
@@ -98,6 +109,7 @@ class VagaController
         View::renderizar('vaga/painel', compact(
             'vagas',
             'habilidades',
+            'beneficios',
             'empresas',
             'estados',
             'hierarquias',
@@ -107,6 +119,7 @@ class VagaController
             'filtro_empresas',
             'filtro_contratacao',
             'filtro_habilidades',
+            'filtro_beneficios',
             'filtro_empresas',
             'filtro_estados',
             'filtro_hierarquia',

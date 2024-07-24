@@ -15,6 +15,20 @@
             </div>
         </details>
         <details class="collapse collapse-arrow border border-base-300">
+            <summary class="collapse-title font-medium">Benefícios <?= !empty($filtro_beneficios) ? '<div class="badge badge-sm badge-accent">' . count($filtro_beneficios) . '</div>' : '' ?></summary>
+            <div class="collapse-content">
+                <?php /** @var array<Beneficio> $beneficios */
+                foreach ($beneficios as $beneficio) : ?>
+                    <div class="form-control">
+                        <label class="label justify-start gap-2 cursor-pointer">
+                            <input type="checkbox" class="checkbox checkbox-primary" name="filtro_beneficios[]" id="beneficio_<?= $beneficio->getId() ?>" value="<?= $beneficio->getId() ?>" <?= in_array($beneficio->getId(), $filtro_beneficios) ? 'checked' : '' ?> />
+                            <span class="label-text"><?= $beneficio->getNome() ?></span>
+                        </label>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </details>
+        <details class="collapse collapse-arrow border border-base-300">
             <summary class="collapse-title font-medium">Empresa <?= !empty($filtro_empresas) ? '<div class="badge badge-sm badge-accent">' . count($filtro_empresas) . '</div>' : '' ?></summary>
             <div class="collapse-content">
                 <?php /** @var array<Empresa> $empresas */

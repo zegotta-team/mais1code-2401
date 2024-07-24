@@ -108,7 +108,7 @@ abstract class VagaDTO implements DTOInterface
         return $retorno;
     }
 
-    public static function listar($empresaId = '', $filtro = '', $status = '', $filialId = '', $ordenacao = '', $filtro_hierarquia = '', $filtro_senioridade = '', $filtro_contratacao = '', $filtro_trabalho = '', $filtro_estado = '', $filtro_habilidade = '', $filtro_salarioDe = null, $filtro_salarioAte = null)
+    public static function listar($empresaId = '', $filtro = '', $status = '', $filialId = '', $ordenacao = '', $filtro_hierarquia = '', $filtro_senioridade = '', $filtro_contratacao = '', $filtro_trabalho = '', $filtro_estado = '', $filtro_habilidade = '', $filtro_beneficio = '', $filtro_salarioDe = null, $filtro_salarioAte = null)
     {
 
         $pdo = static::conectarDB();
@@ -117,6 +117,7 @@ abstract class VagaDTO implements DTOInterface
         $sql .= "INNER JOIN empresa e ON e.id = v.empresa_id ";
         $sql .= "INNER JOIN filial f ON f.id = v.filial_id ";
         $sql .= "LEFT JOIN vaga_habilidade vh ON vh.vaga_id = v.id ";
+        $sql .= "LEFT JOIN vaga_beneficio vb ON vb.vaga_id = v.id ";
         $sql .= "WHERE 1 ";
         $sql .= !empty($filtro) ? "AND (v.titulo LIKE '%{$filtro}%' OR v.email LIKE '%{$filtro}%' OR e.email LIKE '%{$filtro}%' OR e.nome LIKE '%{$filtro}%') " : "";
         $sql .= !empty($empresaId) ? "AND e.id IN ($empresaId) " : "";
@@ -128,6 +129,7 @@ abstract class VagaDTO implements DTOInterface
         $sql .= !empty($filtro_trabalho) ? "AND v.regimeTrabalho IN ($filtro_trabalho) " : "";
         $sql .= !empty($filtro_estado) ? "AND f.estado IN ($filtro_estado) " : "";
         $sql .= !empty($filtro_habilidade) ? "AND vh.habilidade_id IN ($filtro_habilidade) " : "";
+        $sql .= !empty($filtro_beneficio) ? "AND vb.beneficio_id IN ($filtro_beneficio) " : "";
         $sql .= isset($filtro_salarioDe) ? "AND v.salario >= $filtro_salarioDe " : "";
         $sql .= isset($filtro_salarioAte) ? "AND v.salario <= $filtro_salarioAte " : "";
         $sql .= "GROUP BY v.id ";
