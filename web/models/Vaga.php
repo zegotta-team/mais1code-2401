@@ -248,12 +248,19 @@ class Vaga
             $habilidades .= "<span class='badge badge-outline badge-sm sm:badge-md'>{$habilidade->getHabilidade()}</span>";
         }
 
+        $beneficios = '';
+        foreach ($this->getBeneficios() as $vagaBeneficio) {
+            $beneficio = BeneficioDTO::recuperar($vagaBeneficio->getBeneficioId());
+            $beneficios .= "<span class='badge badge-outline badge-sm sm:badge-md'>{$beneficio->getNome()}</span>";
+        }
+
         $replaces = [
             '{id}' => $this->getId(),
             '{vaga}' => $this->getTitulo(),
             '{empresa}' => $this->getEmpresa()->getNome(),
             '{logo}' => $this->getEmpresa()->getLogo(),
             '{habilidades}' => $habilidades,
+            '{beneficios}' => $beneficios,
             '{regimeContratacao}' => $textoRegimeContracao,
             '{regimeTrabalho}' => $textoRegimeTrabalho,
             '{salario}' => $this->getSalario(),

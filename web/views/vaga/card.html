@@ -42,6 +42,7 @@
         <div class="mt-4">
             <p>{descricao}</p>
         </div>
+
         <div class="card-actions justify-end mt-auto">
             <button class="btn btn-primary" onclick="modal_vaga_{id}.showModal()">Ver mais</button>
         </div>
@@ -95,13 +96,14 @@
             </div>
         </div>
         <div class="divider my-1"></div>
-        <p class="py-2">
-            <span class="text-base">Benefícios: </span>{beneficios}
-        </p>
         <p class="py-4">{descricao}</p>
-        <div class="flex flex-wrap gap-2 my-1">
+        <div class="flex flex-wrap gap-2 my-1 items-center">
             <span class="text-base">Habilidades:</span>
             {habilidades}
+        </div>
+        <div class="flex flex-wrap gap-2 my-1 items-center">
+            <span class="text-base">Benefícios:</span>
+            {beneficios}
         </div>
         <div class="modal-action">
             <form method="dialog">
