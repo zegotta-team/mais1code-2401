@@ -53,14 +53,6 @@
             </label>
         </div>
         <div class="flex space-x-2">
-            <label class="form-control w-full">
-                <div class="label">
-                    <span class="label-text">Benefícios</span>
-                </div>
-                <textarea name="beneficios" id="beneficios" required class="textarea textarea-bordered h-24 max-h-24 min-h-24"><?= isset($vaga) ? $vaga->getBeneficios() : '' ?></textarea>
-            </label>
-        </div>
-        <div class="flex space-x-2">
             <label class="form-control w-1/3">
                 <div class="label">
                     <span class="label-text">Filial da vaga</span>
@@ -120,29 +112,39 @@
                     <?php endforeach; ?>
                 </select>
             </label>
-                <label for="nivelHierarquia" class="col-form-label">Nível hierárquico</label>
-            </div>
         </div>
-        <div class="row g-3 align-items-center mb-2">
-            <div class="col-12 d-flex justify-content-between align-items-center">
-                <label class="col-form-label col-md-2">Beneficios</label>
-                <div class="input-group w-25 ms-3">
-                    <span class="input-group-text"><i class="fas fa-search"></i></span>
-                    <input type="text" id="searchInput" class="form-control" placeholder="Filtrar beneficios...">
-                </div>
+        <div class="my-8 p-2 flex justify-between bg-slate-100 rounded-lg items-center">
+            <div>
+                <h2 class="text-base font-semibold text-gray-900 card-title">Benefícios</h2>
             </div>
+            <label class="input input-sm input-bordered flex items-center gap-2">
+                <input type="text" class="grow" placeholder="Filtrar benefícios..." id="searchInputBeneficios" autocomplete="searchInputBeneficios"/>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4 opacity-70">
+                    <path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd"/>
+                </svg>
+            </label>
+        </div>
+        <div class="gap-3 mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6">
             <?php
             /** @var array<Beneficio> $beneficios */
             foreach ($beneficios as $beneficio) :
                 $vagaBeneficio = isset($vaga) ? $vaga->temBeneficioId($beneficio->getId()) : false;
                 ?>
-                <div class="col-4 mb-3 beneficio-item" style="text-wrap: nowrap;" title="<?= $beneficio->getNome() ?>">
-                    <input type="checkbox" class="form-check-input" name="beneficio[<?= $beneficio->getId() ?>]" id="beneficio<?= $beneficio->getId() ?>" value="<?= $beneficio->getId() ?>" <?= $vagaBeneficio !== false ? 'checked' : ''?>>
-                    <label class="form-check-label ms-1 text-truncate" style="max-width: 80%;" for="beneficio<?= $beneficio->getId() ?>"><?= $beneficio->getNome() ?></label>
-                    <input type="text" class="form-control" id="informacao" name="informacao[<?= $beneficio->getId() ?>]" value="<?= $vagaBeneficio !== false ? $vagaBeneficio->getInformacao() : ''?>">
+                <div class="form-control beneficio-item col-span-2">
+                    <div class="tooltip" data-tip="<?= $beneficio->getNome() ?>">
+                        <label for="beneficio<?= $beneficio->getId() ?>" class="label cursor-pointer justify-start gap-2">
+                            <input id="beneficio<?= $beneficio->getId() ?>" name="beneficio[<?= $beneficio->getId() ?>]" type="checkbox" value="<?= $beneficio->getId() ?>" class="checkbox checkbox-info" <?= $vagaBeneficio !== false ? 'checked' : '' ?>/>
+                            <span class="label-text truncate"><?= $beneficio->getNome() ?></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-control w-full beneficio-item">
+                    <label class="form-control w-full hidden"><span class="label-text truncate"><?= $beneficio->getNome() ?></span></label>
+                    <input type="text" class="input input-sm input-bordered w-full hidden" id="informacao<?= $beneficio->getId() ?>" name="informacao[<?= $beneficio->getId() ?>]" value="<?= $vagaBeneficio !== false ? $vagaBeneficio->getInformacao() : '' ?>">
                 </div>
             <?php endforeach; ?>
         </div>
+        <div class="divider"></div>
         <div class="my-8 p-2 flex justify-between bg-slate-100 rounded-lg items-center">
             <div>
                 <h2 class="text-base font-semibold text-gray-900 card-title">Habilidades</h2>
@@ -179,8 +181,6 @@
                 </div>
             </div>
         <?php endforeach; ?>
-
-
         <div class="mt-6 flex items-center justify-end">
             <button class="btn btn-success btn-wide" type="submit">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
@@ -229,7 +229,7 @@
                     <?php endif; ?>
                 </td>
                 <td class="border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 whitespace-nowrap">
-                    <?php if (!in_array($candidato_vaga->getStatus(), [CandidatoVagaStatusEnum::Desistencia->value, CandidatoVagaStatusEnum::Aprovado->value, CandidatoVagaStatusEnum::Reprovado->value])) : ?>
+                    <?php if (!in_array($candidato_vaga->getStatus(), [CandidatoVagaStatusEnum::Desistencia->value, CandidatoVagaStatusEnum::Aprovado->value, CandidatoVagaStatusEnum::Reprovado->value, CandidatoVagaStatusEnum::RecusouProposta->value, CandidatoVagaStatusEnum::Contratado->value])) : ?>
                         <div class="flex justify-center space-x-1">
                             <a class="btn btn-xs h-8 w-8 border btn-square text-white btn-error " href="/vaga/processaMudancaDeStatus?id=<?= $vaga->getId() ?>&candidatoId=<?= $candidato_vaga->getCandidato()->getId() ?>&resultado=0" title="Reprovar" role="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
@@ -243,15 +243,20 @@
                             </a>
                         </div>
                     <?php endif; ?>
-                    <?php if ($candidato_vaga->getStatus() == CandidatoVagaStatusEnum::Aprovado->value) : ?>
-                        <div class="flex justify-center space-x-1">
-                            <a class="btn btn-success btn-xs text-white" href="/propostas/cadastrar?id=<?= $vaga->getId() ?>&candidatoId=<?= $candidato_vaga->getCandidato()->getId() ?>" type="submit">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/>
-                                </svg>
 
-                                Efetuar Proposta
-                            </a>
+                    <?php if ($candidato_vaga->getStatus() == CandidatoVagaStatusEnum::Aprovado->value): ?>
+                        <div class="flex justify-center space-x-1">
+                            <?php if (!$candidato_vaga->temProposta()) : ?>
+                                <a class="btn btn-success btn-xs text-white" href="/proposta/cadastrar?id=<?= $vaga->getId() ?>&candidatoId=<?= $candidato_vaga->getCandidato()->getId() ?>" type="submit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/>
+                                    </svg>
+
+                                    Efetuar Proposta
+                                </a>
+                            <?php else: ?>
+                                <span>Aguardando resposta</span>
+                            <?php endif; ?>
                         </div>
                     <?php endif; ?>
                 </td>
@@ -277,5 +282,31 @@
                 }
             });
         });
+
+        document.getElementById('searchInputBeneficios').addEventListener('keyup', function () {
+            let searchTerm = this.value.toLowerCase();
+            let items = document.querySelectorAll('.beneficio-item');
+
+            items.forEach(function (item) {
+                let label = item.querySelector('label').textContent.toLowerCase();
+                if (label.includes(searchTerm)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        document.querySelectorAll("input[name^='beneficio']").forEach(function (item) {
+            item.addEventListener('change', function () {
+                let input = document.getElementById(this.id.replace('beneficio', 'informacao'))
+                if (this.checked) {
+                    input.classList.remove('hidden')
+                } else {
+                    input.classList.add('hidden')
+                }
+            });
+        })
+
     });
 </script>

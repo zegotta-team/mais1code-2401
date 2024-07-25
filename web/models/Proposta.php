@@ -1,6 +1,6 @@
 <?php
 
-class Propostas
+class Proposta
 {
     private Vaga $vaga;
     private Candidato $candidato;

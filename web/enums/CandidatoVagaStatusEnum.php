@@ -9,6 +9,8 @@ enum CandidatoVagaStatusEnum: int
     case EntrevistaComGestor = 4;
     case Aprovado = 5;
     case Reprovado = 6;
+    case Contratado = 7;
+    case RecusouProposta = 8;
 
     public function label(): string 
     {
@@ -19,7 +21,9 @@ enum CandidatoVagaStatusEnum: int
             CandidatoVagaStatusEnum::EntrevistaTecnica => 'Entrevista técnica',
             CandidatoVagaStatusEnum::EntrevistaComGestor => 'Entrevista com gestor',
             CandidatoVagaStatusEnum::Aprovado => 'Aprovado na vaga',
-            CandidatoVagaStatusEnum::Reprovado => 'Processo finalizado'
+            CandidatoVagaStatusEnum::Reprovado => 'Processo finalizado',
+            CandidatoVagaStatusEnum::Contratado => 'Contratado',
+            CandidatoVagaStatusEnum::RecusouProposta => 'Recusou a proposta de empresa'
         };
     }
 

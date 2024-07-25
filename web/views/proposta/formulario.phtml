@@ -3,7 +3,7 @@
     <h2 class="text-3xl font-bold">Proposta de contratação</h2>
 </div>
 <div class="mx-auto max-w-4xl border p-4 m-1 mb-20 rounded-xl bg-white">
-    <form method="post" action="/propostas/salvar">
+    <form method="post" action="/proposta/salvar">
         <input type="hidden" name="vaga" id="vaga" value="<?= $_GET['id'] ?>">
         <input type="hidden" name="candidato" id="candidato" value="<?= $_GET['candidatoId'] ?>">
         <div class="flex space-x-2">
@@ -88,7 +88,7 @@
                 <div class="label">
                     <span class="label-text">Data de início</span>
                 </div>
-                <input type="text" class="input input-bordered w-full" name="data_inicio" id="data_inicio">
+                <input type="date" class="input input-bordered w-full" name="data_inicio" id="data_inicio">
             </label>
         </div>
         <div class="mt-6 flex items-center justify-end">

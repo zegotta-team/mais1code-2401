@@ -108,7 +108,7 @@ class VagaController
         $layout = 'painel-vagas';
         if (CandidatoController::estaLogado()) {
             $layout = 'sistema-candidato';
-        } elseif (UsuarioController::estaLogado()){
+        } elseif (UsuarioController::estaLogado()) {
             $layout = 'sistema-usuario';
         }
 
@@ -236,6 +236,7 @@ class VagaController
         $beneficios = BeneficioDTO::listar();
 
         $categorias = CategoriaHabilidadeDTO::listar();
+        $habilidades = [];
         foreach ($categorias as $categoria) {
             $habilidades[$categoria->getNome()] = HabilidadeDTO::listar('', '', $categoria->getId());
         }
@@ -295,13 +296,16 @@ class VagaController
             $habilidadesDescrita .= ' ' . $habilidade->getHabilidade();
         }
 
+        $candidato_vaga = null;
+        $layout = 'painel-vagas';
+
         if (CandidatoController::estaLogado()) {
             $candidato_vaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(), $vaga->getId());
             $layout = 'sistema-candidato';
-        } else {
-            $candidato_vaga = null;
-            $layout = 'painel-vagas';
+        } elseif (UsuarioController::estaLogado()) {
+            $layout = 'sistema-usuario';
         }
+
         View::renderizar('vaga/detalhes', compact('vaga', 'candidato_vaga', 'habilidadesDescrita'), $layout);
     }
 
@@ -354,6 +358,6 @@ class VagaController
 
         CandidatoVagaDTO::salvar($candidatura);
 
-        header('Location: /vaga/editar?id=' . $_GET['id']."#candidatos");
+        header('Location: /vaga/editar?id=' . $_GET['id'] . "#candidatos");
     }
 }

@@ -11,39 +11,41 @@
             <li><?= $vaga->getTitulo() ?></li>
         </ul>
     </div>
-    <div class="flex justify-end">
-        <?php if ($vaga->getStatus() == VagaStatusEnum::Ativa->value) : ?>
-            <?php if (CandidatoController::estaLogado()) : ?>
-                <?php if (empty($candidato_vaga)) : ?>
-                    <a class="btn btn-primary" href="/vaga/processaCandidatura?id=<?= $vaga->getId() ?>">Quer se candidatar? Clique aqui </a>
-                <?php else : ?>
-                    <?php if ($candidato_vaga->getStatus() !== CandidatoVagaStatusEnum::Desistencia->value) : ?>
-                        <a class="btn btn-primary" href="/vaga/desistirCandidatura?id=<?= $vaga->getId() ?>">Deseja desistir da candidatura?</a>
+    <?php if (!UsuarioController::estaLogado()) : ?>
+        <div class="flex justify-end">
+            <?php if ($vaga->getStatus() == VagaStatusEnum::Ativa->value) : ?>
+                <?php if (CandidatoController::estaLogado()) : ?>
+                    <?php if (empty($candidato_vaga)) : ?>
+                        <a class="btn btn-primary" href="/vaga/processaCandidatura?id=<?= $vaga->getId() ?>">Quer se candidatar? Clique aqui </a>
                     <?php else : ?>
-                        <?php if ($candidato_vaga->desistenciaLiberada()) : ?>
-                            <a class="btn btn-primary" href="/vaga/processaCandidatura?id=<?= $vaga->getId() ?>">Quer se candidatar? Clique aqui </a>
+                        <?php if ($candidato_vaga->getStatus() !== CandidatoVagaStatusEnum::Desistencia->value) : ?>
+                            <a class="btn btn-primary" href="/vaga/desistirCandidatura?id=<?= $vaga->getId() ?>">Deseja desistir da candidatura?</a>
                         <?php else : ?>
-                            <div role="alert" class="alert alert-info flex">
-                                <svg class="w-5 h-5" data-slot="icon" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path clip-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z" fill-rule="evenodd"></path>
-                                </svg>
-                                <span>Aguarde 24 horas, para candidatar-se novamente!</span>
-                            </div>
+                            <?php if ($candidato_vaga->desistenciaLiberada()) : ?>
+                                <a class="btn btn-primary" href="/vaga/processaCandidatura?id=<?= $vaga->getId() ?>">Quer se candidatar? Clique aqui </a>
+                            <?php else : ?>
+                                <div role="alert" class="alert alert-info flex">
+                                    <svg class="w-5 h-5" data-slot="icon" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path clip-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z" fill-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Aguarde 24 horas, para candidatar-se novamente!</span>
+                                </div>
+                            <?php endif; ?>
                         <?php endif; ?>
-                    <?php endif; ?>
-                <?php endif ?>
+                    <?php endif ?>
+                <?php else : ?>
+                    <a class="btn btn-primary" href="/autenticacao">Quer se candidatar? Efetue Login</a>
+                <?php endif; ?>
             <?php else : ?>
-                <a class="btn btn-primary" href="/autenticacao">Quer se candidatar? Efetue Login</a>
+                <div role="alert" class="alert alert-warning flex">
+                    <svg class="w-5 h-5" data-slot="icon" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path clip-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" fill-rule="evenodd"></path>
+                    </svg>
+                    <span>Essa vaga já foi encerrada. =(</span>
+                </div>
             <?php endif; ?>
-        <?php else : ?>
-            <div role="alert" class="alert alert-warning flex">
-                <svg class="w-5 h-5" data-slot="icon" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path clip-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" fill-rule="evenodd"></path>
-                </svg>
-                <span>Essa vaga já foi encerrada. =(</span>
-            </div>
-        <?php endif; ?>
-    </div>
+        </div>
+    <?php endif; ?>
     <div class="px-4 py-2 bg-base-100 shadow rounded-lg mt-4 flex justify-between items-center gap-4">
         <div>
             <h1 class="font-medium"><?= $vaga->getTitulo() ?></h1>
@@ -98,7 +100,7 @@
             $beneficio = BeneficioDTO::recuperar($vagaBeneficio->getBeneficioId());
             ?>
             <div class="flex flex-wrap gap-2 items-center">
-                <span class="text-base"><?= $beneficio->getNome() ?><?=!empty($vagaBeneficio->getInformacao()) ? ": {$vagaBeneficio->getInformacao()}" : ""?></span>
+                <span class="text-base"><?= $beneficio->getNome() ?><?= !empty($vagaBeneficio->getInformacao()) ? ": {$vagaBeneficio->getInformacao()}" : "" ?></span>
             </div>
         <?php endforeach; ?>
     </div>
@@ -114,11 +116,11 @@
         </div>
         <div class="flex flex-wrap gap-x-4 gap-y-2">
             <div class="flex items-center gap-1">
-               <a class="flex items-center gap-1" target="_blank" href="https://www.google.com/maps/search/?api=1&query=<?= urlencode("{$vaga->getFilial()->getBairro()} - {$vaga->getFilial()->getCidade()}, {$vaga->getFilial()->getEstado()}") ?>" title="Ver no Google Maps®">
+                <a class="flex items-center gap-1" target="_blank" href="https://www.google.com/maps/search/?api=1&query=<?= urlencode("{$vaga->getFilial()->getBairro()} - {$vaga->getFilial()->getCidade()}, {$vaga->getFilial()->getEstado()}") ?>" title="Ver no Google Maps®">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z"/>
                     </svg>
-                   Veja a localização no Google Maps
+                    Veja a localização no Google Maps
                 </a>
             </div>
         </div>

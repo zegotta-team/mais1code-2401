@@ -4,14 +4,14 @@ class BeneficioController
 {
     public function cadastrar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
-        View::renderizar('/beneficio/formulario', [], 'sistema');
+        View::renderizar('/beneficio/formulario', []);
     }
 
     public function processaCadastrar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         if(empty($_POST['id'])){
             $beneficio = new Beneficio($_POST['beneficio']);
@@ -28,27 +28,27 @@ class BeneficioController
 
     public function listar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
         
         $beneficio = BeneficioDTO::listar();
 
-        View::renderizar('/beneficio/listar', compact('beneficio'), 'sistema');
+        View::renderizar('/beneficio/listar', compact('beneficio'));
     }
 
     public function editar()
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         $beneficioId = $_GET['id'];
 
         $beneficio = BeneficioDTO::recuperar($beneficioId);
 
-        View::renderizar('beneficio/formulario', compact('beneficio'), 'sistema');
+        View::renderizar('beneficio/formulario', compact('beneficio'));
     }
 
     public function excluir() 
     {
-        AutenticacaoController::exigeSessao();
+        UsuarioController::exigeSessao();
 
         $beneficio = BeneficioDTO::recuperar($_GET['id']);
 

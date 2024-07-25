@@ -89,8 +89,7 @@ class CandidatoController
         CandidatoController::exigeSessao();
 
         $vagasCandidatadas = CandidatoVagaDTO::listar($_SESSION['candidato']->getId());
-        $propostas = PropostasDTO::listar('', $_SESSION['candidato']->getId());
-
+        $propostas = PropostaDTO::listar('', $_SESSION['candidato']->getId());
 
         View::renderizar('candidato/listar', compact('vagasCandidatadas', 'propostas'), 'sistema-candidato');
     }
@@ -100,8 +99,8 @@ class CandidatoController
         CandidatoController::exigeSessao();
 
         $candidato = CandidatoDTO::recuperar($_SESSION['candidato']->getId());
-
         $categorias = CategoriaHabilidadeDTO::listar();
+
         foreach ($categorias as $categoria) {
             $habilidades[$categoria->getNome()] = HabilidadeDTO::listar('', '', $categoria->getId());
         }

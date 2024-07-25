@@ -1,18 +1,21 @@
-<div class="container container-md w-50">
+<div class="mx-auto max-w-2xl border p-4 m-14 rounded-xl bg-white">
     <form method="post" action="/beneficio/processaCadastrar">
-        <div class="row g-3 align-items-center mb-2">
-            <input type="hidden" name="id" value="<?= isset($beneficio) ? $beneficio->getId() : '' ?>"/>
-            <div class="col-md-12 form-floating">
-                <input type="text" class="form-control" name="beneficio" id="beneficio" value="<?= isset($beneficio) ? $beneficio->getNome() : '' ?>" required>
-                <label for="beneficio" class="col-form-label">Beneficio</label>
-            </div>
-        </div>
-        <div class="row gy-3 gy-md-4 overflow-hidden mt-4 mb-2">
-            <div class="col-12">
-                <div class="d-grid">
-                    <button class="btn btn-primary" type="submit"><i class="fas fa-save"></i> Salvar</button>
+        <input type="hidden" name="id" value="<?= isset($beneficio) ? $beneficio->getId() : '' ?>"/>
+        <div class="flex space-x-2">
+            <label class="form-control w-full">
+                <div class="label">
+                    <span class="label-text">Benefício</span>
                 </div>
-            </div>
+                <input type="text" name="beneficio" id="beneficio" required value="<?= isset($beneficio) ? $beneficio->getNome() : '' ?>" class="input input-bordered w-full"/>
+            </label>
+        </div>
+        <div class="mt-6 flex items-center justify-end">
+            <button class="btn btn-success btn-wide" type="submit">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                </svg>
+                Salvar
+            </button>
         </div>
     </form>
 </div>
