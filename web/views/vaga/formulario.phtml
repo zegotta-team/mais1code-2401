@@ -171,7 +171,7 @@
                             <div class="form-control habilidade-item">
                                 <div class="tooltip" data-tip="<?= $habilidade->getHabilidade() ?>">
                                     <label for="habilidade_<?= $habilidade->getId() ?>" class="label cursor-pointer justify-start gap-2">
-                                        <input id="habilidade_<?= $habilidade->getId() ?>" name="habilidade[]" type="checkbox" value="<?= $habilidade->getId() ?>" class="checkbox checkbox-info" <?= $vaga->temHabilidadeId($habilidade->getId()) ? 'checked' : ''?>/>
+                                        <input id="habilidade_<?= $habilidade->getId() ?>" name="habilidade[]" type="checkbox" value="<?= $habilidade->getId() ?>" class="checkbox checkbox-info" <?= isset($vaga) && $vaga->temHabilidadeId($habilidade->getId()) ? 'checked' : ''?>/>
                                         <span class="label-text truncate"><?= $habilidade->getHabilidade() ?></span>
                                     </label>
                                 </div>
