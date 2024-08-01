@@ -27,6 +27,21 @@ class Filial
         $this->setEstado($estado);
     }
 
+    public function toArray() {
+        return [
+            'id' => $this->getId(),
+            'empresa' => $this->getEmpresa()->getId(),
+            'nome' => $this->getNome(),
+            'cep' => $this->getCep(),
+            'logradouro' => $this->getLogradouro(),
+            'numero' => $this->getNumero(),
+            'complemento' => $this->getComplemento(),
+            'bairro' => $this->getBairro(),
+            'cidade' => $this->getCidade(),
+            'estado' => $this->getEstado()
+        ];
+    }
+
     public function getId()
     {
         return $this->id;

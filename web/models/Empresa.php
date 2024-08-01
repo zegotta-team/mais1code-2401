@@ -18,6 +18,18 @@ class Empresa
         $this->setLogo($logo);
     }
 
+    public function toArray()
+    {
+        return [
+            'id' => $this->getId(),
+            'nome' => $this->getNome(),
+            'cnpj' => $this->getCnpj(),
+            'email' => $this->getEmail(),
+            'descricao' => $this->getDescricao(),
+            'logo' => $this->getLogo()
+        ];
+    }
+
     public function getId()
     {
         return $this->id;

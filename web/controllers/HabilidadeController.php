@@ -6,13 +6,14 @@ class HabilidadeController
     {
     }
 
-    public function cadastrar()
+    public function index()
     {
         UsuarioController::exigeSessao();
 
         $categorias = CategoriaHabilidadeDTO::listar();
+        $habilidades = HabilidadeDTO::listar();
 
-        View::renderizar('/habilidade/formulario', compact('categorias'), 'sistema-usuario');
+        View::renderizar('/habilidade/index', compact('categorias', 'habilidades'));
     }
 
     public function salvar()
@@ -23,7 +24,7 @@ class HabilidadeController
             if (!empty($_POST['categoriaNova'])) {
                 $categoria = new CategoriaHabilidade($_POST['categoriaNova']);
                 CategoriaHabilidadeDTO::salvar($categoria);
-            } else{
+            } else {
                 $categoria = CategoriaHabilidadeDTO::recuperar($_POST['categoria']);
             }
 
@@ -34,26 +35,17 @@ class HabilidadeController
             if (!empty($_POST['categoriaNova'])) {
                 $categoria = new CategoriaHabilidade($_POST['categoriaNova']);
                 CategoriaHabilidadeDTO::salvar($categoria);
-            } else{
+            } else {
                 $categoria = CategoriaHabilidadeDTO::recuperar($_POST['categoria']);
             }
 
             $habilidade->setHabilidade($_POST['habilidade'])
-                        ->setCategoria($categoria);
+                ->setCategoria($categoria);
         }
 
         HabilidadeDTO::salvar($habilidade);
 
-        header('Location:/habilidade/listar');
-    }
-
-    public function listar()
-    {
-        UsuarioController::exigeSessao();
-
-        $habilidade = HabilidadeDTO::listar();
-
-        View::renderizar('/habilidade/listar', compact('habilidade'), 'sistema-usuario');
+        header('Location:/habilidade');
     }
 
     public function editar()
@@ -65,7 +57,7 @@ class HabilidadeController
 
         $categorias = CategoriaHabilidadeDTO::listar();
 
-        View::renderizar('habilidade/formulario', compact('habilidade', 'categorias'), 'sistema-usuario');
+        View::renderizar('habilidade/index', compact('habilidade', 'categorias'), 'sistema-usuario');
     }
 
     public function excluir()
@@ -80,7 +72,26 @@ class HabilidadeController
 
         HabilidadeDTO::deletar($habilidade);
 
-        header('Location: /habilidade/listar');
+        header('Location: /habilidade');
+    }
+
+    public function detalhes()
+    {
+        UsuarioController::exigeSessao();
+        header('Content-type: application/json');
+
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+
+        if (empty($data)) {
+            echo json_encode([]);
+            die();
+        }
+
+        $id_habilidade = $data['id'];
+        $habilidade = HabilidadeDTO::recuperar($id_habilidade);
+
+        echo json_encode($habilidade->toArray());
     }
 
 }

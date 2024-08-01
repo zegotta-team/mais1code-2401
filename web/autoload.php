@@ -14,6 +14,7 @@ spl_autoload_register(function ($nomeClasse) {
         "web" . DIRECTORY_SEPARATOR . "core",
         "web" . DIRECTORY_SEPARATOR . "enums",
         "web" . DIRECTORY_SEPARATOR . "traits",
+        "web" . DIRECTORY_SEPARATOR . "dtos",
     ];
 
     foreach ($diretorios as $diretorio) {

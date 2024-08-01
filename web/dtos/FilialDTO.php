@@ -89,11 +89,11 @@ abstract class FilialDTO implements DTOInterface
 
         if (strlen($cep) != $min) {
             FlashMessage::addMessage('Numero de Cep deve conter 8 digitos', FlashMessage::FLASH_ERROR);
-            header('Location: /empresa/cadastrar');
+            header('Location: /empresa/cadastro');
             die();
         } elseif (strlen($estado) > $maxUf) {
             FlashMessage::addMessage('Numero de UF deve conter 2 digitos', FlashMessage::FLASH_ERROR);
-            header('Location: /empresa/cadastrar');
+            header('Location: /empresa/cadastro');
             die();
         }
         return true;

@@ -41,6 +41,29 @@ class Candidato
         $this->setBeneficios($beneficios);
     }
 
+    public function toArray()
+    {
+        return [
+            'id' => $this->getId(),
+            'nome' => $this->getNome(),
+            'email' => $this->getEmail(),
+            'senha' => $this->getSenha(),
+            'cpf' => $this->getCpf(),
+            'nascimento' => $this->getNascimento(),
+            'endereco' => $this->getEndereco(),
+            'disponibilidade' => $this->getDisponibilidade(),
+            'sexo' => $this->getSexo(),
+            'genero' => $this->getGenero(),
+            'status' => $this->getStatus(),
+            'regimeContratacao' => $this->getRegimeContratacao(),
+            'regimeTrabalho' => $this->getRegimeTrabalho(),
+            'nivelSenioridade' => $this->getNivelSenioridade(),
+            'nivelHierarquia' => $this->getNivelHierarquia(),
+            'habilidades' => $this->getHabilidades(),
+            'beneficios' => $this->getBeneficios()
+        ];
+    }
+
     public function getId()
     {
         return $this->id;
@@ -217,12 +240,12 @@ class Candidato
         return $this;
     }
 
-    public function getBeneficios() 
+    public function getBeneficios()
     {
         return $this->beneficios;
     }
 
-    public function setBeneficios($beneficios) 
+    public function setBeneficios($beneficios)
     {
         $this->beneficios = $beneficios;
         return $this;
@@ -239,7 +262,7 @@ class Candidato
         return false;
     }
 
-    public function temBeneficioId($id) 
+    public function temBeneficioId($id)
     {
         foreach ($this->beneficios as $beneficio) {
             if ($id === $beneficio->getId()) {
@@ -248,5 +271,16 @@ class Candidato
         }
 
         return false;
+    }
+
+    public function estaCandidatado($vaga_id)
+    {
+        $candidatura = CandidatoVagaDTO::recuperar($this->getId(), $vaga_id);
+        return !empty($candidatura) && !in_array($candidatura->getStatus(), [
+                CandidatoVagaStatusEnum::Reprovado->value,
+                CandidatoVagaStatusEnum::Contratado->value,
+                CandidatoVagaStatusEnum::RecusouProposta->value,
+                CandidatoVagaStatusEnum::Desistencia->value,
+            ]);
     }
 }

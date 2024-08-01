@@ -2,7 +2,7 @@
 
 class CandidatoController
 {
-    public function processaLogin()
+    public function login()
     {
         session_start();
 
@@ -13,13 +13,13 @@ class CandidatoController
         if ($remember) {
             setcookie("candidato", $email, time() + 3600 * 24 * 30 * 12 * 100, '/');
         } else {
-            setcookie("candidato", "", time() - 3600 , '/');
+            setcookie("candidato", "", time() - 3600, '/');
         }
 
         $candidato = CandidatoDTO::autenticar($email, $senha);
 
         if (isset($candidato)) {
-            header('Location: /vaga/index');
+            header('Location: /vaga/painel');
             $_SESSION['candidato'] = $candidato;
         } else {
             header('Location: /autenticacao/');
@@ -35,7 +35,7 @@ class CandidatoController
         View::renderizar('candidato/cadastrar', [], 'login');
     }
 
-    public function processaCadastrar()
+    public function salvar()
     {
         UsuarioController::renegaSessao();
 
@@ -55,7 +55,7 @@ class CandidatoController
         return !empty($_SESSION['candidato']);
     }
 
-    public function processaLogout()
+    public function logout()
     {
         session_start();
         session_destroy();
@@ -107,18 +107,19 @@ class CandidatoController
 
         $beneficios = BeneficioDTO::listar();
 
-        View::renderizar('candidato/perfil', compact('candidato', 'categorias','habilidades', 'beneficios'), 'sistema-candidato');
+        View::renderizar('candidato/perfil', compact('candidato', 'categorias', 'habilidades', 'beneficios'), 'sistema-candidato');
     }
 
-    public function vagasRecomendadas() {
+    public function vagasRecomendadas()
+    {
         CandidatoController::estaLogado();
         $vagasCandidatadas = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId());
-        $vagas= VagaDTO::listar();
-        $vagasPorPercentual= [];
-        $percentual= 0;
+        $vagas = VagaDTO::listar();
+        $vagasPorPercentual = [];
+        $percentual = 0;
 
         foreach ($vagas as $vaga) {
-            $candidatura = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(),$vaga->getId()); 
+            $candidatura = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(), $vaga->getId());
             if (!empty($candidatura)) {
                 continue;
             }
@@ -127,15 +128,15 @@ class CandidatoController
             $totalDeHabilidades = 0;
             $totalDeHabilidadesAtendidas = 0;
 
-            foreach ($vagaHabilidades as $habilidadeVaga) { 
+            foreach ($vagaHabilidades as $habilidadeVaga) {
                 $totalDeHabilidades = $totalDeHabilidades + 1;
 
                 if ($_SESSION['candidato']->temHabilidadeId($habilidadeVaga->getId())) {
                     $totalDeHabilidadesAtendidas = $totalDeHabilidadesAtendidas + 1;
-                }  
+                }
             }
 
-            if ($totalDeHabilidades > 0 ) {
+            if ($totalDeHabilidades > 0) {
                 $percentual = floor($totalDeHabilidadesAtendidas / $totalDeHabilidades * 100);
             } else {
                 $percentual = 100;
@@ -151,10 +152,10 @@ class CandidatoController
         krsort($vagasPorPercentual);
         $layout = CandidatoController::estaLogado() ? 'sistema-candidato' : 'painel-vagas';
 
-        View::renderizar('vaga/painelRecomendado', compact('vagasPorPercentual','vagas','percentual'), $layout);
+        View::renderizar('vaga/painelRecomendado', compact('vagasPorPercentual', 'vagas', 'percentual'), $layout);
     }
 
-    public function salvar()
+    public function salvarPerfil()
     {
         CandidatoController::exigeSessao();
 
@@ -179,12 +180,30 @@ class CandidatoController
             ->setNivelSenioridade($_POST['nivelSenioridade'])
             ->setNivelHierarquia($_POST['nivelHierarquia'])
             ->setHabilidades($habilidades)
-            ->setBeneficios($beneficios)
-        ;
+            ->setBeneficios($beneficios);
 
         CandidatoDTO::salvar($candidato);
         FlashMessage::addMessage('Dados gravados com sucesso', FlashMessage::FLASH_SUCCESS);
 
         header("Location: /candidato/perfil");
+    }
+
+    public function detalhes()
+    {
+        UsuarioController::exigeSessao();
+        header('Content-type: application/json');
+
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+
+        if (empty($data)) {
+            echo json_encode([]);
+            die();
+        }
+
+        $id_candidato = $data['id'];
+        $candidato = CandidatoDTO::recuperar($id_candidato);
+
+        echo json_encode($candidato->toArray());
     }
 }

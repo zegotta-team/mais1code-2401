@@ -24,7 +24,7 @@ class NotificacoesController
 
         $notificacoes = NotificacoesDTO::listar($_SESSION['candidato']->getId());
 
-        View::renderizar('/candidato/painel', compact('notificacoes'), 'sistema-candidato');
+        View::renderizar('/candidato/notificacoes', compact('notificacoes'), 'sistema-candidato');
     }
 
     public function alterar() {

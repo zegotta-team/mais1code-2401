@@ -15,6 +15,18 @@ class CandidatoVaga
         $this->setStatus($status);
     }
 
+    public function toArray()
+    {
+        return [
+            'candidato' => $this->getCandidato()->toArray(),
+            'vaga' => $this->getVaga()->toArray(),
+            'ultima_desistencia' => $this->getUltimaDesistencia(),
+            'status' => $this->getStatus(),
+            'statusFormatado' => $this->getStatus(true),
+            'temProposta' => $this->temProposta()
+        ];
+    }
+
     public function setCandidato($candidato)
     {
         $this->candidato = $candidato;

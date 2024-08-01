@@ -7,18 +7,20 @@ class FilialController
     {
     }
 
-    public function cadastrar()
+    public function index()
     {
         UsuarioController::exigeSessao();
 
-        View::renderizar('filial/formulario', [], 'sistema-usuario');
+        $filiais = FilialDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
+
+        View::renderizar('filial/index', compact('filiais'));
     }
 
-    public function processaCadastrar()
+    public function salvar()
     {
         UsuarioController::exigeSessao();
-        header('Location: /filial/listar');
-        
+        header('Location: /filial');
+
         if (empty($_POST['filialId'])) {
             $filial = new Filial($_SESSION['usuario']->getEmpresa(), $_POST['filialNome'], $_POST['filialCep'], $_POST['filialLogradouro'], $_POST['filialNumero'], $_POST['filialComplemento'], $_POST['filialBairro'], $_POST['filialCidade'], $_POST['filialEstado']);
         } else {
@@ -41,24 +43,15 @@ class FilialController
                 ->setCidade($_POST['filialCidade'])
                 ->setEstado($_POST['filialEstado']);
         }
-        
+
         FilialDTO::salvar($filial);
 
-    }
-
-    public function listar()
-    {
-        UsuarioController::exigeSessao();
-
-        $filiais = FilialDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
-
-        View::renderizar('filial/listar', compact('filiais'));
     }
 
     public function editar()
     {
         UsuarioController::exigeSessao();
-        
+
         $idFilial = $_GET['id'];
         $filial = FilialDTO::recuperar($idFilial);
 
@@ -70,7 +63,7 @@ class FilialController
             die('Sai pilantra, essa filial não é sua');
         }
 
-        View::renderizar('filial/formulario', compact('filial'));
+        View::renderizar('filial/index', compact('filial'));
     }
 
     public function excluir()
@@ -90,7 +83,25 @@ class FilialController
         }
 
         FilialDTO::deletar($filialExclusao);
-        header('Location: /filial/listar');
+        header('Location: /filial/');
+    }
+
+    public function detalhes() {
+        UsuarioController::exigeSessao();
+        header('Content-type: application/json');
+
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+
+        if (empty($data)){
+            echo json_encode([]);
+            die();
+        }
+
+        $idFilial = $data['id'];
+        $filial = FilialDTO::recuperar($idFilial);
+
+        echo json_encode($filial->toArray());
     }
 
 }

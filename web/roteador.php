@@ -22,6 +22,9 @@ $requestSegments = explode('/', $requestUri);
 
 if (empty($requestSegments[0])) {
     $requestSegments[0] = 'Vaga';
+    if (empty($requestSegments[1])) {
+        $requestSegments[1] = 'painel';
+    }
 }
 
 if (empty($requestSegments[1])) {

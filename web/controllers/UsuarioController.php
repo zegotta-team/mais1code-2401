@@ -9,13 +9,10 @@ class UsuarioController
 
     public function index()
     {
-    }
-
-    public function cadastrar()
-    {
         UsuarioController::exigeSessao();
 
-        View::renderizar('usuario/formulario');
+        $usuarios = UsuarioDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
+        View::renderizar('usuario/index', compact('usuarios'));
     }
 
     public function salvar()
@@ -23,7 +20,7 @@ class UsuarioController
         UsuarioController::exigeSessao();
 
         if (empty($_POST['usuarioId'])) {
-            $usuario = new Usuario($_SESSION['usuario']->getEmpresa(), $_POST['cpf'], $_POST['nome'], $_POST['email'], $_POST['senha']);
+            $usuario = new Usuario($_SESSION['usuario']->getEmpresa(), $_POST['cpf'], $_POST['nome'], $_POST['email'], $_POST['senha'], TipoUsuarioEnum::USUARIO->value);
         } else {
             $usuario = UsuarioDTO::recuperar($_POST['usuarioId']);
 
@@ -42,7 +39,7 @@ class UsuarioController
 
         UsuarioDTO::salvar($usuario);
 
-        header('Location: /usuario/listar');
+        header('Location: /usuario');
     }
 
     public function editar()
@@ -60,7 +57,7 @@ class UsuarioController
             die('Sai pilantra, usuario não é da sua turma');
         }
 
-        View::renderizar('usuario/formulario', compact('usuarioEdicao'));
+        View::renderizar('usuario/index', compact('usuarioEdicao'));
     }
 
     public function trocarSenha()
@@ -77,7 +74,7 @@ class UsuarioController
         $usuario = UsuarioDTO::recuperar($_SESSION['usuario']->getId());
         $usuario->setSenha(password_hash($_POST['senha'], PASSWORD_ARGON2ID));
         UsuarioDTO::salvar($usuario);
-        header('Location: /usuario/listar');
+        header('Location: /usuario');
     }
 
     public function excluir()
@@ -97,19 +94,10 @@ class UsuarioController
         }
 
         UsuarioDTO::deletar($usuarioExclusao);
-        header('Location: /usuario/listar');
+        header('Location: /usuario');
     }
 
-    public function listar()
-    {
-        UsuarioController::exigeSessao();
-
-        $usuarios = UsuarioDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
-
-        View::renderizar('usuario/listar', compact('usuarios'));
-    }
-
-    public function processaLogin()
+    public function login()
     {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
@@ -128,7 +116,7 @@ class UsuarioController
         $usuario = UsuarioDTO::autenticar($email, $senha);
 
         if (!empty($usuario)) {
-            header('Location: /vaga/listar');
+            header('Location: /vaga/');
             $_SESSION['usuario'] = $usuario;
         } else {
             header('Location: /autenticacao/?tab=2');
@@ -137,7 +125,7 @@ class UsuarioController
         }
     }
 
-    public function processaLogout()
+    public function logout()
     {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
@@ -165,7 +153,7 @@ class UsuarioController
         }
 
         if (!empty($_SESSION['usuario'])) {
-            header("Location: /vaga/listar");
+            header("Location: /vaga/painel");
         }
     }
 
@@ -176,5 +164,24 @@ class UsuarioController
         }
 
         return !empty($_SESSION['usuario']);
+    }
+
+    public function detalhes()
+    {
+        UsuarioController::exigeSessao();
+        header('Content-type: application/json');
+
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+
+        if (empty($data)) {
+            echo json_encode([]);
+            die();
+        }
+
+        $id_usuario = $data['id'];
+        $usuario = UsuarioDTO::recuperar($id_usuario);
+
+        echo json_encode($usuario->toArray());
     }
 }

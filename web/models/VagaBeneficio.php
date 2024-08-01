@@ -12,6 +12,15 @@ class VagaBeneficio
         $this->setInformacao($informacao);
    }
 
+    public function toArray()
+    {
+        return [
+            "vagaId" => $this->getVagaId(),
+            "beneficioId" => $this->getBeneficioId(),
+            "informacao" => $this->getInformacao()
+        ];
+    }
+
    public function getVagaId()
    {
         return $this->vagaId;

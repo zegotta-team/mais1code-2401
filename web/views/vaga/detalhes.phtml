@@ -11,41 +11,79 @@
             <li><?= $vaga->getTitulo() ?></li>
         </ul>
     </div>
-    <?php if (!UsuarioController::estaLogado()) : ?>
-        <div class="flex justify-end">
-            <?php if ($vaga->getStatus() == VagaStatusEnum::Ativa->value) : ?>
-                <?php if (CandidatoController::estaLogado()) : ?>
-                    <?php if (empty($candidato_vaga)) : ?>
+    <?php
+    if (!UsuarioController::estaLogado()) :
+        if ($vaga->getStatus() == VagaStatusEnum::Ativa->value) :
+            if (CandidatoController::estaLogado()) :
+                if (empty($candidato_vaga)) : ?>
+                    <div class="flex justify-end">
                         <a class="btn btn-primary" href="/vaga/processaCandidatura?id=<?= $vaga->getId() ?>">Quer se candidatar? Clique aqui </a>
-                    <?php else : ?>
-                        <?php if ($candidato_vaga->getStatus() !== CandidatoVagaStatusEnum::Desistencia->value) : ?>
-                            <a class="btn btn-primary" href="/vaga/desistirCandidatura?id=<?= $vaga->getId() ?>">Deseja desistir da candidatura?</a>
-                        <?php else : ?>
-                            <?php if ($candidato_vaga->desistenciaLiberada()) : ?>
-                                <a class="btn btn-primary" href="/vaga/processaCandidatura?id=<?= $vaga->getId() ?>">Quer se candidatar? Clique aqui </a>
-                            <?php else : ?>
-                                <div role="alert" class="alert alert-info flex">
-                                    <svg class="w-5 h-5" data-slot="icon" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path clip-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z" fill-rule="evenodd"></path>
-                                    </svg>
-                                    <span>Aguarde 24 horas, para candidatar-se novamente!</span>
-                                </div>
-                            <?php endif; ?>
-                        <?php endif; ?>
-                    <?php endif ?>
+                    </div>
                 <?php else : ?>
+                    <?php if (in_array($candidato_vaga->getStatus(), [CandidatoVagaStatusEnum::Contratado->value, CandidatoVagaStatusEnum::RecusouProposta->value])) : ?>
+                        <div class="flex justify-end">
+                            <div role="alert" class="alert alert-info flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"/>
+                                </svg>
+
+                                <span>Você já chegou ao final desse processo seletivo. Seu status final é: <?= CandidatoVagaStatusEnum::from($candidato_vaga->getStatus())->label() ?></span>
+                            </div>
+                        </div>
+                    <?php else: ?>
+                        <div class="flex justify-end">
+                            <?php if ($candidato_vaga->getStatus() !== CandidatoVagaStatusEnum::Desistencia->value) : ?>
+                                <?php if (!in_array($candidato_vaga->getStatus(), [CandidatoVagaStatusEnum::Desistencia->value, CandidatoVagaStatusEnum::Aprovado->value, CandidatoVagaStatusEnum::Reprovado->value])) : ?>
+                                    <a class="btn btn-error" href="/vaga/desistirCandidatura?id=<?= $vaga->getId() ?>">Deseja desistir da candidatura?</a>
+                                <?php endif; ?>
+                            <?php else :
+                                if ($candidato_vaga->desistenciaLiberada()) : ?>
+                                    <a class="btn btn-primary" href="/vaga/processaCandidatura?id=<?= $vaga->getId() ?>">Quer se candidatar? Clique aqui </a>
+                                <?php else : ?>
+                                    <div role="alert" class="alert alert-info flex">
+                                        <svg class="w-5 h-5" data-slot="icon" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path clip-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z" fill-rule="evenodd"></path>
+                                        </svg>
+                                        <span>Aguarde 24 horas, para candidatar-se novamente!</span>
+                                    </div>
+                                <?php endif; ?>
+
+                            <?php endif; ?>
+                        </div>
+                        <?php if (!in_array($candidato_vaga->getStatus(), [CandidatoVagaStatusEnum::Desistencia->value, CandidatoVagaStatusEnum::Aprovado->value, CandidatoVagaStatusEnum::Reprovado->value])) : ?>
+                            <div class="flex justify-end mt-2 items-center gap-2 text-sm">
+                                Você está na etapa:
+                                <div role="alert" class="badge badge-sm badge-info badge-xs">
+                                    <?= CandidatoVagaStatusEnum::from($candidato_vaga->getStatus())->label() ?>
+                                </div>
+                            </div>
+                        <?php else: ?>
+                            <div role="alert" class="alert alert-info flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"/>
+                                </svg>
+
+                                <span>Você já chegou ao final desse processo seletivo. Seu status final é: <?= CandidatoVagaStatusEnum::from($candidato_vaga->getStatus())->label() ?></span>
+                            </div>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                <?php endif;
+            else : ?>
+                <div class="flex justify-end">
                     <a class="btn btn-primary" href="/autenticacao">Quer se candidatar? Efetue Login</a>
-                <?php endif; ?>
-            <?php else : ?>
+                </div>
+            <?php endif;
+        else : ?>
+            <div class="flex justify-end">
                 <div role="alert" class="alert alert-warning flex">
                     <svg class="w-5 h-5" data-slot="icon" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path clip-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" fill-rule="evenodd"></path>
                     </svg>
                     <span>Essa vaga já foi encerrada. =(</span>
                 </div>
-            <?php endif; ?>
-        </div>
-    <?php endif; ?>
+            </div>
+        <?php endif;
+    endif; ?>
     <div class="px-4 py-2 bg-base-100 shadow rounded-lg mt-4 flex justify-between items-center gap-4">
         <div>
             <h1 class="font-medium"><?= $vaga->getTitulo() ?></h1>
@@ -87,8 +125,10 @@
             </div>
         </div>
         <p class="mt-2"><?= $vaga->getDescricao() ?></p>
+    </div>
+    <div class="px-4 pt-2 pb-4 bg-base-100 shadow rounded-lg mt-4 flex flex-col gap-4">
+        <h2>Habilidades</h2>
         <div class="flex flex-wrap gap-2">
-            <span class="text-base">Habilidades:</span>
             <?php foreach ($vaga->getHabilidades() as $habilidade) : ?>
                 <span class="badge badge-primary"><?= $habilidade->getHabilidade() ?></span>
             <?php endforeach; ?>
@@ -100,7 +140,12 @@
             $beneficio = BeneficioDTO::recuperar($vagaBeneficio->getBeneficioId());
             ?>
             <div class="flex flex-wrap gap-2 items-center">
-                <span class="text-base"><?= $beneficio->getNome() ?><?= !empty($vagaBeneficio->getInformacao()) ? ": {$vagaBeneficio->getInformacao()}" : "" ?></span>
+                <span class="badge badge-secondary">
+                    <?= $beneficio->getNome() ?>
+                    <?php if (!empty($vagaBeneficio->getInformacao())): ?>
+                        : <?= $vagaBeneficio->getInformacao() ?>
+                    <?php endif; ?>
+                </span>
             </div>
         <?php endforeach; ?>
     </div>

@@ -8,6 +8,26 @@ class VagaController
 
     public function index()
     {
+        UsuarioController::exigeSessao();
+
+        $filiais = FilialDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
+        $beneficios = BeneficioDTO::listar();
+
+        $categorias = CategoriaHabilidadeDTO::listar();
+        $habilidades = [];
+        foreach ($categorias as $categoria) {
+            $habilidades[$categoria->getNome()] = HabilidadeDTO::listar('', '', $categoria->getId());
+        }
+
+
+        $vagas = VagaDTO::listar($_SESSION['usuario']->getEmpresa()->getId(), '', '', '', VagaOrdenacaoEnum::AlfabeticaCrescente);
+
+
+        View::renderizar('vaga/index', compact('filiais', 'habilidades', 'categorias', 'beneficios', 'vagas'));
+    }
+
+    public function painel()
+    {
         $filtro_contratacao = $_POST['filtro_contratacao'] ?? [];
         $filtro_trabalho = $_POST['filtro_trabalho'] ?? [];
         $filtro_habilidades = $_POST['filtro_habilidades'] ?? [];
@@ -61,7 +81,6 @@ class VagaController
             $beneficio = BeneficioDTO::recuperar($id_beneficio);
             $filtros_badges[] = $beneficio->getNome();
         }
-
 
         foreach ($filtro_empresas as $id_empresa) {
             $empresa = EmpresaDTO::recuperar($id_empresa);
@@ -156,7 +175,7 @@ class VagaController
 
     public function salvar()
     {
-        header('Location: /vaga/listar');
+        header('Location: /vaga/');
         UsuarioController::exigeSessao();
 
         $filial = FilialDTO::recuperar($_POST['filial']);
@@ -271,7 +290,7 @@ class VagaController
 
         VagaDTO::deletar($vaga);
 
-        header('Location: /vaga/listar');
+        header('Location: /vaga/');
     }
 
     public function listar()
@@ -358,6 +377,47 @@ class VagaController
 
         CandidatoVagaDTO::salvar($candidatura);
 
-        header('Location: /vaga/editar?id=' . $_GET['id'] . "#candidatos");
+        header('Location: /vaga/');
+    }
+
+    public function detalhes()
+    {
+        UsuarioController::exigeSessao();
+        header('Content-type: application/json');
+
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+
+        if (empty($data)) {
+            echo json_encode([]);
+            die();
+        }
+
+        $id_vaga = $data['id'];
+        $vaga = VagaDTO::recuperar($id_vaga);
+
+        echo json_encode($vaga->toArray());
+    }
+
+    public function candidatos()
+    {
+        UsuarioController::exigeSessao();
+        header('Content-type: application/json');
+
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+
+        if (empty($data)) {
+            echo json_encode([]);
+            die();
+        }
+
+        $id_vaga = $data['id'];
+
+        $candidatos = CandidatoVagaDTO::listar('', $id_vaga);
+
+        echo json_encode(array_map(function ($candidatoVaga) {
+            return $candidatoVaga->toArray();
+        }, $candidatos));
     }
 }

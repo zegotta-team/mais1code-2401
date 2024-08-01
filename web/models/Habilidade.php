@@ -12,6 +12,15 @@ class Habilidade
         $this->setCategoria($categoria);
     }
 
+    public function toArray()
+    {
+        return [
+            'id' => $this->getId(),
+            'habilidade' => $this->getHabilidade(),
+            'categoria' => $this->getCategoria()->toArray()
+        ];
+    }
+
     public function getId()
     {
         return $this->id;
@@ -34,12 +43,12 @@ class Habilidade
         return $this;
     }
 
-    public function getCategoria() 
+    public function getCategoria()
     {
         return $this->categoria;
     }
 
-    public function setCategoria($categoria) 
+    public function setCategoria($categoria)
     {
         $this->categoria = $categoria;
         return $this;

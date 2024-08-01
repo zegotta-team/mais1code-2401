@@ -1,0 +1,517 @@
+<?php /** @var Vaga $vaga */ ?>
+<dialog id="modal" class="modal modal-lg" onclick="close_modal(event, 'modal')">
+    <div class="modal-box max-w-4xl" onclick="event.stopPropagation()">
+        <form method="post" action="/vaga/salvar">
+            <input type="hidden" name="vagaId" id="vagaId" value="<?= isset($vaga) ? $vaga->getId() : '' ?>"/>
+            <div class="flex space-x-2">
+                <label class="form-control w-2/3">
+                    <div class="label">
+                        <span class="label-text">Título</span>
+                    </div>
+                    <input type="text" name="titulo" id="titulo" required value="<?= isset($vaga) ? $vaga->getTitulo() : '' ?>" class="input input-bordered w-full"/>
+                </label>
+                <label class="form-control w-1/3">
+                    <div class="label">
+                        <span class="label-text">Status</span>
+                    </div>
+                    <select class="select select-bordered" name="status" id="status" required>
+                        <option value="1" <?= !empty($vaga) && $vaga->getStatus() == '1' ? 'selected' : '' ?>>Ativa</option>
+                        <?php if (!empty($vaga)) : ?>
+                            <option value="0" <?= $vaga->getStatus() == '0' ? 'selected' : '' ?>>Inativa</option>
+                        <?php endif; ?>
+                    </select>
+                </label>
+            </div>
+            <div class="flex space-x-2">
+                <label class="form-control w-7/12">
+                    <div class="label">
+                        <span class="label-text">Email</span>
+                    </div>
+                    <input type="text" class="input input-bordered w-full" name="email" id="email" value="<?= isset($vaga) ? $vaga->getEmail() : '' ?>">
+                </label>
+                <label class="form-control w-3/12">
+                    <div class="label">
+                        <span class="label-text">Salário</span>
+                    </div>
+                    <label class="input input-bordered flex items-center">
+                        R$
+                        <input type="text" class="input hover:border-0 focus:border-0 w-full text-right pe-0" name="salario" id="salario" value="<?= isset($vaga) ? $vaga->getSalario() : '' ?>">,00
+                    </label>
+                </label>
+                <label class="form-control w-2/12">
+                    <div class="label">
+                        <span class="label-text">Carga horária</span>
+                    </div>
+                    <input type="number" class="input input-bordered w-full" name="cargaHoraria" id="cargaHoraria" value="<?= isset($vaga) ? $vaga->getCargaHoraria() : '' ?>" min="0">
+                </label>
+            </div>
+            <div class="flex space-x-2">
+                <label class="form-control w-full">
+                    <div class="label">
+                        <span class="label-text">Descrição</span>
+                    </div>
+                    <textarea name="descricao" id="descricao" required class="textarea textarea-bordered h-24 max-h-24 min-h-24"><?= isset($vaga) ? $vaga->getDescricao() : '' ?></textarea>
+                </label>
+            </div>
+            <div class="flex space-x-2">
+                <label class="form-control w-1/3">
+                    <div class="label">
+                        <span class="label-text">Filial da vaga</span>
+                    </div>
+                    <select class="select select-bordered" name="filial" id="filial" required>
+                        <option selected disabled value="">Selecione</option>
+                        <?php
+                        /** @var array<Filial> $filiais */
+                        foreach ($filiais as $filial) : ?>
+                            <option value="<?php echo $filial->getId() ?>" <?= !empty($vaga) && $vaga->getFilial()->getId() == $filial->getId() ? 'selected' : '' ?>><?php echo $filial->getNome() ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+                <label class="form-control w-1/3">
+                    <div class="label">
+                        <span class="label-text">Regime de Contratação</span>
+                    </div>
+                    <select class="select select-bordered" name="regimeContratacao" id="regimeContratacao" required>
+                        <option selected disabled value="">Selecione</option>
+                        <?php foreach (RegimeContratacaoEnum::forSelect() as $indice => $valor): ?>
+                            <option value="<?= $indice ?>" <?= !empty($vaga) && $vaga->getRegimeContratacao() == $indice ? 'selected' : '' ?>><?= $valor ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+                <label class="form-control w-1/3">
+                    <div class="label">
+                        <span class="label-text">Regime de Trabalho</span>
+                    </div>
+                    <select class="select select-bordered" name="regimeTrabalho" id="regimeTrabalho" required>
+                        <option selected disabled value="">Selecione</option>
+                        <?php foreach (RegimeTrabalhoEnum::forSelect() as $indice => $valor): ?>
+                            <option value="<?= $indice ?>" <?= !empty($vaga) && $vaga->getRegimeTrabalho() == $indice ? 'selected' : '' ?>><?= $valor ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+            </div>
+            <div class="flex space-x-2">
+                <label class="form-control w-1/2">
+                    <div class="label">
+                        <span class="label-text">Nível de Senioridade</span>
+                    </div>
+                    <select class="select select-bordered" name="nivelSenioridade" id="nivelSenioridade" required>
+                        <option selected disabled value="">Selecione</option>
+                        <?php foreach (NivelSenioridadeEnum::forSelect() as $indice => $valor): ?>
+                            <option value="<?= $indice ?>" <?= !empty($vaga) && $vaga->getNivelSenioridade() == $indice ? 'selected' : '' ?>><?= $valor ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+                <label class="form-control w-1/2">
+                    <div class="label">
+                        <span class="label-text">Nível hierárquico</span>
+                    </div>
+                    <select class="select select-bordered" name="nivelHierarquia" id="nivelHierarquia" required>
+                        <option selected disabled value="">Selecione</option>
+                        <?php foreach (NivelHierarquicoEnum::forSelect() as $indice => $valor): ?>
+                            <option value="<?= $indice ?>" <?= !empty($vaga) && $vaga->getNivelHierarquico() == $indice ? 'selected' : '' ?>><?= $valor ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+            </div>
+            <div class="my-8 p-2 flex justify-between bg-slate-100 rounded-lg items-center">
+                <div>
+                    <h2 class="text-base font-semibold text-gray-900 card-title">Benefícios</h2>
+                </div>
+                <label class="input input-sm input-bordered flex items-center gap-2">
+                    <input type="text" class="grow" placeholder="Filtrar benefícios..." id="searchInputBeneficios" autocomplete="searchInputBeneficios"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4 opacity-70">
+                        <path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd"/>
+                    </svg>
+                </label>
+            </div>
+            <div class="gap-3 mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6">
+                <?php
+                /** @var array<Beneficio> $beneficios */
+                foreach ($beneficios as $beneficio) :
+                    $vagaBeneficio = isset($vaga) ? $vaga->temBeneficioId($beneficio->getId()) : false;
+                    ?>
+                    <div class="form-control beneficio-item col-span-2">
+                        <div class="tooltip" data-tip="<?= $beneficio->getNome() ?>">
+                            <label for="beneficio<?= $beneficio->getId() ?>" class="label cursor-pointer justify-start gap-2">
+                                <input id="beneficio<?= $beneficio->getId() ?>" name="beneficio[<?= $beneficio->getId() ?>]" type="checkbox" value="<?= $beneficio->getId() ?>" class="checkbox checkbox-info" <?= $vagaBeneficio !== false ? 'checked' : '' ?>/>
+                                <span class="label-text truncate"><?= $beneficio->getNome() ?></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-control w-full beneficio-item">
+                        <label class="form-control w-full hidden"><span class="label-text truncate"><?= $beneficio->getNome() ?></span></label>
+                        <input type="text" class="input input-sm input-bordered w-full hidden" id="informacao<?= $beneficio->getId() ?>" name="informacao[<?= $beneficio->getId() ?>]" value="<?= $vagaBeneficio !== false ? $vagaBeneficio->getInformacao() : '' ?>">
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <div class="divider"></div>
+            <div class="my-8 p-2 flex justify-between bg-slate-100 rounded-lg items-center">
+                <div>
+                    <h2 class="text-base font-semibold text-gray-900 card-title">Habilidades</h2>
+                </div>
+                <label class="input input-sm input-bordered flex items-center gap-2">
+                    <input type="text" class="grow" placeholder="Filtrar habilidades..." id="searchInput" autocomplete="searchInput"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4 opacity-70">
+                        <path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd"/>
+                    </svg>
+                </label>
+            </div>
+            <?php
+            /** @var array<CategoriaHabilidade> $categorias */
+            foreach ($categorias as $categoria) : ?>
+                <div tabindex="0" class="collapse collapse-arrow border-base-300">
+                    <input type="checkbox" checked/>
+                    <div class="collapse-title items-center mt-2 flex justify-between bg-sky-100 rounded-md text-sm font-semibold text-gray-900">
+                        <?= $categoria->getNome() ?>
+                    </div>
+                    <div class="collapse-content">
+                        <div class="gap-3 mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5">
+                            <?php /** @var array<Habilidade> $habilidades */
+                            foreach ($habilidades[$categoria->getNome()] as $habilidade) : ?>
+                                <div class="form-control habilidade-item">
+                                    <div class="tooltip" data-tip="<?= $habilidade->getHabilidade() ?>">
+                                        <label for="habilidade_<?= $habilidade->getId() ?>" class="label cursor-pointer justify-start gap-2">
+                                            <input id="habilidade_<?= $habilidade->getId() ?>" name="habilidade[]" type="checkbox" value="<?= $habilidade->getId() ?>" class="checkbox checkbox-info"/>
+                                            <span class="label-text truncate"><?= $habilidade->getHabilidade() ?></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+            <div class="mt-6 flex items-center justify-between space-x-2">
+                <button class="btn btn-neutral" onclick="close_modal(event, 'modal')">Cancelar</button>
+                <button class="btn btn-success btn-wide" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                    </svg>
+                    Salvar
+                </button>
+            </div>
+        </form>
+    </div>
+</dialog>
+
+<dialog id="modal_candidatos" class="modal modal-lg" onclick="close_modal(event, 'modal_candidatos')">
+    <div class="modal-box max-w-3xl" id="candidatos" onclick="event.stopPropagation()">
+        <table class="border-collapse table-sm table-zebra border-collapse dark:border-slate-500 bg-white dark:bg-slate-800 text-sm shadow-sm w-full">
+            <caption class="text-slate-500 dark:text-slate-400 pb-4 text-md caption-top">Candidatos</caption>
+            <thead class="bg-slate-50 dark:bg-slate-700">
+            <tr>
+                <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-0">#</th>
+                <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-0">Nome</th>
+                <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-0">Email</th>
+                <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-0">Status da Candidatura</th>
+                <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-0">
+                    <div class="flex justify-center items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                            <path fill-rule="evenodd" d="M6.955 1.45A.5.5 0 0 1 7.452 1h1.096a.5.5 0 0 1 .497.45l.17 1.699c.484.12.94.312 1.356.562l1.321-1.081a.5.5 0 0 1 .67.033l.774.775a.5.5 0 0 1 .034.67l-1.08 1.32c.25.417.44.873.561 1.357l1.699.17a.5.5 0 0 1 .45.497v1.096a.5.5 0 0 1-.45.497l-1.699.17c-.12.484-.312.94-.562 1.356l1.082 1.322a.5.5 0 0 1-.034.67l-.774.774a.5.5 0 0 1-.67.033l-1.322-1.08c-.416.25-.872.44-1.356.561l-.17 1.699a.5.5 0 0 1-.497.45H7.452a.5.5 0 0 1-.497-.45l-.17-1.699a4.973 4.973 0 0 1-1.356-.562L4.108 13.37a.5.5 0 0 1-.67-.033l-.774-.775a.5.5 0 0 1-.034-.67l1.08-1.32a4.971 4.971 0 0 1-.561-1.357l-1.699-.17A.5.5 0 0 1 1 8.548V7.452a.5.5 0 0 1 .45-.497l1.699-.17c.12-.484.312-.94.562-1.356L2.629 4.107a.5.5 0 0 1 .034-.67l.774-.774a.5.5 0 0 1 .67-.033L5.43 3.71a4.97 4.97 0 0 1 1.356-.561l.17-1.699ZM6 8c0 .538.212 1.026.558 1.385l.057.057a2 2 0 0 0 2.828-2.828l-.058-.056A2 2 0 0 0 6 8Z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                </th>
+            </tr>
+            </thead>
+            <tbody id="tbodyCandidatos">
+            </tbody>
+        </table>
+    </div>
+</dialog>
+
+<div class="overflow-x-auto flex justify-center w-full mb-10 mt-5">
+    <table class="border-collapse table-sm table-zebra border-collapse dark:border-slate-500 bg-white dark:bg-slate-800 text-sm shadow-sm w-3/5">
+        <caption class="text-slate-500 dark:text-slate-400 pb-4 text-md caption-top">
+            <div class="flex">
+                <div class="w-full flex items-center justify-start">
+                    <h2 class="shadow">Nossas vagas</h2>
+                </div>
+                <div class="flex justify-end">
+                    <button class="btn btn-success btn-sm text-white" id="cadastrar" onclick="modal.showModal()">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                        </svg>
+                        Cadastrar
+                    </button>
+                </div>
+            </div>
+        </caption>
+        <thead class="bg-slate-50 dark:bg-slate-700">
+        <tr>
+            <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-0">#</th>
+            <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-full">Título</th>
+            <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-auto">Status da vaga</th>
+            <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-0">
+                <div class="flex justify-center items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                        <path fill-rule="evenodd" d="M6.955 1.45A.5.5 0 0 1 7.452 1h1.096a.5.5 0 0 1 .497.45l.17 1.699c.484.12.94.312 1.356.562l1.321-1.081a.5.5 0 0 1 .67.033l.774.775a.5.5 0 0 1 .034.67l-1.08 1.32c.25.417.44.873.561 1.357l1.699.17a.5.5 0 0 1 .45.497v1.096a.5.5 0 0 1-.45.497l-1.699.17c-.12.484-.312.94-.562 1.356l1.082 1.322a.5.5 0 0 1-.034.67l-.774.774a.5.5 0 0 1-.67.033l-1.322-1.08c-.416.25-.872.44-1.356.561l-.17 1.699a.5.5 0 0 1-.497.45H7.452a.5.5 0 0 1-.497-.45l-.17-1.699a4.973 4.973 0 0 1-1.356-.562L4.108 13.37a.5.5 0 0 1-.67-.033l-.774-.775a.5.5 0 0 1-.034-.67l1.08-1.32a4.971 4.971 0 0 1-.561-1.357l-1.699-.17A.5.5 0 0 1 1 8.548V7.452a.5.5 0 0 1 .45-.497l1.699-.17c.12-.484.312-.94.562-1.356L2.629 4.107a.5.5 0 0 1 .034-.67l.774-.774a.5.5 0 0 1 .67-.033L5.43 3.71a4.97 4.97 0 0 1 1.356-.561l.17-1.699ZM6 8c0 .538.212 1.026.558 1.385l.057.057a2 2 0 0 0 2.828-2.828l-.058-.056A2 2 0 0 0 6 8Z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        /** @var array<Vaga> $vagas */
+        foreach ($vagas as $vaga) : ?>
+            <tr class="hover">
+                <td class="border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400"><?= $vaga->getId() ?></td>
+                <td class="border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400"><?= $vaga->getTitulo() ?></td>
+                <td class="border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400"><?= $vaga->getStatus(true) ?></td>
+                <td class="border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400">
+                    <div class="flex justify-center space-x-1">
+                        <button name="editar" data-vagaid="<?= $vaga->getId() ?>" title="Editar" class=" btn btn-xs h-8 w-8 border btn-square border-accent-content/15">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/>
+                            </svg>
+                        </button>
+                        <button name="candidatos" data-vagaid="<?= $vaga->getId() ?>" title="Ver candidatos" class=" btn btn-xs h-8 w-8 border btn-square border-accent-content/15" <?= !$vaga->temCandidatos() ? "disabled" : "" ?>>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"/>
+                            </svg>
+                        </button>
+                        <a href="/vaga/excluir?id=<?= $vaga->getId() ?>" title="Excluir" class="btn btn-xs h-8 w-8 border btn-square border-accent-content/15 text-error">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
+                            </svg>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('searchInput').addEventListener('keyup', function () {
+            let searchTerm = this.value.toLowerCase();
+            let items = document.querySelectorAll('.habilidade-item');
+
+            items.forEach(function (item) {
+                let label = item.querySelector('label').textContent.toLowerCase();
+                if (label.includes(searchTerm)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        document.getElementById('searchInputBeneficios').addEventListener('keyup', function () {
+            let searchTerm = this.value.toLowerCase();
+            let items = document.querySelectorAll('.beneficio-item');
+
+            items.forEach(function (item) {
+                let label = item.querySelector('label').textContent.toLowerCase();
+                if (label.includes(searchTerm)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        document.querySelectorAll("input[name^='beneficio']").forEach(function (item) {
+            item.addEventListener('change', function () {
+                let input = document.getElementById(this.id.replace('beneficio', 'informacao'))
+                if (this.checked) {
+                    input.classList.remove('hidden')
+                } else {
+                    input.classList.add('hidden')
+                }
+            });
+        })
+
+        let botoes = document.querySelectorAll("button[name='editar']")
+
+        botoes.forEach(function (item) {
+            item.addEventListener('click', function () {
+                fetch('/vaga/detalhes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: item.getAttribute('data-vagaid')
+                    }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // document.getElementById('usuarioId').value = data.id
+                        document.getElementById('vagaId').value = data.id
+                        document.getElementById('titulo').value = data.titulo
+                        document.getElementById('email').value = data.email
+                        document.getElementById('salario').value = data.salario
+                        document.getElementById('cargaHoraria').value = data.cargaHoraria
+                        document.getElementById('descricao').value = data.descricao
+                        document.getElementById("filial").value = data.filial.id
+                        document.getElementById("regimeContratacao").value = data.regimeContratacao
+                        document.getElementById("regimeTrabalho").value = data.regimeTrabalho
+                        document.getElementById("nivelSenioridade").value = data.nivelSenioridade
+                        document.getElementById("nivelHierarquia").value = data.nivelHierarquico
+                        data.beneficios.forEach(function (item) {
+                            document.getElementById(`beneficio${item.beneficioId}`).checked = true
+                            document.getElementById(`informacao${item.beneficioId}`).classList.remove('hidden')
+                            document.getElementById(`informacao${item.beneficioId}`).value = item.informacao
+                        })
+                        data.habilidades.forEach(function (item) {
+                            document.getElementById(`habilidade_${item.id}`).checked = true
+                        })
+                        modal.showModal()
+                    });
+            })
+        })
+
+        document.getElementById('cadastrar').addEventListener('click', function () {
+            document.getElementById('vagaId').value = ''
+            document.getElementById('titulo').value = ''
+            document.getElementById('email').value = ''
+            document.getElementById('salario').value = ''
+            document.getElementById('cargaHoraria').value = ''
+            document.getElementById('descricao').value = ''
+            document.getElementById("filial").value = ''
+            document.getElementById("regimeContratacao").value = ''
+            document.getElementById("regimeTrabalho").value = ''
+            document.getElementById("nivelSenioridade").value = ''
+            document.getElementById("nivelHierarquia").value = ''
+            document.querySelectorAll(`input[name^='beneficio']`).forEach(function (item) {
+                item.checked = false
+            })
+            document.querySelectorAll(`input[name^='informacao']`).forEach(function (item) {
+                item.classList.add('hidden')
+            })
+            document.querySelectorAll(`input[name^='habilidade']`).forEach(function (item) {
+                item.checked = false
+            })
+            modal.showModal()
+        });
+
+        let botoesCandidatos = document.querySelectorAll("button[name='candidatos']")
+
+        botoesCandidatos.forEach(function (item) {
+            item.addEventListener('click', function () {
+                fetch('/vaga/candidatos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: item.getAttribute('data-vagaid')
+                    }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('tbodyCandidatos').innerHTML = ''
+                        data.forEach(function (item) {
+                            let tr = document.createElement('tr')
+                            tr.classList.add('hover')
+
+                            let td_id = document.createElement('td')
+                            td_id.classList.add('border', 'border-slate-300', 'dark:border-slate-700', 'text-slate-500', 'dark:text-slate-400', 'whitespace-nowrap')
+                            td_id.innerHTML = item.candidato.id
+                            tr.append(td_id)
+
+                            let td_nome = document.createElement('td')
+                            td_nome.classList.add('border', 'border-slate-300', 'dark:border-slate-700', 'text-slate-500', 'dark:text-slate-400', 'whitespace-nowrap')
+                            td_nome.innerHTML = item.candidato.nome
+                            tr.append(td_nome)
+
+                            let td_email = document.createElement('td')
+                            td_email.classList.add('border', 'border-slate-300', 'dark:border-slate-700', 'text-slate-500', 'dark:text-slate-400', 'whitespace-nowrap')
+                            td_email.innerHTML = item.candidato.email
+                            tr.append(td_email)
+
+                            let td_status = document.createElement('td')
+                            td_status.classList.add('border', 'border-slate-300', 'dark:border-slate-700', 'text-slate-500', 'dark:text-slate-400', 'whitespace-nowrap', 'text-center')
+                            td_status.innerHTML = item.statusFormatado
+                            if (item.status == 0) {
+                                let div = document.createElement('div')
+                                div.classList.add('label-text-alt', 'text-neutral')
+                                div.innerHTML = item.ultima_desistencia
+
+                                td_status.append(div)
+                            }
+                            tr.append(td_status)
+
+                            let td_botoes = document.createElement('td')
+                            td_botoes.classList.add('border', 'border-slate-300', 'dark:border-slate-700', 'text-slate-500', 'dark:text-slate-400', 'whitespace-nowrap')
+                            if (item.status !== 0 && item.status !== 5 && item.status !== 6 && item.status !== 7 && item.status !== 8) {
+                                let divBotao1 = document.createElement('div')
+                                divBotao1.classList.add('flex', 'justify-center', 'space-x-1')
+
+                                let linkReprova = document.createElement('a')
+                                linkReprova.classList.add('btn', 'btn-xs', 'h-8', 'w-8', 'border', 'btn-square', 'text-white', 'btn-error')
+                                linkReprova.href = `/vaga/processaMudancaDeStatus?id=${item.vaga.id}&candidatoId=${item.candidato.id}&resultado=0`
+                                linkReprova.title = 'Reprovar'
+                                linkReprova.role = 'button'
+                                linkReprova.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636"/></svg>';
+
+                                let linkAprova = document.createElement('a')
+                                linkAprova.classList.add('btn', 'btn-xs', 'h-8', 'w-8', 'border', 'btn-square', 'text-white', 'btn-success')
+                                linkAprova.href = `/vaga/processaMudancaDeStatus?id=${item.vaga.id}&candidatoId=${item.candidato.id}&resultado=1`
+                                linkAprova.title = 'Aprovar'
+                                linkAprova.role = 'button'
+                                linkAprova.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8.689c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061A1.125 1.125 0 0 1 3 16.811V8.69ZM12.75 8.689c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061a1.125 1.125 0 0 1-1.683-.977V8.69Z"/></svg>'
+
+                                divBotao1.append(linkReprova)
+                                divBotao1.append(linkAprova)
+                                td_botoes.append(divBotao1)
+                            }
+
+                            if (item.status == 5) {
+                                let divBotao2 = document.createElement('div')
+                                divBotao2.classList.add('flex', 'justify-center', 'space-x-1')
+                                if (!item.temProposta) {
+                                    let linkProposta = document.createElement('a')
+                                    linkProposta.classList.add('btn', 'btn-xs', 'text-white', 'btn-success')
+                                    linkProposta.href = `/proposta/cadastrar?id=${item.vaga.id}&candidatoId=${item.candidato.id}`
+                                    linkProposta.title = 'Aprovar'
+                                    linkProposta.role = 'button'
+                                    linkProposta.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg> Efetuar proposta'
+                                    divBotao2.append(linkProposta)
+                                } else {
+                                    let span = document.createElement('span')
+                                    span.innerHTML = 'Aguardando proposta'
+                                    divBotao2.append(span)
+                                }
+                                td_botoes.append(divBotao2)
+                            }
+                            tr.append(td_botoes)
+
+                            document.getElementById('tbodyCandidatos').append(tr)
+                        })
+
+                        document.getElementById('modal_candidatos').showModal()
+                    });
+            })
+        })
+
+        document.getElementById('cadastrar').addEventListener('click', function () {
+            document.getElementById('vagaId').value = ''
+            document.getElementById('titulo').value = ''
+            document.getElementById('email').value = ''
+            document.getElementById('salario').value = ''
+            document.getElementById('cargaHoraria').value = ''
+            document.getElementById('descricao').value = ''
+            document.getElementById("filial").value = ''
+            document.getElementById("regimeContratacao").value = ''
+            document.getElementById("regimeTrabalho").value = ''
+            document.getElementById("nivelSenioridade").value = ''
+            document.getElementById("nivelHierarquia").value = ''
+            document.querySelectorAll(`input[name^='beneficio']`).forEach(function (item) {
+                item.checked = false
+            })
+            document.querySelectorAll(`input[name^='informacao']`).forEach(function (item) {
+                item.classList.add('hidden')
+            })
+            document.querySelectorAll(`input[name^='habilidade']`).forEach(function (item) {
+                item.checked = false
+            })
+            modal.showModal()
+        });
+
+    });
+</script>

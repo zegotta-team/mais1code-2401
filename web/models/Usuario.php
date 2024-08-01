@@ -28,6 +28,18 @@ class Usuario {
         $this->tipo = $tipo;
     }
 
+    public function toArray()
+    {
+        return [
+            'id' => $this->getId(),
+            'empresa' => $this->getEmpresa()->toArray(),
+            'cpf' => $this->getCpf(),
+            'nome' => $this->getNome(),
+            'email' => $this->getEmail(),
+            'tipo' => $this->getTipo(),
+        ];
+    }
+
 
     public function getId()
     {

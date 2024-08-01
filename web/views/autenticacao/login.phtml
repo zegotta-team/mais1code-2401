@@ -5,7 +5,7 @@
         <div role="tablist" class="tabs tabs-lifted">
             <input type="radio" name="tipoLogin" role="tab" class="tab" aria-label="Sou candidato" <?= empty($tab) || $tab != 2 ? 'checked' : '' ?> />
             <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
-                <form action="/candidato/processaLogin" method="post">
+                <form action="/candidato/login" method="post">
                     <div class="mt-5">
                         <label class="input input-bordered flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4 opacity-70">
@@ -57,7 +57,7 @@
 
             <input type="radio" name="tipoLogin" role="tab" class="tab" aria-label="Sou empresa" <?= !empty($tab) && $tab == 2 ? 'checked' : '' ?>/>
             <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
-                <form action="/usuario/processaLogin" method="post">
+                <form action="/usuario/login" method="post">
                     <div class="mt-5">
                         <label class="input input-bordered flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4 opacity-70">
@@ -103,7 +103,7 @@
                     Ainda não divulga suas vagas conosco?
                 </div>
                 <div class="flex items-center justify-center mt-2">
-                    <a href="/empresa/cadastrar" class="btn btn-neutral font-bold btn-block">Comece a divulgar agora mesmo!</a>
+                    <a href="/empresa/cadastro" class="btn btn-neutral font-bold btn-block">Comece a divulgar agora mesmo!</a>
                 </div>
             </div>
         </div>

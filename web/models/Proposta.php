@@ -31,6 +31,24 @@ class Proposta
         $this->setAceite($aceite);
     }
 
+    public function toArray()
+    {
+        return [
+            'vaga' => $this->getVaga()->toArray(),
+            'candidato' => $this->getCandidato()->toArray(),
+            'salario' => $this->getSalario(),
+            'regime_contratacao' => $this->getRegimeContratacao(),
+            'regime_trabalho' => $this->getRegimeTrabalho(),
+            'nivel_hierarquico' => $this->getNivelHierarquico(),
+            'nivel_senioridade' => $this->getNivelSenioridade(),
+            'cargo' => $this->getCargo(),
+            'endereco' => $this->getEndereco(),
+            'expediente' => $this->getExpediente(),
+            'data_inicio' => $this->getDataInicio(),
+            'aceite' => $this->getAceite()
+        ];
+    }
+
     public function getVaga()
     {
         return $this->vaga;

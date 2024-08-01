@@ -7,14 +7,14 @@ class EmpresaController
     {
     }
 
-    public function cadastrar()
+    public function cadastro()
     {
         UsuarioController::renegaSessao();
 
-        View::renderizar('empresa/cadastrar', [], 'login');
+        View::renderizar('empresa/cadastro', [], 'login');
     }
 
-    public function processaCadastrar()
+    public function cadastrar()
     {
         UsuarioController::renegaSessao();
 
@@ -40,14 +40,16 @@ class EmpresaController
 
     }
 
-    public function editar()
+    public function edicao()
     {
         UsuarioController::exigeSessao();
 
-        View::renderizar('empresa/editar');
+        $empresa = EmpresaDTO::recuperar($_SESSION['usuario']->getEmpresa()->getId());
+
+        View::renderizar('empresa/edicao', compact('empresa'));
     }
 
-    public function processaEditar()
+    public function editar()
     {
         UsuarioController::exigeSessao();
 
@@ -65,17 +67,17 @@ class EmpresaController
         EmpresaDTO::salvar($empresa);
         FlashMessage::addMessage('Dados atualizados com sucesso', FlashMessage::FLASH_SUCCESS);
 
-        header('Location: /empresa/editar');
+        header('Location: /empresa/edicao');
     }
 
-    public function excluir()
+    public function exclusao()
     {
         UsuarioController::exigeSessao();
 
-        View::renderizar('empresa/excluir');
+        View::renderizar('empresa/exclusao');
     }
 
-    public function processaExcluir()
+    public function excluir()
     {
         UsuarioController::exigeSessao();
 
@@ -83,4 +85,25 @@ class EmpresaController
 
         header('Location: /');
     }
+
+    public function detalhes()
+    {
+        UsuarioController::exigeSessao();
+        header('Content-type: application/json');
+
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+
+        if (empty($data)) {
+            echo json_encode([]);
+            die();
+        }
+
+        $id_empresa = $data['id'];
+        $empresa = EmpresaDTO::recuperar($id_empresa);
+
+        echo json_encode($empresa->toArray());
+    }
+
+
 }

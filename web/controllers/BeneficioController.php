@@ -2,18 +2,21 @@
 
 class BeneficioController
 {
-    public function cadastrar()
+
+    public function index()
     {
         UsuarioController::exigeSessao();
 
-        View::renderizar('/beneficio/formulario', []);
+        $beneficios = BeneficioDTO::listar();
+
+        View::renderizar('/beneficio/index', compact('beneficios'));
     }
 
-    public function processaCadastrar()
+    public function salvar()
     {
         UsuarioController::exigeSessao();
 
-        if(empty($_POST['id'])){
+        if (empty($_POST['id'])) {
             $beneficio = new Beneficio($_POST['beneficio']);
         } else {
             $beneficio = BeneficioDTO::recuperar($_POST['id']);
@@ -21,18 +24,8 @@ class BeneficioController
         }
 
         BeneficioDTO::salvar($beneficio);
-        
-        header('Location:/beneficio/listar');
-    }
-    
 
-    public function listar()
-    {
-        UsuarioController::exigeSessao();
-        
-        $beneficio = BeneficioDTO::listar();
-
-        View::renderizar('/beneficio/listar', compact('beneficio'));
+        header('Location:/beneficio');
     }
 
     public function editar()
@@ -43,10 +36,10 @@ class BeneficioController
 
         $beneficio = BeneficioDTO::recuperar($beneficioId);
 
-        View::renderizar('beneficio/formulario', compact('beneficio'));
+        View::renderizar('beneficio/index', compact('beneficio'));
     }
 
-    public function excluir() 
+    public function excluir()
     {
         UsuarioController::exigeSessao();
 
@@ -54,6 +47,25 @@ class BeneficioController
 
         BeneficioDTO::deletar($beneficio);
 
-        header("Location: /beneficio/listar");
+        header("Location: /beneficio");
+    }
+
+    public function detalhes()
+    {
+        UsuarioController::exigeSessao();
+        header('Content-type: application/json');
+
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+
+        if (empty($data)) {
+            echo json_encode([]);
+            die();
+        }
+
+        $idBeneficio = $data['id'];
+        $beneficio = BeneficioDTO::recuperar($idBeneficio);
+
+        echo json_encode($beneficio->toArray());
     }
 }

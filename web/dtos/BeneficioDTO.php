@@ -68,7 +68,7 @@ abstract class BeneficioDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
         
-        $sql = "SELECT * FROM beneficios";
+        $sql = "SELECT * FROM beneficios ORDER BY nome ASC";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 

@@ -70,6 +70,12 @@
             // document.body.setAttribute('data-theme', theme || 'light');
             document.getElementById('switch-theme').checked = theme === 'dark';
         });
+
+        function close_modal(event, modal_id) {
+            console.log(event, modal_id);
+            event.preventDefault();
+            document.getElementById(modal_id).close();
+        }
     </script>
 
 </head>
@@ -86,7 +92,7 @@
                 </div>
                 <ul tabindex="0" class="menu menu-md dropdown-content bg-base-200 rounded-box z-[1] mt-3 w-[200px] p-2 shadow">
                     <li>
-                        <a href="/vaga/index">Painel de vagas</a>
+                        <a href="/vaga/painel">Painel de vagas</a>
                     </li>
                     <li>
                         <a href="/autenticacao">Login</a>
@@ -119,50 +125,59 @@
                 <li class="flex justify-center">
                     <label class="swap swap-rotate">
                         <input type="checkbox" name="switch-theme" id="switch-theme" onchange="toggleTheme()" <?php echo (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'dark') ? 'checked' : ''; ?> />
-
-                        <!-- sun icon -->
                         <svg class="swap-on h-6 w-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <path d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z"/>
                         </svg>
-
-                        <!-- moon icon -->
                         <svg class="swap-off h-6 w-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z"/>
                         </svg>
                     </label>
                 </li>
                 <li>
-                    <a class="btn btn-ghost" href="/vaga/index">Painel de vagas</a>
-                </li>
-                <li>
-                    <a class="btn btn-ghost" href="/candidato/listar">Minhas Vagas</a>
-                </li>
-                <li>
-                    <a class="btn btn-ghost" href="/candidato/vagasRecomendadas">Recomendações de vagas</a>
-                </li>
-                <li>
                     <a class="btn btn-ghost" href="/notificacoes/listar">
-                    <div class="indicator">
-                        <span class="indicator-item badge badge-secondary">99+</span>
-                        <label class="swap swap-rotate">
+                        <div class="indicator">
+                            <?php if (count(NotificacoesDTO::listar($_SESSION['candidato']->getId(), '', NotificacoesStatusEnum::NaoLida->value))) : ?>
+                                <span class="indicator-item badge badge-secondary">
+                                <?php echo count(NotificacoesDTO::listar($_SESSION['candidato']->getId(), '', NotificacoesStatusEnum::NaoLida->value)) ?>
+                            </span>
+                            <?php endif; ?>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m7.875 14.25 1.214 1.942a2.25 2.25 0 0 0 1.908 1.058h2.006c.776 0 1.497-.4 1.908-1.058l1.214-1.942M2.41 9h4.636a2.25 2.25 0 0 1 1.872 1.002l.164.246a2.25 2.25 0 0 0 1.872 1.002h2.092a2.25 2.25 0 0 0 1.872-1.002l.164-.246A2.25 2.25 0 0 1 16.954 9h4.636M2.41 9a2.25 2.25 0 0 0-.16.832V12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 12V9.832c0-.287-.055-.57-.16-.832M2.41 9a2.25 2.25 0 0 1 .382-.632l3.285-3.832a2.25 2.25 0 0 1 1.708-.786h8.43c.657 0 1.281.287 1.709.786l3.284 3.832c.163.19.291.404.382.632M4.5 20.25h15A2.25 2.25 0 0 0 21.75 18v-2.625c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125V18a2.25 2.25 0 0 0 2.25 2.25Z"/>
                             </svg>
-                        </label>
-                    </div>
+                        </div>
                     </a>
                 </li>
                 <div class="dropdown dropdown-end">
-                    <div tabindex="0" role="button" class="btn btn-ghost rounded-btn">Minha conta</div>
+                    <div tabindex="0" role="button" class="btn btn-ghost rounded-btn" title="Minha conta">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                        </svg>
+                    </div>
                     <ul tabindex="0" class="menu dropdown-content bg-base-100 rounded-box z-[1] mt-4 w-52 p-2 shadow">
                         <li>
-                            <a href="/candidato/perfil">Meu Perfil</a>
+
+                            <a href="/candidato/perfil">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"/>
+                                </svg>
+                                Meu Perfil
+                            </a>
                         </li>
                         <li>
-                            <a href="/candidato/trocarSenha">Trocar a senha</a>
+                            <a href="/candidato/trocarSenha">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z"/>
+                                </svg>
+                                Trocar a senha
+                            </a>
                         </li>
                         <li>
-                            <a href="/candidato/processaLogout">Sair</a>
+                            <a href="/candidato/logout">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9"/>
+                                </svg>
+                                Sair
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -170,6 +185,9 @@
         </div>
     </div>
 </header>
+<div class="drawer lg:drawer-open h-full">
+    <input id="my-drawer-2" type="checkbox" class="drawer-toggle"/>
 
-<main>
+    <div class="drawer-content flex flex-col items-center min-h-[calc(100vh-65px)] lg:min-h-full">
+        <main class="container">
 <?php echo FlashMessage::getMessage(); ?>

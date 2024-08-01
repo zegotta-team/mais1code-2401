@@ -23,7 +23,7 @@ class PropostaController
 
         PropostaDTO::salvar($proposta);
 
-        header("Location:/vaga/editar?id=$vagaId#candidatos");
+        header("Location:/vaga/");
     }
 
     public function responder()

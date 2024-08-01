@@ -44,7 +44,8 @@
             <div class="mt-4">
                 <p>{descricao}</p>
             </div>
-            <div class="card-actions justify-end mt-auto">
+            <div class="card-actions justify-between items-end mt-auto">
+                {selo}
                 <button class="btn btn-primary" onclick="modal_vaga_{id}.showModal()">Ver mais</button>
             </div>
         </div>
@@ -109,6 +110,7 @@
         </div>
         <div class="modal-action">
             <form method="dialog">
+
                 <!-- if there is a button in form, it will close the modal -->
                 <button class="btn btn-ghost">Fechar</button>
                 <a href="/vaga/exibir/?id={id}" class="btn btn-primary" rel="noopener noreferrer">Quero me candidatar</a>

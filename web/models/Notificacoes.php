@@ -20,6 +20,19 @@ class Notificacoes
         $this->setDataHora($data_hora);
     }
 
+    public function toArray()
+    {
+        return [
+            'id' => $this->getId(),
+            'candidato' => $this->getCandidato()->toArray(),
+            'empresa' => $this->getEmpresa()->toArray(),
+            'titulo' => $this->getTitulo(),
+            'descricao' => $this->getDescricao(),
+            'status' => $this->getStatus(),
+            'data_hora' => $this->getDataHora(),
+        ];
+    }
+
     public function setId($id) 
     {
         $this->id = $id;

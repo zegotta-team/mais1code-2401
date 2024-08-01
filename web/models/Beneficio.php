@@ -9,7 +9,15 @@ class Beneficio
      $this->setNome($nome);
    }
 
-   public function getId()
+    public function toArray() {
+        return [
+            'id' => $this->getId(),
+            'nome' => $this->getNome(),
+        ];
+    }
+
+
+    public function getId()
    {
      return $this->id;
    }

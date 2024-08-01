@@ -1,0 +1,227 @@
+<dialog id="modal" class="modal modal-lg" onclick="close_modal(event, 'modal')">
+    <div class="modal-box max-w-3xl" onclick="event.stopPropagation()">
+        <form method="post" action="/filial/salvar">
+            <input type="hidden" name="filialId" id="filialId" value="<?= isset($filial) ? $filial->getId() : '' ?>"/>
+            <div class="flex space-x-2">
+                <label class="form-control w-7/12">
+                    <div class="label">
+                        <span class="label-text">Nome / Identificação</span>
+                    </div>
+                    <input type="text" name="filialNome" id="filialNome" required value="<?= isset($filial) ? $filial->getNome() : '' ?>" class="input input-bordered w-full"/>
+                </label>
+                <label class="form-control w-5/12">
+                    <div class="label">
+                        <span class="label-text">CEP</span>
+                    </div>
+                    <input type="text" name="filialCep" id="filialCep" required minlength="8" maxlength="8" value="<?= isset($filial) ? $filial->getCep() : '' ?>" class="input input-bordered w-full" oninput="this.value = this.value.replace(/[^0-9]/g, '');"/>
+                    <div class="label p-0 mt-1">
+                        <span class="label-text-alt">Exatos 8 caracteres</span>
+                    </div>
+                    <div class="label p-0">
+                        <span class="label-text-alt">Somente números</span>
+                    </div>
+                </label>
+            </div>
+            <div class="flex space-x-2">
+                <label class="form-control w-full">
+                    <div class="label">
+                        <span class="label-text">Logradouro</span>
+                    </div>
+                    <input type="text" name="filialLogradouro" id="filialLogradouro" value="<?= isset($filial) ? $filial->getLogradouro() : '' ?>" class="input input-bordered w-full"/>
+                </label>
+            </div>
+            <div class="flex space-x-2">
+                <label class="form-control w-1/3">
+                    <div class="label">
+                        <span class="label-text">Número</span>
+                    </div>
+                    <input type="text" name="filialNumero" id="filialNumero" value="<?= isset($filial) ? $filial->getNumero() : '' ?>" class="input input-bordered w-full"/>
+                </label>
+                <label class="form-control w-2/3">
+                    <div class="label">
+                        <span class="label-text">Complemento</span>
+                    </div>
+                    <input type="text" name="filialComplemento" id="filialComplemento" value="<?= isset($filial) ? $filial->getComplemento() : '' ?>" class="input input-bordered w-full"/>
+                </label>
+            </div>
+            <div class="flex space-x-2">
+                <label class="form-control w-5/12">
+                    <div class="label">
+                        <span class="label-text">Bairro</span>
+                    </div>
+                    <input type="text" name="filialBairro" id="filialBairro" value="<?= isset($filial) ? $filial->getBairro() : '' ?>" class="input input-bordered w-full"/>
+                </label>
+                <label class="form-control w-5/12">
+                    <div class="label">
+                        <span class="label-text">Cidade</span>
+                    </div>
+                    <input type="text" name="filialCidade" id="filialCidade" required value="<?= isset($filial) ? $filial->getCidade() : '' ?>" class="input input-bordered w-full"/>
+                </label>
+                <label class="form-control w-2/12">
+                    <div class="label">
+                        <span class="label-text">Estado</span>
+                    </div>
+                    <select class="select select-bordered" name="filialEstado" id="filialEstado" required>
+                        <option value="" disabled selected>-</option>
+                        <?php foreach (EstadoEnum::forSelect() as $indice => $valor): ?>
+                            <option value="<?= $indice ?>" <?= !empty($filial) && $filial->getEstado() == $indice ? 'selected' : '' ?>><?= $valor ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+            </div>
+
+            <div class="mt-6 flex items-center justify-between space-x-2">
+                <button class="btn btn-neutral" onclick="close_modal(event, 'modal')">Cancelar</button>
+                <button class="btn btn-success btn-wide" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                    </svg>
+
+                    Salvar
+                </button>
+            </div>
+        </form>
+    </div>
+</dialog>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        let campo = document.querySelector("#filialCep");
+        campo.addEventListener('blur', function () {
+            if (campo.value.trim() == '') {
+                return;
+            }
+
+            // let url = 'https://brasilapi.com.br/api/cep/v1/' + campo.value;
+            let url = '/api/cep/?cep=' + campo.value;
+            fetch(url)
+                .then(response => {
+                    if (response.status !== 200) {
+                        throw new Error('Erro lalallaa')
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    document.querySelector("#filialLogradouro").value = data.street;
+                    document.querySelector("#filialBairro").value = data.neighborhood;
+                    document.querySelector("#filialCidade").value = data.city;
+                    document.querySelector("#filialEstado").value = data.state;
+
+                })
+                .catch(error => {
+                    alert('CEP não encontrado');
+                    campo.value = '';
+                    document.querySelector("#filialLogradouro").value = '';
+                    document.querySelector("#filialBairro").value = '';
+                    document.querySelector("#filialCidade").value = '';
+                    document.querySelector("#filialEstado").value = '';
+                })
+        });
+
+    });
+</script>
+
+<div class="overflow-x-auto flex justify-center w-full mb-10 mt-5">
+    <table class="border-collapse table-sm table-zebra border-collapse dark:border-slate-500 bg-white dark:bg-slate-800 text-sm shadow-sm w-3/5">
+        <caption class="text-slate-500 dark:text-slate-400 pb-4 text-md caption-top">
+            <div class="flex">
+                <div class="w-full flex items-center justify-start">
+                    <h2 class="shadow">Nossas filiais</h2>
+                </div>
+                <div class="flex justify-end">
+                    <button class="btn btn-success btn-sm text-white" onclick="modal.showModal()" id="cadastrar">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                        </svg>
+                        Cadastrar
+                    </button>
+                </div>
+            </div>
+        </caption>
+        <thead class="bg-slate-50 dark:bg-slate-700">
+        <tr>
+            <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-0">#</th>
+            <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-full">Nome</th>
+            <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-0">
+                <div class="flex justify-center items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                        <path fill-rule="evenodd" d="M6.955 1.45A.5.5 0 0 1 7.452 1h1.096a.5.5 0 0 1 .497.45l.17 1.699c.484.12.94.312 1.356.562l1.321-1.081a.5.5 0 0 1 .67.033l.774.775a.5.5 0 0 1 .034.67l-1.08 1.32c.25.417.44.873.561 1.357l1.699.17a.5.5 0 0 1 .45.497v1.096a.5.5 0 0 1-.45.497l-1.699.17c-.12.484-.312.94-.562 1.356l1.082 1.322a.5.5 0 0 1-.034.67l-.774.774a.5.5 0 0 1-.67.033l-1.322-1.08c-.416.25-.872.44-1.356.561l-.17 1.699a.5.5 0 0 1-.497.45H7.452a.5.5 0 0 1-.497-.45l-.17-1.699a4.973 4.973 0 0 1-1.356-.562L4.108 13.37a.5.5 0 0 1-.67-.033l-.774-.775a.5.5 0 0 1-.034-.67l1.08-1.32a4.971 4.971 0 0 1-.561-1.357l-1.699-.17A.5.5 0 0 1 1 8.548V7.452a.5.5 0 0 1 .45-.497l1.699-.17c.12-.484.312-.94.562-1.356L2.629 4.107a.5.5 0 0 1 .034-.67l.774-.774a.5.5 0 0 1 .67-.033L5.43 3.71a4.97 4.97 0 0 1 1.356-.561l.17-1.699ZM6 8c0 .538.212 1.026.558 1.385l.057.057a2 2 0 0 0 2.828-2.828l-.058-.056A2 2 0 0 0 6 8Z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        /** @var array<Filial> $filiais */
+        foreach ($filiais as $filial) : ?>
+            <tr class="hover">
+                <td class="border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400"><?= $filial->getId() ?></td>
+                <td class="border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400"><?= $filial->getNome() ?></td>
+                <td class="border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400">
+                    <div class="flex justify-center space-x-1">
+                        <button class="btn btn-xs h-8 w-8 border btn-square border-accent-content/15" title="Editar" name="editar" data-filialid="<?= $filial->getId() ?>">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/>
+                            </svg>
+                        </button>
+                        <a class="btn btn-xs text-error h-8 w-8 border btn-square border-accent-content/15" href="/filial/excluir?id=<?= $filial->getId() ?>" title="Excluir">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
+                            </svg>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let botoes = document.querySelectorAll("button[name='editar']")
+
+        botoes.forEach(function(item){
+            item.addEventListener('click', function(event) {
+                fetch('/filial/detalhes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: item.getAttribute('data-filialid')
+                    }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data)
+                        document.getElementById('filialId').value = data.id
+                        document.getElementById('filialNome').value = data.nome
+                        document.getElementById('filialCep').value = data.cep
+                        document.getElementById('filialLogradouro').value = data.logradouro
+                        document.getElementById('filialNumero').value = data.numero
+                        document.getElementById('filialComplemento').value = data.complemento
+                        document.getElementById('filialBairro').value = data.bairro
+                        document.getElementById('filialCidade').value = data.cidade
+                        document.getElementById('filialEstado').value = data.estado
+                        modal.showModal()
+
+                    })
+            })
+        })
+
+        document.getElementById('cadastrar').addEventListener('click', function() {
+            document.getElementById('filialId').value = ""
+            document.getElementById('filialNome').value = ""
+            document.getElementById('filialCep').value = ""
+            document.getElementById('filialLogradouro').value = ""
+            document.getElementById('filialNumero').value = ""
+            document.getElementById('filialComplemento').value = ""
+            document.getElementById('filialBairro').value = ""
+            document.getElementById('filialCidade').value = ""
+            document.getElementById('filialEstado').value = ""
+        });
+
+    });
+</script>

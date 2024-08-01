@@ -67,8 +67,9 @@ abstract class VagaBeneficioDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
 
-        $sql = "SELECT * FROM vaga_beneficio vb WHERE 1 ";
+        $sql = "SELECT * FROM vaga_beneficio vb ";
         $sql .= !empty($beneficioId) ? "LEFT JOIN beneficios b ON vb.beneficio_id = b.id " : '';
+        $sql .= "WHERE 1 ";
         $sql .= !empty($beneficioId) ? "AND vb.beneficio_id = $beneficioId " : '';
         $sql .= !empty($vagaId) ? "AND vb.vaga_id = $vagaId " : '';
 
