@@ -172,3 +172,13 @@ CREATE TABLE propostas
     aceite INTEGER NOT NULL,
     PRIMARY KEY(id_vaga, id_candidato)
 );
+
+DROP TABLE depoimentos;
+CREATE TABLE depoimentos
+(
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    empresa_id   INTEGER NOT NULL,
+    candidato_id INTEGER NOT NULL,
+    depoimento   TEXT    NOT NULL,
+    avaliacao    INTEGER NOT NULL DEFAULT 1
+);

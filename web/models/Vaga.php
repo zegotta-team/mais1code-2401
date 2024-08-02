@@ -282,6 +282,7 @@ class Vaga
             '{id}' => $this->getId(),
             '{vaga}' => $this->getTitulo(),
             '{empresa}' => $this->getEmpresa()->getNome(),
+            '{empresaId}' => $this->getEmpresa()->getId(),
             '{logo}' => $this->getEmpresa()->getLogo(),
             '{habilidades}' => $habilidades,
             '{beneficios}' => $beneficios,

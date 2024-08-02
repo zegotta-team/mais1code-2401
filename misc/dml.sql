@@ -206,3 +206,9 @@ INSERT INTO propostas(id_vaga, id_candidato, salario, regime_contratacao, regime
 (7 , 4, 4500, 1, 2, 2, 2,'programador php pleno','rua xyz','8h as 18h ', '19/07/2024', 0),
 (8 , 5, 5500, 1, 2, 2, 3,'programador php senior','rua xyz','8h as 18h ', '19/07/2024', 0)
 ;
+
+DELETE FROM depoimentos WHERE 1;
+INSERT INTO depoimentos (id, empresa_id, candidato_id, depoimento, avaliacao) VALUES
+(1, 1, 5, 'Empresa bacana', 4),
+(2, 2, 5, 'Empresa muito bacana', 4),
+(3, 3, 5, 'Empresa super bacana', 5);

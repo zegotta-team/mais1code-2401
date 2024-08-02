@@ -105,5 +105,24 @@ class EmpresaController
         echo json_encode($empresa->toArray());
     }
 
+    public function informacoes()
+    {
+        $layout = 'painel-vagas';
+        if (CandidatoController::estaLogado()) {
+            $layout = 'sistema-candidato';
+        } elseif (UsuarioController::estaLogado()) {
+            $layout = 'sistema-usuario';
+        }
+
+        $empresaId = $_GET['id'];
+        $empresa = EmpresaDTO::recuperar($empresaId);
+
+        $vagas = VagaDTO::listar($empresaId,'',VagaStatusEnum::Ativa->value);
+
+        $depoimentos = DepoimentoDTO::listar($empresaId);
+
+        View::renderizar('empresa/informacoes', compact('empresa', 'depoimentos', 'vagas'), $layout);
+    }
+
 
 }

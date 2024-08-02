@@ -45,7 +45,11 @@ class PropostaController
 
         CandidatoVagaDTO::salvar($candidatoVaga);
 
-        header("Location:/candidato/listar");
+        if ($propostaStatus === PropostaStatusEnum::Aceita) {
+            header('Location:/candidato/depoimento?empresa=' . $candidatoVaga->getVaga()->getEmpresa()->getId());
+        } else {
+            header("Location:/candidato/listar");
+        }
     }
 
     public function exibir()

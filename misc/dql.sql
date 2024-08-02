@@ -72,3 +72,9 @@ INNER JOIN candidato c ON n.candidato_id = c.id;
 SELECT *
 FROM notificacoes n
 INNER JOIN empresa e ON n.empresa_id = e.id;
+
+-- empresas com depoimentos e candidatos
+SELECT *
+FROM empresa e
+INNER JOIN depoimentos d ON d.empresa_id = e.id
+INNER JOIN candidato c ON d.candidato_id = c.id

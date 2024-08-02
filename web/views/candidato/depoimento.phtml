@@ -1,0 +1,41 @@
+<!--<div class="container container-sm w-75">-->
+<div class="mx-auto max-w-7xl px-1 py-4">
+    <div class="mx-auto max-w-3xl p-4 rounded-xl">
+        <form method="post" action="/candidato/salvarDepoimento">
+
+            <h2 class="mb-2">Depoimento</h2>
+            <h5 class="mb-2"><?= $empresa->getNome() ?> que saber como foi sua experiência ao ser contratado. Que tal nos contar?</h5>
+            <input type="hidden" name="empresaId" value="<?= $empresa->getId() ?>">
+            <div class="flex justify-center mb-3 mb-3">
+                <label class="form-control">
+                    <div class="label">
+                        <span class="label-text">Avalie sua experiência</span>
+                    </div>
+                    <div class="rating justify-between">
+                        <input type="radio" name="rating" value="1" class="mask mask-star bg-orange-400" checked="false"/>
+                        <input type="radio" name="rating" value="2" class="mask mask-star bg-orange-400"/>
+                        <input type="radio" name="rating" value="3" class="mask mask-star bg-orange-400"/>
+                        <input type="radio" name="rating" value="4" class="mask mask-star bg-orange-400"/>
+                        <input type="radio" name="rating" value="5" class="mask mask-star bg-orange-400"/>
+                    </div>
+                </label>
+            </div>
+            <div class="flex space-x-2">
+                <label class="form-control w-full">
+                    <textarea name="depoimento" id="depoimento" required rows="5" class="textarea input-bordered w-full min-h-[200px] max-h-[200px]"></textarea>
+                </label>
+            </div>
+            <div class="mt-6 flex items-center justify-between space-x-2">
+                <a class="btn btn-neutral" href="/candidato/listar">Não quero contar agora</a>
+                <button class="btn btn-success btn-wide" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                    </svg>
+                    Salvar
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+

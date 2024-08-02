@@ -206,4 +206,40 @@ class CandidatoController
 
         echo json_encode($candidato->toArray());
     }
+
+    public function depoimento()
+    {
+        CandidatoController::exigeSessao();
+        $empresaId = $_GET['empresa'];
+        $empresa = EmpresaDTO::recuperar($empresaId);
+
+        if (empty($empresa)) {
+            header('Location:/candidato/listar');
+            die();
+        }
+
+        View::renderizar('candidato/depoimento', compact('empresa'), 'sistema-candidato');
+    }
+
+    public function salvarDepoimento()
+    {
+        CandidatoController::exigeSessao();
+
+        $empresaId = $_POST['empresaId'];
+        $empresa = EmpresaDTO::recuperar($empresaId);
+
+        $candidatoId = $_SESSION['candidato']->getId();
+
+        if (empty($empresa)) {
+            header('Location:/candidato/listar');
+            die();
+        }
+
+        $depoimento = new Depoimento($empresaId, $candidatoId, $_POST['depoimento'], $_POST['rating']);
+        DepoimentoDTO::salvar($depoimento);
+
+        FlashMessage::addMessage('Depoimento cadastrado com sucesso', FlashMessage::FLASH_SUCCESS);
+
+        header('Location: /candidato/listar');
+    }
 }
