@@ -21,7 +21,7 @@ class InstitucionalController
                 'local' => 'Juazeiro do Norte, CE',
                 'apelido' => 'A super paciente',
                 'github' => 'Lana230',
-                'linkedin' => '',
+                'linkedin' => 'alana-silva-ab94822a3',
                 'whatsapp' => '5588999132393'
             ],
             [
