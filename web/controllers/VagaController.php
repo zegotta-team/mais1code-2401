@@ -129,6 +129,8 @@ class VagaController
             $layout = 'sistema-candidato';
         } elseif (UsuarioController::estaLogado()) {
             $layout = 'sistema-usuario';
+        } elseif (AdminController::estaLogado()) {
+            $layout = 'sistema-admin';
         }
 
         View::renderizar('vaga/painel', compact(

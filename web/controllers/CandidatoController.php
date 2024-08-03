@@ -242,4 +242,47 @@ class CandidatoController
 
         header('Location: /candidato/listar');
     }
+
+    public function trocarSenha()
+    {
+        CandidatoController::exigeSessao();
+
+        View::renderizar('candidato/trocarsenha', [], 'sistema-candidato');
+    }
+
+    public function salvarSenha()
+    {
+        CandidatoController::exigeSessao();
+
+        $candidato = CandidatoDTO::recuperar($_SESSION['candidato']->getId());
+        $candidato->setSenha(password_hash($_POST['senha'], PASSWORD_ARGON2ID));
+        CandidatoDTO::salvar($candidato);
+        header('Location: /vaga/painel');
+    }
+
+    public function exibir()
+    {
+        UsuarioController::exigeSessao();
+
+        $candidatoId = $_GET['id'] ?? null;
+        $candidato = CandidatoDTO::recuperar($candidatoId);
+
+        $candidaturas = CandidatoVagaDTO::listar($candidatoId);
+
+        $vagas = [];
+
+        /** @var CandidatoVaga $candidatura */
+        foreach ($candidaturas as $candidatura) {
+            if ($candidatura->getVaga()->getEmpresa()->getId() == $_SESSION['usuario']->getEmpresa()->getId()) {
+                $vagas[] = $candidatura->getVaga();
+            }
+        }
+
+        if (empty($candidato)) {
+            header('Location:/error/');
+        }
+
+
+        View::renderizar('candidato/exibir', compact('candidato', 'vagas'), 'sistema-usuario');
+    }
 }

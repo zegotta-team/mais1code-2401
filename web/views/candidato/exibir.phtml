@@ -1,0 +1,113 @@
+<?php
+/** @var Candidato $candidato */
+?>
+<div class="mx-auto max-w-7xl px-4 py-10">
+    <div class="mx-auto max-w-7xl border p-4 rounded-xl bg-white">
+        <div class="mb-5 flex justify-between">
+            <div>
+                <h1><?= $candidato->getNome() ?></h1>
+                <?= $candidato->getEndereco() ?>
+                <br>
+                <h6>Disponibilidade: <?= CandidatoDisponibilidadeEnum::from($candidato->getDisponibilidade())->label() ?></h6>
+            </div>
+            <div class="text-end">
+                <h5 class="font-bold">
+                    <a class="link link-hover" href="mailto:<?= $candidato->getEmail(); ?>"> <?= $candidato->getEmail(); ?></a>
+                </h5>
+                <h5>Sexo <?= SexoEnum::from($candidato->getSexo())->label(); ?>, <?= CandidatoGeneroEnum::from($candidato->getGenero())->label() ?></h5>
+                <h5>Nascimento: <?= date("d/m/Y", strtotime($candidato->getNascimento())) ?></h5>
+            </div>
+        </div>
+        <div class="p-2 bg-slate-100 rounded-xl">
+            <h2 class="text-base font-semibold text-gray-900">Preferências</h2>
+        </div>
+
+        <div class="px-1 gap-3 mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+            <label class="form-control">
+                <div class="label">
+                    <span class="font-bold label-text">Regime de contratação</span>
+                </div>
+                <div class="label">
+                    <span class="label-text"><?= RegimeContratacaoEnum::from($candidato->getRegimeContratacao())->label() ?></span>
+                </div>
+            </label>
+            <label class="form-control">
+                <div class="label">
+                    <span class="font-bold label-text">Regime de Trabalho</span>
+                </div>
+                <div class="label">
+                    <span class="label-text"><?= RegimeTrabalhoEnum::from($candidato->getRegimeTrabalho())->label() ?></span>
+                </div>
+            </label>
+            <label class="form-control">
+                <div class="label">
+                    <span class="font-bold label-text">Senioridade</span>
+                </div>
+                <div class="label">
+                    <span class="label-text"><?= NivelSenioridadeEnum::from($candidato->getNivelSenioridade())->label() ?></span>
+                </div>
+            </label>
+            <label class="form-control">
+                <div class="label">
+                    <span class="font-bold label-text">Nível hierárquico</span>
+                </div>
+                <div class="label">
+                    <span class="label-text"><?= NivelHierarquicoEnum::from($candidato->getNivelHierarquia())->label() ?></span>
+                </div>
+            </label>
+        </div>
+
+        <div class="my-8 p-2 flex justify-between bg-slate-100 rounded-lg items-center">
+            <div>
+                <h2 class="text-base font-semibold text-gray-900 card-title">Habilidades</h2>
+            </div>
+        </div>
+        <div class="gap-3 mt-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1">
+            <?php /** @var array<Habilidade> $habilidades */
+            foreach ($candidato->getHabilidades() as $categoria => $habilidade) : ?>
+                <label for="habilidade_<?= $habilidade->getId() ?>" class="label cursor-pointer justify-start gap-1">
+                    <span class="label-text truncate"><?= $habilidade->getCategoria()->getNome() ?></span> |
+                    <span class="label-text truncate"><?= $habilidade->getHabilidade() ?></span>
+                </label>
+            <?php endforeach; ?>
+        </div>
+
+        <?php if (!empty($candidato->getBeneficios())): ?>
+            <div class="my-8 p-2 flex justify-between bg-slate-100 rounded-lg items-center">
+                <div>
+                    <h2 class="text-base font-semibold text-gray-900 card-title">Benefícios</h2>
+                </div>
+            </div>
+
+            <div class="gap-3 mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5">
+                <?php
+                /** @var array<Beneficio> $beneficios */
+                foreach ($candidato->getBeneficios() as $beneficio) : ?>
+                    <label for="beneficio_<?= $beneficio->getId() ?>" class="label cursor-pointer justify-start gap-2">
+                        <span class="label-text truncate"><?= $beneficio->getNome() ?></span>
+                    </label>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
+
+<div class="mx-auto max-w-7xl px-4 mb-20">
+    <div class="mx-auto max-w-7xl border p-4 rounded-xl bg-white pb-10">
+        <?php if (!empty($vagas)): ?>
+            <div class="p-2 flex justify-between bg-slate-100 rounded-lg items-center">
+                <div>
+                    <h2 class="text-base font-semibold text-gray-900 card-title">Vagas que o candidato está participando</h2>
+                </div>
+            </div>
+            <div class="gap-3 mt-5 grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3">
+                <?php
+                /** @var array<Vaga> $vagas */
+                foreach ($vagas as $vaga):
+                    echo $vaga->cardFormatado();
+                endforeach; ?>
+            </div>
+
+        <?php endif; ?>
+    </div>
+</div>

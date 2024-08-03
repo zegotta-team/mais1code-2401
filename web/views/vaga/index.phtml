@@ -204,7 +204,8 @@
                 <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-0">#</th>
                 <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-0">Nome</th>
                 <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-0">Email</th>
-                <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-0">Status da Candidatura</th>
+                <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-0">Perfil</th>
+                <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-0">Etapa</th>
                 <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-0">
                     <div class="flex justify-center items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
@@ -405,27 +406,44 @@
                     .then(response => response.json())
                     .then(data => {
                         document.getElementById('tbodyCandidatos').innerHTML = ''
+                        let classesComuns = ['border', 'border-slate-300', 'dark:border-slate-700', 'text-slate-500', 'dark:text-slate-400', 'whitespace-nowrap']
                         data.forEach(function (item) {
                             let tr = document.createElement('tr')
                             tr.classList.add('hover')
 
                             let td_id = document.createElement('td')
-                            td_id.classList.add('border', 'border-slate-300', 'dark:border-slate-700', 'text-slate-500', 'dark:text-slate-400', 'whitespace-nowrap')
+                            td_id.classList.add(...classesComuns)
                             td_id.innerHTML = item.candidato.id
                             tr.append(td_id)
 
                             let td_nome = document.createElement('td')
-                            td_nome.classList.add('border', 'border-slate-300', 'dark:border-slate-700', 'text-slate-500', 'dark:text-slate-400', 'whitespace-nowrap')
+                            td_nome.classList.add(...classesComuns)
                             td_nome.innerHTML = item.candidato.nome
                             tr.append(td_nome)
 
                             let td_email = document.createElement('td')
-                            td_email.classList.add('border', 'border-slate-300', 'dark:border-slate-700', 'text-slate-500', 'dark:text-slate-400', 'whitespace-nowrap')
+                            td_email.classList.add(...classesComuns)
                             td_email.innerHTML = item.candidato.email
                             tr.append(td_email)
 
+                            let td_perfil = document.createElement('td')
+                            td_perfil.classList.add(...classesComuns)
+
+                            let linkPerfil = document.createElement('a')
+                            let divPerfil= document.createElement('div')
+                            divPerfil.classList.add('flex', 'justify-center', 'space-x-1')
+                            linkPerfil.classList.add('btn', 'btn-xs', 'h-8', 'w-8', 'border', 'btn-square', 'text-white', 'btn-neutral')
+                            linkPerfil.href = `/candidato/exibir?id=${item.candidato.id}`
+                            linkPerfil.title = 'Ver o perfil'
+                            linkPerfil.target = '_blank'
+                            linkPerfil.role = 'button'
+                            linkPerfil.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4"><path stroke-linecap="round" stroke-linejoin="round" d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13" /></svg>';
+                            divPerfil.append(linkPerfil)
+                            td_perfil.append(divPerfil)
+                            tr.append(td_perfil)
+
                             let td_status = document.createElement('td')
-                            td_status.classList.add('border', 'border-slate-300', 'dark:border-slate-700', 'text-slate-500', 'dark:text-slate-400', 'whitespace-nowrap', 'text-center')
+                            td_status.classList.add(...classesComuns, 'text-center')
                             td_status.innerHTML = item.statusFormatado
                             if (item.status == 0) {
                                 let div = document.createElement('div')
@@ -437,7 +455,7 @@
                             tr.append(td_status)
 
                             let td_botoes = document.createElement('td')
-                            td_botoes.classList.add('border', 'border-slate-300', 'dark:border-slate-700', 'text-slate-500', 'dark:text-slate-400', 'whitespace-nowrap')
+                            td_botoes.classList.add(...classesComuns)
                             if (item.status !== 0 && item.status !== 5 && item.status !== 6 && item.status !== 7 && item.status !== 8) {
                                 let divBotao1 = document.createElement('div')
                                 divBotao1.classList.add('flex', 'justify-center', 'space-x-1')

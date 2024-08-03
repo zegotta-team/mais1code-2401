@@ -5,11 +5,15 @@ class BeneficioController
 
     public function index()
     {
-        UsuarioController::exigeSessao();
+        if (!UsuarioController::estaLogado() && !AdminController::estaLogado()) {
+            UsuarioController::exigeSessao();
+        }
 
         $beneficios = BeneficioDTO::listar();
 
-        View::renderizar('/beneficio/index', compact('beneficios'));
+        $layout = AdminController::estaLogado() ? 'sistema-admin' : 'sistema-usuario';
+
+        View::renderizar('/beneficio/index', compact('beneficios'), $layout);
     }
 
     public function salvar()

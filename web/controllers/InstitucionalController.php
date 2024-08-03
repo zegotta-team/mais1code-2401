@@ -22,7 +22,7 @@ class InstitucionalController
                 'apelido' => 'A super paciente',
                 'github' => 'Lana230',
                 'linkedin' => '',
-                'whatsapp' => '558899132393'
+                'whatsapp' => '5588999132393'
             ],
             [
                 'nome' => 'Douglas Oliveira',
@@ -32,7 +32,7 @@ class InstitucionalController
                 'apelido' => 'O inimigo do Jira',
                 'github' => 'DouglasB2022',
                 'linkedin' => 'douglasbitencourt',
-                'whatsapp' => '555197781791'
+                'whatsapp' => '5551997781791'
             ],
             [
                 'nome' => 'Edyelgue Carneiro',
@@ -42,7 +42,7 @@ class InstitucionalController
                 'apelido' => 'O tosse sem fim',
                 'github' => 'Edyelgue',
                 'linkedin' => 'edyelgue-carneiro-a44215184',
-                'whatsapp' => '553491982482'
+                'whatsapp' => '5534991982482'
             ],
             [
                 'nome' => 'Kauan Nascimento',

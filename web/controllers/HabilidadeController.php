@@ -8,12 +8,16 @@ class HabilidadeController
 
     public function index()
     {
-        UsuarioController::exigeSessao();
+        if (!UsuarioController::estaLogado() && !AdminController::estaLogado()) {
+            UsuarioController::exigeSessao();
+        }
+
+        $layout = AdminController::estaLogado() ? 'sistema-admin' : 'sistema-usuario';
 
         $categorias = CategoriaHabilidadeDTO::listar();
         $habilidades = HabilidadeDTO::listar();
 
-        View::renderizar('/habilidade/index', compact('categorias', 'habilidades'));
+        View::renderizar('/habilidade/index', compact('categorias', 'habilidades'), $layout);
     }
 
     public function salvar()

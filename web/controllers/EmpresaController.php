@@ -117,11 +117,44 @@ class EmpresaController
         $empresaId = $_GET['id'];
         $empresa = EmpresaDTO::recuperar($empresaId);
 
-        $vagas = VagaDTO::listar($empresaId,'',VagaStatusEnum::Ativa->value);
-
         $depoimentos = DepoimentoDTO::listar($empresaId);
+        $candidatos = array_map(function ($depoimento) {
+            return CandidatoDTO::recuperar($depoimento->getCandidatoId());
+        }, $depoimentos);
 
-        View::renderizar('empresa/informacoes', compact('empresa', 'depoimentos', 'vagas'), $layout);
+        $todasAsVagas = VagaDTO::listar($empresaId);
+
+        $vagas = array_filter(array_map(function ($vaga) {
+            if ($vaga->getStatus() === VagaStatusEnum::Ativa->value) {
+                return $vaga;
+            }
+            return null;
+        }, $todasAsVagas));
+
+        $vagas_fechadas = array_map(function ($vaga) {
+            $contratacoes = CandidatoVagaDTO::listar('', $vaga->getId(), CandidatoVagaStatusEnum::Contratado->value);
+            if (count($contratacoes) > 0) {
+                return 1;
+            }
+            return null;
+        }, $todasAsVagas);
+
+        $contratacoes = array_sum(array_map(function ($vaga) {
+            return count(CandidatoVagaDTO::listar('', $vaga->getId(), CandidatoVagaStatusEnum::Contratado->value));
+        }, $todasAsVagas));
+
+        $mediaAvaliacao = array_map(function ($depoimento) {
+            return $depoimento->getAvaliacao();
+        }, $depoimentos);
+
+        $dados = [
+            'vagas_abertas' => count($todasAsVagas),
+            'vagas_fechadas' => count(array_filter($vagas_fechadas)),
+            'media_avaliacao' => array_sum($mediaAvaliacao) / count($mediaAvaliacao),
+            'contratacoes' => $contratacoes,
+        ];
+
+        View::renderizar('empresa/informacoes', compact('empresa', 'dados', 'depoimentos', 'candidatos', 'vagas'), $layout);
     }
 
 

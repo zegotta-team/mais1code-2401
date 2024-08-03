@@ -59,10 +59,9 @@
                 </div>
                 <select class="select select-bordered" name="disponibilidade" id="disponibilidade">
                     <option value="" disabled selected>Selecione</option>
-                    <option value="3">Disponibilidade Imediata</option>
-                    <option value="2">Disponível após 30 dias</option>
-                    <option value="1">Tempo Parcial</option>
-                    <option value="0">Tempo Integral</option>
+                    <?php foreach (CandidatoDisponibilidadeEnum::forSelect() as $indice => $valor): ?>
+                        <option value="<?= $indice ?>"><?= $valor ?></option>
+                    <?php endforeach; ?>
                 </select>
             </label>
             <label class="form-control w-1/3">
@@ -82,9 +81,9 @@
                 </div>
                 <select class="select select-bordered" name="genero" id="genero">
                     <option value="" disabled selected>Selecione</option>
-                    <option value="C">Cisgênero</option>
-                    <option value="T">Transgênero</option>
-                    <option value="O">Outro</option>
+                    <?php foreach (CandidatoGeneroEnum::forSelect() as $value => $label): ?>
+                        <option value="<?= $value ?>"><?= $label ?></option>
+                    <?php endforeach; ?>
                 </select>
             </label>
         </div>
