@@ -19,6 +19,16 @@ INSERT INTO filial (id, empresa_id, nome, cep, logradouro, numero, complemento, 
 (6, 3, 'Salvador', '12345678', 'Av Salvador', '56', '', 'Pelourinho', 'Salvador', 'BA')
 ;
 
+DELETE FROM administradores WHERE 1;
+INSERT INTO administradores (id, nome, email, login, senha) VALUES
+(1, 'Alana Silva', 'alana@empresa.com', 'alana.silva', '$argon2id$v=19$m=65536,t=4,p=1$Aab6wOgF6HbEY/Q3J42ClA$BoFioL4aRuvWJllGa5nOFd5hGUL+X9/SA6j0YXFvTzY'),
+(2, 'Douglas Oliveira', 'douglas@empresa.com', 'douglas.oliveira', '$argon2id$v=19$m=65536,t=4,p=1$Aab6wOgF6HbEY/Q3J42ClA$BoFioL4aRuvWJllGa5nOFd5hGUL+X9/SA6j0YXFvTzY'),
+(3, 'Edyelgue Carneiro', 'edy@empresa.com', 'edy.carneiro', '$argon2id$v=19$m=65536,t=4,p=1$Aab6wOgF6HbEY/Q3J42ClA$BoFioL4aRuvWJllGa5nOFd5hGUL+X9/SA6j0YXFvTzY'),
+(4, 'Kauan Nascimento', 'kauan@empresa.com', 'kauan.nascimento', '$argon2id$v=19$m=65536,t=4,p=1$Aab6wOgF6HbEY/Q3J42ClA$BoFioL4aRuvWJllGa5nOFd5hGUL+X9/SA6j0YXFvTzY'),
+(5, 'Thiago Abreu', 'thiago@empresa.com', 'thiago.abreu', '$argon2id$v=19$m=65536,t=4,p=1$Aab6wOgF6HbEY/Q3J42ClA$BoFioL4aRuvWJllGa5nOFd5hGUL+X9/SA6j0YXFvTzY')
+;
+
+
 DELETE FROM usuario WHERE 1;
 INSERT INTO usuario (id, empresa_id, cpf, nome, email, senha) VALUES
 (1, 1, '19143210066', 'Joao Silva', 'joao.silva@ibm.fake.com', '$argon2id$v=19$m=65536,t=4,p=1$Aab6wOgF6HbEY/Q3J42ClA$BoFioL4aRuvWJllGa5nOFd5hGUL+X9/SA6j0YXFvTzY'),

@@ -18,34 +18,25 @@ class BeneficioController
 
     public function salvar()
     {
-        UsuarioController::exigeSessao();
+        if (!UsuarioController::estaLogado() && !AdminController::estaLogado()) {
+            UsuarioController::exigeSessao();
+        }
 
         if (empty($_POST['id'])) {
             $beneficio = new Beneficio($_POST['beneficio']);
         } else {
+            AdminController::exigeSessao();
             $beneficio = BeneficioDTO::recuperar($_POST['id']);
             $beneficio->setNome($_POST['beneficio']);
         }
-
         BeneficioDTO::salvar($beneficio);
 
         header('Location:/beneficio');
     }
 
-    public function editar()
-    {
-        UsuarioController::exigeSessao();
-
-        $beneficioId = $_GET['id'];
-
-        $beneficio = BeneficioDTO::recuperar($beneficioId);
-
-        View::renderizar('beneficio/index', compact('beneficio'));
-    }
-
     public function excluir()
     {
-        UsuarioController::exigeSessao();
+        AdminController::exigeSessao();
 
         $beneficio = BeneficioDTO::recuperar($_GET['id']);
 
@@ -56,7 +47,7 @@ class BeneficioController
 
     public function detalhes()
     {
-        UsuarioController::exigeSessao();
+        AdminController::exigeSessao();
         header('Content-type: application/json');
 
         $input = file_get_contents('php://input');

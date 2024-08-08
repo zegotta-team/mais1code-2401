@@ -8,6 +8,7 @@ SELECT * FROM filial;
 SELECT * FROM vaga;
 SELECT * FROM habilidade;
 SELECT * FROM usuario;
+SELECT * FROM administradores;
 SELECT * FROM candidato;
 SELECT * FROM notificacoes;
 SELECT * FROM vaga_habilidade;

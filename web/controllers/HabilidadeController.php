@@ -22,7 +22,10 @@ class HabilidadeController
 
     public function salvar()
     {
-        UsuarioController::exigeSessao();
+
+        if (!UsuarioController::estaLogado() && !AdminController::estaLogado()) {
+            UsuarioController::exigeSessao();
+        }
 
         if (empty($_POST['id'])) {
             if (!empty($_POST['categoriaNova'])) {
@@ -34,6 +37,7 @@ class HabilidadeController
 
             $habilidade = new Habilidade($_POST['habilidade'], $categoria);
         } else {
+            AdminController::exigeSessao();
             $habilidade = HabilidadeDTO::recuperar($_POST['id']);
 
             if (!empty($_POST['categoriaNova'])) {
@@ -52,21 +56,9 @@ class HabilidadeController
         header('Location:/habilidade');
     }
 
-    public function editar()
-    {
-        UsuarioController::exigeSessao();
-
-        $habilidadeId = $_GET['id'];
-        $habilidade = HabilidadeDTO::recuperar($habilidadeId);
-
-        $categorias = CategoriaHabilidadeDTO::listar();
-
-        View::renderizar('habilidade/index', compact('habilidade', 'categorias'), 'sistema-usuario');
-    }
-
     public function excluir()
     {
-        UsuarioController::exigeSessao();
+        AdminController::exigeSessao();
 
         $habilidade = HabilidadeDTO::recuperar($_GET['id']);
 
@@ -81,7 +73,7 @@ class HabilidadeController
 
     public function detalhes()
     {
-        UsuarioController::exigeSessao();
+        AdminController::exigeSessao();
         header('Content-type: application/json');
 
         $input = file_get_contents('php://input');

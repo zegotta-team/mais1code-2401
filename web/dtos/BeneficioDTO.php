@@ -16,8 +16,7 @@ abstract class BeneficioDTO implements DTOInterface
         $pdo = static::conectarDB();
 
         if (empty($beneficio->getId())) {
-            $sql = "INSERT INTO beneficios(nome)
-            VALUES (\"{$beneficio->getNome()}\")";
+            $sql = "INSERT INTO beneficios(nome) VALUES (\"{$beneficio->getNome()}\")";
         } else {
             $sql = "UPDATE beneficios SET ";
             $sql .= "nome = '{$beneficio->getNome()}' ";

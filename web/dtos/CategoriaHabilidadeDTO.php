@@ -15,13 +15,18 @@ abstract class CategoriaHabilidadeDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
 
+        if (static::verificar($categoria->getNome())) {
+            $sql = "SELECT * FROM categoria_habilidade WHERE nome = '{$categoria->getNome()}' ";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+
+            $categoriaExistente = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $categoria->setId($categoriaExistente['id']);
+        }
+
         if (empty($categoria->getId())) {
-            if (!static::verificar($categoria->getNome())) {
-                $sql = "INSERT INTO categoria_habilidade (nome)
-                    VALUES (\"{$categoria->getNome()}\")";
-            } else{
-                $sql = "SELECT * FROM categoria_habilidade WHERE nome = '{$categoria->getNome()}' ";
-            }
+            $sql = "INSERT INTO categoria_habilidade (nome) VALUES (\"{$categoria->getNome()}\")";
         } else{
             $sql = "UPDATE categoria_habilidade SET ";
             $sql .= "nome = '{$categoria->getNome()}' ";
@@ -30,12 +35,6 @@ abstract class CategoriaHabilidadeDTO implements DTOInterface
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
-
-        if (static::verificar($categoria->getNome())) {
-            $categoriaExistente = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            $categoria->setId($categoriaExistente['id']);
-        }
 
         if (empty($categoria->getId())) {
             $categoria->setId($pdo->lastInsertId());
@@ -95,8 +94,7 @@ abstract class CategoriaHabilidadeDTO implements DTOInterface
     {
         $pdo = static::conectarDB();
 
-        $sql = "SELECT COUNT(1) AS Total FROM categoria_habilidade ";
-        $sql .= "WHERE categoria_habilidade.nome LIKE '$nome'";
+        $sql = "SELECT COUNT(1) AS Total FROM categoria_habilidade WHERE categoria_habilidade.nome = '$nome'";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
