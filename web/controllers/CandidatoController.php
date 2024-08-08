@@ -185,6 +185,8 @@ class CandidatoController
         CandidatoDTO::salvar($candidato);
         FlashMessage::addMessage('Dados gravados com sucesso', FlashMessage::FLASH_SUCCESS);
 
+        $_SESSION['candidato'] = $candidato;
+
         header("Location: /candidato/perfil");
     }
 
