@@ -1,18 +1,16 @@
 <?php
 
+/**
+ * @noinspection PhpUnused
+ */
+
 class HabilidadeController
 {
-    public function __construct()
-    {
-    }
-
     public function index()
     {
-        if (!UsuarioController::estaLogado() && !AdminController::estaLogado()) {
-            UsuarioController::exigeSessao();
-        }
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA, TipoUsuarioEnum::ADMINISTRADOR]);
 
-        $layout = AdminController::estaLogado() ? 'sistema-admin' : 'sistema-usuario';
+        $layout = Session::estaLogado([TipoUsuarioEnum::ADMINISTRADOR]) ? 'sistema-admin' : 'sistema-usuario';
 
         $categorias = CategoriaHabilidadeDTO::listar();
         $habilidades = HabilidadeDTO::listar();
@@ -23,9 +21,7 @@ class HabilidadeController
     public function salvar()
     {
 
-        if (!UsuarioController::estaLogado() && !AdminController::estaLogado()) {
-            UsuarioController::exigeSessao();
-        }
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA, TipoUsuarioEnum::ADMINISTRADOR]);
 
         if (empty($_POST['id'])) {
             if (!empty($_POST['categoriaNova'])) {
@@ -37,7 +33,7 @@ class HabilidadeController
 
             $habilidade = new Habilidade($_POST['habilidade'], $categoria);
         } else {
-            AdminController::exigeSessao();
+            Session::exigeSessao([TipoUsuarioEnum::ADMINISTRADOR]);
             $habilidade = HabilidadeDTO::recuperar($_POST['id']);
 
             if (!empty($_POST['categoriaNova'])) {
@@ -58,7 +54,7 @@ class HabilidadeController
 
     public function excluir()
     {
-        AdminController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::ADMINISTRADOR]);
 
         $habilidade = HabilidadeDTO::recuperar($_GET['id']);
 
@@ -71,9 +67,9 @@ class HabilidadeController
         header('Location: /habilidade');
     }
 
-    public function detalhes()
+    public function detalhesJson()
     {
-        AdminController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::ADMINISTRADOR]);
         header('Content-type: application/json');
 
         $input = file_get_contents('php://input');

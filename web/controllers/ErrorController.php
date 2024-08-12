@@ -1,18 +1,21 @@
 <?php
 
+/**
+ * @noinspection PhpUnused
+ */
+
 class ErrorController
 {
-
     public function index()
     {
 
-        $ignorarLayout = !UsuarioController::estaLogado() && !CandidatoController::estaLogado();
-        if (!$ignorarLayout) {
-            $layout = UsuarioController::estaLogado() ? 'sistema-usuario' : 'sistema-candidato';
-        } else {
-            $layout = '';
+        $layout = 'sistema-externo';
+        if (Session::estaLogado([TipoUsuarioEnum::CANDIDATO])) {
+            $layout = 'sistema-candidato';
+        } elseif (Session::estaLogado([TipoUsuarioEnum::EMPRESA])) {
+            $layout = 'sistema-usuario';
         }
 
-        View::renderizar('error/index', [], $layout, $ignorarLayout);
+        View::renderizar('error/index', [], $layout);
     }
 }

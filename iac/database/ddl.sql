@@ -35,7 +35,7 @@ DROP TABLE administradores;
 CREATE TABLE administradores
 (
     id    INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome TEXT NOT NULL,
+    nome  TEXT NOT NULL,
     email TEXT NOT NULL,
     login TEXT NOT NULL UNIQUE,
     senha TEXT NOT NULL

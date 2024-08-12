@@ -1,28 +1,27 @@
 <?php
 
+/**
+ * @noinspection PhpUnused
+ */
+
 class FilialController
 {
-
-    public function __construct()
-    {
-    }
-
     public function index()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
-        $filiais = FilialDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
+        $filiais = FilialDTO::listar(Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa()->getId());
 
         View::renderizar('filial/index', compact('filiais'));
     }
 
     public function salvar()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
         header('Location: /filial');
 
         if (empty($_POST['filialId'])) {
-            $filial = new Filial($_SESSION['usuario']->getEmpresa(), $_POST['filialNome'], $_POST['filialCep'], $_POST['filialLogradouro'], $_POST['filialNumero'], $_POST['filialComplemento'], $_POST['filialBairro'], $_POST['filialCidade'], $_POST['filialEstado']);
+            $filial = new Filial(Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa(), $_POST['filialNome'], $_POST['filialCep'], $_POST['filialLogradouro'], $_POST['filialNumero'], $_POST['filialComplemento'], $_POST['filialBairro'], $_POST['filialCidade'], $_POST['filialEstado']);
         } else {
             $filial = FilialDTO::recuperar($_POST['filialId']);
 
@@ -30,7 +29,7 @@ class FilialController
                 die('Filial não encontrada');
             }
 
-            if ($_SESSION['usuario']->getEmpresa()->getId() !== $filial->getEmpresa()->getId()) {
+            if (Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa()->getId() !== $filial->getEmpresa()->getId()) {
                 die('Sai pilantra, a filial não é sua!');
             }
 
@@ -50,7 +49,7 @@ class FilialController
 
     public function editar()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
         $idFilial = $_GET['id'];
         $filial = FilialDTO::recuperar($idFilial);
@@ -59,7 +58,7 @@ class FilialController
             die('Filial não encontrada');
         }
 
-        if ($_SESSION['usuario']->getEmpresa()->getId() !== $filial->getEmpresa()->getId()) {
+        if (Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa()->getId() !== $filial->getEmpresa()->getId()) {
             die('Sai pilantra, essa filial não é sua');
         }
 
@@ -68,7 +67,7 @@ class FilialController
 
     public function excluir()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
         $filialId = $_GET['id'];
 
@@ -78,7 +77,7 @@ class FilialController
             die('Filial não encontrada');
         }
 
-        if ($_SESSION['usuario']->getEmpresa()->getId() !== $filialExclusao->getEmpresa()->getId()) {
+        if (Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa()->getId() !== $filialExclusao->getEmpresa()->getId()) {
             die('Sai pilantra, está filial não é sua');
         }
 
@@ -86,8 +85,8 @@ class FilialController
         header('Location: /filial/');
     }
 
-    public function detalhes() {
-        UsuarioController::exigeSessao();
+    public function detalhesJson() {
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
         header('Content-type: application/json');
 
         $input = file_get_contents('php://input');

@@ -1,31 +1,31 @@
 <?php
 
+/**
+ * @noinspection PhpUnused
+ */
+
 class BeneficioController
 {
 
     public function index()
     {
-        if (!UsuarioController::estaLogado() && !AdminController::estaLogado()) {
-            UsuarioController::exigeSessao();
-        }
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA, TipoUsuarioEnum::ADMINISTRADOR]);
 
         $beneficios = BeneficioDTO::listar();
 
-        $layout = AdminController::estaLogado() ? 'sistema-admin' : 'sistema-usuario';
+        $layout = Session::estaLogado([TipoUsuarioEnum::ADMINISTRADOR]) ? 'sistema-admin' : 'sistema-usuario';
 
         View::renderizar('/beneficio/index', compact('beneficios'), $layout);
     }
 
     public function salvar()
     {
-        if (!UsuarioController::estaLogado() && !AdminController::estaLogado()) {
-            UsuarioController::exigeSessao();
-        }
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA, TipoUsuarioEnum::ADMINISTRADOR]);
 
         if (empty($_POST['id'])) {
             $beneficio = new Beneficio($_POST['beneficio']);
         } else {
-            AdminController::exigeSessao();
+            Session::exigeSessao([TipoUsuarioEnum::ADMINISTRADOR]);
             $beneficio = BeneficioDTO::recuperar($_POST['id']);
             $beneficio->setNome($_POST['beneficio']);
         }
@@ -36,7 +36,7 @@ class BeneficioController
 
     public function excluir()
     {
-        AdminController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::ADMINISTRADOR]);
 
         $beneficio = BeneficioDTO::recuperar($_GET['id']);
 
@@ -45,9 +45,9 @@ class BeneficioController
         header("Location: /beneficio");
     }
 
-    public function detalhes()
+    public function detalhesJson()
     {
-        AdminController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::ADMINISTRADOR]);
         header('Content-type: application/json');
 
         $input = file_get_contents('php://input');

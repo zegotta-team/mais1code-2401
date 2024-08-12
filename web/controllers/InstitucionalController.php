@@ -1,13 +1,17 @@
 <?php
 
+/**
+ * @noinspection PhpUnused
+ */
+
 class InstitucionalController
 {
     public function sobre()
     {
         $layout = 'sistema-externo';
-        if (CandidatoController::estaLogado()) {
+        if (Session::estaLogado([TipoUsuarioEnum::CANDIDATO])) {
             $layout = 'sistema-candidato';
-        } elseif (UsuarioController::estaLogado()) {
+        } elseif (Session::estaLogado([TipoUsuarioEnum::EMPRESA])) {
             $layout = 'sistema-usuario';
         }
 
@@ -60,6 +64,5 @@ class InstitucionalController
 
         View::renderizar('institucional/sobre', compact('time', 'easterEggs'), $layout);
     }
-
 
 }

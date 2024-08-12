@@ -160,15 +160,15 @@ abstract class CandidatoDTO implements DTOInterface
         $maxcpf = 11;
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            FlashMessage::addMessage('Usuário inválido (usuário precisa ser um email)', FlashMessage::FLASH_ERROR);
+            FlashMessage::addMessage('Usuário inválido (usuário precisa ser um email)', FlashMessageType::ERROR);
             header('Location: /candidato/cadastrar');
             die();
         } elseif (strlen($cpf) != $maxcpf || strlen($email) < $min) {
-            FlashMessage::addMessage('CPF com quantidade de caracteres não permitida', FlashMessage::FLASH_ERROR);
+            FlashMessage::addMessage('CPF com quantidade de caracteres não permitida', FlashMessageType::ERROR);
             header('Location: /candidato/cadastrar');
             die();
         } elseif (strlen($senha) < 8) {
-            FlashMessage::addMessage('Senha não atende ao padrão, deve ter no mínimo 8 caracteres', FlashMessage::FLASH_ERROR);
+            FlashMessage::addMessage('Senha não atende ao padrão, deve ter no mínimo 8 caracteres', FlashMessageType::ERROR);
             header('Location: /candidato/cadastrar');
             die();
         } else {

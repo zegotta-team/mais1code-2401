@@ -1,17 +1,21 @@
 <?php
 
+/**
+ * @noinspection PhpUnused
+ */
+
 class PropostaController
 {
     public function cadastrar()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
         View::renderizar('proposta/formulario');
     }
 
     public function salvar()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
         $vagaId = $_POST['vaga'];
         $vaga = VagaDTO::recuperar($vagaId);
@@ -28,19 +32,19 @@ class PropostaController
 
     public function responder()
     {
-        CandidatoController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::CANDIDATO]);
 
         $vagaId = $_POST['vaga'];
         $vaga = VagaDTO::recuperar($vagaId);
 
         $propostaStatus = PropostaStatusEnum::from($_POST['aceite']);
-        $proposta = PropostaDTO::recuperar($vaga->getId(), $_SESSION['candidato']->getId());
+        $proposta = PropostaDTO::recuperar($vaga->getId(), Session::get(TipoUsuarioEnum::CANDIDATO->session_key())->getId());
         $proposta->setAceite($propostaStatus->value);
 
         PropostaDTO::salvar($proposta);
 
         $candidatoVagaStatus = $propostaStatus === PropostaStatusEnum::Aceita ? CandidatoVagaStatusEnum::Contratado : CandidatoVagaStatusEnum::RecusouProposta;
-        $candidatoVaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(), $vaga->getId());
+        $candidatoVaga = CandidatoVagaDTO::recuperar(Session::get(TipoUsuarioEnum::CANDIDATO->session_key())->getId(), $vaga->getId());
         $candidatoVaga->setStatus($candidatoVagaStatus->value);
 
         CandidatoVagaDTO::salvar($candidatoVaga);
@@ -54,10 +58,10 @@ class PropostaController
 
     public function exibir()
     {
-        CandidatoController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::CANDIDATO]);
         $vagaId = $_GET['vagaId'];
 
-        $candidato = $_SESSION['candidato']->getId();
+        $candidato = Session::get(TipoUsuarioEnum::CANDIDATO->session_key())->getId();
 
         $proposta = PropostaDTO::recuperar($vagaId, $candidato);
 

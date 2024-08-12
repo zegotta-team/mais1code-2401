@@ -173,7 +173,7 @@
             Já possui cadastro?
         </div>
         <div class="flex items-center justify-center mt-2">
-            <a href="/autenticacao/?tab=2" class="btn btn-neutral font-bold btn-block">Efetue seu login!</a>
+            <a href="/autenticacao/?tab=<?=TipoUsuarioEnum::EMPRESA->login_tab()?>" class="btn btn-neutral font-bold btn-block">Efetue seu login!</a>
         </div>
     </form>
 </div>

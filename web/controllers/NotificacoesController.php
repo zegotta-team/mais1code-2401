@@ -1,12 +1,12 @@
 <?php
 
+/**
+ * @noinspection PhpUnused
+ */
+
 class NotificacoesController
 {
-    public function __construct()
-    { 
-    }
-
-    public static function criar($candidatura, $antigoStatus) 
+    public static function criar($candidatura, $antigoStatus)
     {
         if (!empty($candidatura) && !empty($antigoStatus)) {
             $mensagem = "Alterado o status de $antigoStatus para " . $candidatura->getStatus(true) . " na vaga de " . $candidatura->getVaga()->getTitulo();
@@ -20,9 +20,9 @@ class NotificacoesController
 
     public function listar() 
     {
-        CandidatoController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::CANDIDATO]);
 
-        $notificacoes = NotificacoesDTO::listar($_SESSION['candidato']->getId());
+        $notificacoes = NotificacoesDTO::listar(Session::get(TipoUsuarioEnum::CANDIDATO->session_key())->getId());
 
         View::renderizar('/candidato/notificacoes', compact('notificacoes'), 'sistema-candidato');
     }

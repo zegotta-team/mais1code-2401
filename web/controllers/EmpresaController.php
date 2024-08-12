@@ -1,27 +1,27 @@
 <?php
 
+/**
+ * @noinspection PhpUnused
+ */
+
 class EmpresaController
 {
 
-    public function __construct()
-    {
-    }
-
     public function cadastro()
     {
-        UsuarioController::renegaSessao();
+        Session::renegaSessao([TipoUsuarioEnum::EMPRESA]);
 
         View::renderizar('empresa/cadastro', [], 'login');
     }
 
     public function cadastrar()
     {
-        UsuarioController::renegaSessao();
+        Session::renegaSessao([TipoUsuarioEnum::EMPRESA]);
 
         header('Location: /autenticacao');
 
         if (EmpresaDTO::verificaDadosExistentes($_POST['nome'], $_POST['cnpj'])) {
-            FlashMessage::addMessage('Dados repetidos', FlashMessage::FLASH_ERROR);
+            FlashMessage::addMessage('Dados repetidos', FlashMessageType::ERROR);
             die();
         }
 
@@ -32,7 +32,7 @@ class EmpresaController
         $empresa = new Empresa($_POST['nome'], $_POST['cnpj'], $_POST['email'], $_POST['descricao'], $_FILES['logo']['tmp_name'] . "|" . $_FILES['logo']['name']);
         EmpresaDTO::salvar($empresa);
 
-        $usuario = new Usuario($empresa, $_POST['usuarioCpf'], $_POST['usuarioNome'], $_POST['usuarioEmail'], password_hash($_POST['usuarioSenha'], PASSWORD_ARGON2ID), TipoUsuarioEnum::USUARIO->value);
+        $usuario = new Usuario($empresa, $_POST['usuarioCpf'], $_POST['usuarioNome'], $_POST['usuarioEmail'], password_hash($_POST['usuarioSenha'], PASSWORD_ARGON2ID), TipoUsuarioEnum::EMPRESA->value);
         UsuarioDTO::salvar($usuario);
 
         $filial = new Filial($empresa, $_POST['filialNome'], $_POST['filialCep'], $_POST['filialLogradouro'], $_POST['filialNumero'], $_POST['filialComplemento'], $_POST['filialBairro'], $_POST['filialCidade'], $_POST['filialEstado']);
@@ -42,18 +42,18 @@ class EmpresaController
 
     public function edicao()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
-        $empresa = EmpresaDTO::recuperar($_SESSION['usuario']->getEmpresa()->getId());
+        $empresa = EmpresaDTO::recuperar(Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa()->getId());
 
         View::renderizar('empresa/edicao', compact('empresa'));
     }
 
     public function editar()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
-        $empresa = EmpresaDTO::recuperar($_SESSION['usuario']->getEmpresa()->getId());
+        $empresa = EmpresaDTO::recuperar(Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa()->getId());
 
         $empresa->setNome($_POST["nome"])
             ->setCNPJ($_POST["cnpj"])
@@ -65,52 +65,33 @@ class EmpresaController
         }
 
         EmpresaDTO::salvar($empresa);
-        FlashMessage::addMessage('Dados atualizados com sucesso', FlashMessage::FLASH_SUCCESS);
+        FlashMessage::addMessage('Dados atualizados com sucesso', FlashMessageType::SUCCESS);
 
         header('Location: /empresa/edicao');
     }
 
     public function exclusao()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
         View::renderizar('empresa/exclusao');
     }
 
     public function excluir()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
-        EmpresaDTO::deletar($_SESSION['usuario']->getEmpresa());
+        EmpresaDTO::deletar(Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa());
 
         header('Location: /');
-    }
-
-    public function detalhes()
-    {
-        UsuarioController::exigeSessao();
-        header('Content-type: application/json');
-
-        $input = file_get_contents('php://input');
-        $data = json_decode($input, true);
-
-        if (empty($data)) {
-            echo json_encode([]);
-            die();
-        }
-
-        $id_empresa = $data['id'];
-        $empresa = EmpresaDTO::recuperar($id_empresa);
-
-        echo json_encode($empresa->toArray());
     }
 
     public function informacoes()
     {
         $layout = 'painel-vagas';
-        if (CandidatoController::estaLogado()) {
+        if (Session::estaLogado([TipoUsuarioEnum::CANDIDATO])) {
             $layout = 'sistema-candidato';
-        } elseif (UsuarioController::estaLogado()) {
+        } elseif (Session::estaLogado([TipoUsuarioEnum::EMPRESA])) {
             $layout = 'sistema-usuario';
         }
 
@@ -157,5 +138,24 @@ class EmpresaController
         View::renderizar('empresa/informacoes', compact('empresa', 'dados', 'depoimentos', 'candidatos', 'vagas'), $layout);
     }
 
+    public function detalhesJson()
+    {
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
+
+        header('Content-type: application/json');
+
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+
+        if (empty($data)) {
+            echo json_encode([]);
+            die();
+        }
+
+        $id_empresa = $data['id'];
+        $empresa = EmpresaDTO::recuperar($id_empresa);
+
+        echo json_encode($empresa->toArray());
+    }
 
 }

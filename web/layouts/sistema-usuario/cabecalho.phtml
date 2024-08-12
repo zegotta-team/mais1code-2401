@@ -157,13 +157,13 @@
                     </svg>
                 </a>
                 <span class="ms-2">
-                    <b><?= $_SESSION['usuario']->getNome(); ?></b>
+                    <b><?= Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getNome(); ?></b>
                 </span>
                 <div class="divider">|</div>
                 <div class="h-6 w-6 me-1">
-                    <img width="56" height="56" class="object-cover w-full h-full rounded-full mask mask-squircle object-cover" src="<?= $_SESSION['usuario']->getEmpresa()->getLogo() ?>"/>
+                    <img width="56" height="56" class="object-cover w-full h-full rounded-full mask mask-squircle object-cover" src="<?= Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa()->getLogo() ?>"/>
                 </div>
-                <span><?= $_SESSION['usuario']->getEmpresa()->getNome() ?></span>
+                <span><?= Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa()->getNome() ?></span>
             </div>
         </div>
         <div class="navbar-end w-auto hidden lg:flex">
@@ -195,7 +195,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="/usuario/logout">
+                            <a href="/autenticacao/logout">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9"/>
                                 </svg>

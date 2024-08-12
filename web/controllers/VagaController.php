@@ -1,16 +1,16 @@
 <?php
 
+/**
+ * @noinspection PhpUnused
+ */
+
 class VagaController
 {
-    public function __construct()
-    {
-    }
-
     public function index()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
-        $filiais = FilialDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
+        $filiais = FilialDTO::listar(Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa()->getId());
         $beneficios = BeneficioDTO::listar();
 
         $categorias = CategoriaHabilidadeDTO::listar();
@@ -20,7 +20,7 @@ class VagaController
         }
 
 
-        $vagas = VagaDTO::listar($_SESSION['usuario']->getEmpresa()->getId(), '', '', '', VagaOrdenacaoEnum::AlfabeticaCrescente);
+        $vagas = VagaDTO::listar(Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa()->getId(), '', '', '', VagaOrdenacaoEnum::AlfabeticaCrescente);
 
 
         View::renderizar('vaga/index', compact('filiais', 'habilidades', 'categorias', 'beneficios', 'vagas'));
@@ -125,11 +125,11 @@ class VagaController
         }
 
         $layout = 'painel-vagas';
-        if (CandidatoController::estaLogado()) {
+        if (Session::estaLogado([TipoUsuarioEnum::CANDIDATO])) {
             $layout = 'sistema-candidato';
-        } elseif (UsuarioController::estaLogado()) {
+        } elseif (Session::estaLogado([TipoUsuarioEnum::EMPRESA])) {
             $layout = 'sistema-usuario';
-        } elseif (AdminController::estaLogado()) {
+        } elseif (Session::estaLogado([TipoUsuarioEnum::ADMINISTRADOR])) {
             $layout = 'sistema-admin';
         }
 
@@ -162,9 +162,9 @@ class VagaController
 
     public function cadastrar()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
-        $filiais = FilialDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
+        $filiais = FilialDTO::listar(Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa()->getId());
         $beneficios = BeneficioDTO::listar();
 
         $categorias = CategoriaHabilidadeDTO::listar();
@@ -178,7 +178,7 @@ class VagaController
     public function salvar()
     {
         header('Location: /vaga/');
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
         $filial = FilialDTO::recuperar($_POST['filial']);
 
@@ -190,7 +190,7 @@ class VagaController
         }
 
         if (empty($_POST['vagaId'])) {
-            $vaga = new Vaga($filial, $_SESSION['usuario']->getEmpresa(), $_POST['titulo'], $_POST['email'], $_POST['salario'], $_POST['descricao'], $_POST['cargaHoraria'], $_POST['regimeContratacao'], $_POST['regimeTrabalho'], $_POST['nivelSenioridade'], $_POST['nivelHierarquia'], VagaStatusEnum::Ativa->value, $habilidades, []);
+            $vaga = new Vaga($filial, Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa(), $_POST['titulo'], $_POST['email'], $_POST['salario'], $_POST['descricao'], $_POST['cargaHoraria'], $_POST['regimeContratacao'], $_POST['regimeTrabalho'], $_POST['nivelSenioridade'], $_POST['nivelHierarquia'], VagaStatusEnum::Ativa->value, $habilidades, []);
 
         } else {
             $vaga = VagaDTO::recuperar($_POST['vagaId']);
@@ -205,12 +205,12 @@ class VagaController
             }
 
             if (empty($vaga)) {
-                FlashMessage::addMessage('Vaga não encontrada', FlashMessage::FLASH_ERROR);
+                FlashMessage::addMessage('Vaga não encontrada', FlashMessageType::ERROR);
                 exit();
             }
 
-            if ($_SESSION['usuario']->getEmpresa()->getId() !== $vaga->getEmpresa()->getId()) {
-                FlashMessage::addMessage('Sai pilantra, a vaga não é sua', FlashMessage::FLASH_ERROR);
+            if (Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa()->getId() !== $vaga->getEmpresa()->getId()) {
+                FlashMessage::addMessage('Sai pilantra, a vaga não é sua', FlashMessageType::ERROR);
                 exit();
             }
 
@@ -249,10 +249,10 @@ class VagaController
 
     public function editar()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
         $idVaga = $_GET['id'];
-        $filiais = FilialDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
+        $filiais = FilialDTO::listar(Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa()->getId());
         $vaga = VagaDTO::recuperar($idVaga);
         $beneficios = BeneficioDTO::listar();
 
@@ -268,7 +268,7 @@ class VagaController
             die('Vaga não encontrada');
         }
 
-        if ($_SESSION['usuario']->getEmpresa()->getId() !== $vaga->getEmpresa()->getId()) {
+        if (Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa()->getId() !== $vaga->getEmpresa()->getId()) {
             die('Sai pilantra, a vaga não é sua');
         }
 
@@ -277,7 +277,7 @@ class VagaController
 
     public function excluir()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
         $idVaga = $_GET['id'];
         $vaga = VagaDTO::recuperar($idVaga);
@@ -286,7 +286,7 @@ class VagaController
             die('Vaga não encontrada');
         }
 
-        if ($_SESSION['usuario']->getEmpresa()->getId() !== $vaga->getEmpresa()->getId()) {
+        if (Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa()->getId() !== $vaga->getEmpresa()->getId()) {
             die('Sai pilantra, a vaga não é sua');
         }
 
@@ -297,16 +297,16 @@ class VagaController
 
     public function listar()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
-        $vagas = VagaDTO::listar($_SESSION['usuario']->getEmpresa()->getId(), '', '', '', VagaOrdenacaoEnum::AlfabeticaCrescente);
+        $vagas = VagaDTO::listar(Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa()->getId(), '', '', '', VagaOrdenacaoEnum::AlfabeticaCrescente);
 
         View::renderizar('vaga/listar', compact('vagas'));
     }
 
     public function exibir()
     {
-        session_start();
+        Session::iniciaSessao();
         $vaga = VagaDTO::recuperar($_GET['id']);
 
         $habilidades = $vaga->getHabilidades();
@@ -320,10 +320,10 @@ class VagaController
         $candidato_vaga = null;
         $layout = 'painel-vagas';
 
-        if (CandidatoController::estaLogado()) {
-            $candidato_vaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(), $vaga->getId());
+        if (Session::estaLogado([TipoUsuarioEnum::CANDIDATO])) {
+            $candidato_vaga = CandidatoVagaDTO::recuperar(Session::get(TipoUsuarioEnum::CANDIDATO->session_key())->getId(), $vaga->getId());
             $layout = 'sistema-candidato';
-        } elseif (UsuarioController::estaLogado()) {
+        } elseif (Session::estaLogado([TipoUsuarioEnum::EMPRESA])) {
             $layout = 'sistema-usuario';
         }
 
@@ -332,10 +332,10 @@ class VagaController
 
     public function desistirCandidatura()
     {
-        session_start();
+        Session::iniciaSessao();
         $dataHora = date("Y-m-d H:i:s");
 
-        $candidatoVaga = CandidatoVagaDTO::recuperar($_SESSION['candidato']?->getId(), $_GET['id']);
+        $candidatoVaga = CandidatoVagaDTO::recuperar(Session::get(TipoUsuarioEnum::CANDIDATO->session_key())?->getId(), $_GET['id']);
 
         $candidatoVaga->setStatus(CandidatoVagaStatusEnum::Desistencia->value);
         $candidatoVaga->setUltimaDesistencia($dataHora);
@@ -347,9 +347,9 @@ class VagaController
 
     public function processaCandidatura()
     {
-        session_start();
+        Session::iniciaSessao();
 
-        $candidato = $_SESSION['candidato'];
+        $candidato = Session::get(TipoUsuarioEnum::CANDIDATO->session_key());
         $vaga = VagaDTO::recuperar($_GET['id']);
 
         $historico = CandidatoVagaDTO::recuperar($candidato->getId(), $vaga->getId());
@@ -382,9 +382,10 @@ class VagaController
         header('Location: /vaga/');
     }
 
-    public function detalhes()
+    public function detalhesJson()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
+
         header('Content-type: application/json');
 
         $input = file_get_contents('php://input');
@@ -401,9 +402,10 @@ class VagaController
         echo json_encode($vaga->toArray());
     }
 
-    public function candidatos()
+    public function candidatosJson()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
+
         header('Content-type: application/json');
 
         $input = file_get_contents('php://input');

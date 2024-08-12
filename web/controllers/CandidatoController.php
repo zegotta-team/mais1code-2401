@@ -1,43 +1,47 @@
 <?php
 
+/**
+ * @noinspection PhpUnused
+ */
+
 class CandidatoController
 {
     public function login()
     {
-        session_start();
+        Session::iniciaSessao();
 
         $email = $_POST['email'];
         $senha = $_POST['senha'];
         $remember = isset($_POST['remember_me']);
 
         if ($remember) {
-            setcookie("candidato", $email, time() + 3600 * 24 * 30 * 12 * 100, '/');
+            setcookie(TipoUsuarioEnum::CANDIDATO->session_key(), $email, time() + 3600 * 24 * 30 * 12 * 100, '/');
         } else {
-            setcookie("candidato", "", time() - 3600, '/');
+            setcookie(TipoUsuarioEnum::CANDIDATO->session_key(), "", time() - 3600, '/');
         }
 
         $candidato = CandidatoDTO::autenticar($email, $senha);
 
         if (isset($candidato)) {
-            header('Location: /vaga/painel');
-            $_SESSION['candidato'] = $candidato;
+            header("Location: " . TipoUsuarioEnum::CANDIDATO->home());
+            Session::set(TipoUsuarioEnum::CANDIDATO->session_key(), $candidato);
         } else {
-            header('Location: /autenticacao/');
-            $_SESSION['candidato'] = null;
-            FlashMessage::addMessage("Falha ao autenticar candidato! Email ou senha incorretos.", FlashMessage::FLASH_ERROR);
+            header("Location: /autenticacao/?tab=" . TipoUsuarioEnum::CANDIDATO->login_tab());
+            Session::clear(TipoUsuarioEnum::CANDIDATO->session_key());
+            FlashMessage::addMessage("Não foi possível efetuar sua autenticação.<br>Verifique seus dados e tente novamente.", FlashMessageType::ERROR);
         }
     }
 
     public function cadastrar()
     {
-        UsuarioController::renegaSessao();
+        Session::renegaSessao([TipoUsuarioEnum::EMPRESA]);
 
         View::renderizar('candidato/cadastrar', [], 'login');
     }
 
     public function salvar()
     {
-        UsuarioController::renegaSessao();
+        Session::renegaSessao([TipoUsuarioEnum::EMPRESA]);
 
         $candidato = new Candidato($_POST['nome'], $_POST['email'], $_POST['senha'], $_POST['cpf'], $_POST['nascimento'], $_POST['endereco'], $_POST['disponibilidade'], $_POST['sexo'], $_POST['genero'], $_POST['status'], '', '', '', '', $_POST['habilidades'], []);
 
@@ -46,59 +50,21 @@ class CandidatoController
         header('Location: /autenticacao');
     }
 
-    public static function estaLogado()
-    {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        return !empty($_SESSION['candidato']);
-    }
-
-    public function logout()
-    {
-        session_start();
-        session_destroy();
-        header('Location: /');
-    }
-
-    public static function renegaSessao()
-    {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        if (!empty($_SESSION['candidato'])) {
-            header("Location: /");
-        }
-    }
-
-    public static function exigeSessao()
-    {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        if (empty($_SESSION['candidato'])) {
-            header("Location: /autenticacao");
-        }
-    }
-
     public function listar()
     {
-        CandidatoController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::CANDIDATO]);
 
-        $vagasCandidatadas = CandidatoVagaDTO::listar($_SESSION['candidato']->getId());
-        $propostas = PropostaDTO::listar('', $_SESSION['candidato']->getId());
+        $vagasCandidatadas = CandidatoVagaDTO::listar(Session::get(TipoUsuarioEnum::CANDIDATO->session_key())->getId());
+        $propostas = PropostaDTO::listar('', Session::get(TipoUsuarioEnum::CANDIDATO->session_key())->getId());
 
         View::renderizar('candidato/listar', compact('vagasCandidatadas', 'propostas'), 'sistema-candidato');
     }
 
     public function perfil()
     {
-        CandidatoController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::CANDIDATO]);
 
-        $candidato = CandidatoDTO::recuperar($_SESSION['candidato']->getId());
+        $candidato = CandidatoDTO::recuperar(Session::get(TipoUsuarioEnum::CANDIDATO->session_key())->getId());
         $categorias = CategoriaHabilidadeDTO::listar();
 
         foreach ($categorias as $categoria) {
@@ -112,14 +78,14 @@ class CandidatoController
 
     public function vagasRecomendadas()
     {
-        CandidatoController::estaLogado();
-        $vagasCandidatadas = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId());
+        Session::exigeSessao([TipoUsuarioEnum::CANDIDATO]);
+
         $vagas = VagaDTO::listar();
         $vagasPorPercentual = [];
         $percentual = 0;
 
         foreach ($vagas as $vaga) {
-            $candidatura = CandidatoVagaDTO::recuperar($_SESSION['candidato']->getId(), $vaga->getId());
+            $candidatura = CandidatoVagaDTO::recuperar(Session::get(TipoUsuarioEnum::CANDIDATO->session_key())->getId(), $vaga->getId());
             if (!empty($candidatura)) {
                 continue;
             }
@@ -131,7 +97,7 @@ class CandidatoController
             foreach ($vagaHabilidades as $habilidadeVaga) {
                 $totalDeHabilidades = $totalDeHabilidades + 1;
 
-                if ($_SESSION['candidato']->temHabilidadeId($habilidadeVaga->getId())) {
+                if (Session::get(TipoUsuarioEnum::CANDIDATO->session_key())->temHabilidadeId($habilidadeVaga->getId())) {
                     $totalDeHabilidadesAtendidas = $totalDeHabilidadesAtendidas + 1;
                 }
             }
@@ -150,16 +116,16 @@ class CandidatoController
         }
 
         krsort($vagasPorPercentual);
-        $layout = CandidatoController::estaLogado() ? 'sistema-candidato' : 'painel-vagas';
+        $layout = Session::estaLogado([TipoUsuarioEnum::CANDIDATO]) ? 'sistema-candidato' : 'painel-vagas';
 
         View::renderizar('vaga/painelRecomendado', compact('vagasPorPercentual', 'vagas', 'percentual'), $layout);
     }
 
     public function salvarPerfil()
     {
-        CandidatoController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::CANDIDATO]);
 
-        $candidato = CandidatoDTO::recuperar($_SESSION['candidato']->getId());
+        $candidato = CandidatoDTO::recuperar(Session::get(TipoUsuarioEnum::CANDIDATO->session_key())->getId());
 
         $habilidades = [];
         if (isset($_POST['habilidade'])) {
@@ -183,16 +149,95 @@ class CandidatoController
             ->setBeneficios($beneficios);
 
         CandidatoDTO::salvar($candidato);
-        FlashMessage::addMessage('Dados gravados com sucesso', FlashMessage::FLASH_SUCCESS);
+        FlashMessage::addMessage('Dados gravados com sucesso', FlashMessageType::SUCCESS);
 
-        $_SESSION['candidato'] = $candidato;
+        Session::set(TipoUsuarioEnum::CANDIDATO->session_key(), $candidato);
 
         header("Location: /candidato/perfil");
     }
 
-    public function detalhes()
+    public function depoimento()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::CANDIDATO]);
+        $empresaId = $_GET['empresa'];
+        $empresa = EmpresaDTO::recuperar($empresaId);
+
+        if (empty($empresa)) {
+            header('Location:/candidato/listar');
+            die();
+        }
+
+        View::renderizar('candidato/depoimento', compact('empresa'), 'sistema-candidato');
+    }
+
+    public function salvarDepoimento()
+    {
+        Session::exigeSessao([TipoUsuarioEnum::CANDIDATO]);
+
+        $empresaId = $_POST['empresaId'];
+        $empresa = EmpresaDTO::recuperar($empresaId);
+
+        $candidatoId = Session::get(TipoUsuarioEnum::CANDIDATO->session_key())->getId();
+
+        if (empty($empresa)) {
+            header('Location:/candidato/listar');
+            die();
+        }
+
+        $depoimento = new Depoimento($empresaId, $candidatoId, $_POST['depoimento'], $_POST['rating']);
+        DepoimentoDTO::salvar($depoimento);
+
+        FlashMessage::addMessage('Depoimento cadastrado com sucesso', FlashMessageType::SUCCESS);
+
+        header('Location: /candidato/listar');
+    }
+
+    public function trocarSenha()
+    {
+        Session::exigeSessao([TipoUsuarioEnum::CANDIDATO]);
+
+        View::renderizar('candidato/trocarsenha', [], 'sistema-candidato');
+    }
+
+    public function salvarSenha()
+    {
+        Session::exigeSessao([TipoUsuarioEnum::CANDIDATO]);
+
+        $candidato = CandidatoDTO::recuperar(Session::get(TipoUsuarioEnum::CANDIDATO->session_key())->getId());
+        $candidato->setSenha(password_hash($_POST['senha'], PASSWORD_ARGON2ID));
+        CandidatoDTO::salvar($candidato);
+        header('Location: /vaga/painel');
+    }
+
+    public function exibir()
+    {
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
+
+        $candidatoId = $_GET['id'] ?? null;
+        $candidato = CandidatoDTO::recuperar($candidatoId);
+
+        $candidaturas = CandidatoVagaDTO::listar($candidatoId);
+
+        $vagas = [];
+
+        /** @var CandidatoVaga $candidatura */
+        foreach ($candidaturas as $candidatura) {
+            if ($candidatura->getVaga()->getEmpresa()->getId() == Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa()->getId()) {
+                $vagas[] = $candidatura->getVaga();
+            }
+        }
+
+        if (empty($candidato)) {
+            header('Location:/error/');
+        }
+
+
+        View::renderizar('candidato/exibir', compact('candidato', 'vagas'), 'sistema-usuario');
+    }
+
+    public function detalhesJson()
+    {
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
         header('Content-type: application/json');
 
         $input = file_get_contents('php://input');
@@ -207,84 +252,5 @@ class CandidatoController
         $candidato = CandidatoDTO::recuperar($id_candidato);
 
         echo json_encode($candidato->toArray());
-    }
-
-    public function depoimento()
-    {
-        CandidatoController::exigeSessao();
-        $empresaId = $_GET['empresa'];
-        $empresa = EmpresaDTO::recuperar($empresaId);
-
-        if (empty($empresa)) {
-            header('Location:/candidato/listar');
-            die();
-        }
-
-        View::renderizar('candidato/depoimento', compact('empresa'), 'sistema-candidato');
-    }
-
-    public function salvarDepoimento()
-    {
-        CandidatoController::exigeSessao();
-
-        $empresaId = $_POST['empresaId'];
-        $empresa = EmpresaDTO::recuperar($empresaId);
-
-        $candidatoId = $_SESSION['candidato']->getId();
-
-        if (empty($empresa)) {
-            header('Location:/candidato/listar');
-            die();
-        }
-
-        $depoimento = new Depoimento($empresaId, $candidatoId, $_POST['depoimento'], $_POST['rating']);
-        DepoimentoDTO::salvar($depoimento);
-
-        FlashMessage::addMessage('Depoimento cadastrado com sucesso', FlashMessage::FLASH_SUCCESS);
-
-        header('Location: /candidato/listar');
-    }
-
-    public function trocarSenha()
-    {
-        CandidatoController::exigeSessao();
-
-        View::renderizar('candidato/trocarsenha', [], 'sistema-candidato');
-    }
-
-    public function salvarSenha()
-    {
-        CandidatoController::exigeSessao();
-
-        $candidato = CandidatoDTO::recuperar($_SESSION['candidato']->getId());
-        $candidato->setSenha(password_hash($_POST['senha'], PASSWORD_ARGON2ID));
-        CandidatoDTO::salvar($candidato);
-        header('Location: /vaga/painel');
-    }
-
-    public function exibir()
-    {
-        UsuarioController::exigeSessao();
-
-        $candidatoId = $_GET['id'] ?? null;
-        $candidato = CandidatoDTO::recuperar($candidatoId);
-
-        $candidaturas = CandidatoVagaDTO::listar($candidatoId);
-
-        $vagas = [];
-
-        /** @var CandidatoVaga $candidatura */
-        foreach ($candidaturas as $candidatura) {
-            if ($candidatura->getVaga()->getEmpresa()->getId() == $_SESSION['usuario']->getEmpresa()->getId()) {
-                $vagas[] = $candidatura->getVaga();
-            }
-        }
-
-        if (empty($candidato)) {
-            header('Location:/error/');
-        }
-
-
-        View::renderizar('candidato/exibir', compact('candidato', 'vagas'), 'sistema-usuario');
     }
 }

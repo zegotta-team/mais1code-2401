@@ -12,9 +12,9 @@
         </ul>
     </div>
     <?php
-    if (!UsuarioController::estaLogado()) :
+    if (!Session::estaLogado([TipoUsuarioEnum::EMPRESA])) :
         if ($vaga->getStatus() == VagaStatusEnum::Ativa->value) :
-            if (CandidatoController::estaLogado()) :
+            if (Session::estaLogado([TipoUsuarioEnum::CANDIDATO])) :
                 if (empty($candidato_vaga)) : ?>
                     <div class="flex justify-end">
                         <a class="btn btn-primary" href="/vaga/processaCandidatura?id=<?= $vaga->getId() ?>">Quer se candidatar? Clique aqui </a>
@@ -40,7 +40,7 @@
                                 if ($candidato_vaga->desistenciaLiberada()) : ?>
                                     <a class="btn btn-primary" href="/vaga/processaCandidatura?id=<?= $vaga->getId() ?>">Quer se candidatar? Clique aqui </a>
                                 <?php else : ?>
-                                    <div role="alert" class="alert alert-info flex">
+                                    <div role="alert" class="alert alert-info flex mb-2">
                                         <svg class="w-5 h-5" data-slot="icon" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path clip-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z" fill-rule="evenodd"></path>
                                         </svg>
@@ -58,21 +58,26 @@
                                 </div>
                             </div>
                         <?php else: ?>
-                            <div role="alert" class="alert alert-info flex">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"/>
-                                </svg>
+                            <?php if ($candidato_vaga->getStatus() !== CandidatoVagaStatusEnum::Desistencia->value) : ?>
+                                <div role="alert" class="alert alert-info flex">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"/>
+                                    </svg>
 
-                                <span>Você já chegou ao final desse processo seletivo. Seu status final é: <?= CandidatoVagaStatusEnum::from($candidato_vaga->getStatus())->label() ?></span>
-                            </div>
+                                    <span>Você já chegou ao final desse processo seletivo. Seu status final é: <?= CandidatoVagaStatusEnum::from($candidato_vaga->getStatus())->label() ?></span>
+                                </div>
+                            <?php endif; ?>
                         <?php endif; ?>
                     <?php endif; ?>
                 <?php endif;
-            else : ?>
-                <div class="flex justify-end">
-                    <a class="btn btn-primary" href="/autenticacao">Quer se candidatar? Efetue Login</a>
-                </div>
-            <?php endif;
+            else :
+                if (!Session::estaLogado([TipoUsuarioEnum::EMPRESA, TipoUsuarioEnum::ADMINISTRADOR])):
+                    ?>
+                    <div class="flex justify-end">
+                        <a class="btn btn-primary" href="/autenticacao">Quer se candidatar? Efetue Login</a>
+                    </div>
+                <?php endif;
+            endif;
         else : ?>
             <div class="flex justify-end">
                 <div role="alert" class="alert alert-warning flex">

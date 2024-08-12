@@ -29,7 +29,7 @@
         <caption class="text-slate-500 dark:text-slate-400 pb-4 text-md caption-top">
             <div class="flex">
                 <div class="w-full flex items-center justify-start">
-                    <h2 class="shadow">Benefícios</h2>
+                    <h2 class="">Benefícios</h2>
                 </div>
                 <div class="flex justify-end">
                     <button class="btn btn-success btn-sm text-white" onclick="modal.showModal()" id="cadastrar">
@@ -45,7 +45,7 @@
         <tr>
             <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-0">#</th>
             <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-auto">Benefício</th>
-            <?php if (isset($_SESSION['administrador'])): ?>
+            <?php if (!is_null(Session::get(TipoUsuarioEnum::ADMINISTRADOR->session_key()))): ?>
                 <th class="border border-slate-300 dark:border-slate-600 font-semibold text-slate-900 dark:text-slate-200 whitespace-nowrap w-0">
                     <div class="flex justify-center items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
@@ -64,7 +64,7 @@
             <tr class="hover">
                 <td class="border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400"><?= $valorBeneficio->getId() ?></td>
                 <td class="border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400"><?= $valorBeneficio->getNome() ?></td>
-                <?php if (isset($_SESSION['administrador'])): ?>
+                <?php if (!is_null(Session::get(TipoUsuarioEnum::ADMINISTRADOR->session_key()))): ?>
                     <td class="border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400">
                         <div class="flex justify-center space-x-1">
                             <button class=" btn btn-xs h-8 w-8 border btn-square border-accent-content/15" name="editar" data-beneficioid="<?= $valorBeneficio->getId() ?>" title="Editar">
@@ -92,7 +92,7 @@
 
         botoes.forEach(function (item) {
             item.addEventListener('click', function () {
-                fetch('/beneficio/detalhes', {
+                fetch('/beneficio/detalhesJson', {
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/json'

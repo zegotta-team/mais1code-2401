@@ -1,17 +1,14 @@
 <?php
 
+/**
+ * @noinspection PhpUnused
+ */
+
 class AdminController
 {
-
-    public function index() {
-        AdminController::exigeSessao();
-
-        View::renderizar('admin/index', [], 'sistema-admin');
-    }
-
     public function login()
     {
-        session_start();
+        Session::iniciaSessao();
 
         $login = $_POST['login'];
         $senha = $_POST['senha'];
@@ -19,51 +16,20 @@ class AdminController
         $administrador = AdministradorDTO::autenticar($login, $senha);
 
         if (isset($administrador)) {
-            header('Location: /admin');
-            $_SESSION['administrador'] = $administrador;
+            header("Location: " . TipoUsuarioEnum::ADMINISTRADOR->home());
+            Session::set(TipoUsuarioEnum::ADMINISTRADOR->session_key(), $administrador);
         } else {
-            header('Location: /autenticacao/?tab=3');
-            $_SESSION['administrador'] = null;
-            FlashMessage::addMessage("Falha ao autenticar adminstrador! Email ou senha incorretos.", FlashMessage::FLASH_ERROR);
+            header("Location: /autenticacao/?tab=" . TipoUsuarioEnum::ADMINISTRADOR->login_tab());
+            Session::clear(TipoUsuarioEnum::ADMINISTRADOR->session_key());
+            FlashMessage::addMessage("Não foi possível efetuar sua autenticação.<br>Verifique seus dados e tente novamente.", FlashMessageType::ERROR);
         }
     }
 
-    public static function estaLogado()
+    public function index()
     {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
+        Session::exigeSessao([TipoUsuarioEnum::ADMINISTRADOR]);
 
-        return !empty($_SESSION['administrador']);
-    }
-
-    public function logout()
-    {
-        session_start();
-        session_destroy();
-        header('Location: /admin');
-    }
-
-    public static function renegaSessao()
-    {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        if (!empty($_SESSION['administrador'])) {
-            header("Location: /");
-        }
-    }
-
-    public static function exigeSessao()
-    {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        if (empty($_SESSION['administrador'])) {
-            header("Location: /autenticacao");
-        }
+        View::renderizar('admin/index', [], 'sistema-admin');
     }
 
 }

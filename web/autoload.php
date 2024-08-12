@@ -2,12 +2,9 @@
 
 use JetBrains\PhpStorm\NoReturn;
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 spl_autoload_register(function ($nomeClasse) {
     $diretorio_raiz = dirname(__DIR__);
+
     $diretorios = [
         "web" . DIRECTORY_SEPARATOR . "models",
         "web" . DIRECTORY_SEPARATOR . "controllers",
@@ -27,6 +24,9 @@ spl_autoload_register(function ($nomeClasse) {
 
 });
 
+/**
+ * @noinspection PhpUnused
+ */
 #[NoReturn] function dd(): void
 {
     $args = func_get_args();

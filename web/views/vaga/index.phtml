@@ -226,7 +226,7 @@
         <caption class="text-slate-500 dark:text-slate-400 pb-4 text-md caption-top">
             <div class="flex">
                 <div class="w-full flex items-center justify-start">
-                    <h2 class="shadow">Nossas vagas</h2>
+                    <h2 class="">Nossas vagas</h2>
                 </div>
                 <div class="flex justify-end">
                     <button class="btn btn-success btn-sm text-white" id="cadastrar" onclick="modal.showModal()">
@@ -330,7 +330,7 @@
 
         botoes.forEach(function (item) {
             item.addEventListener('click', function () {
-                fetch('/vaga/detalhes', {
+                fetch('/vaga/detalhesJson', {
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/json'
@@ -394,7 +394,7 @@
 
         botoesCandidatos.forEach(function (item) {
             item.addEventListener('click', function () {
-                fetch('/vaga/candidatos', {
+                fetch('/vaga/candidatosJson', {
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/json'

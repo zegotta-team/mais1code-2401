@@ -1,26 +1,51 @@
 <?php
 
+/**
+ * @noinspection PhpUnused
+ */
+
 class UsuarioController
 {
-
-    public function __construct()
+    public function login()
     {
+        Session::iniciaSessao();
+
+        $email = $_POST['email'];
+        $senha = $_POST['senha'];
+        $remember = isset($_POST['remember_me']);
+
+        if ($remember) {
+            setcookie(TipoUsuarioEnum::EMPRESA->session_key(), $email, time() + 3600 * 24 * 30 * 12 * 100, '/');
+        } else {
+            setcookie(TipoUsuarioEnum::EMPRESA->session_key(), "", time() - 3600, '/');
+        }
+
+        $usuario = UsuarioDTO::autenticar($email, $senha);
+
+        if (!empty($usuario)) {
+            header("Location: " . TipoUsuarioEnum::EMPRESA->home());
+            Session::set(TipoUsuarioEnum::EMPRESA->session_key(), $usuario);
+        } else {
+            header("Location: /autenticacao/?tab=" . TipoUsuarioEnum::EMPRESA->login_tab());
+            Session::clear(TipoUsuarioEnum::EMPRESA->session_key());
+            FlashMessage::addMessage('Não foi possível efetuar sua autenticação.<br>Verifique seus dados e tente novamente.', FlashMessageType::ERROR);
+        }
     }
 
     public function index()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
-        $usuarios = UsuarioDTO::listar($_SESSION['usuario']->getEmpresa()->getId());
+        $usuarios = UsuarioDTO::listar(Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa()->getId());
         View::renderizar('usuario/index', compact('usuarios'));
     }
 
     public function salvar()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
         if (empty($_POST['usuarioId'])) {
-            $usuario = new Usuario($_SESSION['usuario']->getEmpresa(), $_POST['cpf'], $_POST['nome'], $_POST['email'], $_POST['senha'], TipoUsuarioEnum::USUARIO->value);
+            $usuario = new Usuario(Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa(), $_POST['cpf'], $_POST['nome'], $_POST['email'], $_POST['senha'], TipoUsuarioEnum::EMPRESA->value);
         } else {
             $usuario = UsuarioDTO::recuperar($_POST['usuarioId']);
 
@@ -28,7 +53,7 @@ class UsuarioController
                 die('Usuario não encontrado');
             }
 
-            if ($_SESSION['usuario']->getEmpresa()->getId() !== $usuario->getEmpresa()->getId()) {
+            if (Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa()->getId() !== $usuario->getEmpresa()->getId()) {
                 die('Sai pilantra, o usuario não é da sua turma');
             }
 
@@ -44,7 +69,7 @@ class UsuarioController
 
     public function editar()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
         $idUsuario = $_GET['id'];
         $usuarioEdicao = UsuarioDTO::recuperar($idUsuario);
@@ -53,7 +78,7 @@ class UsuarioController
             die('Usuario não encontrada');
         }
 
-        if ($_SESSION['usuario']->getEmpresa()->getId() !== $usuarioEdicao->getEmpresa()->getId()) {
+        if (Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa()->getId() !== $usuarioEdicao->getEmpresa()->getId()) {
             die('Sai pilantra, usuario não é da sua turma');
         }
 
@@ -62,16 +87,16 @@ class UsuarioController
 
     public function trocarSenha()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
         View::renderizar('usuario/trocarsenha');
     }
 
     public function salvarSenha()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
-        $usuario = UsuarioDTO::recuperar($_SESSION['usuario']->getId());
+        $usuario = UsuarioDTO::recuperar(Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getId());
         $usuario->setSenha(password_hash($_POST['senha'], PASSWORD_ARGON2ID));
         UsuarioDTO::salvar($usuario);
         header('Location: /usuario');
@@ -79,7 +104,7 @@ class UsuarioController
 
     public function excluir()
     {
-        UsuarioController::exigeSessao();
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
         $idUsuario = $_GET['id'];
 
@@ -89,7 +114,7 @@ class UsuarioController
             die('Usuario não encontrado');
         }
 
-        if ($_SESSION['usuario']->getEmpresa()->getId() !== $usuarioExclusao->getEmpresa()->getId()) {
+        if (Session::get(TipoUsuarioEnum::EMPRESA->session_key())->getEmpresa()->getId() !== $usuarioExclusao->getEmpresa()->getId()) {
             die('Sai pilantra, o usuario não é da sua turma');
         }
 
@@ -97,78 +122,10 @@ class UsuarioController
         header('Location: /usuario');
     }
 
-    public function login()
+    public function detalhesJson()
     {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
+        Session::exigeSessao([TipoUsuarioEnum::EMPRESA]);
 
-        $email = $_POST['email'];
-        $senha = $_POST['senha'];
-        $remember = isset($_POST['remember_me']);
-
-        if ($remember) {
-            setcookie("usuario", $email, time() + 3600 * 24 * 30 * 12 * 100, '/');
-        } else {
-            setcookie("usuario", "", time() - 3600, '/');
-        }
-
-        $usuario = UsuarioDTO::autenticar($email, $senha);
-
-        if (!empty($usuario)) {
-            header('Location: /vaga/');
-            $_SESSION['usuario'] = $usuario;
-        } else {
-            header('Location: /autenticacao/?tab=2');
-            $_SESSION['usuario'] = null;
-            FlashMessage::addMessage('Falha ao autenticar', FlashMessage::FLASH_ERROR);
-        }
-    }
-
-    public function logout()
-    {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-        session_destroy();
-        header('Location: /');
-    }
-
-    public static function exigeSessao()
-    {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-        if (empty($_SESSION['usuario'])) {
-            header("Location: /autenticacao/");
-            die();
-        }
-
-    }
-
-    public static function renegaSessao()
-    {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        if (!empty($_SESSION['usuario'])) {
-            header("Location: /vaga/painel");
-        }
-    }
-
-    public static function estaLogado()
-    {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        return !empty($_SESSION['usuario']);
-    }
-
-    public function detalhes()
-    {
-        UsuarioController::exigeSessao();
         header('Content-type: application/json');
 
         $input = file_get_contents('php://input');
